@@ -17,7 +17,7 @@ qemu-system-x86_64 -enable-kvm -hdb /dev/sdd -m 4096
 
 oder
 
-qemu-img create -f qcow2 arch.img 16G
+qemu-img create -f qcow2 arch.img 32G
 
 qemu-system-x86_64 -enable-kvm -cdrom out/arch-*.iso -hda arch.img -boot d -m 4096
 

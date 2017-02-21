@@ -13,8 +13,6 @@ work_dir=work
 out_dir=out
 install_dir=arch
 
-script_path=scripts
-
 arch=$(uname -m)
 
 read -p "Soll das System neu aufgebaut werden?: [Y/n] " system
@@ -22,22 +20,15 @@ if [ "$system" != "n" ]
   then
 echo "Scripte werden heruntergeladen!"
 pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools
-mkdir -p ${script_path}
 mkdir -p ${work_dir}/${arch}/airootfs
 
 pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts 
 
-cd ${script_path}
-mkdir -p install
 cd install
-wget -c https://raw.githubusercontent.com/simono41/archiso/master/archiso/initcpio/install/archiso
-cp archiso ../../${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
+cp archiso ../${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
 cd ..
-mkdir -p hooks
 cd hooks
-wget -c https://raw.githubusercontent.com/simono41/archiso/master/archiso/initcpio/hooks/archiso
-cp archiso ../../${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
-cd ..
+cp archiso ../${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 cd ..
 
 echo "HOOKS=\"base udev block filesystems keyboard archiso\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
@@ -47,28 +38,13 @@ echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
 
 cp make_mksquashfs.sh ${work_dir}/${arch}/airootfs/usr/bin/make_mksquashfs
 chmod +x ${work_dir}/${arch}/airootfs/usr/bin/make_mksquashfs
-cd ${script_path}
-if [ -f arch-graphical-install ]
-then
-rm arch-graphical-install
-else
-echo "arch-graphical-install nicht vorhanden!"
-fi
-if [ -f arch-install ]
-then
-rm arch-install
-else
-echo "arch-install nicht vorhanden!"
-fi
-wget -c https://raw.githubusercontent.com/simono41/Arch-Install-Script/master/arch-graphical-install
-wget -c https://raw.githubusercontent.com/simono41/Arch-Install-Script/master/arch-install
-wget -c https://raw.githubusercontent.com/simono41/Arch-Install-Script/master/pacman.conf
-cp arch-graphical-install ../${work_dir}/${arch}/airootfs/usr/bin/
-cp arch-install ../${work_dir}/${arch}/airootfs/usr/bin/
-cp pacman.conf ../${work_dir}/${arch}/airootfs/etc/
-chmod +x ../${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install
-chmod +x ../${work_dir}/${arch}/airootfs/usr/bin/arch-install
-cd ..
+
+cp pacman.conf ${work_dir}/${arch}/airootfs/etc/
+
+cp arch-graphical-install ${work_dir}/${arch}/airootfs/usr/bin/
+cp arch-install ${work_dir}/${arch}/airootfs/usr/bin/
+chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install
+chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install
 
 echo "Server = http://mirror.23media.de/archlinux/\$repo/os/\$arch" > ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 
@@ -195,14 +171,9 @@ cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/HashTool.efi ${work_dir}/
 
 cp ${work_dir}/${arch}/airootfs/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${work_dir}/efiboot/EFI/boot/loader.efi
 
-cd ${script_path}
-wget -c https://raw.githubusercontent.com/simono41/archiso/master/configs/releng/efiboot/loader/entries/uefi-shell-v1-x86_64.conf
-wget -c https://raw.githubusercontent.com/simono41/archiso/master/configs/releng/efiboot/loader/entries/uefi-shell-v2-x86_64.conf
-wget -c https://raw.githubusercontent.com/simono41/archiso/master/configs/releng/efiboot/loader/loader.conf
-cd ..
-cp ${script_path}/loader.conf ${work_dir}/efiboot/loader/
-cp ${script_path}/uefi-shell-v2-x86_64.conf ${work_dir}/efiboot/loader/entries/
-cp ${script_path}/uefi-shell-v1-x86_64.conf ${work_dir}/efiboot/loader/entries/
+cp loader.conf ${work_dir}/efiboot/loader/
+cp uefi-shell-v2-x86_64.conf ${work_dir}/efiboot/loader/entries/
+cp uefi-shell-v1-x86_64.conf ${work_dir}/efiboot/loader/entries/
 
 echo "title   ${iso_label} x86_64 UEFI USB" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
 echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
@@ -228,9 +199,9 @@ cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/HashTool.efi ${work_dir}/
 
 cp ${work_dir}/${arch}/airootfs/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${work_dir}/iso/EFI/boot/loader.efi
 
-cp ${script_path}/loader.conf ${work_dir}/iso/loader/loader.conf
-cp ${script_path}/uefi-shell-v1-x86_64.conf ${work_dir}/iso/loader/entries/uefi-shell-v1-x86_64.conf
-cp ${script_path}/uefi-shell-v2-x86_64.conf ${work_dir}/iso/loader/entries/uefi-shell-v2-x86_64.conf
+cp loader.conf ${work_dir}/iso/loader/loader.conf
+cp uefi-shell-v1-x86_64.conf ${work_dir}/iso/loader/entries/uefi-shell-v1-x86_64.conf
+cp uefi-shell-v2-x86_64.conf ${work_dir}/iso/loader/entries/uefi-shell-v2-x86_64.conf
 
 echo "title   ${iso_label} x86_64 UEFI USB" > ${work_dir}/iso/loader/entries/archiso-x86_64.conf
 echo "linux   /arch/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64.conf

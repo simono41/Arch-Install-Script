@@ -1,0 +1,249 @@
+#!/bin/bash
+#
+set -ex
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+  echo "Als root Angemeldet"
+  if [ "$1" != "n" ]
+  then
+  read -p "Soll im Internet geguckt werden ob es ein neues Install-Script gibt und dann ausgefuehrt werden?: [Y/n] " update
+  if [ "$update" != "n" ]
+  then
+    if [ -f /root/arch-install.new ]
+    then
+    rm /root/arch-install.new
+    else
+    echo "arch-install.new nicht vorhanden!"
+    fi
+    wget https://raw.githubusercontent.com/simono41/Arch-Install-Script/master/arch-install -t 0 --output-document=/root/arch-install.new
+    chmod +x /root/arch-install.new
+    /root/arch-install.new n
+    exit 0
+  fi
+  else
+  echo "Bereits neue Version im Internet!"
+fi
+# Partionierung
+# GPT oder MBR
+read -p "Wie heissen sie?: " name
+echo ""
+echo "GPT = GUID Partition Table 64 Bit UEFI"
+echo "Empfohlen fuer Neuere PCs"
+echo "WICHTIG DAFUER MUESSEN SIE IM BOOTMENUE DEN UEFI USB_STICK AUSGEWAEHLT HABEN SONST KANN KEIN UEFI BOOTEINTRAG ERSTELLT WERDEN!!!"
+echo ""
+echo "MBR = Master Boot Record 32 Bit Legacy"
+echo "Empfohlen fuer Alte PCs und portable USB-Sticks"
+echo ""
+echo "Bitte die Eingaben klein schreiben :D !!!"
+echo ""
+read -p "Wie moechten sie ihre Festplatte partioniert haben: gpt oder mbr: " Partition
+fdisk -l
+read -p "Geben sie eine Festplatte an: sda,sdb,sdc: " device
+read -p "Welches Passwort soll der Root erhalten?: " pass
+echo "Mit einer Online Installation können sie ihr persönliches Linux gestalten :D"
+read -p "Soll eine Online Installation durchgeführt werden?: [Y/n] " complete
+if [ "$complete" == "n" ]
+  then
+  echo "FUNKTIONIERT NUR MIT SIMON-LINUX!!!"
+  read -p "Soll eine Offline Installation durchgeführt werden?: [Y/n] " offline
+  if [ "$offline" != "n" ]
+  then
+  echo "Offline installation wird durchgefuert!!!"
+  else
+  echo "Installation nicht moeglich!!!"
+  fi
+fi
+echo "Name: $name"
+echo "Laufwerk: /dev/"$device""
+echo "Partionsart: $Partition"
+echo "Passwort: $pass"
+echo "Komplette Installation: $complete"
+echo "Offline installation: $offline"
+echo "Archetektur: $(uname -m)"
+#
+read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
+if [ "$sicherheitsabfrage" != "y" ]
+   then
+     echo "ABGEBROCHEN"
+     exit 1
+fi
+#
+if cat /proc/mounts | grep /dev/"$device"1 > /dev/null; then
+echo "gemountet"
+umount /dev/"$device"1
+else
+echo "nicht gemountet"
+fi
+#
+if cat /proc/mounts | grep /dev/"$device"2 > /dev/null; then
+echo "gemountet"
+umount /dev/"$device"2
+else
+echo "nicht gemountet"
+fi
+#
+echo "Eine Säuberung erhört die chance der Installation auf dem System."
+echo "Es kann eine Zeit lang dauern!"
+dd if=/dev/zero of=/dev/$device bs=64M count=10 status=progress
+#
+pacman -S arch-install-scripts wget gdisk squashfs-tools dosfstools
+#
+if [ "$Partition" == "gpt" ]
+  then
+    echo "Partioniere in GPT"
+    gdisk "/dev/$device" <<EOT
+2
+p
+o
+y
+n
+
+
++512M
+
+p
+n
+
+
+
+
+p
+w
+y
+EOT
+echo ""
+mkfs.fat -F32 /dev/"$device"1
+mkfs.ext4 /dev/"$device"2
+echo ""
+mount /dev/"$device"2 /mnt
+mkdir /mnt/boot
+mount /dev/"$device"1 /mnt/boot
+echo ""
+if [ "$offline" != "n" ]
+  then
+if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
+  then
+    echo "Es ist kein copytoram System."
+    unsquashfs -f -d /mnt/ /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
+  else
+    echo "Es ist ein copytoram System."
+    unsquashfs -f -d /mnt/ /run/archiso/copytoram/airootfs.sfs
+fi
+  echo ""
+  echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
+  echo "COMPRESSION=\"cat\"" >> /mnt/etc/mkinitcpio.conf
+  echo ""
+  read -p "Sollen unfreie nvidia-treiber mitinstalliert werden?: [y/N] " nvidia
+  echo ""
+  if [ "$nvidia" == "y" ]
+   then
+     arch-chroot /mnt pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+     arch-chroot /mnt nvidia-xconfig
+  fi
+  else
+  pacstrap -i /mnt base base-devel grub efibootmgr links 
+fi
+echo ""
+genfstab -U -p /mnt >> /mnt/etc/fstab
+echo ""
+echo "$name"-os > /mnt/etc/hostname
+echo ""
+arch-chroot /mnt /bin/bash <<EOT
+mkinitcpio -p linux
+passwd
+$pass
+$pass
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$name"-os --recheck
+grub-mkconfig -o /boot/grub/grub.cfg
+EOT
+echo ""
+echo "Fertig"
+elif [ "$Partition" == "mbr" ]
+  then
+    echo "Partioniere in MBR"
+      fdisk -W always "/dev/$device" <<EOT
+p
+o
+n
+
+
+
++512M
+p
+n
+
+
+
+
+p
+w
+y
+EOT
+echo ""
+mkfs.fat -F32 /dev/"$device"1
+mkfs.ext4 /dev/"$device"2
+echo ""
+mount /dev/"$device"2 /mnt
+mkdir /mnt/boot
+mount /dev/"$device"1 /mnt/boot
+echo ""
+if [ "$offline" != "n" ]
+  then
+if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
+  then
+    echo "Es ist kein copytoram System."
+    unsquashfs -f -d /mnt/ /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
+  else
+    echo "Es ist ein copytoram System."
+    unsquashfs -f -d /mnt/ /run/archiso/copytoram/airootfs.sfs
+fi
+  echo ""
+  echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
+  echo "COMPRESSION=\"cat\"" >> /mnt/etc/mkinitcpio.conf
+  echo ""
+  read -p "Sollen unfreie nvidia-treiber mitinstalliert werden?: [y/N] " nvidia
+  echo ""
+  if [ "$nvidia" == "y" ]
+   then
+     arch-chroot /mnt pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+     arch-chroot /mnt nvidia-xconfig
+  fi
+  else
+  pacstrap -i /mnt base base-devel grub efibootmgr links 
+fi
+echo ""
+genfstab -U -p /mnt >> /mnt/etc/fstab
+echo ""
+echo "$name"-os > /mnt/etc/hostname
+echo ""
+arch-chroot /mnt /bin/bash <<EOT
+mkinitcpio -p linux
+passwd
+$pass
+$pass
+grub-install --target=i386-pc --recheck /dev/"$device"
+grub-mkconfig -o /boot/grub/grub.cfg
+EOT
+echo ""
+echo "Fertig"
+  else
+    echo "Eingabe Ungueltig"
+    exit 1
+fi
+echo ""
+if [ "$complete" != "n" ]
+  then
+    if [ -f /root/arch-graphical-install ]
+    then
+    rm /root/arch-graphical-install
+    else
+    echo "arch-graphical-install nicht vorhanden!"
+    fi
+    wget https://github.com/simono41/Arch-Install-Script/raw/master/arch-graphical-install -t 0 --output-document=/mnt/root/arch-graphical-install
+    chmod +x /mnt/root/arch-graphical-install
+    arch-chroot /mnt /root/arch-graphical-install
+fi
+echo ""
+echo "Fertig!!!"

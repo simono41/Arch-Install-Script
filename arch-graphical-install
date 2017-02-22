@@ -114,6 +114,8 @@ if [ "$murmur" != "n" ]
   then
     pacman -Syu murmur
     systemctl enable murmur
+    read -p "Wie soll das Passwort vom murmur-server sein?: " murmurpass
+    murmurd -ini /etc/murmur.ini -supw $murmurpass
 fi
 #
 read -p "Soll libreoffice-fresh mitinstalliert werden?: [Y/n] " libreoffice

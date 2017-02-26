@@ -208,43 +208,44 @@ pwd
 pwd
     pacman -Syu
     su "$user" -c "yaourt -Syu"
-    su "$user" -c "yaourt -S pamac-aur"
+    su "$user" -c "mkdir -p /home/"$user"/aur-pakete"
+    su "$user" -c "yaourt -S pamac-aur --export /home/"$user"/aur-pakete"
 pwd
 #
 read -p "Soll google-chrome mitinstalliert werden?: [Y/n] " chrome
 if [ "$chrome" != "n" ]
   then
-    su "$user" -c "yaourt -S google-chrome"
+    su "$user" -c "yaourt -S google-chrome --export /home/"$user"/aur-pakete"
 fi
 #
 read -p "Soll discord mitinstalliert werden?: [Y/n] " discord
 if [ "$discord" != "n" ]
   then
-    su "$user" -c "yaourt -S discord"
+    su "$user" -c "yaourt -S discord --export /home/"$user"/aur-pakete"
 fi
 #
 read -p "Soll spotify mitinstalliert werden?: [Y/n] " spotify
 if [ "$spotify" != "n" ]
   then
-    su "$user" -c "yaourt -S spotify"
+    su "$user" -c "yaourt -S spotify --export /home/"$user"/aur-pakete"
 fi
 #
 read -p "Sollen die Hacker-tools mitinstalliert werden?: [Y/n] " hacker
 if [ "$hacker" != "n" ]
   then
     pacman -Syu wireshark-gtk hydra nmap pygtk aircrack-ng
-    su "$user" -c "yaourt -S crunch"
+    su "$user" -c "yaourt -S crunch --export /home/"$user"/aur-pakete"
 fi
 #
 read -p "Soll xboxdrv mitinstalliert werden?: [Y/n] " xboxdrv
 if [ "$xboxdrv" != "n" ]
   then
-    su "$user" -c "yaourt -S xboxdrv"
+    su "$user" -c "yaourt -S xboxdrv --export /home/"$user"/aur-pakete"
 fi
 read -p "Soll telegram mitinstalliert werden?: [Y/n] " telegram
 if [ "$telegram" != "n" ]
   then
-    su "$user" -c "yaourt -S telegram-desktop"
+    su "$user" -c "yaourt -S telegram-desktop --export /home/"$user"/aur-pakete"
 fi
 fi
 echo "Packetliste2 Ende"
@@ -339,13 +340,13 @@ if [ "$xdm" != "n" ]
 read -p "Welcher Nutzer soll automatisch gestartet werden?: [ROOT/"$user"] " start
 if [ "$start" != "$user" ]
   then
-    mkdir /etc/systemd/system/getty\@tty1.service.d
+    mkdir -p /etc/systemd/system/getty\@tty1.service.d
     echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
     echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
     echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
     systemctl enable getty@tty1
     else
-    mkdir /etc/systemd/system/getty\@tty1.service.d
+    mkdir -p /etc/systemd/system/getty\@tty1.service.d
     echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
     echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
     echo "ExecStart=-/sbin/agetty --noclear -a "$user" %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf

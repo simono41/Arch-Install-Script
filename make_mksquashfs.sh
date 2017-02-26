@@ -95,6 +95,12 @@ if [ "$nvidia" != "n" ]
     echo "Nvidia-treiber werden zwischengespeichert!"
     arch-chroot ${work_dir}/${arch}/airootfs pacman -Sw nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
 fi
+if [ -f ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs ]
+then
+rm ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs
+else
+echo "airootfs.sfs nicht vorhanden!"
+fi
 mksquashfs ${work_dir}/${arch}/airootfs ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs -comp xz -b 1024K
 md5sum ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs > ${work_dir}/iso/${install_dir}/${arch}/airootfs.md5
   else

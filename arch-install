@@ -38,6 +38,7 @@ echo "Empfohlen fuer Alte PCs und portable USB-Sticks"
 echo ""
 echo "Bitte die Eingaben klein schreiben :D !!!"
 echo ""
+echo "Dualboot funktioniert derzeit nur mit genau 2 Partition einer Boot und einer Root Partition!!!"
 read -p "Soll im DUAL-Boot installiert werden? (Die letzte Partition wird dabei um die hälfte verkleinert!!!) [y/N] " dualboot
 if [ "$complete" == "n" ]
 then
@@ -103,7 +104,7 @@ else
 echo "nicht gemountet"
 fi
 #
-if [ "$dualboot" != "n" ]
+if [ "$dualboot" != "y" ]
 then
 echo "Eine Säuberung erhört die chance der Installation auf dem System."
 echo "Es kann eine Zeit lang dauern!"

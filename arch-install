@@ -38,6 +38,12 @@ echo "Empfohlen fuer Alte PCs und portable USB-Sticks"
 echo ""
 echo "Bitte die Eingaben klein schreiben :D !!!"
 echo ""
+read -p "Soll im DUAL-Boot installiert werden? (Die letzte Partition wird dabei um die hälfte verkleinert!!!) [y/N] " dualboot
+if [ "$complete" == "n" ]
+then
+  read -p "Wie viel soll von der Festplatte getrennt partioniert werden? : " resize
+fi
+echo ""
 read -p "Wie moechten sie ihre Festplatte partioniert haben: gpt oder mbr: " Partition
 fdisk -l
 read -p "Geben sie eine Festplatte an: sda,sdb,sdc: " device
@@ -55,6 +61,7 @@ if [ "$complete" == "n" ]
   echo "Installation nicht moeglich!!!"
   fi
 fi
+#
 echo "Name: $name"
 echo "Laufwerk: /dev/"$device""
 echo "Partionsart: $Partition"
@@ -62,6 +69,11 @@ echo "Passwort: $pass"
 echo "Komplette Installation: $complete"
 echo "Offline installation: $offline"
 echo "Archetektur: $(uname -m)"
+echo "Dualboot: $dualboot"
+if [ "$complete" == "n" ]
+then
+echo "Partionierung: $resize"
+fi
 #
 read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
 if [ "$sicherheitsabfrage" != "y" ]
@@ -91,9 +103,12 @@ else
 echo "nicht gemountet"
 fi
 #
+if [ "$dualboot" != "n" ]
+then
 echo "Eine Säuberung erhört die chance der Installation auf dem System."
 echo "Es kann eine Zeit lang dauern!"
 dd if=/dev/zero of=/dev/$device bs=64M count=10 status=progress
+fi
 #
 read -p "Sollen Aktualisierungen installiert werden?: [Y/n] " aktu
 if [ "$aktu" != "n" ]
@@ -104,7 +119,11 @@ fi
 if [ "$Partition" == "gpt" ]
   then
     echo "Partioniere in GPT"
-    gdisk "/dev/$device" <<EOT
+if [ "$dualboot" != "y" ]
+then
+#nicht dual
+echo "nicht dual"
+gdisk "/dev/$device" <<EOT
 2
 p
 o
@@ -124,6 +143,30 @@ p
 w
 y
 EOT
+else
+#dual
+echo "dual"
+e2fsck -f -y -v -C 0 "/dev/$device"
+resize2fs -p "/dev/$device" $resize
+gdisk "/dev/$device" <<EOT
+2
+p
+n
+
+
++512M
+
+p
+n
+
+
+
+
+p
+w
+y
+EOT
+fi
 echo ""
 mkfs.fat -F32 /dev/"$device"1
 mkfs.ext4 /dev/"$device"2
@@ -178,7 +221,11 @@ echo "Fertig"
 elif [ "$Partition" == "mbr" ]
   then
     echo "Partioniere in MBR"
-      fdisk -W always "/dev/$device" <<EOT
+if [ "$dualboot" != "y" ]
+then
+#nicht dual
+echo "nicht dual"
+fdisk -W always "/dev/$device" <<EOT
 p
 o
 n
@@ -196,6 +243,29 @@ p
 w
 y
 EOT
+else
+#dual
+echo "dual"
+e2fsck -f -y -v -C 0 "/dev/$device"
+resize2fs -p "/dev/$device" $resize
+fdisk -W always "/dev/$device" <<EOT
+p
+n
+
+
+
++512M
+p
+n
+
+
+
+
+p
+w
+y
+EOT
+fi
 echo ""
 mkfs.fat -F32 /dev/"$device"1
 mkfs.ext4 /dev/"$device"2

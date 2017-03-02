@@ -146,8 +146,8 @@ EOT
 else
 #dual
 echo "dual"
-e2fsck -f -y -v -C 0 "/dev/$device"
-resize2fs -p "/dev/$device" $resize
+e2fsck -f -y -v -C 0 "/dev/$device2"
+resize2fs -p "/dev/$device2" $resize
 gdisk "/dev/$device" <<EOT
 2
 p
@@ -246,8 +246,8 @@ EOT
 else
 #dual
 echo "dual"
-e2fsck -f -y -v -C 0 "/dev/$device"
-resize2fs -p "/dev/$device" $resize
+e2fsck -f -y -v -C 0 "/dev/$device2"
+resize2fs -p "/dev/$device2" $resize
 fdisk -W always "/dev/$device" <<EOT
 p
 n

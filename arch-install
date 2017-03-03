@@ -38,13 +38,6 @@ echo "Empfohlen fuer Alte PCs und portable USB-Sticks"
 echo ""
 echo "Bitte die Eingaben klein schreiben :D !!!"
 echo ""
-echo "Dualboot funktioniert derzeit nur mit genau 2 Partition einer Boot und einer Root Partition!!!"
-read -p "Soll im DUAL-Boot installiert werden? (Die letzte Partition wird dabei um die hälfte verkleinert!!!) [y/N] " dualboot
-if [ "$dualboot" == "y" ]
-then
-  read -p "Wie viel soll von der Festplatte getrennt partioniert werden? : " resize
-fi
-echo ""
 read -p "Wie moechten sie ihre Festplatte partioniert haben: gpt oder mbr: " Partition
 fdisk -l
 read -p "Geben sie eine Festplatte an: sda,sdb,sdc: " device
@@ -62,7 +55,6 @@ if [ "$complete" == "n" ]
   echo "Installation nicht moeglich!!!"
   fi
 fi
-#
 echo "Name: $name"
 echo "Laufwerk: /dev/"$device""
 echo "Partionsart: $Partition"
@@ -70,11 +62,6 @@ echo "Passwort: $pass"
 echo "Komplette Installation: $complete"
 echo "Offline installation: $offline"
 echo "Archetektur: $(uname -m)"
-echo "Dualboot: $dualboot"
-if [ "$dualboot" == "y" ]
-then
-echo "Partionierung: $resize"
-fi
 #
 read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
 if [ "$sicherheitsabfrage" != "y" ]
@@ -104,12 +91,9 @@ else
 echo "nicht gemountet"
 fi
 #
-if [ "$dualboot" != "y" ]
-then
 echo "Eine Säuberung erhört die chance der Installation auf dem System."
 echo "Es kann eine Zeit lang dauern!"
 dd if=/dev/zero of=/dev/$device bs=64M count=10 status=progress
-fi
 #
 read -p "Sollen Aktualisierungen installiert werden?: [Y/n] " aktu
 if [ "$aktu" != "n" ]
@@ -120,32 +104,7 @@ fi
 if [ "$Partition" == "gpt" ]
   then
     echo "Partioniere in GPT"
-if [ "$dualboot" == "y" ]
-then
-#dual
-echo "dual"
-gdisk "/dev/$device" <<EOT
-2
-d
-2
-p
-n
-
-
-
-
-p
-w
-y
-EOT
-sleep 3
-e2fsck -f -y -v -C 0 /dev/"$device"2
-resize2fs -p /dev/"$device"2 $resize
-mkfs.ext4 /dev/"$device"3
-else
-#nicht dual
-echo "nicht dual"
-gdisk "/dev/$device" <<EOT
+    gdisk "/dev/$device" <<EOT
 2
 p
 o
@@ -153,8 +112,9 @@ y
 n
 
 
-+16G
++512M
 
+p
 n
 
 
@@ -164,9 +124,9 @@ p
 w
 y
 EOT
+echo ""
 mkfs.fat -F32 /dev/"$device"1
 mkfs.ext4 /dev/"$device"2
-fi
 echo ""
 mount /dev/"$device"2 /mnt
 mkdir /mnt/boot
@@ -190,7 +150,7 @@ fi
   echo ""
   if [ "$nvidia" == "y" ]
    then
-     arch-chroot /mnt pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+     arch-chroot /mnt pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
      arch-chroot /mnt nvidia-xconfig
   fi
   else
@@ -218,34 +178,7 @@ echo "Fertig"
 elif [ "$Partition" == "mbr" ]
   then
     echo "Partioniere in MBR"
-if [ "$dualboot" == "y" ]
-then
-#dual
-echo "dual"
-fdisk -W always "/dev/$device" <<EOT
-d
-2
-p
-n
-
-
-+16G
-n
-
-
-
-p
-w
-y
-EOT
-sleep 3
-e2fsck -f -y -v -C 0 /dev/"$device"2
-resize2fs -p /dev/"$device"2 $resize
-mkfs.ext4 /dev/"$device"3
-else
-#nicht dual
-echo "nicht dual"
-fdisk -W always "/dev/$device" <<EOT
+      fdisk -W always "/dev/$device" <<EOT
 p
 o
 n
@@ -263,9 +196,9 @@ p
 w
 y
 EOT
+echo ""
 mkfs.fat -F32 /dev/"$device"1
 mkfs.ext4 /dev/"$device"2
-fi
 echo ""
 mount /dev/"$device"2 /mnt
 mkdir /mnt/boot
@@ -289,7 +222,7 @@ fi
   echo ""
   if [ "$nvidia" == "y" ]
    then
-     arch-chroot /mnt pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+     arch-chroot /mnt pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
      arch-chroot /mnt nvidia-xconfig
   fi
   else

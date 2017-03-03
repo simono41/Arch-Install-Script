@@ -40,7 +40,7 @@ echo "Bitte die Eingaben klein schreiben :D !!!"
 echo ""
 echo "Dualboot funktioniert derzeit nur mit genau 2 Partition einer Boot und einer Root Partition!!!"
 read -p "Soll im DUAL-Boot installiert werden? (Die letzte Partition wird dabei um die hälfte verkleinert!!!) [y/N] " dualboot
-if [ "$dualboot" == "n" ]
+if [ "$dualboot" != "n" ]
 then
   read -p "Wie viel soll von der Festplatte getrennt partioniert werden? : " resize
 fi

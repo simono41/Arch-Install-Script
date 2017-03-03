@@ -71,7 +71,7 @@ echo "Komplette Installation: $complete"
 echo "Offline installation: $offline"
 echo "Archetektur: $(uname -m)"
 echo "Dualboot: $dualboot"
-if [ "$dualboot" == "n" ]
+if [ "$dualboot" != "n" ]
 then
 echo "Partionierung: $resize"
 fi

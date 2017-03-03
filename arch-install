@@ -40,7 +40,7 @@ echo "Bitte die Eingaben klein schreiben :D !!!"
 echo ""
 echo "Dualboot funktioniert derzeit nur mit genau 2 Partition einer Boot und einer Root Partition!!!"
 read -p "Soll im DUAL-Boot installiert werden? (Die letzte Partition wird dabei um die hälfte verkleinert!!!) [y/N] " dualboot
-if [ "$dualboot" != "n" ]
+if [ "$dualboot" == "y" ]
 then
   read -p "Wie viel soll von der Festplatte getrennt partioniert werden? : " resize
 fi
@@ -71,7 +71,7 @@ echo "Komplette Installation: $complete"
 echo "Offline installation: $offline"
 echo "Archetektur: $(uname -m)"
 echo "Dualboot: $dualboot"
-if [ "$dualboot" != "n" ]
+if [ "$dualboot" == "y" ]
 then
 echo "Partionierung: $resize"
 fi
@@ -120,33 +120,8 @@ fi
 if [ "$Partition" == "gpt" ]
   then
     echo "Partioniere in GPT"
-if [ "$dualboot" != "y" ]
+if [ "$dualboot" == "y" ]
 then
-#nicht dual
-echo "nicht dual"
-gdisk "/dev/$device" <<EOT
-2
-p
-o
-y
-n
-
-
-+512M
-
-p
-n
-
-
-
-
-p
-w
-y
-EOT
-mkfs.fat -F32 /dev/"$device"1
-mkfs.ext4 /dev/"$device"2
-else
 #dual
 echo "dual"
 e2fsck -f -y -v -C 0 /dev/"$device"2
@@ -173,6 +148,31 @@ y
 EOT
 mkfs.fat -F32 /dev/"$device"3
 mkfs.ext4 /dev/"$device"4
+else
+#nicht dual
+echo "nicht dual"
+gdisk "/dev/$device" <<EOT
+2
+p
+o
+y
+n
+
+
++512M
+
+p
+n
+
+
+
+
+p
+w
+y
+EOT
+mkfs.fat -F32 /dev/"$device"1
+mkfs.ext4 /dev/"$device"2
 fi
 echo ""
 mount /dev/"$device"2 /mnt
@@ -225,31 +225,8 @@ echo "Fertig"
 elif [ "$Partition" == "mbr" ]
   then
     echo "Partioniere in MBR"
-if [ "$dualboot" != "y" ]
+if [ "$dualboot" == "y" ]
 then
-#nicht dual
-echo "nicht dual"
-fdisk -W always "/dev/$device" <<EOT
-p
-o
-n
-
-
-
-+512M
-p
-n
-
-
-
-
-p
-w
-y
-EOT
-mkfs.fat -F32 /dev/"$device"1
-mkfs.ext4 /dev/"$device"2
-else
 #dual
 echo "dual"
 e2fsck -f -y -v -C 0 /dev/"$device"2
@@ -275,6 +252,29 @@ y
 EOT
 mkfs.fat -F32 /dev/"$device"3
 mkfs.ext4 /dev/"$device"4
+else
+#nicht dual
+echo "nicht dual"
+fdisk -W always "/dev/$device" <<EOT
+p
+o
+n
+
+
+
++512M
+p
+n
+
+
+
+
+p
+w
+y
+EOT
+mkfs.fat -F32 /dev/"$device"1
+mkfs.ext4 /dev/"$device"2
 fi
 echo ""
 mount /dev/"$device"2 /mnt

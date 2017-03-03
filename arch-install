@@ -147,8 +147,8 @@ EOT
 else
 #dual
 echo "dual"
-e2fsck -f -y -v -C 0 "/dev/$device2"
-resize2fs -p "/dev/$device2" $resize
+e2fsck -f -y -v -C 0 /dev/"$device"2
+resize2fs -p /dev/"$device"2 $resize
 gdisk "/dev/$device" <<EOT
 2
 p
@@ -194,7 +194,7 @@ fi
   echo ""
   if [ "$nvidia" == "y" ]
    then
-     arch-chroot /mnt pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+     arch-chroot /mnt pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
      arch-chroot /mnt nvidia-xconfig
   fi
   else
@@ -247,8 +247,8 @@ EOT
 else
 #dual
 echo "dual"
-e2fsck -f -y -v -C 0 "/dev/$device2"
-resize2fs -p "/dev/$device2" $resize
+e2fsck -f -y -v -C 0 /dev/"$device"2
+resize2fs -p /dev/"$device"2 $resize
 fdisk -W always "/dev/$device" <<EOT
 p
 n
@@ -293,7 +293,7 @@ fi
   echo ""
   if [ "$nvidia" == "y" ]
    then
-     arch-chroot /mnt pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+     arch-chroot /mnt pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
      arch-chroot /mnt nvidia-xconfig
   fi
   else

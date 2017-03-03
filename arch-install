@@ -153,6 +153,8 @@ e2fsck -f -y -v -C 0 /dev/"$device"2
 resize2fs -p /dev/"$device"2 $resize
 gdisk "/dev/$device" <<EOT
 2
+d
+2
 p
 n
 
@@ -253,6 +255,8 @@ echo "dual"
 e2fsck -f -y -v -C 0 /dev/"$device"2
 resize2fs -p /dev/"$device"2 $resize
 fdisk -W always "/dev/$device" <<EOT
+d
+2
 p
 n
 

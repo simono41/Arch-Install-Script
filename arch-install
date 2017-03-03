@@ -40,7 +40,7 @@ echo "Bitte die Eingaben klein schreiben :D !!!"
 echo ""
 echo "Dualboot funktioniert derzeit nur mit genau 2 Partition einer Boot und einer Root Partition!!!"
 read -p "Soll im DUAL-Boot installiert werden? (Die letzte Partition wird dabei um die hälfte verkleinert!!!) [y/N] " dualboot
-if [ "$complete" == "n" ]
+if [ "$dualboot" == "n" ]
 then
   read -p "Wie viel soll von der Festplatte getrennt partioniert werden? : " resize
 fi
@@ -71,7 +71,7 @@ echo "Komplette Installation: $complete"
 echo "Offline installation: $offline"
 echo "Archetektur: $(uname -m)"
 echo "Dualboot: $dualboot"
-if [ "$complete" == "n" ]
+if [ "$dualboot" == "n" ]
 then
 echo "Partionierung: $resize"
 fi
@@ -144,6 +144,8 @@ p
 w
 y
 EOT
+mkfs.fat -F32 /dev/"$device"1
+mkfs.ext4 /dev/"$device"2
 else
 #dual
 echo "dual"
@@ -167,10 +169,9 @@ p
 w
 y
 EOT
+mkfs.fat -F32 /dev/"$device"3
+mkfs.ext4 /dev/"$device"4
 fi
-echo ""
-mkfs.fat -F32 /dev/"$device"1
-mkfs.ext4 /dev/"$device"2
 echo ""
 mount /dev/"$device"2 /mnt
 mkdir /mnt/boot
@@ -244,6 +245,8 @@ p
 w
 y
 EOT
+mkfs.fat -F32 /dev/"$device"1
+mkfs.ext4 /dev/"$device"2
 else
 #dual
 echo "dual"
@@ -266,10 +269,9 @@ p
 w
 y
 EOT
+mkfs.fat -F32 /dev/"$device"3
+mkfs.ext4 /dev/"$device"4
 fi
-echo ""
-mkfs.fat -F32 /dev/"$device"1
-mkfs.ext4 /dev/"$device"2
 echo ""
 mount /dev/"$device"2 /mnt
 mkdir /mnt/boot

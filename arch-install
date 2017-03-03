@@ -134,20 +134,13 @@ p
 n
 
 
-+512M
-
-p
-n
-
-
 
 
 p
 w
 y
 EOT
-mkfs.fat -F32 /dev/"$device"3
-mkfs.ext4 /dev/"$device"4
+mkfs.ext4 /dev/"$device"3
 else
 #nicht dual
 echo "nicht dual"
@@ -239,19 +232,12 @@ n
 
 
 
-+512M
-p
-n
-
-
-
 
 p
 w
 y
 EOT
-mkfs.fat -F32 /dev/"$device"3
-mkfs.ext4 /dev/"$device"4
+mkfs.ext4 /dev/"$device"3
 else
 #nicht dual
 echo "nicht dual"

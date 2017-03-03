@@ -9,19 +9,19 @@ chmod +x arch-install
 
 # Zum Starten einer VM zur Überprüfung mit Qemu
 
-qemu-system-x86_64 -enable-kvm -cdrom out/arch-*.iso -boot d -m 4096
+qemu-system-x86_64 -enable-kvm -cdrom out/arch-*.iso -boot d -m 8092
 
 oder
 
-qemu-system-x86_64 -enable-kvm -hdb /dev/sdd -m 4096
+qemu-system-x86_64 -enable-kvm -hdb /dev/sdd -m 8092
 
 oder
 
-qemu-img create -f qcow2 arch.img 32G
+qemu-img create -f qcow2 arch.img 64G
 
-qemu-system-x86_64 -enable-kvm -cdrom out/arch-*.iso -hda arch.img -boot d -m 4096
+qemu-system-x86_64 -enable-kvm -cdrom out/arch-*.iso -hda arch.img -boot d -m 8092
 
-qemu-system-x86_64 -enable-kvm -hda arch.img -m 4096
+qemu-system-x86_64 -enable-kvm -hda arch.img -m 8092
 
 # Für eine Costum-Image für Arch-Linux
 

@@ -124,8 +124,6 @@ if [ "$dualboot" == "y" ]
 then
 #dual
 echo "dual"
-e2fsck -f -y -v -C 0 /dev/"$device"2
-resize2fs -p /dev/"$device"2 $resize
 gdisk "/dev/$device" <<EOT
 2
 d
@@ -140,6 +138,9 @@ p
 w
 y
 EOT
+sleep 3
+e2fsck -f -y -v -C 0 /dev/"$device"2
+resize2fs -p /dev/"$device"2 $resize
 mkfs.ext4 /dev/"$device"3
 else
 #nicht dual
@@ -152,9 +153,8 @@ y
 n
 
 
-+512M
++16G
 
-p
 n
 
 
@@ -222,8 +222,6 @@ if [ "$dualboot" == "y" ]
 then
 #dual
 echo "dual"
-e2fsck -f -y -v -C 0 /dev/"$device"2
-resize2fs -p /dev/"$device"2 $resize
 fdisk -W always "/dev/$device" <<EOT
 d
 2
@@ -240,6 +238,9 @@ p
 w
 y
 EOT
+sleep 3
+e2fsck -f -y -v -C 0 /dev/"$device"2
+resize2fs -p /dev/"$device"2 $resize
 mkfs.ext4 /dev/"$device"3
 else
 #nicht dual

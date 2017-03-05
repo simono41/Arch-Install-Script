@@ -253,7 +253,7 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 # set desktop
 echo "set desktops"
 #
-read -p "Welcher desktop soll für den root verwendet werden? lxde, gnome, cinnamon oder lxqt : " rootstart
+read -p "Welcher desktop soll für den root verwendet werden? lxde, gnome, mate, cinnamon oder lxqt : " rootstart
 if [ "$rootstart" == "lxde" ]
   then
     pacman -Syu lxde networkmanager
@@ -262,13 +262,19 @@ if [ "$rootstart" == "lxde" ]
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "gnome" ]
     then
-    pacman -Syu gnome gnome-extra network-manager-applet networkmanager
+    pacman -Syu gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec gnome-session" > /root/.xinitrc
+    chmod 777 /root/.xinitrc
+    systemctl enable NetworkManager.service
+    elif [ "$rootstart" == "mate" ]
+    then
+    pacman -Syu mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager
+    echo "exec mate-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "cinnamon" ]
     then
-    pacman -Syu cinnamon gnome gnome-extra network-manager-applet networkmanager
+    pacman -Syu cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman
     echo "exec cinnamon-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
@@ -282,7 +288,7 @@ if [ "$rootstart" == "lxde" ]
     echo "kein desktop fuer root erstellt!!!"
 fi
 #
-read -p "Welcher desktop soll für "$user" verwendet werden? lxde, gnome, cinnamon oder lxqt : " userstart
+read -p "Welcher desktop soll für "$user" verwendet werden? lxde, gnome, mate, cinnamon oder lxqt : " userstart
 if [ "$userstart" == "lxde" ]
   then
     pacman -Syu lxde networkmanager
@@ -291,13 +297,19 @@ if [ "$userstart" == "lxde" ]
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "gnome" ]
     then
-    pacman -Syu gnome gnome-extra network-manager-applet networkmanager
+    pacman -Syu gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman
     echo "exec gnome-session" > /home/"$user"/.xinitrc
+    chmod 777 /home/"$user"/.xinitrc
+    systemctl enable NetworkManager.service
+    elif [ "$userstart" == "mate" ]
+    then
+    pacman -Syu mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager
+    echo "exec mate-session" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "cinnamon" ]
     then
-    pacman -Syu cinnamon gnome gnome-extra network-manager-applet networkmanager
+    pacman -Syu cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec cinnamon-session" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service

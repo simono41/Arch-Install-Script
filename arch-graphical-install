@@ -274,7 +274,7 @@ if [ "$rootstart" == "lxde" ]
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "cinnamon" ]
     then
-    pacman -Syu cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman
+    pacman -Syu cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec cinnamon-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
@@ -297,7 +297,7 @@ if [ "$userstart" == "lxde" ]
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "gnome" ]
     then
-    pacman -Syu gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman
+    pacman -Syu gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec gnome-session" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service

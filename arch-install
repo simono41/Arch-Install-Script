@@ -153,6 +153,7 @@ fi
      arch-chroot /mnt pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
      arch-chroot /mnt nvidia-xconfig
   fi
+  cp /root/.xinitrc /mnt/root/
   else
   pacstrap -i /mnt base base-devel grub efibootmgr links 
 fi
@@ -225,6 +226,7 @@ fi
      arch-chroot /mnt pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
      arch-chroot /mnt nvidia-xconfig
   fi
+  cp /root/.xinitrc /mnt/root/
   else
   pacstrap -i /mnt base base-devel grub efibootmgr links 
 fi

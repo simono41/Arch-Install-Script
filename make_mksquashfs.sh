@@ -319,35 +319,35 @@ echo "title   ${iso_label} x86_64 UEFI USB GNOME TORAM" > ${work_dir}/efiboot/lo
 echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
 echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
 echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
 
 # cinnamon toram
 echo "title   ${iso_label} x86_64 UEFI USB CINNAMON TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
 echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
 echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
 echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
 
 # mate toram
 echo "title   ${iso_label} x86_64 UEFI USB MATE TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
 echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
 echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
 echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
 
 # lxde toram
 echo "title   ${iso_label} x86_64 UEFI USB LXDE TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
 echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
 echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
 echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
 
 # lxqt toram
 echo "title   ${iso_label} x86_64 UEFI USB LXQT TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
 echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
 echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
 echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
 
 # EFI Shell 2.0 for UEFI 2.3+
 curl -o ${work_dir}/iso/EFI/shellx64_v2.efi https://raw.githubusercontent.com/tianocore/edk2/master/ShellBinPkg/UefiShell/X64/Shell.efi

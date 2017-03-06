@@ -124,18 +124,63 @@ echo "PROMPT 0" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "MENU TITLE ${iso_label}" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "TIMEOUT 300" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+
+# default
 echo "LABEL arch" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
-echo "MENU LABEL ${iso_label}" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "MENU LABEL ${iso_label} DEFAULT" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "LINUX ../x86_64/vmlinuz" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "INITRD ../x86_64/archiso.img" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "APPEND archisolabel=${iso_label}" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+
+# gnome
+echo "LABEL arch" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "MENU LABEL ${iso_label} GNOME" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "LINUX ../x86_64/vmlinuz" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "INITRD ../x86_64/archiso.img" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "APPEND archisolabel=${iso_label} desktop=gnome" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+
+# cinnamon
+echo "LABEL arch" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "MENU LABEL ${iso_label} CINNAMON" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "LINUX ../x86_64/vmlinuz" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "INITRD ../x86_64/archiso.img" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "APPEND archisolabel=${iso_label} desktop=cinnamon" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+
+# mate
+echo "LABEL arch" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "MENU LABEL ${iso_label} MATE" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "LINUX ../x86_64/vmlinuz" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "INITRD ../x86_64/archiso.img" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "APPEND archisolabel=${iso_label} desktop=mate" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+
+# lxde
+echo "LABEL arch" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "MENU LABEL ${iso_label} LXDE" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "LINUX ../x86_64/vmlinuz" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "INITRD ../x86_64/archiso.img" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "APPEND archisolabel=${iso_label} desktop=lxde" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+
+# lxqt
+echo "LABEL arch" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "MENU LABEL ${iso_label} LXQT" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "LINUX ../x86_64/vmlinuz" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "INITRD ../x86_64/archiso.img" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "APPEND archisolabel=${iso_label} desktop=lxqt" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+
+# toram
 echo "LABEL arch" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "MENU LABEL ${iso_label}-COPYTORAM" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "LINUX ../x86_64/vmlinuz" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "INITRD ../x86_64/archiso.img" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "APPEND archisolabel=${iso_label} copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+
 echo "ONTIMEOUT arch" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 
 echo "DEFAULT loadconfig" > ${work_dir}/iso/isolinux/isolinux.cfg
@@ -181,12 +226,49 @@ cp loader.conf ${work_dir}/efiboot/loader/
 cp uefi-shell-v2-x86_64.conf ${work_dir}/efiboot/loader/entries/
 cp uefi-shell-v1-x86_64.conf ${work_dir}/efiboot/loader/entries/
 
-echo "title   ${iso_label} x86_64 UEFI USB" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+# default
+echo "title   ${iso_label} x86_64 UEFI USB DEFAULT" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
 echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
 echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
 echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
 echo "options archisobasedir=${install_dir} archisolabel=${iso_label}" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
 
+# gnome
+echo "title   ${iso_label} x86_64 UEFI USB GNOME" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+
+# cinnamon
+echo "title   ${iso_label} x86_64 UEFI USB CINNAMON" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+
+# mate
+echo "title   ${iso_label} x86_64 UEFI USB MATE" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+
+# lxde
+echo "title   ${iso_label} x86_64 UEFI USB LXDE" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+
+# lxqt
+echo "title   ${iso_label} x86_64 UEFI USB LXQT" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+
+# toram
 echo "title   ${iso_label} x86_64 UEFI USB TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-toram.conf
 echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-toram.conf
 echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-toram.conf

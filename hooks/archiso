@@ -44,6 +44,7 @@ _mnt_overlayfs() {
     local mnt="${3}"
     mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir /run/archiso/cowspace/${cow_directory}/workdir
     mount -t overlay -o lowerdir=${src},upperdir=/run/archiso/cowspace/${cow_directory}/upperdir,workdir=/run/archiso/cowspace/${cow_directory}/workdir airootfs "${newroot}${mnt}"
+
 }
 
 
@@ -209,6 +210,23 @@ archiso_mount_handler() {
 
     if [[ "${copytoram}" == "y" ]]; then
         umount -d /run/archiso/bootmnt
+    fi
+
+    echo "set graphical-desktop!"
+    echo "graphical-desktop: ${desktop}"
+    mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
+    if [[ "${desktop}" == "gnome" ]]; then
+      echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+        elif [[ "${desktop}" == "cinnamon" ]]; then
+      echo "exec cinnamon-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+        elif [[ "${desktop}" == "mate" ]]; then
+      echo "exec mate-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+        elif [[ "${desktop}" == "lxde" ]]; then
+      echo "exec startlxde" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+        elif [[ "${desktop}" == "lxqt" ]]; then
+      echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+        else
+      echo "no graphical-desktop"
     fi
 }
 

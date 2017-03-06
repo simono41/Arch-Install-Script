@@ -254,28 +254,28 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 echo "set desktops"
 #
 read -p "Welcher desktop soll für den root verwendet werden? lxde, gnome, mate, cinnamon oder lxqt : " rootstart
-if [ "$rootstart" == "lxde" ]
-  then
-    pacman -Syu lxde networkmanager
-    echo "exec startlxde" > /root/.xinitrc
-    chmod 777 /root/.xinitrc
-    systemctl enable NetworkManager.service
-    elif [ "$rootstart" == "gnome" ]
-    then
+if [ "$rootstart" == "gnome" ]
+  then    
     pacman -Syu gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec gnome-session" > /root/.xinitrc
-    chmod 777 /root/.xinitrc
-    systemctl enable NetworkManager.service
-    elif [ "$rootstart" == "mate" ]
-    then
-    pacman -Syu mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
-    echo "exec mate-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "cinnamon" ]
     then
     pacman -Syu cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec cinnamon-session" > /root/.xinitrc
+    chmod 777 /root/.xinitrc
+    systemctl enable NetworkManager.service
+    elif [ "$rootstart" == "lxde" ]
+    then
+    pacman -Syu lxde networkmanager
+    echo "exec startlxde" > /root/.xinitrc
+    chmod 777 /root/.xinitrc
+    systemctl enable NetworkManager.service
+    elif [ "$rootstart" == "mate" ]
+    then
+    pacman -Syu mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
+    echo "exec mate-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "lxqt" ]
@@ -289,16 +289,16 @@ if [ "$rootstart" == "lxde" ]
 fi
 #
 read -p "Welcher desktop soll für "$user" verwendet werden? lxde, gnome, mate, cinnamon oder lxqt : " userstart
-if [ "$userstart" == "lxde" ]
+if [ "$userstart" == "gnome" ]
   then
-    pacman -Syu lxde networkmanager
-    echo "exec startlxde" > /home/"$user"/.xinitrc
-    chmod 777 /home/"$user"/.xinitrc
-    systemctl enable NetworkManager.service
-    elif [ "$userstart" == "gnome" ]
-    then
     pacman -Syu gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec gnome-session" > /home/"$user"/.xinitrc
+    chmod 777 /home/"$user"/.xinitrc
+    systemctl enable NetworkManager.service
+    elif [ "$rootstart" == "cinnamon" ]
+    then
+    pacman -Syu cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
+    echo "exec cinnamon-session" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "mate" ]
@@ -307,10 +307,10 @@ if [ "$userstart" == "lxde" ]
     echo "exec mate-session" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
-    elif [ "$rootstart" == "cinnamon" ]
+    elif [ "$userstart" == "lxde" ]
     then
-    pacman -Syu cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
-    echo "exec cinnamon-session" > /home/"$user"/.xinitrc
+    pacman -Syu lxde networkmanager
+    echo "exec startlxde" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "lxqt" ]

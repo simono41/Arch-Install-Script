@@ -227,45 +227,45 @@ cp uefi-shell-v2-x86_64.conf ${work_dir}/efiboot/loader/entries/
 cp uefi-shell-v1-x86_64.conf ${work_dir}/efiboot/loader/entries/
 
 # default
-echo "title   ${iso_label} x86_64 UEFI USB DEFAULT" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "title   ${iso_label} x86_64 UEFI USB DEFAULT" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
 echo "options archisobasedir=${install_dir} archisolabel=${iso_label}" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
 
 # gnome
-echo "title   ${iso_label} x86_64 UEFI USB GNOME" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "title   ${iso_label} x86_64 UEFI USB GNOME" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
 echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
 
 # cinnamon
-echo "title   ${iso_label} x86_64 UEFI USB CINNAMON" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "title   ${iso_label} x86_64 UEFI USB CINNAMON" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
 echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
 
 # mate
-echo "title   ${iso_label} x86_64 UEFI USB MATE" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "title   ${iso_label} x86_64 UEFI USB MATE" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
 echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
 
 # lxde
-echo "title   ${iso_label} x86_64 UEFI USB LXDE" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "title   ${iso_label} x86_64 UEFI USB LXDE" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
 echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
 
 # lxqt
-echo "title   ${iso_label} x86_64 UEFI USB LXQT" > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+echo "title   ${iso_label} x86_64 UEFI USB LXQT" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
 echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
 
 # toram

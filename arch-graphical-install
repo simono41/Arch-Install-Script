@@ -266,16 +266,16 @@ if [ "$rootstart" == "gnome" ]
     echo "exec cinnamon-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
-    elif [ "$rootstart" == "lxde" ]
-    then
-    pacman -Syu lxde networkmanager
-    echo "exec startlxde" > /root/.xinitrc
-    chmod 777 /root/.xinitrc
-    systemctl enable NetworkManager.service
     elif [ "$rootstart" == "mate" ]
     then
     pacman -Syu mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
     echo "exec mate-session" > /root/.xinitrc
+    chmod 777 /root/.xinitrc
+    systemctl enable NetworkManager.service
+    elif [ "$rootstart" == "lxde" ]
+    then
+    pacman -Syu lxde networkmanager
+    echo "exec startlxde" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "lxqt" ]

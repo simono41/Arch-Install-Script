@@ -46,7 +46,7 @@ cp arch-install ${work_dir}/${arch}/airootfs/usr/bin/
 chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install
 chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install
 
-echo "Server = http://mirror.23media.de/archlinux/\$repo/os/\$arch" > ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
+cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 
 arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
 arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux

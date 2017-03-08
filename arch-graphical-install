@@ -73,7 +73,7 @@ if [ "$grund" != "n" ]
     then
     pacman-key --refresh-keys
     fi
-    pacman -Syu base base-devel pulseaudio pulseaudio-alsa devtools xorriso cdrtools brasero libisoburn libisofs gdisk squashfs-tools simple-scan ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver teeworlds audacity qemu qemu-arch-extra cups hplip python-pyqt5 gedit youtube-dl flac ffmpeg gnuchess cdrdao goobox links x11vnc tigervnc htop git dosfstools lm_sensors sudo arch-install-scripts openssl acpid ntp dbus avahi cronie wget net-tools procps pacman file-roller zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config alsa-utils mplayer freeciv mumble gparted vlc libdvdread libdvdcss cdrtools libdvdnav transmission-gtk transmission-cli scratch python-pip python2-pip geckodriver inkscape pigz pixz macchanger gimp flashplugin
+    pacman -Syu base base-devel pulseaudio pulseaudio-alsa devtools xorriso cdrtools brasero libisoburn libisofs gdisk squashfs-tools simple-scan ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver teeworlds audacity qemu qemu-arch-extra cups hplip python-pyqt5 gedit youtube-dl flac ffmpeg gnuchess cdrdao goobox links x11vnc tigervnc htop git dosfstools lm_sensors sudo arch-install-scripts openssl acpid ntp dbus avahi cronie wget net-tools procps pacman file-roller zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config alsa-utils mplayer freeciv mumble gparted vlc libdvdread libdvdcss cdrtools libdvdnav transmission-gtk transmission-cli scratch python-pip python2-pip geckodriver inkscape pigz pixz macchanger gimp flashplugin minetest
 fi
 #
 echo "Grundpackete2 werden installiert!"
@@ -253,7 +253,7 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 # set desktop
 echo "set desktops"
 #
-read -p "Welcher desktop soll für den root verwendet werden? lxde, gnome, mate, cinnamon oder lxqt : " rootstart
+read -p "Welcher desktop soll für den root verwendet werden? all, lxde, gnome, mate, cinnamon oder lxqt : " rootstart
 if [ "$rootstart" == "gnome" ]
   then    
     pacman -Syu gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
@@ -284,11 +284,17 @@ if [ "$rootstart" == "gnome" ]
     echo "exec startlxqt" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
+    elif [ "$rootstart" == "all" ]
+    then
+    pacman -Syu lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt
+    echo "exec startlxde" > /root/.xinitrc
+    chmod 777 /root/.xinitrc
+    systemctl enable NetworkManager.service
       else
     echo "kein desktop fuer root erstellt!!!"
 fi
 #
-read -p "Welcher desktop soll für "$user" verwendet werden? lxde, gnome, mate, cinnamon oder lxqt : " userstart
+read -p "Welcher desktop soll für "$user" verwendet werden? all, lxde, gnome, mate, cinnamon oder lxqt : " userstart
 if [ "$userstart" == "gnome" ]
   then
     pacman -Syu gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
@@ -319,8 +325,14 @@ if [ "$userstart" == "gnome" ]
     echo "exec startlxqt" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
+    elif [ "$userstart" == "all" ]
+    then
+    pacman -Syu lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt
+    echo "exec startlxde" > /home/"$user"/.xinitrc
+    chmod 777 /home/"$user"/.xinitrc
+    systemctl enable NetworkManager.service
       else
-    echo "kein desktop fuer user erstellt!!!"
+    echo "kein desktop fuer $user erstellt!!!"
 fi
 echo "Systemsprache und dienste werden erstellt!"
 #localectl set-x11-keymap de pc105 nodeadkeys

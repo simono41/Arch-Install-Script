@@ -6,8 +6,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-iso_name=wolters_koehring_os
-iso_label="WOLTERS_KOEHRING_OS"
+iso_name=arch-geilo-os
+iso_label="ARCH_GEILO_OS"
 iso_version=$(date +%Y.%m.%d)
 work_dir=work
 out_dir=out

@@ -14,10 +14,7 @@ if [ "$erstellen" == "y" ]
     read -p "Welches Passwort soll "$user" bekommen?: " pass
     # adduser
     echo "adduser "$user""
-    useradd $user
-    mkdir /home/"$user"
-    chmod 770 -R /home/"$user"/
-    chown -cR "$user" /home/"$user"/
+    useradd -m -G adm -s /bin/bash $user
 passwd "$user" <<EOT
 $pass
 $pass
@@ -81,38 +78,38 @@ echo "Grundpackete2 werden installiert!"
 read -p "Soll openssh mitinstalliert werden?: [Y/n] " openssh
 if [ "$openssh" != "n" ]
   then
-    pacman -Syu openssh
+    pacman -S openssh
     systemctl enable sshd
 fi
 #
 read -p "Soll firefox mitinstalliert werden?: [Y/n] " firefox
 if [ "$firefox" != "n" ]
   then
-    pacman -Syu firefox
+    pacman -S firefox
 fi
 #
 read -p "Soll chromium mitinstalliert werden?: [Y/n] " chromium
 if [ "$chromium" != "n" ]
   then
-    pacman -Syu chromium
+    pacman -S chromium
 fi
 #
 read -p "Soll netbeans mitinstalliert werden?: [Y/n] " netbeans
 if [ "$netbeans" != "n" ]
   then
-    pacman -Syu netbeans jdk8-openjdk
+    pacman -S netbeans jdk8-openjdk
     else
     read -p "Soll statdessen java mitinstalliert werden?: [Y/n] " java
     if [ "$java" != "n" ]
       then
-      pacman -Syu jdk8-openjdk
+      pacman -S jdk8-openjdk
 fi
 fi
 #
 read -p "Soll murmur mitinstalliert werden?: [Y/n] " murmur
 if [ "$murmur" != "n" ]
   then
-    pacman -Syu murmur
+    pacman -S murmur
     systemctl enable murmur
     read -p "Wie soll das Passwort vom murmur-server sein?: " murmurpass
     murmurd -ini /etc/murmur.ini -supw $murmurpass
@@ -121,7 +118,7 @@ fi
 read -p "Soll libreoffice-fresh mitinstalliert werden?: [Y/n] " libreoffice
 if [ "$libreoffice" != "n" ]
   then
-    pacman -Syu libreoffice-fresh
+    pacman -S libreoffice-fresh
 fi
 #
 read -p "Soll snapd mitinstalliert werden?: [Y/n] " snapd
@@ -135,7 +132,7 @@ fi
 read -p "Soll apache mitinstalliert werden?: [Y/n] " apache
 if [ "$apache" != "n" ]
   then
-    pacman -Syu apache
+    pacman -S apache
     systemctl enable httpd
 fi
 #
@@ -149,26 +146,26 @@ then
 read -p "Soll Nvidia mitinstalliert werden?: [Y/n] " nvidia
 if [ "$nvidia" != "n" ]
   then
-    pacman -Syu nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+    pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
     nvidia-xconfig   
 fi
 #
 read -p "Soll steam  mitinstalliert werden?: [Y/n] " steam
 if [ "$steam" != "n" ]
   then
-    pacman -Syu steam
+    pacman -S steam
 fi
 #
 read -p "Soll wine mitinstalliert werden?: [Y/n] " wine
 if [ "$wine" != "n" ]
   then
-     pacman -Syu wine
+     pacman -S wine
 fi
 #
 read -p "Soll OBS mitinstalliert werden?: [Y/n] " obs
 if [ "$obs" != "n" ]
   then
-     pacman -Syu obs-studio
+     pacman -S obs-studio
 fi
 fi
 #
@@ -177,7 +174,7 @@ then
 read -p "Soll der omxplayer mitinstalliert werden?: [Y/n] " omxplayer
 if [ "$omxplayer" != "n" ]
   then
-    pacman -Syu omxplayer
+    pacman -S omxplayer
 fi
 fi
 #
@@ -206,7 +203,6 @@ pwd
 pwd
     cd ..
 pwd
-    pacman -Syu
     su "$user" -c "yaourt -Syu"
     su "$user" -c "mkdir -p /home/"$user"/aur-pakete"
     su "$user" -c "yaourt -S pamac-aur --export /home/"$user"/aur-pakete"
@@ -233,7 +229,7 @@ fi
 read -p "Sollen die Hacker-tools mitinstalliert werden?: [Y/n] " hacker
 if [ "$hacker" != "n" ]
   then
-    pacman -Syu wireshark-gtk hydra nmap pygtk aircrack-ng
+    pacman -S wireshark-gtk hydra nmap pygtk aircrack-ng
     su "$user" -c "yaourt -S crunch --export /home/"$user"/aur-pakete"
 fi
 #
@@ -256,37 +252,37 @@ echo "set desktops"
 read -p "Welcher desktop soll für den root verwendet werden? all, lxde, gnome, mate, cinnamon oder lxqt : " rootstart
 if [ "$rootstart" == "gnome" ]
   then    
-    pacman -Syu gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
+    pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec gnome-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "cinnamon" ]
     then
-    pacman -Syu cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
+    pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec cinnamon-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "mate" ]
     then
-    pacman -Syu mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
+    pacman -S mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
     echo "exec mate-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "lxde" ]
     then
-    pacman -Syu lxde networkmanager
+    pacman -S lxde networkmanager
     echo "exec startlxde" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "lxqt" ]
     then
-    pacman -Syu lxqt networkmanager
+    pacman -S lxqt networkmanager
     echo "exec startlxqt" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "all" ]
     then
-    pacman -Syu lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt
+    pacman -S lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt
     echo "exec startlxde" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
@@ -297,37 +293,37 @@ fi
 read -p "Welcher desktop soll für "$user" verwendet werden? all, lxde, gnome, mate, cinnamon oder lxqt : " userstart
 if [ "$userstart" == "gnome" ]
   then
-    pacman -Syu gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
+    pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec gnome-session" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "cinnamon" ]
     then
-    pacman -Syu cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
+    pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec cinnamon-session" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "mate" ]
     then
-    pacman -Syu mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
+    pacman -S mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
     echo "exec mate-session" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "lxde" ]
     then
-    pacman -Syu lxde networkmanager
+    pacman -S lxde networkmanager
     echo "exec startlxde" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "lxqt" ]
     then
-    pacman -Syu lxqt networkmanager
+    pacman -S lxqt networkmanager
     echo "exec startlxqt" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "all" ]
     then
-    pacman -Syu lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt
+    pacman -S lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt
     echo "exec startlxde" > /home/"$user"/.xinitrc
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service

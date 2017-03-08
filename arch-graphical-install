@@ -15,8 +15,8 @@ if [ "$erstellen" == "y" ]
     # adduser
     echo "adduser "$user""
     useradd -m -G adm -s /bin/bash $user
-    chmod 770 -R /home/"$user"/
     chown -cR "$user" /home/"$user"/
+    chmod 770 -R /home/"$user"/
 passwd "$user" <<EOT
 $pass
 $pass
@@ -296,37 +296,43 @@ if [ "$userstart" == "gnome" ]
   then
     pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec gnome-session" > /home/"$user"/.xinitrc
-    chmod 777 /home/"$user"/.xinitrc
+    chown -cR "$user" /home/"$user"/
+    chmod 770 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "cinnamon" ]
     then
     pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec cinnamon-session" > /home/"$user"/.xinitrc
-    chmod 777 /home/"$user"/.xinitrc
+    chown -cR "$user" /home/"$user"/
+    chmod 770 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "mate" ]
     then
     pacman -S mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
     echo "exec mate-session" > /home/"$user"/.xinitrc
-    chmod 777 /home/"$user"/.xinitrc
+    chown -cR "$user" /home/"$user"/
+    chmod 770 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "lxde" ]
     then
     pacman -S lxde networkmanager
     echo "exec startlxde" > /home/"$user"/.xinitrc
-    chmod 777 /home/"$user"/.xinitrc
+    chown -cR "$user" /home/"$user"/
+    chmod 770 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "lxqt" ]
     then
     pacman -S lxqt networkmanager
     echo "exec startlxqt" > /home/"$user"/.xinitrc
-    chmod 777 /home/"$user"/.xinitrc
+    chown -cR "$user" /home/"$user"/
+    chmod 770 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "all" ]
     then
     pacman -S lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt
     echo "exec startlxde" > /home/"$user"/.xinitrc
-    chmod 777 /home/"$user"/.xinitrc
+    chown -cR "$user" /home/"$user"/
+    chmod 770 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
       else
     echo "kein desktop fuer $user erstellt!!!"

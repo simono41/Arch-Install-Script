@@ -136,6 +136,12 @@ if [ "$apache" != "n" ]
     systemctl enable httpd
 fi
 #
+read -p "Sollen die Hacker-tools mitinstalliert werden?: [Y/n] " hacker
+if [ "$hacker" != "n" ]
+  then
+    pacman -S wireshark-gtk hydra nmap pygtk aircrack-ng
+fi
+#
 echo "Packetliste1 Ende"
 echo "Packetliste2 Start"
 echo "Zusatspackete werden Installiert!"
@@ -224,13 +230,6 @@ read -p "Soll spotify mitinstalliert werden?: [Y/n] " spotify
 if [ "$spotify" != "n" ]
   then
     su "$user" -c "yaourt -S spotify --export /home/"$user"/aur-pakete"
-fi
-#
-read -p "Sollen die Hacker-tools mitinstalliert werden?: [Y/n] " hacker
-if [ "$hacker" != "n" ]
-  then
-    pacman -S wireshark-gtk hydra nmap pygtk aircrack-ng
-    su "$user" -c "yaourt -S crunch --export /home/"$user"/aur-pakete"
 fi
 #
 read -p "Soll xboxdrv mitinstalliert werden?: [Y/n] " xboxdrv

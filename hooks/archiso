@@ -217,14 +217,19 @@ archiso_mount_handler() {
     mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
     if [[ "${desktop}" == "gnome" ]]; then
       echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
+      chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
         elif [[ "${desktop}" == "cinnamon" ]]; then
       echo "exec cinnamon-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
+      chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
         elif [[ "${desktop}" == "mate" ]]; then
       echo "exec mate-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
+      chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
         elif [[ "${desktop}" == "lxde" ]]; then
       echo "exec startlxde" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
+      chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
         elif [[ "${desktop}" == "lxqt" ]]; then
       echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
+      chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
         else
       echo "no graphical-desktop"
     fi

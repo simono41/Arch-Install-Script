@@ -16,6 +16,7 @@ if [ "$erstellen" == "y" ]
     echo "adduser "$user""
     useradd $user
     mkdir -p /home/"$user"/
+    chmod 770 -R -v /home/"$user"/
     chown -cR "$user" /home/"$user"/
 passwd $user <<EOT
 $pass

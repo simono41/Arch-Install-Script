@@ -144,7 +144,7 @@ if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
 fi
   echo ""
   echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
-  echo "COMPRESSION=\"xz\"" >> /mnt/etc/mkinitcpio.conf
+  echo "COMPRESSION=\"cat\"" >> /mnt/etc/mkinitcpio.conf
   echo ""
   read -p "Sollen unfreie nvidia-treiber mitinstalliert werden?: [y/N] " nvidia
   echo ""
@@ -217,7 +217,7 @@ if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
 fi
   echo ""
   echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
-  echo "COMPRESSION=\"xz\"" >> /mnt/etc/mkinitcpio.conf
+  echo "COMPRESSION=\"cat\"" >> /mnt/etc/mkinitcpio.conf
   echo ""
   read -p "Sollen unfreie nvidia-treiber mitinstalliert werden?: [y/N] " nvidia
   echo ""

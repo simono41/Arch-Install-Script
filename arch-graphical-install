@@ -14,9 +14,13 @@ if [ "$erstellen" == "y" ]
     read -p "Welches Passwort soll "$user" bekommen?: " pass
     # adduser
     echo "adduser "$user""
-    useradd -p $pass $user
+    useradd $user
     mkdir -p /home/"$user"/
     chown -cR "$user" /home/"$user"/
+passwd $user <<EOT
+$pass
+$pass
+EOT
 #
     echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
       else

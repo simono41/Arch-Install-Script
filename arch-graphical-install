@@ -14,13 +14,9 @@ if [ "$erstellen" == "y" ]
     read -p "Welches Passwort soll "$user" bekommen?: " pass
     # adduser
     echo "adduser "$user""
-    useradd -m -G adm -s /bin/bash $user
+    useradd -p $pass $user
+    mkdir -p /home/"$user"/
     chown -cR "$user" /home/"$user"/
-    chmod 770 -R /home/"$user"/
-passwd "$user" <<EOT
-$pass
-$pass
-EOT
 #
     echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
       else
@@ -127,7 +123,6 @@ read -p "Soll snapd mitinstalliert werden?: [Y/n] " snapd
 if [ "$snapd" != "n" ]
   then
     pacman -S snapd
-    # enable the snapd systemd service:
     systemctl enable snapd.socket
 fi
 #
@@ -325,14 +320,14 @@ if [ "$userstart" == "gnome" ]
     pacman -S lxqt networkmanager
     echo "exec startlxqt" > /home/"$user"/.xinitrc
     chown -cR "$user" /home/"$user"/
-    chmod 770 /home/"$user"/.xinitrc
+    chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "all" ]
     then
     pacman -S lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt
     echo "exec startlxde" > /home/"$user"/.xinitrc
     chown -cR "$user" /home/"$user"/
-    chmod 770 /home/"$user"/.xinitrc
+    chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
       else
     echo "kein desktop fuer $user erstellt!!!"

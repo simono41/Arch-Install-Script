@@ -348,9 +348,20 @@ echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/ar
 echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
 
 # EFI Shell 2.0 for UEFI 2.3+
+if [ -f ${work_dir}/iso/EFI/shellx64_v2.efi ]
+then
+echo "Bereits Vorhanden!"
+else
 curl -o ${work_dir}/iso/EFI/shellx64_v2.efi https://raw.githubusercontent.com/tianocore/edk2/master/ShellBinPkg/UefiShell/X64/Shell.efi
+fi
 # EFI Shell 1.0 for non UEFI 2.3+
+if [ -f ${work_dir}/iso/EFI/shellx64_v1.efi ]
+then
+echo "Bereits Vorhanden!"
+else
 curl -o ${work_dir}/iso/EFI/shellx64_v1.efi https://raw.githubusercontent.com/tianocore/edk2/master/EdkShellBinPkg/FullShell/X64/Shell_Full.efi
+fi
+
 cp ${work_dir}/iso/EFI/shellx64_v2.efi ${work_dir}/efiboot/EFI/
 cp ${work_dir}/iso/EFI/shellx64_v1.efi ${work_dir}/efiboot/EFI/
 

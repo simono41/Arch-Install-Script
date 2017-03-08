@@ -19,7 +19,7 @@ read -p "Soll das System neu aufgebaut werden?: [Y/n] " system
 if [ "$system" != "n" ]
   then
 echo "Scripte werden heruntergeladen!"
-pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools
+pacman -S arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools
 mkdir -p ${work_dir}/${arch}/airootfs
 
 pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts 
@@ -32,7 +32,7 @@ cp archiso ../${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 cd ..
 
 echo "HOOKS=\"base udev block filesystems keyboard archiso\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-echo "COMPRESSION=\"xz\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+echo "COMPRESSION=\"cat\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
 echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
 
@@ -51,8 +51,6 @@ cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
 arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
 arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
-
-arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
 
 arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
 

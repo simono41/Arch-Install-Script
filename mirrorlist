@@ -70,5 +70,3 @@ Server = http://ftp.uni-kl.de/pub/linux/archlinux/$repo/os/$arch
 Server = http://mirror.united-gameserver.de/archlinux/$repo/os/$arch
 Server = http://mirror.vfn-nrw.de/archlinux/$repo/os/$arch
 Server = https://mirror.vfn-nrw.de/archlinux/$repo/os/$arch
-
-

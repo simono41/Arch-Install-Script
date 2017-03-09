@@ -215,21 +215,32 @@ archiso_mount_handler() {
     echo "set graphical-desktop!"
     echo "graphical-desktop: ${desktop}"
     mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
+    mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root/
     if [[ "${desktop}" == "gnome" ]]; then
       echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
       chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
+      echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+      chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
         elif [[ "${desktop}" == "cinnamon" ]]; then
       echo "exec cinnamon-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
       chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
+      echo "exec cinnamon-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+      chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
         elif [[ "${desktop}" == "mate" ]]; then
       echo "exec mate-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
       chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
+      echo "exec mate-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+      chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
         elif [[ "${desktop}" == "lxde" ]]; then
       echo "exec startlxde" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
       chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
+      echo "exec startlxde" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+      chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
         elif [[ "${desktop}" == "lxqt" ]]; then
       echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
       chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
+      echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+      chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
         else
       echo "no graphical-desktop"
     fi

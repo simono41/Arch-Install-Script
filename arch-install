@@ -154,6 +154,7 @@ fi
      arch-chroot /mnt nvidia-xconfig
   fi
   cp /home/user/.xinitrc /mnt/home/user/
+  cp /root/.xinitrc /mnt/root/
   else
   pacstrap -i /mnt base base-devel grub efibootmgr links 
 fi
@@ -227,6 +228,7 @@ fi
      arch-chroot /mnt nvidia-xconfig
   fi
   cp /home/user/.xinitrc /mnt/home/user/
+  cp /root/.xinitrc /mnt/root/
   else
   pacstrap -i /mnt base base-devel grub efibootmgr links 
 fi

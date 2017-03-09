@@ -6,8 +6,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-iso_name=geilo-os
-iso_label="GEILO_OS"
+iso_name=siri-os
+iso_label="SIRI_OS"
 iso_version=$(date +%Y.%m.%d)
 work_dir=work
 out_dir=out
@@ -51,6 +51,8 @@ cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
 arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
 arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
+
+arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
 
 arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
 

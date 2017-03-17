@@ -85,26 +85,25 @@ mkdir -p ${work_dir}/iso/${install_dir}/boot/syslinux
 mkdir -p ${work_dir}/iso/EFI/archiso
 mkdir -p ${work_dir}/iso/EFI/boot
 mkdir -p ${work_dir}/iso/loader/entries
+
 if [ "$image" != "n" ]
   then
 ./arch-chroot ${work_dir}/${arch}/airootfs/ pacman -Q > ${work_dir}/${arch}/airootfs/pkglist.txt
 cp ${work_dir}/${arch}/airootfs/pkglist.txt ${work_dir}/iso/${install_dir}/${arch}/
 ./arch-chroot ${work_dir}/${arch}/airootfs pacman -Sc
 ./arch-chroot ${work_dir}/${arch}/airootfs pacman -Scc
-read -p "Sollen Nvidia-Treiber zwischengespeichert werden?: [Y/n] " nvidia
-if [ "$nvidia" != "n" ]
-  then
-    echo "Nvidia-treiber werden zwischengespeichert!"
-    ./arch-chroot ${work_dir}/${arch}/airootfs pacman -Sw nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
-fi
+
 if [ -f ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs ]
 then
 rm ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs
 else
 echo "airootfs.sfs nicht vorhanden!"
 fi
+
 mksquashfs ${work_dir}/${arch}/airootfs ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs -comp xz -b 1024K
+
 md5sum ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs > ${work_dir}/iso/${install_dir}/${arch}/airootfs.md5
+
   else
 echo "Image wird nicht neu aufgebaut!!!"
 fi

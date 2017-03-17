@@ -265,7 +265,7 @@ if [ "$rootstart" == "gnome" ]
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "mate" ]
     then
-    pacman -S mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
+    pacman -S mate-gtk3 mate-extra-gtk3 network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
     echo "exec mate-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
@@ -283,7 +283,7 @@ if [ "$rootstart" == "gnome" ]
     systemctl enable NetworkManager.service
     elif [ "$rootstart" == "all" ]
     then
-    pacman -S lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt
+    pacman -S lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate-gtk3 mate-extra-gtk3 mate-power-manager gtk-engine-murrine lxqt
     echo "exec startlxde" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
@@ -308,7 +308,7 @@ if [ "$userstart" == "gnome" ]
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "mate" ]
     then
-    pacman -S mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
+    pacman -S mate-gtk3 mate-extra-gtk3 network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
     echo "exec mate-session" > /home/"$user"/.xinitrc
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc
@@ -329,7 +329,7 @@ if [ "$userstart" == "gnome" ]
     systemctl enable NetworkManager.service
     elif [ "$userstart" == "all" ]
     then
-    pacman -S lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt
+    pacman -S lxde networkmanager cinnamon gnome gnome-extra network-manager-applet system-config-printer blueman gnome-power-manager mate-gtk3 mate-extra-gtk3 mate-power-manager gtk-engine-murrine lxqt
     echo "exec startlxde" > /home/"$user"/.xinitrc
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc

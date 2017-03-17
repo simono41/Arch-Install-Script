@@ -155,7 +155,11 @@ read -p "Soll Nvidia mitinstalliert werden?: [Y/n] " nvidia
 if [ "$nvidia" != "n" ]
   then
     pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
-    nvidia-xconfig   
+    read -p "Soll nvidia-xconfig gestartet werden?: [Y/n] " nvidiax
+      if [ "$nvidiax" != "n" ]
+        then
+      nvidia-xconfig   
+fi  
 fi
 #
 read -p "Soll steam  mitinstalliert werden?: [Y/n] " steam

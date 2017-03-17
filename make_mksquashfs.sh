@@ -24,7 +24,11 @@ pacman -S xorriso cdrtools squashfs-tools wget dosfstools
 
 mkdir -p ${work_dir}/${arch}/airootfs
 
-./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts 
+read -p "Soll die Packete neu aufgebaut werden? [Y/n] " pacstrap
+if [ "$pacstrap" != "n" ]
+  then
+    ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts 
+fi
 
 cd install
 cp archiso ../${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso

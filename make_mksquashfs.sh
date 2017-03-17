@@ -19,10 +19,12 @@ read -p "Soll das System neu aufgebaut werden?: [Y/n] " system
 if [ "$system" != "n" ]
   then
 echo "Scripte werden heruntergeladen!"
-pacman -S arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools
+
+pacman -S xorriso cdrtools squashfs-tools wget dosfstools
+
 mkdir -p ${work_dir}/${arch}/airootfs
 
-pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts 
+./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts 
 
 cd install
 cp archiso ../${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
@@ -48,16 +50,16 @@ chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install
 
 cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 
-arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
-arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
-arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
+./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
+./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
+./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
 
-arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
+./arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
 
-arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
+./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
 
 read -p "Welches Passwort soll der Root erhalten?: " pass
-arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
+./arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
 passwd
 $pass
 $pass
@@ -70,7 +72,7 @@ echo "Jetzt können sie ihre eigenen Packete hinzufügen:D"
 read -p "Wollen sie automatisch eigene Packete hinzufügen? [Y/n] " packete
 if [ "$packete" != "n" ]
   then
-    arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install
+    ./arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install
 fi
 
 # System-image
@@ -85,15 +87,15 @@ mkdir -p ${work_dir}/iso/EFI/boot
 mkdir -p ${work_dir}/iso/loader/entries
 if [ "$image" != "n" ]
   then
-arch-chroot ${work_dir}/${arch}/airootfs/ pacman -Q > ${work_dir}/${arch}/airootfs/pkglist.txt
+./arch-chroot ${work_dir}/${arch}/airootfs/ pacman -Q > ${work_dir}/${arch}/airootfs/pkglist.txt
 cp ${work_dir}/${arch}/airootfs/pkglist.txt ${work_dir}/iso/${install_dir}/${arch}/
-arch-chroot ${work_dir}/${arch}/airootfs pacman -Sc
-arch-chroot ${work_dir}/${arch}/airootfs pacman -Scc
+./arch-chroot ${work_dir}/${arch}/airootfs pacman -Sc
+./arch-chroot ${work_dir}/${arch}/airootfs pacman -Scc
 read -p "Sollen Nvidia-Treiber zwischengespeichert werden?: [Y/n] " nvidia
 if [ "$nvidia" != "n" ]
   then
     echo "Nvidia-treiber werden zwischengespeichert!"
-    arch-chroot ${work_dir}/${arch}/airootfs pacman -Sw nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+    ./arch-chroot ${work_dir}/${arch}/airootfs pacman -Sw nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
 fi
 if [ -f ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs ]
 then

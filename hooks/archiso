@@ -212,6 +212,21 @@ archiso_mount_handler() {
         umount -d /run/archiso/bootmnt
     fi
 
+if [[ "${nvidia}" == "y" ]]; then
+
+echo "nvidia driver loaded"
+
+mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/
+
+echo "Section \"Device\"" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
+echo "        dentifier \"Device0\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
+echo "        Driver \"nvidia\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
+echo "        VendorName \"NVIDIA Corporation\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
+echo "        Option \"NoLogo\" \"true\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
+echo "EndSection" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
+
+fi
+
     echo "set graphical-desktop!"
     echo "graphical-desktop: ${desktop}"
     if [[ "${desktop}" == "gnome" ]]; then
@@ -263,6 +278,27 @@ archiso_mount_handler() {
 
       echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
         chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+
+          elif [[ "${desktop}" == "xfce4" ]]; then
+      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
+      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
+
+      echo "exec startxfce4" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
+        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
+
+      echo "exec startxfce4" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+
+          elif [[ "${desktop}" == "kde" ]]; then
+      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
+      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
+
+      echo "exec startkde" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
+        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
+
+      echo "exec startkde" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+
 
           else
       echo "no graphical-desktop"

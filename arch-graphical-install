@@ -254,40 +254,59 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 # set desktop
 echo "set desktops"
 #
-read -p "Welcher desktop soll für den root verwendet werden? all, lxde, gnome, mate, cinnamon oder lxqt : " rootstart
+read -p "Welcher desktop soll für den root verwendet werden? all, lxde, gnome, mate, xfce4, kde,  cinnamon oder lxqt : " rootstart
 if [ "$rootstart" == "gnome" ]
   then    
     pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec gnome-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
+
     elif [ "$rootstart" == "cinnamon" ]
     then
     pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec cinnamon-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
+
     elif [ "$rootstart" == "mate" ]
     then
     pacman -S mate-gtk3 mate-extra-gtk3 network-manager-applet networkmanager system-config-printer blueman mate-power-manager-gtk3 gtk-engine-murrine
     echo "exec mate-session" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
+
     elif [ "$rootstart" == "lxde" ]
     then
     pacman -S lxde networkmanager
     echo "exec startlxde" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
+
     elif [ "$rootstart" == "lxqt" ]
     then
     pacman -S lxqt networkmanager
     echo "exec startlxqt" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
+
+    elif [ "$rootstart" == "xfce4" ]
+    then
+    pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager
+    echo "exec startxfce4" > /root/.xinitrc
+    chmod 777 /root/.xinitrc
+    systemctl enable NetworkManager.service
+
+    elif [ "$rootstart" == "kde" ]
+    then
+    pacman -S plasma kde-l10n-de kde-applications networkmanager
+    echo "exec startkde" > /root/.xinitrc
+    chmod 777 /root/.xinitrc
+    systemctl enable NetworkManager.service
+
     elif [ "$rootstart" == "all" ]
     then
-    pacman -S lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate-gtk3 mate-extra-gtk3 mate-power-manager-gtk3 gtk-engine-murrine lxqt
+    pacman -S lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate-gtk3 mate-extra-gtk3 mate-power-manager-gtk3 gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications
     echo "exec startlxde" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
@@ -295,7 +314,7 @@ if [ "$rootstart" == "gnome" ]
     echo "kein desktop fuer root erstellt!!!"
 fi
 #
-read -p "Welcher desktop soll für "$user" verwendet werden? all, lxde, gnome, mate, cinnamon oder lxqt : " userstart
+read -p "Welcher desktop soll für "$user" verwendet werden? all, lxde, gnome, mate, xfce4, kde,  cinnamon oder lxqt : " userstart
 if [ "$userstart" == "gnome" ]
   then
     pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
@@ -303,6 +322,7 @@ if [ "$userstart" == "gnome" ]
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
+
     elif [ "$rootstart" == "cinnamon" ]
     then
     pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
@@ -310,6 +330,7 @@ if [ "$userstart" == "gnome" ]
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
+
     elif [ "$userstart" == "mate" ]
     then
     pacman -S mate-gtk3 mate-extra-gtk3 network-manager-applet networkmanager system-config-printer blueman mate-power-manager-gtk3 gtk-engine-murrine
@@ -317,6 +338,7 @@ if [ "$userstart" == "gnome" ]
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
+
     elif [ "$userstart" == "lxde" ]
     then
     pacman -S lxde networkmanager
@@ -324,6 +346,7 @@ if [ "$userstart" == "gnome" ]
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
+
     elif [ "$userstart" == "lxqt" ]
     then
     pacman -S lxqt networkmanager
@@ -331,9 +354,26 @@ if [ "$userstart" == "gnome" ]
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service
+
+    elif [ "$userstart" == "xfce4" ]
+    then
+    pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager
+    echo "exec startxfce4" > /home/"$user"/.xinitrc
+    chown -cR "$user" /home/"$user"/
+    chmod 777 /home/"$user"/.xinitrc
+    systemctl enable NetworkManager.service
+
+    elif [ "$userstart" == "kde" ]
+    then
+    pacman -S plasma kde-l10n-de kde-applications networkmanager
+    echo "exec startkde" > /home/"$user"/.xinitrc
+    chown -cR "$user" /home/"$user"/
+    chmod 777 /home/"$user"/.xinitrc
+    systemctl enable NetworkManager.service
+
     elif [ "$userstart" == "all" ]
     then
-    pacman -S lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate-gtk3 mate-extra-gtk3 mate-power-manager-gtk3 gtk-engine-murrine lxqt
+    pacman -S lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate-gtk3 mate-extra-gtk3 mate-power-manager-gtk3 gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications
     echo "exec startlxde" > /home/"$user"/.xinitrc
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc

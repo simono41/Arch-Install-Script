@@ -38,7 +38,7 @@ cp archiso ../${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 cd ..
 
 echo "HOOKS=\"base udev block filesystems keyboard archiso\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-echo "COMPRESSION=\"cat\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+echo "COMPRESSION=\"xz\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
 echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
 
@@ -249,7 +249,7 @@ rm ${work_dir}/iso/EFI/archiso/efiboot.img
 else
 echo "efiboot.img nicht vorhanden!"
 fi
-truncate -s 256M ${work_dir}/iso/EFI/archiso/efiboot.img
+truncate -s 64M ${work_dir}/iso/EFI/archiso/efiboot.img
 mkfs.fat -n ${iso_label}_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
 
 mkdir -p ${work_dir}/efiboot/
@@ -275,88 +275,88 @@ cp uefi-shell-v2-x86_64.conf ${work_dir}/efiboot/loader/entries/
 cp uefi-shell-v1-x86_64.conf ${work_dir}/efiboot/loader/entries/
 
 # default
-echo "title   ${iso_label} x86_64 UEFI USB DEFAULT" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label}" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
+echo "title   ${iso_label} x86_64 UEFI USB DEFAULT" > ${work_dir}/iso/loader/entries/archiso-x86_64-default.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label}" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default.conf
 
 # gnome
-echo "title   ${iso_label} x86_64 UEFI USB GNOME" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
+echo "title   ${iso_label} x86_64 UEFI USB GNOME" > ${work_dir}/iso/loader/entries/archiso-x86_64-gnome.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome.conf
 
 # cinnamon
-echo "title   ${iso_label} x86_64 UEFI USB CINNAMON" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
+echo "title   ${iso_label} x86_64 UEFI USB CINNAMON" > ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon.conf
 
 # mate
-echo "title   ${iso_label} x86_64 UEFI USB MATE" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
+echo "title   ${iso_label} x86_64 UEFI USB MATE" > ${work_dir}/iso/loader/entries/archiso-x86_64-mate.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate.conf
 
 # lxde
-echo "title   ${iso_label} x86_64 UEFI USB LXDE" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
+echo "title   ${iso_label} x86_64 UEFI USB LXDE" > ${work_dir}/iso/loader/entries/archiso-x86_64-lxde.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde.conf
 
 # lxqt
-echo "title   ${iso_label} x86_64 UEFI USB LXQT" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
+echo "title   ${iso_label} x86_64 UEFI USB LXQT" > ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt.conf
 
 # default toram
-echo "title   ${iso_label} x86_64 UEFI USB DEFAULT TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-default-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default-toram.conf
+echo "title   ${iso_label} x86_64 UEFI USB DEFAULT TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-default-toram.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default-toram.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default-toram.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default-toram.conf
 
 # gnome toram
-echo "title   ${iso_label} x86_64 UEFI USB GNOME TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
+echo "title   ${iso_label} x86_64 UEFI USB GNOME TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-gnome-toram.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome-toram.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome-toram.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome-toram.conf
 
 # cinnamon toram
-echo "title   ${iso_label} x86_64 UEFI USB CINNAMON TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
+echo "title   ${iso_label} x86_64 UEFI USB CINNAMON TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon-toram.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon-toram.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon-toram.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon-toram.conf
 
 # mate toram
-echo "title   ${iso_label} x86_64 UEFI USB MATE TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
+echo "title   ${iso_label} x86_64 UEFI USB MATE TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-mate-toram.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate-toram.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate-toram.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate-toram.conf
 
 # lxde toram
-echo "title   ${iso_label} x86_64 UEFI USB LXDE TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
+echo "title   ${iso_label} x86_64 UEFI USB LXDE TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-lxde-toram.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde-toram.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde-toram.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde-toram.conf
 
 # lxqt toram
-echo "title   ${iso_label} x86_64 UEFI USB LXQT TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
+echo "title   ${iso_label} x86_64 UEFI USB LXQT TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt-toram.conf
+echo "linux   /${install_dir}/boot/x86_64/vmlinuz" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt-toram.conf
+echo "initrd  /${install_dir}/boot/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt-toram.conf
+echo "initrd  /${install_dir}/boot/x86_64/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt-toram.conf
 
 # EFI Shell 2.0 for UEFI 2.3+
 if [ -f ${work_dir}/iso/EFI/shellx64_v2.efi ]
@@ -386,96 +386,100 @@ cp uefi-shell-v1-x86_64.conf ${work_dir}/iso/loader/entries/uefi-shell-v1-x86_64
 cp uefi-shell-v2-x86_64.conf ${work_dir}/iso/loader/entries/uefi-shell-v2-x86_64.conf
 
 # default
-echo "title   ${iso_label} x86_64 UEFI DVD DEFAULT" > ${work_dir}/iso/loader/entries/archiso-x86_64-default.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label}" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default.conf
+echo "title   ${iso_label} x86_64 UEFI DVD DEFAULT" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label}" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
 
 # gnome
-echo "title   ${iso_label} x86_64 UEFI DVD GNOME" > ${work_dir}/iso/loader/entries/archiso-x86_64-gnome.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome.conf
+echo "title   ${iso_label} x86_64 UEFI DVD GNOME" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
 
 # cinnamon
-echo "title   ${iso_label} x86_64 UEFI DVD CINNAMON" > ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon.conf
+echo "title   ${iso_label} x86_64 UEFI DVD CINNAMON" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
 
 # mate
-echo "title   ${iso_label} x86_64 UEFI DVD MATE" > ${work_dir}/iso/loader/entries/archiso-x86_64-mate.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate.conf
+echo "title   ${iso_label} x86_64 UEFI DVD MATE" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
 echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
 
 # lxde
-echo "title   ${iso_label} x86_64 UEFI DVD LXDE" > ${work_dir}/iso/loader/entries/archiso-x86_64-lxde.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64lxde.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde.conf
+echo "title   ${iso_label} x86_64 UEFI DVD LXDE" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
 
 # lxqt
-echo "title   ${iso_label} x86_64 UEFI DVD LXQT" > ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt.conf
+echo "title   ${iso_label} x86_64 UEFI DVD LXQT" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
 
 # default toram
-echo "title   ${iso_label} x86_64 UEFI DVD DEFAULT TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-default-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-default-toram.conf
+echo "title   ${iso_label} x86_64 UEFI DVD DEFAULT TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-default-toram.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default-toram.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default-toram.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-default-toram.conf
 
 # gnome toram
-echo "title   ${iso_label} x86_64 UEFI DVD GNOME TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-gnome-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-gnome-toram.conf
+echo "title   ${iso_label} x86_64 UEFI DVD GNOME TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=gnome copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome-toram.conf
 
 # cinnamon toram
-echo "title   ${iso_label} x86_64 UEFI DVD CINNAMON TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon-toram.conf
+echo "title   ${iso_label} x86_64 UEFI DVD CINNAMON TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=cinnamon copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon-toram.conf
 
 # mate toram
-echo "title   ${iso_label} x86_64 UEFI DVD MATE TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-mate-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-mate-toram.conf
+echo "title   ${iso_label} x86_64 UEFI DVD MATE TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=mate copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate-toram.conf
 
 # lxde toram
-echo "title   ${iso_label} x86_64 UEFI DVD LXDE TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-lxde-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxde-toram.conf
+echo "title   ${iso_label} x86_64 UEFI DVD LXDE TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxde copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde-toram.conf
 
 # lxqt toram
-echo "title   ${iso_label} x86_64 UEFI DVD LXQT TORAM" > ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt-toram.conf
-echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt-toram.conf
-echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt-toram.conf
-echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt-toram.conf
-echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt copytoram=y cow_spacesize=1024M" >> ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt-toram.conf
+echo "title   ${iso_label} x86_64 UEFI DVD LXQT TORAM" > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
+echo "linux   /EFI/archiso/vmlinuz.efi" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
+echo "initrd  /EFI/archiso/intel_ucode.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
+echo "initrd  /EFI/archiso/archiso.img" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
+echo "options archisobasedir=${install_dir} archisolabel=${iso_label} desktop=lxqt copytoram=y cow_spacesize=1024M" >> ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt-toram.conf
 
-
+read -p "efiboot jetzt trennen!"
 umount -d ${work_dir}/efiboot
 fi
 
 read -p "Soll das Image jetzt gemacht werden? [Y/n] " image
 if [ "$image" != "n" ]
   then
+if [ -f ${out_dir}/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso ]
+then
+rm ${out_dir}/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso
+fi
 mkdir -p ${out_dir}
 xorriso -as mkisofs \
 -iso-level 3 \
@@ -490,5 +494,11 @@ xorriso -as mkisofs \
 -no-emul-boot \
 -isohybrid-gpt-basdat \
 -output ${out_dir}/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso ${work_dir}/iso/
+
+read -p "Soll das Image jetzt ausgeführt werden? [Y/n] " run
+if [ "$run" != "n" ]
+then
+qemu-system-x86_64 -enable-kvm -cdrom out/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso -boot d -m 8092
+fi
 fi
 echo "Fertig!!!"

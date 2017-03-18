@@ -145,7 +145,7 @@ read -p "Soll das EFI installiert werden?: [Y/n] " efi
 if [ "$efi" != "n" ]
   then
 
-mkdir -p ${work_dir}/efiboo
+mkdir -p ${work_dir}/efiboot
 
 if [ -f ${work_dir}/iso/EFI/archiso/efiboot.img ]
 then

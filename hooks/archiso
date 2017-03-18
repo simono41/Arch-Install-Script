@@ -216,40 +216,55 @@ archiso_mount_handler() {
     echo "graphical-desktop: ${desktop}"
     if [[ "${desktop}" == "gnome" ]]; then
       mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root/
+      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
+
       echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-      chmod 777 -R /home/user
+        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
+
       echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-      chmod 777 /root/.xinitrc
-        elif [[ "${desktop}" == "cinnamon" ]]; then
+        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+
+          elif [[ "${desktop}" == "cinnamon" ]]; then
       mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root/
+      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
+
       echo "exec cinnamon-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-      chmod 777 -R /home/user
+        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
+
       echo "exec cinnamon-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-      chmod 777 /root/.xinitrc
-        elif [[ "${desktop}" == "mate" ]]; then
+        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+
+          elif [[ "${desktop}" == "mate" ]]; then
       mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root/
+      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
+
       echo "exec mate-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-      chmod 777 -R /home/user
+        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
+
       echo "exec mate-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-      chmod 777 /root/.xinitrc
-        elif [[ "${desktop}" == "lxde" ]]; then
+        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+
+          elif [[ "${desktop}" == "lxde" ]]; then
       mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root/
+      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
+
       echo "exec startlxde" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-      chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
+        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
+
       echo "exec startlxde" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-      chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-        elif [[ "${desktop}" == "lxqt" ]]; then
+        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+
+          elif [[ "${desktop}" == "lxqt" ]]; then
       mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root/
+      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
+
       echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-      chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user
+        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
+
       echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-      chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-        else
+        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
+
+          else
       echo "no graphical-desktop"
     fi
 }

@@ -218,12 +218,11 @@ echo "nvidia driver loaded"
 
 mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/
 
-echo "Section \"Device\"" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
-echo "        dentifier \"Device0\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
-echo "        Driver \"nvidia\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
-echo "        VendorName \"NVIDIA Corporation\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
-echo "        Option \"NoLogo\" \"true\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
-echo "EndSection" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/20-nvidia.conf
+echo "Section \"Device\"" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
+echo "        dentifier \"Nvidia Card\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
+echo "        Driver \"nvidia\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
+echo "        VendorName \"NVIDIA Corporation\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
+echo "EndSection" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
 
 fi
 

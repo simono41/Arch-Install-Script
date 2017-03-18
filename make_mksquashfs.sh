@@ -202,8 +202,10 @@ cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/HashTool.efi ${work_dir}/
 
 cp ${work_dir}/${arch}/airootfs/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${work_dir}/iso/EFI/boot/loader.efi
 
-cp loader.conf ${work_dir}/iso/loader/loader.conf
-cp loader.conf ${work_dir}/efiboot/loader/
+echo "timeout 3" > ${work_dir}/iso/loader/loader.conf
+echo "default archiso-x86_64-usb-default" >> ${work_dir}/iso/loader/loader.conf
+echo "timeout 3" > ${work_dir}/efiboot/loader/loader.conf
+echo "default archiso-x86_64-cd-default" >> ${work_dir}/efiboot/loader/loader.conf
 
     for _cfg in releng/archiso-x86_64-usb-*.conf; do
         sed "s|%ISO_LABEL%|${iso_label}|g;

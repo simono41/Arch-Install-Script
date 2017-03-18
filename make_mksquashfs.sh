@@ -205,103 +205,17 @@ cp ${work_dir}/${arch}/airootfs/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${w
 cp loader.conf ${work_dir}/iso/loader/loader.conf
 cp loader.conf ${work_dir}/efiboot/loader/
 
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-default.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-default.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-gnome.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-gnome.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-cinnamon.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-mate.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-mate.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-lxde.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-lxde.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-lxqt.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-default_toram.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-default_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-gnome_toram.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-gnome_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-cinnamon_toram.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-cinnamon_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-mate_toram.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-mate_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-lxde_toram.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-lxde_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-usb-lxqt_toram.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-lxqt_toram.conf
+    for _cfg in releng/archiso-x86_64-usb-*.conf; do
+        sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" ${_cfg} > ${work_dir}/iso/loader/entries/${_cfg##*/}
+    done
 
 ###
 
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-default.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-default.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-gnome.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-cinnamon.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-mate.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-lxde.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-lxqt.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-default_toram.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-default_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-gnome_toram.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-gnome_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-cinnamon_toram.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cinnamon_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-mate_toram.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-mate_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-lxde_toram.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxde_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" \
-        releng/archiso-x86_64-cd-lxqt_toram.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lxqt_toram.conf
+    for _cfg in releng/archiso-x86_64-cd-*.conf; do
+        sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" ${_cfg} > ${work_dir}/efiboot/loader/entries/${_cfg##*/}
+    done
 
 read -p "efiboot jetzt trennen!"
 umount -d ${work_dir}/efiboot

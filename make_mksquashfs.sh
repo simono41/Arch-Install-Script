@@ -334,5 +334,16 @@ if [ "$run" != "n" ]
 then
 qemu-system-x86_64 -enable-kvm -cdrom out/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso -boot d -m 8092
 fi
+read -p "Soll das Image jetzt geschrieben werden? [Y/n] " write
+if [ "$write" != "n" ]
+then
+fdisk -l
+read -p "Wo das Image jetzt geschrieben werden? [Y/n] " device
+if [ "$device" != "n" ]
+then
+dd bs=4M if=out/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso of=${device} status=progress && sync
+fi
+fi
+
 fi
 echo "Fertig!!!"

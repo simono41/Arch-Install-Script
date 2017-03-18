@@ -338,7 +338,7 @@ read -p "Soll das Image jetzt geschrieben werden? [Y/n] " write
 if [ "$write" != "n" ]
 then
 fdisk -l
-read -p "Wo das Image jetzt geschrieben werden? [Y/n] " device
+read -p "Wo das Image jetzt geschrieben werden? [sda/sdb/sdc/sdd] " device
 if [ "$device" != "n" ]
 then
 dd bs=4M if=out/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso of=${device} status=progress && sync

@@ -146,8 +146,7 @@ fi
   echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
   echo "COMPRESSION=\"xz\"" >> /mnt/etc/mkinitcpio.conf
   echo ""
-  read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " 
-nvidia
+  read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " nvidia
   echo ""
   if [ "$nvidia" == "y" ]
    then
@@ -220,8 +219,7 @@ fi
   echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
   echo "COMPRESSION=\"xz\"" >> /mnt/etc/mkinitcpio.conf
   echo ""
-  read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " 
-nvidia
+  read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " nvidia
   echo ""
   if [ "$nvidia" == "y" ]
    then

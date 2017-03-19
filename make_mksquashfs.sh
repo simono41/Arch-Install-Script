@@ -207,7 +207,10 @@ echo "default archiso-x86_64-usb-default" >> ${work_dir}/iso/loader/loader.conf
 echo "timeout 3" > ${work_dir}/efiboot/loader/loader.conf
 echo "default archiso-x86_64-cd-default" >> ${work_dir}/efiboot/loader/loader.conf
 
-    for _cfg in releng/archiso-x86_64-usb-*.conf; do
+read -p "Soll alle Bootoptionen verwendet werden? [Y/n] " bootoptionen
+if [ "$bootoptionen" != "n" ]
+  then
+         for _cfg in releng/archiso-x86_64-usb-*.conf; do
         sed "s|%ISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g" ${_cfg} > ${work_dir}/iso/loader/entries/${_cfg##*/}
     done
@@ -218,6 +221,16 @@ echo "default archiso-x86_64-cd-default" >> ${work_dir}/efiboot/loader/loader.co
         sed "s|%ISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g" ${_cfg} > ${work_dir}/efiboot/loader/entries/${_cfg##*/}
     done
+    else
+    cp releng/archiso-x86_64-usb-default.conf ${work_dir}/iso/loader/entries/
+    cp releng/archiso-x86_64-cd-default.conf ${work_dir}/efiboot/loader/entries/
+    cp releng/archiso-x86_64-usb-default-nvidia.conf ${work_dir}/iso/loader/entries/
+    cp releng/archiso-x86_64-cd-default-nvidia.conf ${work_dir}/efiboot/loader/entries/
+    cp releng/archiso-x86_64-usb-default-toram.conf ${work_dir}/iso/loader/entries/
+    cp releng/archiso-x86_64-cd-default-toram.conf ${work_dir}/efiboot/loader/entries/
+fi
+
+
 
 read -p "efiboot jetzt trennen!"
 umount -d ${work_dir}/efiboot

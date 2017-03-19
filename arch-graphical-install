@@ -254,11 +254,19 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 # set desktop
 echo "set desktops"
 #
-read -p "Welcher desktop soll für den root verwendet werden? all, lxde, gnome, mate, xfce4, kde,  cinnamon oder lxqt : " rootstart
+read -p "Welcher desktop soll für den root verwendet werden? all, lxde, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
 if [ "$rootstart" == "gnome" ]
   then    
     pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec gnome-session" > /root/.xinitrc
+    chmod 777 /root/.xinitrc
+    systemctl enable NetworkManager.service
+    
+    elif [ "$rootstart" == "gnome-flashback" ]
+    then
+    pacman -S gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
+    echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /root/.xinitrc
+    echo "exec gnome-session --session=gnome-flashback-metacity" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
 
@@ -314,11 +322,20 @@ if [ "$rootstart" == "gnome" ]
     echo "kein desktop fuer root erstellt!!!"
 fi
 #
-read -p "Welcher desktop soll für "$user" verwendet werden? all, lxde, gnome, mate, xfce4, kde,  cinnamon oder lxqt : " userstart
+read -p "Welcher desktop soll für "$user" verwendet werden? all, lxde, gnome, gnome-flashback, mate, xfce4, kde,  cinnamon oder lxqt : " userstart
 if [ "$userstart" == "gnome" ]
   then
     pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "exec gnome-session" > /home/"$user"/.xinitrc
+    chown -cR "$user" /home/"$user"/
+    chmod 777 /home/"$user"/.xinitrc
+    systemctl enable NetworkManager.service
+    
+    elif [ "$userstart == "gnome-flashback" ]
+    then
+    pacman -S gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
+    echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /home/"$user"/.xinitrc
+    echo "exec gnome-session --session=gnome-flashback-metacity" > /home/"$user"/.xinitrc
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc
     systemctl enable NetworkManager.service

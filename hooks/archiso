@@ -216,7 +216,7 @@ if [[ "${nvidia}" == "y" ]]; then
 
 echo "nvidia driver loaded"
 
-mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/
+mkdir -p -m 755 /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/
 
 echo "Section \"Device\"" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
 echo "    Identifier     \"Device0\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
@@ -231,31 +231,31 @@ fi
     mkdir -p -m 755 "/run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit"
     if [[ "${desktop}" == "gnome" ]]; then
       echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
-      chmod 755 /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
+
           elif [[ "${desktop}" == "gnomeflash" ]]; then
       echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
       echo "exec gnome-session --session=gnome-flashback-metacity" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
-      chmod 755 /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
+
           elif [[ "${desktop}" == "cinnamon" ]]; then
       echo "exec cinnamon-session" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
-      chmod 755 /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
+
           elif [[ "${desktop}" == "mate" ]]; then
       echo "exec mate-session" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
-      chmod 755 /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
+
           elif [[ "${desktop}" == "lxde" ]]; then
       echo "exec startlxde" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
-      chmod 755 /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
+
           elif [[ "${desktop}" == "lxqt" ]]; then
       echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
-      chmod 755 /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
+
           elif [[ "${desktop}" == "xfce4" ]]; then
       echo "exec startxfce4" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
-      chmod 755 /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
+
           elif [[ "${desktop}" == "kde" ]]; then
       echo "exec startkde" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
-      chmod 755 /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
+
           else
-      echo "no graphical-desktop"
+      echo "default graphical-desktop"
     fi
 }
 

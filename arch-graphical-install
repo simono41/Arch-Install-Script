@@ -265,7 +265,7 @@ if [ "$rootstart" == "gnome" ]
     then
     pacman -S gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
     echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
-    echo "exec gnome-session --session=gnome-flashback-metacity" > /etc/X11/xinit/xinitrc
+    echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
     elif [ "$rootstart" == "cinnamon" ]

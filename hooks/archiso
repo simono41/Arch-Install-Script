@@ -228,77 +228,21 @@ fi
 
     echo "set graphical-desktop!"
     echo "graphical-desktop: ${desktop}"
+    mkdir -p -m 0700 "/run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit"
     if [[ "${desktop}" == "gnome" ]]; then
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
-
-      echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
-
-      echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-
+      echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
           elif [[ "${desktop}" == "cinnamon" ]]; then
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
-
-      echo "exec cinnamon-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
-
-      echo "exec cinnamon-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-
+      echo "exec cinnamon-session" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
           elif [[ "${desktop}" == "mate" ]]; then
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
-
-      echo "exec mate-session" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
-
-      echo "exec mate-session" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-
+      echo "exec mate-session" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
           elif [[ "${desktop}" == "lxde" ]]; then
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
-
-      echo "exec startlxde" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
-
-      echo "exec startlxde" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-
+      echo "exec startlxde" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
           elif [[ "${desktop}" == "lxqt" ]]; then
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
-
-      echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
-
-      echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-
+      echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
           elif [[ "${desktop}" == "xfce4" ]]; then
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
-
-      echo "exec startxfce4" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
-
-      echo "exec startxfce4" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-
+      echo "exec startxfce4" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
           elif [[ "${desktop}" == "kde" ]]; then
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/home/user
-      mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/root
-
-      echo "exec startkde" > /run/archiso/cowspace/${cow_directory}/upperdir/home/user/.xinitrc
-        chmod 777 -R /run/archiso/cowspace/${cow_directory}/upperdir/home/user/
-
-      echo "exec startkde" > /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-        chmod 777 /run/archiso/cowspace/${cow_directory}/upperdir/root/.xinitrc
-
-
+      echo "exec startkde" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
           else
       echo "no graphical-desktop"
     fi

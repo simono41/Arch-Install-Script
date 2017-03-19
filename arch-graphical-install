@@ -314,7 +314,7 @@ if [ "$rootstart" == "gnome" ]
 
     elif [ "$rootstart" == "all" ]
     then
-    pacman -S lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications
+    pacman -S lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications gnome-flashback
     echo "exec startlxde" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
@@ -390,7 +390,7 @@ if [ "$userstart" == "gnome" ]
 
     elif [ "$userstart" == "all" ]
     then
-    pacman -S lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications
+    pacman -S lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications gnome-flashback
     echo "exec startlxde" > /home/"$user"/.xinitrc
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc

@@ -146,11 +146,11 @@ fi
   echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
   echo "COMPRESSION=\"xz\"" >> /mnt/etc/mkinitcpio.conf
   echo ""
-  read -p "Sollen unfreie nvidia-treiber mitinstalliert werden?: [y/N] " nvidia
+  read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " 
+nvidia
   echo ""
   if [ "$nvidia" == "y" ]
    then
-     arch-chroot /mnt pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
      arch-chroot /mnt nvidia-xconfig
   fi
   cp /home/user/.xinitrc /mnt/home/user/
@@ -220,11 +220,11 @@ fi
   echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
   echo "COMPRESSION=\"xz\"" >> /mnt/etc/mkinitcpio.conf
   echo ""
-  read -p "Sollen unfreie nvidia-treiber mitinstalliert werden?: [y/N] " nvidia
+  read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " 
+nvidia
   echo ""
   if [ "$nvidia" == "y" ]
    then
-     arch-chroot /mnt pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
      arch-chroot /mnt nvidia-xconfig
   fi
   cp /home/user/.xinitrc /mnt/home/user/

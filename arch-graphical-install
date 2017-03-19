@@ -278,28 +278,28 @@ if [ "$rootstart" == "gnome" ]
 
     elif [ "$rootstart" == "lxde" ]
     then
-    pacman -S lxde networkmanager
+    pacman -S lxde networkmanager network-manager-applet
     echo "exec startlxde" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
 
     elif [ "$rootstart" == "lxqt" ]
     then
-    pacman -S lxqt networkmanager
+    pacman -S lxqt networkmanager network-manager-applet
     echo "exec startlxqt" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
 
     elif [ "$rootstart" == "xfce4" ]
     then
-    pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager
+    pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager network-manager-applet
     echo "exec startxfce4" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
 
     elif [ "$rootstart" == "kde" ]
     then
-    pacman -S plasma kde-l10n-de kde-applications networkmanager
+    pacman -S plasma kde-l10n-de kde-applications networkmanager network-manager-applet
     echo "exec startkde" > /root/.xinitrc
     chmod 777 /root/.xinitrc
     systemctl enable NetworkManager.service
@@ -341,7 +341,7 @@ if [ "$userstart" == "gnome" ]
 
     elif [ "$userstart" == "lxde" ]
     then
-    pacman -S lxde networkmanager
+    pacman -S lxde networkmanager network-manager-applet
     echo "exec startlxde" > /home/"$user"/.xinitrc
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc
@@ -349,7 +349,7 @@ if [ "$userstart" == "gnome" ]
 
     elif [ "$userstart" == "lxqt" ]
     then
-    pacman -S lxqt networkmanager
+    pacman -S lxqt networkmanager network-manager-applet
     echo "exec startlxqt" > /home/"$user"/.xinitrc
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc
@@ -357,7 +357,7 @@ if [ "$userstart" == "gnome" ]
 
     elif [ "$userstart" == "xfce4" ]
     then
-    pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager
+    pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager network-manager-applet
     echo "exec startxfce4" > /home/"$user"/.xinitrc
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc
@@ -365,7 +365,7 @@ if [ "$userstart" == "gnome" ]
 
     elif [ "$userstart" == "kde" ]
     then
-    pacman -S plasma kde-l10n-de kde-applications networkmanager
+    pacman -S plasma kde-l10n-de kde-applications networkmanager network-manager-applet
     echo "exec startkde" > /home/"$user"/.xinitrc
     chown -cR "$user" /home/"$user"/
     chmod 777 /home/"$user"/.xinitrc

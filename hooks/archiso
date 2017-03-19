@@ -219,9 +219,9 @@ echo "nvidia driver loaded"
 mkdir -p /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/
 
 echo "Section \"Device\"" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
-echo "    Identifier     "Device0"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
-echo "    Driver \"nvidia\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
-echo "    VendorName \"NVIDIA Corporation\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
+echo "    Identifier     \"Device0\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
+echo "    Driver         \"nvidia\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
+echo "    VendorName     \"NVIDIA Corporation\"" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
 echo "EndSection" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf
 
 fi

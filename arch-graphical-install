@@ -120,7 +120,7 @@ fi
 read -p "Soll libreoffice-fresh mitinstalliert werden?: [Y/n] " libreoffice
 if [ "$libreoffice" != "n" ]
   then
-    pacman -S libreoffice-fresh
+    pacman -S libreoffice-fresh libreoffice-fresh-de
 fi
 #
 read -p "Soll snapd mitinstalliert werden?: [Y/n] " snapd

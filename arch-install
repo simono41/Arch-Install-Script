@@ -61,7 +61,7 @@ echo "Partionsart: $Partition"
 echo "Passwort: $pass"
 echo "Komplette Installation: $complete"
 echo "Offline installation: $offline"
-echo "Archetektur: $(uname -m)"
+echo "Architektur: $(uname -m)"
 #
 read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
 if [ "$sicherheitsabfrage" != "y" ]
@@ -162,7 +162,7 @@ genfstab -U -p /mnt >> /mnt/etc/fstab
 echo ""
 echo "$name"-os > /mnt/etc/hostname
 echo ""
-read -p "Soll mit systemd gebootet werden oder mit grub? : " boot
+read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/grub] : " boot
 arch-chroot /mnt /bin/bash <<EOT
 mkinitcpio -p linux
 passwd
@@ -190,6 +190,9 @@ echo "title    "$name"-os" > /mnt/boot/loader/entries/arch-uefi-fallback.conf
 echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
 echo "initrd   initrd   /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
 echo "options  root=LABEL="$name"-os rw resume=p_swap" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
+
+echo "default   arch-uefi" > /mnt/boot/loader/loader.conf
+echo "timeout   1" >> /mnt/boot/loader/loader.conf
 
 fi
 
@@ -221,8 +224,8 @@ w
 y
 EOT
 echo ""
-mkfs.fat -F32 /dev/"$device"1
-mkfs.ext4 /dev/"$device"2
+mkfs.fat -F32 -n boot /dev/"$device"1
+mkfs.ext4 -L "$name"-os /dev/"$device"2
 echo ""
 mount /dev/"$device"2 /mnt
 mkdir /mnt/boot

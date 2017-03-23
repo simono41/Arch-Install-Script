@@ -113,7 +113,7 @@ n
 
 
 +512M
-
+ef00
 p
 n
 
@@ -125,8 +125,8 @@ w
 y
 EOT
 echo ""
-mkfs.fat -F32 /dev/"$device"1
-mkfs.ext4 /dev/"$device"2
+mkfs.fat -F32 -n EFIBOOT  /dev/"$device"1
+mkfs.ext4 -L "$name"-os /dev/"$device"2
 echo ""
 mount /dev/"$device"2 /mnt
 mkdir /mnt/boot
@@ -162,14 +162,37 @@ genfstab -U -p /mnt >> /mnt/etc/fstab
 echo ""
 echo "$name"-os > /mnt/etc/hostname
 echo ""
+read -p "Soll mit systemd gebootet werden oder mit grub? : " boot
 arch-chroot /mnt /bin/bash <<EOT
 mkinitcpio -p linux
 passwd
 $pass
 $pass
+EOT
+if [ "$boot" == "grub" ]
+   then
+arch-chroot /mnt /bin/bash <<EOT
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$name"-os --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
+  else
+mkdir -p /mnt/boot/EFI/systemd/
+mkdir -p /mnt/boot/EFI/BOOT/
+cp /mnt/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/systemd/systemd-bootx64.efi
+cp /mnt/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/BOOT/BOOTX64.EFI
+
+echo "title    "$name"-os" > /mnt/boot/loader/entries/arch-uefi.conf
+echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi.conf
+echo "initrd   /initramfs-linux.img" >> /mnt/boot/loader/entries/arch-uefi.conf
+echo "options  root=LABEL="$name"-os rw resume=p_swap" >> /mnt/boot/loader/entries/arch-uefi.conf
+
+echo "title    "$name"-os" > /mnt/boot/loader/entries/arch-uefi-fallback.conf
+echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
+echo "initrd   initrd   /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
+echo "options  root=LABEL="$name"-os rw resume=p_swap" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
+
+fi
+
 if [ "$aktu" != "n" ]
    then
      arch-chroot /mnt pacman -Syu

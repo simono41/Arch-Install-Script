@@ -142,9 +142,9 @@ mkfs.ext4 /dev/"$device"2
 mkfs.fat -F32 /dev/"$device"1
 mkswap /dev/"$device"3
 echo ""
-mount /dev/"$device"1 /mnt
+mount /dev/"$device"2 /mnt
 mkdir /mnt/boot
-mount /dev/"$device"2 /mnt/boot
+mount /dev/"$device"1 /mnt/boot
 swapon /dev/"$device"3
 echo ""
 if [ "$offline" != "n" ]
@@ -251,9 +251,9 @@ mkfs.ext4 /dev/"$device"2
 mkfs.fat /dev/"$device"1
 mkswap /dev/"$device"3
 echo ""
-mount /dev/"$device"1 /mnt
+mount /dev/"$device"2 /mnt
 mkdir /mnt/boot
-mount /dev/"$device"2 /mnt/boot
+mount /dev/"$device"1 /mnt/boot
 swapon /dev/"$device"3
 echo ""
 if [ "$offline" != "n" ]

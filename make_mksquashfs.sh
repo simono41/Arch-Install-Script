@@ -128,8 +128,25 @@ cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isolinux.bin ${work_dir}/i
 cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isohdpfx.bin ${work_dir}/iso/isolinux/
 cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/ldlinux.c32 ${work_dir}/iso/isolinux/
 
+read -p "Soll alle Bootoptionen verwendet werden? [Y/n] " bootoptionen
+
+echo "DEFAULT menu.c32" > ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "PROMPT 0" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "MENU TITLE ${iso_label}" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "TIMEOUT 300" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+
 sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" syslinux.cfg > ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+         s|%INSTALL_DIR%|${install_dir}|g" syslinux.cfg >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+
+if [ "$bootoptionen" != "n" ]
+  then
+sed "s|%ISO_LABEL%|${iso_label}|g;
+         s|%INSTALL_DIR%|${install_dir}|g" syslinux_extra.cfg >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+fi
+
+echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+echo "ONTIMEOUT arch" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 
 echo "DEFAULT loadconfig" > ${work_dir}/iso/isolinux/isolinux.cfg
 echo "" >> ${work_dir}/iso/isolinux/isolinux.cfg
@@ -208,6 +225,7 @@ echo "timeout 3" > ${work_dir}/efiboot/loader/loader.conf
 echo "default archiso-x86_64-cd-default" >> ${work_dir}/efiboot/loader/loader.conf
 
 read -p "Soll alle Bootoptionen verwendet werden? [Y/n] " bootoptionen
+
 if [ "$bootoptionen" != "n" ]
   then
          for _cfg in releng/archiso-x86_64-usb-*.conf; do
@@ -221,13 +239,27 @@ if [ "$bootoptionen" != "n" ]
         sed "s|%ISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g" ${_cfg} > ${work_dir}/efiboot/loader/entries/${_cfg##*/}
     done
+
     else
-    cp releng/archiso-x86_64-usb-default.conf ${work_dir}/iso/loader/entries/
-    cp releng/archiso-x86_64-cd-default.conf ${work_dir}/efiboot/loader/entries/
-    cp releng/archiso-x86_64-usb-default-nvidia.conf ${work_dir}/iso/loader/entries/
-    cp releng/archiso-x86_64-cd-default-nvidia.conf ${work_dir}/efiboot/loader/entries/
-    cp releng/archiso-x86_64-usb-default-toram.conf ${work_dir}/iso/loader/entries/
-    cp releng/archiso-x86_64-cd-default-toram.conf ${work_dir}/efiboot/loader/entries/
+
+sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-usb-default.conf
+
+sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default.conf
+
+sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default_nvidia.conf > $${work_dir}/iso/loader/entries/archiso-x86_64-usb-default_nvidia.conf
+
+sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default_nvidia.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default_nvidia.conf
+
+sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default_toram.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-usb-default_toram.conf
+
+sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default_toram.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default_toram.conf
+
 fi
 
 

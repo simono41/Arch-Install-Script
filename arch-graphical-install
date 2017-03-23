@@ -140,7 +140,7 @@ fi
 read -p "Sollen die Hacker-tools mitinstalliert werden?: [Y/n] " hacker
 if [ "$hacker" != "n" ]
   then
-    pacman -S wireshark-gtk hydra nmap pygtk aircrack-ng
+    pacman -S wireshark-gtk hydra nmap pygtk aircrack-ng bless
 fi
 #
 echo "Packetliste1 Ende"

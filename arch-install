@@ -119,14 +119,14 @@ y
 n
 
 
-+20G
-8300
++512M
+ef00
 p
 n
 
 
-+512M
-ef00
++20G
+8300
 p
 n
 
@@ -138,8 +138,8 @@ w
 y
 EOT
 echo ""
-mkfs.ext4 /dev/"$device"1
-mkfs.fat -F32 /dev/"$device"2
+mkfs.ext4 /dev/"$device"2
+mkfs.fat -F32 /dev/"$device"1
 mkswap /dev/"$device"3
 echo ""
 mount /dev/"$device"1 /mnt
@@ -190,7 +190,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$name"-o
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
   else
-tobootdevice=$(blkid -s PARTUUID -o value /dev/"$device"1)
+tobootdevice=$(blkid -s PARTUUID -o value /dev/"$device"2)
 
 mkdir -p /mnt/boot/EFI/systemd/
 mkdir -p /mnt/boot/EFI/BOOT/
@@ -229,13 +229,13 @@ n
 
 
 
-+20G
++512M
 p
 n
 
 
 
-+512M
++20G
 p
 n
 
@@ -247,8 +247,8 @@ w
 y
 EOT
 echo ""
-mkfs.ext4 /dev/"$device"1
-mkfs.fat /dev/"$device"2
+mkfs.ext4 /dev/"$device"2
+mkfs.fat /dev/"$device"1
 mkswap /dev/"$device"3
 echo ""
 mount /dev/"$device"1 /mnt

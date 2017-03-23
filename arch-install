@@ -135,9 +135,9 @@ mkfs.ext4 -L "$name"-os /dev/"$device"1
 mkfs.fat -F32 -n EFIBOOT  /dev/"$device"2
 mkswap -L p_swap /dev/"$device"3
 echo ""
-mount /dev/"$device"2 /mnt
+mount -L "$name"-os /mnt
 mkdir /mnt/boot
-mount /dev/"$device"1 /mnt/boot
+mount -L EFIBOOT /mnt/boot
 swapon -L p_swap
 echo ""
 if [ "$offline" != "n" ]
@@ -166,7 +166,7 @@ cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
   pacstrap -i /mnt base base-devel grub efibootmgr links 
 fi
 echo ""
-genfstab -U -p /mnt >> /mnt/etc/fstab
+genfstab -Lp /mnt >> /mnt/etc/fstab
 echo ""
 echo "$name"-os > /mnt/etc/hostname
 echo ""
@@ -244,9 +244,9 @@ mkfs.ext4 -L "$name"-os /dev/"$device"1
 mkfs.fat -F32 -n BOOT /dev/"$device"2
 mkswap -L p_swap /dev/"$device"3
 echo ""
-mount /dev/"$device"2 /mnt
+mount -L "$name"-os /mnt
 mkdir /mnt/boot
-mount /dev/"$device"1 /mnt/boot
+mount -L BOOT /mnt/boot
 swapon -L p_swap
 echo ""
 if [ "$offline" != "n" ]
@@ -275,7 +275,7 @@ cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
   pacstrap -i /mnt base base-devel grub efibootmgr links 
 fi
 echo ""
-genfstab -U -p /mnt >> /mnt/etc/fstab
+genfstab -Lp /mnt >> /mnt/etc/fstab
 echo ""
 echo "$name"-os > /mnt/etc/hostname
 echo ""

@@ -27,7 +27,7 @@ mkdir -p ${work_dir}/${arch}/airootfs
 read -p "Soll die Packete neu aufgebaut werden? [Y/n] " pacstrap
 if [ "$pacstrap" != "n" ]
   then
-    ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts 
+    ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts os-prober
 fi
 
 cd install

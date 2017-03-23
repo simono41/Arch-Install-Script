@@ -135,9 +135,9 @@ mkfs.ext4 -L "$name"-os /dev/"$device"1
 mkfs.fat -F32 -n EFIBOOT  /dev/"$device"2
 mkswap -L p_swap /dev/"$device"3
 echo ""
-mount /dev/"$device"2 /mnt
+mount -L "$name"-os /mnt
 mkdir /mnt/boot
-mount /dev/"$device"1 /mnt/boot
+mount -L EFIBOOT /mnt/boot
 swapon -L p_swap
 echo ""
 if [ "$offline" != "n" ]
@@ -244,9 +244,9 @@ mkfs.ext4 -L "$name"-os /dev/"$device"1
 mkfs.fat -F32 -n BOOT /dev/"$device"2
 mkswap -L p_swap /dev/"$device"3
 echo ""
-mount /dev/"$device"2 /mnt
+mount -L "$name"-os /mnt
 mkdir /mnt/boot
-mount /dev/"$device"1 /mnt/boot
+mount -L BOOT /mnt/boot
 swapon -L p_swap
 echo ""
 if [ "$offline" != "n" ]

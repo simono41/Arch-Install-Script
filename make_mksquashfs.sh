@@ -249,7 +249,7 @@ sed "s|%ISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default.conf
 
 sed "s|%ISO_LABEL%|${iso_label}|g;
-             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default_nvidia.conf > $${work_dir}/iso/loader/entries/archiso-x86_64-usb-default_nvidia.conf
+             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default_nvidia.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-usb-default_nvidia.conf
 
 sed "s|%ISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default_nvidia.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default_nvidia.conf

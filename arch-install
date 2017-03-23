@@ -61,7 +61,7 @@ if [ "$Partition" == "gpt" ]
   then
 read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/grub] : " boot
 fi
-read -p "Wie groß soll die System-Partition sein?: " speicher
+read -p "Wie groß soll die System-Partition sein?: z.b +20G " speicher
 echo "Name: $name"
 echo "Laufwerk: /dev/"$device""
 echo "Partionsart: $Partition"
@@ -127,7 +127,7 @@ p
 n
 
 
-+"$speicher"
+$[speicher}
 8300
 p
 n
@@ -237,7 +237,7 @@ n
 
 
 
-+"$speicher"
+$[speicher}
 p
 n
 

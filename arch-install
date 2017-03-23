@@ -55,6 +55,12 @@ if [ "$complete" == "n" ]
   echo "Installation nicht moeglich!!!"
   fi
 fi
+read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " nvidia
+read -p "Sollen Aktualisierungen installiert werden?: [Y/n] " aktu
+if [ "$Partition" == "gpt" ]
+  then
+read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/grub] : " boot
+fi
 echo "Name: $name"
 echo "Laufwerk: /dev/"$device""
 echo "Partionsart: $Partition"
@@ -62,6 +68,8 @@ echo "Passwort: $pass"
 echo "Komplette Installation: $complete"
 echo "Offline installation: $offline"
 echo "Architektur: $(uname -m)"
+echo "NVIDIA Driber: $nvidia"
+echo "Aktualisierungen: $aktu"
 #
 read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
 if [ "$sicherheitsabfrage" != "y" ]
@@ -95,7 +103,6 @@ echo "Eine Säuberung erhört die chance der Installation auf dem System."
 echo "Es kann eine Zeit lang dauern!"
 dd if=/dev/zero of=/dev/$device bs=64M count=10 status=progress
 #
-read -p "Sollen Aktualisierungen installiert werden?: [Y/n] " aktu
 if [ "$aktu" != "n" ]
    then
      pacman -Sy arch-install-scripts wget gdisk squashfs-tools dosfstools
@@ -154,7 +161,6 @@ fi
   echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
   echo "COMPRESSION=\"xz\"" >> /mnt/etc/mkinitcpio.conf
   echo ""
-  read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " nvidia
   echo ""
   if [ "$nvidia" == "y" ]
    then
@@ -177,7 +183,6 @@ $pass
 $pass
 EOT
 echo ""
-read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/grub] : " boot
 if [ "$boot" == "grub" ]
    then
 arch-chroot /mnt /bin/bash <<EOT
@@ -265,7 +270,6 @@ fi
   echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
   echo "COMPRESSION=\"xz\"" >> /mnt/etc/mkinitcpio.conf
   echo ""
-  read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " nvidia
   echo ""
   if [ "$nvidia" == "y" ]
    then

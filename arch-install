@@ -131,14 +131,14 @@ w
 y
 EOT
 echo ""
-mkfs.ext4 -L "$name"-os /dev/"$device"1
-mkfs.fat -F32 -n EFIBOOT  /dev/"$device"2
-mkswap -L p_swap /dev/"$device"3
+mkfs.ext4 /dev/"$device"1
+mkfs.fat -F32 /dev/"$device"2
+mkswap /dev/"$device"3
 echo ""
-mount -L "$name"-os /mnt
+mount /dev/"$device"1 /mnt
 mkdir /mnt/boot
-mount -L EFIBOOT /mnt/boot
-swapon -L p_swap
+mount /dev/"$device"2 /mnt/boot
+swapon /dev/"$device"3
 echo ""
 if [ "$offline" != "n" ]
   then
@@ -166,7 +166,7 @@ cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
   pacstrap -i /mnt base base-devel grub efibootmgr links 
 fi
 echo ""
-genfstab -Lp /mnt >> /mnt/etc/fstab
+genfstab -Up /mnt >> /mnt/etc/fstab
 echo ""
 echo "$name"-os > /mnt/etc/hostname
 echo ""
@@ -185,6 +185,8 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$name"-o
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
   else
+tobootdevice=$(blkid -s PARTUUID -o value /dev/"$device"1)
+
 mkdir -p /mnt/boot/EFI/systemd/
 mkdir -p /mnt/boot/EFI/BOOT/
 cp /mnt/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/systemd/systemd-bootx64.efi
@@ -194,12 +196,12 @@ mkdir -p /mnt/boot/loader/entries/
 echo "title    "$name"-os" > /mnt/boot/loader/entries/arch-uefi.conf
 echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi.conf
 echo "initrd   /initramfs-linux.img" >> /mnt/boot/loader/entries/arch-uefi.conf
-echo "options  root=LABEL="$name"-os rw resume=p_swap" >> /mnt/boot/loader/entries/arch-uefi.conf
+echo "options  root=PARTUUID=${tobootdevice} rw resume=p_swap" >> /mnt/boot/loader/entries/arch-uefi.conf
 
 echo "title    "$name"-os" > /mnt/boot/loader/entries/arch-uefi-fallback.conf
 echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
 echo "initrd   initrd   /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
-echo "options  root=LABEL="$name"-os rw resume=p_swap" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
+echo "options  root=PARTUUID=${tobootdevice} rw resume=p_swap" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
 
 echo "default   arch-uefi" > /mnt/boot/loader/loader.conf
 echo "timeout   1" >> /mnt/boot/loader/loader.conf
@@ -240,14 +242,14 @@ w
 y
 EOT
 echo ""
-mkfs.ext4 -L "$name"-os /dev/"$device"1
-mkfs.fat -F32 -n BOOT /dev/"$device"2
-mkswap -L p_swap /dev/"$device"3
+mkfs.ext4 /dev/"$device"1
+mkfs.fat /dev/"$device"2
+mkswap /dev/"$device"3
 echo ""
-mount -L "$name"-os /mnt
+mount /dev/"$device"1 /mnt
 mkdir /mnt/boot
-mount -L BOOT /mnt/boot
-swapon -L p_swap
+mount /dev/"$device"2 /mnt/boot
+swapon /dev/"$device"3
 echo ""
 if [ "$offline" != "n" ]
   then
@@ -275,7 +277,7 @@ cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
   pacstrap -i /mnt base base-devel grub efibootmgr links 
 fi
 echo ""
-genfstab -Lp /mnt >> /mnt/etc/fstab
+genfstab -Up /mnt >> /mnt/etc/fstab
 echo ""
 echo "$name"-os > /mnt/etc/hostname
 echo ""

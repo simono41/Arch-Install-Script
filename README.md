@@ -5,6 +5,8 @@ ZUGANGSDATEN : root = root
                
 Installieren auf Festplatte: "arch-install" in einem Terminal eingeben
 
+Starten der Grafischen Oberfläche "startx" eingeben
+
 # Arch-Install-Script
 Scripte für das installieren von Arch Linux auf PC und PI
 

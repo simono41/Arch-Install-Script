@@ -161,7 +161,7 @@ if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
 fi
   echo ""
   echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
-  echo "COMPRESSION=\"xz\"" >> /mnt/etc/mkinitcpio.conf
+  echo "COMPRESSION=\"gzip\"" >> /mnt/etc/mkinitcpio.conf
   echo ""
   echo ""
   if [ "$nvidia" == "y" ]
@@ -270,7 +270,7 @@ if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
 fi
   echo ""
   echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
-  echo "COMPRESSION=\"xz\"" >> /mnt/etc/mkinitcpio.conf
+  echo "COMPRESSION=\"gzip\"" >> /mnt/etc/mkinitcpio.conf
   echo ""
   echo ""
   if [ "$nvidia" == "y" ]

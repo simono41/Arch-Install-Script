@@ -1,6 +1,5 @@
 #!/bin/bash
 #
-set -ex
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2
    exit 1
@@ -90,7 +89,7 @@ fi
 read -p "Soll firefox mitinstalliert werden?: [Y/n] " firefox
 if [ "$firefox" != "n" ]
   then
-    pacman -S firefox
+    pacman -S firefox firefox-adblock-plus
 fi
 #
 read -p "Soll chromium mitinstalliert werden?: [Y/n] " chromium
@@ -259,20 +258,20 @@ echo "set desktops"
 read -p "Welcher desktop soll verwendet werden? all, lxde, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
 if [ "$rootstart" == "gnome" ]
   then    
-    pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
+    pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
     echo "exec gnome-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
     
     elif [ "$rootstart" == "gnome-flashback" ]
     then
-    pacman -S gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
+    pacman -S gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
     echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
     echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
     elif [ "$rootstart" == "cinnamon" ]
     then
-    pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager
+    pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
     echo "exec cinnamon-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
@@ -308,7 +307,7 @@ if [ "$rootstart" == "gnome" ]
 
     elif [ "$rootstart" == "all" ]
     then
-    pacman -S lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications gnome-flashback
+    pacman -S lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications gnome-flashback gnome-screensaver
     echo "exec startlxde" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
       else
@@ -316,7 +315,7 @@ if [ "$rootstart" == "gnome" ]
 fi
 #
 echo "Systemsprache und dienste werden erstellt!"
-#localectl set-x11-keymap de pc105 nodeadkeys
+# localectl set-x11-keymap de pc105 nodeadkeys
 # set system startup files
 echo "System startup files"
 if [ "$wifi" == "y" ]
@@ -381,6 +380,10 @@ locale-gen
 #
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+
+read -p "Sollen sonst noch Packete hinzugefügt werden? [Packetnamen] : " packete
+pacman -Syu $packete
+
 #
 #systemctl start ntpd
 #ntpd -gq

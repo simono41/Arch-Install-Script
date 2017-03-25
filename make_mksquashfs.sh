@@ -20,13 +20,12 @@ if [ "$system" != "n" ]
   then
 echo "Scripte werden heruntergeladen!"
 
-pacman -S xorriso cdrtools squashfs-tools wget dosfstools
-
 mkdir -p ${work_dir}/${arch}/airootfs
 
 read -p "Soll die Packete neu aufgebaut werden? [Y/n] " pacstrap
 if [ "$pacstrap" != "n" ]
   then
+pacman -S xorriso cdrtools squashfs-tools wget dosfstools
     ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts os-prober
 fi
 
@@ -38,7 +37,7 @@ cp archiso ../${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 cd ..
 
 echo "HOOKS=\"base udev block filesystems keyboard archiso\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-echo "COMPRESSION=\"xz\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+echo "COMPRESSION=\"gzip\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
 echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
 
@@ -81,12 +80,16 @@ if [ "$update" != "n" ]
     ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
 fi
 
+read -p "Soll das root Passwort werden? [Y/n] " rootpass
+if [ "$rootpass" != "n" ]
+  then   
 read -p "Welches Passwort soll der Root erhalten?: " pass
 ./arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
 passwd
 $pass
 $pass
 EOT
+fi
   else
 echo "Wird nicht neu aufgebaut!!!"
 echo "Es muss aber vorhanden sein für ein reibenloser Ablauf!!!"
@@ -123,7 +126,7 @@ else
 echo "airootfs.sfs nicht vorhanden!"
 fi
 
-mksquashfs ${work_dir}/${arch}/airootfs ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs -comp xz -b 1024K
+mksquashfs ${work_dir}/${arch}/airootfs ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs -comp gzip
 
 md5sum ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs > ${work_dir}/iso/${install_dir}/${arch}/airootfs.md5
 
@@ -185,7 +188,7 @@ rm ${work_dir}/iso/EFI/archiso/efiboot.img
 else
 echo "efiboot.img nicht vorhanden!"
 fi
-truncate -s 64M ${work_dir}/iso/EFI/archiso/efiboot.img
+truncate -s 128M ${work_dir}/iso/EFI/archiso/efiboot.img
 mkfs.fat -n ${iso_label}_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
 
 mount ${work_dir}/iso/EFI/archiso/efiboot.img ${work_dir}/efiboot

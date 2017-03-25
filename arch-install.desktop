@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Icon=/usr/share/pixmaps/install.png
+Name[de]=Betriebssystem Installieren
+Name[en]=Install the operating system
+Exec=sh -c "xterm -e /usr/bin/arch-install-non_root"
+Terminal=false
+Categories=ConsoleOnly;System;
+StartupNotify=false

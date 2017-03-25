@@ -49,8 +49,17 @@ cp pacman.conf ${work_dir}/${arch}/airootfs/etc/
 
 cp arch-graphical-install ${work_dir}/${arch}/airootfs/usr/bin/
 cp arch-install ${work_dir}/${arch}/airootfs/usr/bin/
+cp arch-install-non_root ${work_dir}/${arch}/airootfs/usr/bin/
+mkdir -p ${work_dir}/${arch}/airootfs/root/Schreibtisch/
+cp arch-install.desktop ${work_dir}/${arch}/airootfs/root/Schreibtisch/
+cp arch-install.desktop ${work_dir}/${arch}/airootfs/usr/share/applications/ 
 chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install
 chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install
+chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install-non_root
+chmod +x ${work_dir}/${arch}/airootfs/root/Schreibtisch/arch-install.desktop
+chmod +x ${work_dir}/${arch}/airootfs/usr/share/applications/arch-install.desktop
+
+cp install.png ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
 
 cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 

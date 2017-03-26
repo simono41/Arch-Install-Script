@@ -346,7 +346,7 @@ if [ "$offline" == "n" ]
     fi
     wget https://github.com/simono41/Arch-Install-Script/raw/master/arch-graphical-install -t 0 --output-document=/mnt/root/arch-graphical-install
     chmod +x /mnt/root/arch-graphical-install
-    arch-chroot /mnt /root/arch-graphical-install
+    arch-chroot /mnt /root/arch-graphical-install n
 fi
 echo ""
 echo "Fertig!!!"

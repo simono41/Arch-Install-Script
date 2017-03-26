@@ -14,9 +14,11 @@ if [ "$erstellen" == "y" ]
     # adduser
     echo "adduser "$user""
     useradd $user
+if [ "$1" != "n" ]; then
     mkdir -p /home/"$user"/Schreibtisch/
     cp /usr/share/applications/arch-install.desktop /home/"$user"/Schreibtisch/
     chmod +x /home/"$user"/Schreibtisch/arch-install.desktop
+fi
     chmod 770 -R -v /home/"$user"/
     chown -cR "$user" /home/"$user"/
 passwd $user <<EOT

@@ -44,11 +44,14 @@ read -p "Geben sie eine Festplatte an: sda,sdb,sdc: " device
 read -p "Welches Passwort soll der Root erhalten?: " pass
 echo "Mit einer Online Installation können sie ihr persönliches Linux gestalten :D"
 read -p "Soll eine Offline Installation durchgeführt werden?: [Y/n] " offline
+if [ "$offline" == "n" ]
+  then
+read -p "Sollen Aktualisierungen installiert werden?: [y/N] " aktu
+fi
 read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " nvidia
-read -p "Sollen Aktualisierungen installiert werden?: [Y/n] " aktu
 if [ "$Partition" == "gpt" ]
   then
-read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/grub] : " boot
+read -p "Soll mit systemd gebootet werden oder mit grub? [SYSTEMD/grub] : " boot
 fi
 read -p "Wie groß soll die System-Partition sein?: z.b +20G : " speicher
 echo "Name: $name"
@@ -101,7 +104,7 @@ echo "Eine Säuberung erhört die chance der Installation auf dem System."
 echo "Es kann eine Zeit lang dauern!"
 dd if=/dev/zero of=/dev/$device bs=64M count=10 status=progress
 #
-if [ "$aktu" != "n" ]
+if [ "$aktu" == "y" ]
    then
      pacman -Sy arch-install-scripts wget gdisk squashfs-tools dosfstools
 fi
@@ -211,7 +214,7 @@ echo "timeout   1" >> /mnt/boot/loader/loader.conf
 
 fi
 
-if [ "$aktu" != "n" ]
+if [ "$aktu" == "y" ]
    then
      arch-chroot /mnt pacman -Syu
 fi
@@ -306,7 +309,7 @@ $pass
 grub-install --target=i386-pc --recheck /dev/"$device"
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
-if [ "$aktu" != "n" ]
+if [ "$aktu" == "y" ]
    then
      arch-chroot /mnt pacman -Syu
 fi

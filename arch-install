@@ -54,11 +54,13 @@ if [ "$Partition" == "gpt" ]
 read -p "Soll mit systemd gebootet werden oder mit grub? [SYSTEMD/grub] : " boot
 fi
 read -p "Wie groß soll die System-Partition sein?: z.b +20G : " speicher
+if [ -z "$speicher" ]; then
+  speicher=+20G
+fi
 echo "Name: $name"
 echo "Laufwerk: /dev/"$device""
 echo "Partionsart: $Partition"
 echo "Passwort: $pass"
-echo "Komplette Installation: $complete"
 echo "Offline installation: $offline"
 echo "Architektur: $(uname -m)"
 echo "NVIDIA Driber: $nvidia"

@@ -310,6 +310,7 @@ $pass
 grub-install --target=i386-pc --recheck /dev/"$device"
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
+echo ""
 if [ "$aktu" != "n" ]
    then
      arch-chroot /mnt pacman -Syu
@@ -347,5 +348,8 @@ if [ "$complete" != "n" ]
     chmod +x /mnt/root/arch-graphical-install
     arch-chroot /mnt /root/arch-graphical-install
 fi
+echo ""
+umount /mnt/boot
+umount /mnt
 echo ""
 echo "Fertig!!!"

@@ -383,6 +383,8 @@ ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 read -p "Sollen sonst noch Packete hinzugefügt werden? [Packetnamen] : " packete
 pacman -Syu $packete
+read -p "Sollen sonst noch Packete entfernt werden? [Packetnamen] : " rpackete
+pacman -Rss $rpackete
 
 #
 #systemctl start ntpd

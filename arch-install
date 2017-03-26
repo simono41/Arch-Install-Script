@@ -220,6 +220,21 @@ if [ "$aktu" != "n" ]
      arch-chroot /mnt pacman -Syu
 fi
 echo ""
+if [ -f /mnt/usr/share/applications/arch-install.desktop ]
+  then
+    rm /mnt/usr/share/applications/arch-install.desktop
+fi
+echo ""
+if [ -f /mnt/root/Schreibtisch/arch-install.desktop ]
+  then
+    rm /mnt/root/Schreibtisch/arch-install.desktop
+fi
+echo ""
+if [ -f /mnt/home/user/Schreibtisch/arch-install.desktop ]
+  then
+    rm /mnt/home/user/Schreibtisch/arch-install.desktop
+fi
+echo ""
 echo "Fertig"
 elif [ "$Partition" == "mbr" ]
   then
@@ -298,6 +313,20 @@ EOT
 if [ "$aktu" != "n" ]
    then
      arch-chroot /mnt pacman -Syu
+fi
+if [ -f /mnt/usr/share/applications/arch-install.desktop ]
+  then
+    rm /mnt/usr/share/applications/arch-install.desktop
+fi
+echo ""
+if [ -f /mnt/root/Schreibtisch/arch-install.desktop ]
+  then
+    rm /mnt/root/Schreibtisch/arch-install.desktop
+fi
+echo ""
+if [ -f /mnt/home/user/Schreibtisch/arch-install.desktop ]
+  then
+    rm /mnt/home/user/Schreibtisch/arch-install.desktop
 fi
 echo ""
 echo "Fertig"

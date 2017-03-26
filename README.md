@@ -1,5 +1,7 @@
 # Finale Release am 27.03.17
 
+URL : https://sourceforge.net/projects/simon-os/?source=directory
+
 # WICHTIG
 
 ZUGANGSDATEN : root = root

@@ -280,10 +280,11 @@ sed "s|%ISO_LABEL%|${iso_label}|g;
 
 fi
 
-
-
-read -p "efiboot jetzt trennen!"
+read -p "efiboot jetzt trennen? [Y/n] "
+if [ "$trennen" != "n" ]
+then
 umount -d ${work_dir}/efiboot
+fi
 fi
 
 read -p "Soll das Image jetzt gemacht werden? [Y/n] " image

@@ -43,25 +43,14 @@ fdisk -l
 read -p "Geben sie eine Festplatte an: sda,sdb,sdc: " device
 read -p "Welches Passwort soll der Root erhalten?: " pass
 echo "Mit einer Online Installation können sie ihr persönliches Linux gestalten :D"
-read -p "Soll eine Online Installation durchgeführt werden?: [Y/n] " complete
-if [ "$complete" == "n" ]
-  then
-  echo "FUNKTIONIERT NUR MIT SIMON-LINUX!!!"
-  read -p "Soll eine Offline Installation durchgeführt werden?: [Y/n] " offline
-  if [ "$offline" != "n" ]
-  then
-  echo "Offline installation wird durchgefuert!!!"
-  else
-  echo "Installation nicht moeglich!!!"
-  fi
-fi
+read -p "Soll eine Offline Installation durchgeführt werden?: [Y/n] " offline
 read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " nvidia
 read -p "Sollen Aktualisierungen installiert werden?: [Y/n] " aktu
 if [ "$Partition" == "gpt" ]
   then
 read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/grub] : " boot
 fi
-read -p "Wie groß soll die System-Partition sein?: z.b +20G " speicher
+read -p "Wie groß soll die System-Partition sein?: z.b +20G : " speicher
 echo "Name: $name"
 echo "Laufwerk: /dev/"$device""
 echo "Partionsart: $Partition"
@@ -88,6 +77,13 @@ echo "nicht gemountet"
 fi
 #
 if cat /proc/mounts | grep /dev/"$device"2 > /dev/null; then
+echo "gemountet"
+umount /dev/"$device"2
+else
+echo "nicht gemountet"
+fi
+#
+if cat /proc/mounts | grep /dev/"$device"3 > /dev/null; then
 echo "gemountet"
 umount /dev/"$device"2
 else
@@ -310,7 +306,6 @@ $pass
 grub-install --target=i386-pc --recheck /dev/"$device"
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
-echo ""
 if [ "$aktu" != "n" ]
    then
      arch-chroot /mnt pacman -Syu
@@ -336,7 +331,7 @@ echo "Fertig"
     exit 1
 fi
 echo ""
-if [ "$complete" != "n" ]
+if [ "$offline" == "n" ]
   then
     if [ -f /root/arch-graphical-install ]
     then
@@ -348,8 +343,5 @@ if [ "$complete" != "n" ]
     chmod +x /mnt/root/arch-graphical-install
     arch-chroot /mnt /root/arch-graphical-install
 fi
-echo ""
-umount /mnt/boot
-umount /mnt
 echo ""
 echo "Fertig!!!"

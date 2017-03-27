@@ -350,4 +350,9 @@ if [ "$offline" == "n" ]
 fi
 echo ""
 echo "Fertig!!!"
-reboot
+read -p "Installation erfolgreich Abgeschlossen. Wollen sie den PC NEUSTARTEN?: [y/N] " sicherheitsabfrage1
+if [ "$sicherheitsabfrage1" != "y" ]
+   then
+     echo "starte neu"
+     reboot
+fi

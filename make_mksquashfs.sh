@@ -6,8 +6,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-iso_name=siri-os
-iso_label="SIRI_OS"
+iso_name=simon-os
+iso_label="SIMON_OS"
 iso_version=$(date +%Y.%m.%d)
 work_dir=work
 out_dir=out

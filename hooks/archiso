@@ -193,7 +193,8 @@ archiso_mount_handler() {
 
     mkdir -p /run/archiso/cowspace
     if [[ -n "${cow_device}" ]]; then
-        _mnt_dev "${cow_device}" "/run/archiso/cowspace" "-r" "${cow_flags}"
+        msg ":: Mounting /run/archiso/cowspace (tmpfs) filesystem, device=${cow_device}..."
+        mount "-r" "${cow_device}" "/run/archiso/cowspace"
         echo $(readlink -f ${cow_device}) >> /run/archiso/used_block_devices
         mount -o remount,rw "/run/archiso/cowspace"
     else

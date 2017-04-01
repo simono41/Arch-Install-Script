@@ -33,7 +33,7 @@ fi
 #
 if cat /proc/mounts | grep /dev/${system1}3 > /dev/null; then
 echo "gemountet"
-umount /dev/"$device"2
+umount /dev/"$device"3
 else
 echo "nicht gemountet"
 fi

@@ -340,6 +340,29 @@ read -p "Soll das Image jetzt eine btrfs Partition zum Offline-Schreiben erhalte
 if [ "$btrfs" != "n" ]
 then
 
+#
+if cat /proc/mounts | grep /dev/${system1}1 > /dev/null; then
+echo "gemountet"
+umount /dev/"$device"1
+else
+echo "nicht gemountet"
+fi
+#
+if cat /proc/mounts | grep /dev/${system1}2 > /dev/null; then
+echo "gemountet"
+umount /dev/"$device"2
+else
+echo "nicht gemountet"
+fi
+#
+if cat /proc/mounts | grep /dev/${system1}3 > /dev/null; then
+echo "gemountet"
+umount /dev/"$device"2
+else
+echo "nicht gemountet"
+fi
+#
+
 fdisk -W always /dev/${device} <<EOT
 p
 n

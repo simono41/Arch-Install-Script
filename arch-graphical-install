@@ -147,6 +147,13 @@ if [ "$hacker" != "n" ]
     pacman -S wireshark-gtk hydra nmap pygtk aircrack-ng bless
 fi
 #
+read -p "Sollen docker mitinstalliert werden?: [Y/n] " docker
+if [ "$docker" != "n" ]
+  then
+    pacman -S docker
+    systemctl enable docker
+fi
+#
 echo "Packetliste1 Ende"
 echo "Packetliste2 Start"
 echo "Zusatspackete werden Installiert!"

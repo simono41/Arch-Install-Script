@@ -26,7 +26,7 @@ read -p "Soll die Packete neu aufgebaut werden? [Y/n] " pacstrap
 if [ "$pacstrap" != "n" ]
   then
 pacman -S xorriso cdrtools squashfs-tools wget dosfstools
-    ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts os-prober
+    ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts os-prober btrfs-progs
 fi
 
 cd install
@@ -43,6 +43,9 @@ echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
 
 cp make_mksquashfs.sh ${work_dir}/${arch}/airootfs/usr/bin/make_mksquashfs
 chmod +x ${work_dir}/${arch}/airootfs/usr/bin/make_mksquashfs
+
+cp make_mksquashfs.sh ${work_dir}/${arch}/airootfs/usr/bin/write_cowspace
+chmod +x ${work_dir}/${arch}/airootfs/usr/bin/write_cowspace
 
 cp pacman.conf ${work_dir}/${arch}/airootfs/etc/
 
@@ -77,6 +80,12 @@ if [ "$update" != "n" ]
 
     ./arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
 
+    ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
+fi
+
+read -p "Soll der Kernel aktualisiert werden? [Y/n] " update1
+if [ "$update1" != "n" ]
+  then   
     ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
 fi
 
@@ -278,6 +287,11 @@ sed "s|%ISO_LABEL%|${iso_label}|g;
 sed "s|%ISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default_toram.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default_toram.conf
 
+sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default_noimage.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-usb-default_noimage.conf
+
+sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default_noimage.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default_noimage.conf
 fi
 
 read -p "efiboot jetzt trennen? [Y/n] "

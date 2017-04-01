@@ -39,6 +39,8 @@ echo "nicht gemountet"
 fi
 #
 
+read -p "Bitte enter druecken zum fortfahren"
+
 fdisk -W always ${system1} <<EOT
 p
 n
@@ -50,5 +52,7 @@ p
 w
 y
 EOT
+
+sleep 2
 
 mkfs.btrfs -L SIM_COW ${system1}3

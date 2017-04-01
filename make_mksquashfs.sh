@@ -391,6 +391,8 @@ w
 y
 EOT
 
+sleep 2
+
 mkfs.btrfs -L SIM_COW /dev/${device}3
 
 fi

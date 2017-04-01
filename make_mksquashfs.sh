@@ -36,7 +36,7 @@ cd hooks
 cp archiso ../${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 cd ..
 
-echo "HOOKS=\"base udev block filesystems keyboard archiso\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+echo "HOOKS=\"base udev block filesystems keyboard archiso btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 echo "COMPRESSION=\"gzip\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
 echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
@@ -336,7 +336,27 @@ read -p "Wo das Image jetzt geschrieben werden? [sda/sdb/sdc/sdd] " device
 if [ "$device" != "n" ]
 then
 dd bs=4M if=out/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso of=/dev/${device} status=progress && sync
+read -p "Soll das Image jetzt eine btrfs Partition zum Offline-Schreiben erhalten? [Y/n] " btrfs
+if [ "$btrfs" != "n" ]
+then
+
+fdisk -W always /dev/${device} <<EOT
+p
+n
+
+
+
+
+p
+w
+y
+EOT
+
+mkfs.btrfs -L SIM_COW /dev/${device}3
+
 fi
+fi
+
 fi
 
 fi

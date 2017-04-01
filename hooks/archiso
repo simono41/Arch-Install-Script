@@ -184,19 +184,20 @@ archiso_mount_handler() {
         fi
     fi
 
+    mkdir -p /run/archiso/copytoram
     if [[ "${copytoram}" == "y" ]]; then
         msg ":: Mounting /run/archiso/copytoram (tmpfs) filesystem, size=${copytoram_size}"
-        mkdir -p /run/archiso/copytoram
+        
         mount -t tmpfs -o "size=${copytoram_size}",mode=0755 copytoram /run/archiso/copytoram
     fi
 
+    mkdir -p /run/archiso/cowspace
     if [[ -n "${cow_device}" ]]; then
         _mnt_dev "${cow_device}" "/run/archiso/cowspace" "-r" "${cow_flags}"
         echo $(readlink -f ${cow_device}) >> /run/archiso/used_block_devices
         mount -o remount,rw "/run/archiso/cowspace"
     else
         msg ":: Mounting /run/archiso/cowspace (tmpfs) filesystem, size=${cow_spacesize}..."
-        mkdir -p /run/archiso/cowspace
         mount -t tmpfs -o "size=${cow_spacesize}",mode=0755 cowspace /run/archiso/cowspace
     fi
     mkdir -p -m 0700 "/run/archiso/cowspace/${cow_directory}"

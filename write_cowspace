@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ex
+
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2
    exit 1
@@ -36,21 +38,17 @@ else
 echo "nicht gemountet"
 fi
 #
-if cat /proc/mounts | grep /mnt > /dev/null; then
-echo "gemountet"
-umount /mnt
-else
-echo "nicht gemountet"
-fi
-#
 
-fdisk ${system1} <<EOT
+fdisk -W always ${system1} <<EOT
+p
 n
+
 
 
 
 p
 w
+y
 EOT
 
 mkfs.btrfs -L SIM_COW ${system1}3

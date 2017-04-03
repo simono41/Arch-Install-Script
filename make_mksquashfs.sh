@@ -22,11 +22,18 @@ echo "Scripte werden heruntergeladen!"
 
 mkdir -p ${work_dir}/${arch}/airootfs
 
-read -p "Soll die Packete neu aufgebaut werden? [Y/n] " pacstrap
+read -p "Soll die base Packete neu aufgebaut werden? [Y/n] " pacstrap
 if [ "$pacstrap" != "n" ]
   then
 pacman -S xorriso cdrtools squashfs-tools wget dosfstools
     ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts os-prober btrfs-progs
+else
+read -p "Sollen alle Packete neu aufgebaut werden? [Y/n] " pacstrap
+if [ "$pacstrap" != "n" ]
+  then
+pacman -S xorriso cdrtools squashfs-tools wget dosfstools
+    ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts os-prober btrfs-progs pulseaudio pulseaudio-alsa devtools xorriso cdrtools brasero libisoburn libisofs gdisk squashfs-tools simple-scan ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver teeworlds audacity qemu qemu-arch-extra cups hplip python-pyqt5 gedit youtube-dl flac ffmpeg gnuchess cdrdao goobox links x11vnc tigervnc htop git dosfstools lm_sensors sudo openssl acpid ntp dbus avahi cronie wget net-tools procps pacman file-roller zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config alsa-utils mplayer freeciv mumble gparted vlc libdvdread libdvdcss cdrtools libdvdnav transmission-gtk transmission-cli scratch python-pip python2-pip geckodriver inkscape pigz pixz macchanger gimp flashplugin minetest openssh firefox firefox-adblock-plus chromium netbeans jdk8-openjdk murmur libreoffice-fresh libreoffice-fresh-de snapd apache wireshark-gtk hydra nmap pygtk aircrack-ng bless docker nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine obs-studio lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications gnome-flashback gnome-screensaver
+fi
 fi
 
 cd install
@@ -103,8 +110,8 @@ fi
 echo "Wird nicht neu aufgebaut!!!"
 echo "Es muss aber vorhanden sein für ein reibenloser Ablauf!!!"
 fi
-echo "Jetzt können sie ihre eigenen Packete hinzufügen:D"
-read -p "Wollen sie automatisch eigene Packete hinzufügen? [Y/n] " packete
+echo "Jetzt können sie ihr Betriebssystem nach ihren Belieben anpassen:D"
+read -p "Wollen sie ihr Betriebssystem nach Belieben anpassen? [Y/n] " packete
 if [ "$packete" != "n" ]
   then
     ./arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install

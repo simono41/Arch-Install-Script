@@ -22,17 +22,22 @@ echo "Scripte werden heruntergeladen!"
 
 mkdir -p ${work_dir}/${arch}/airootfs
 
-read -p "Soll die base Packete neu aufgebaut werden? [Y/n] " pacstrap
+read -p "Sollen die base Packete neu aufgebaut werden? [Y/n] " pacstrap
 if [ "$pacstrap" != "n" ]
   then
-#pacman-key --init
-#pacman-key --populate archlinux
-#pacman-key --refresh-keys
-#pacman -S xorriso cdrtools squashfs-tools wget dosfstools
+    pacman -S xorriso cdrtools squashfs-tools wget dosfstools
     ./pacstrap -c -d -G -i -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools alsa-utils devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz lxde networkmanager network-manager-applet
-#    ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
-#    ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
-#    ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
+    ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
+    ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
+    ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
+fi
+
+read -p "Sollen die keys neu aufgebaut werden? [Y/n] " pacstrap
+if [ "$pacstrap" != "n" ]
+  then
+./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
+./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
+./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
 fi
 
 cp install/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso

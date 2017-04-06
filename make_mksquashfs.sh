@@ -67,52 +67,6 @@ cp install.png ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
 
 cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 
-read -p "Soll das System aktualisiert werden? [Y/n] " update
-if [ "$update" != "n" ]
-  then   
-read -p "Soll das Packetsystem aktualisiert werden? [Y/n] " update
-if [ "$update" != "n" ]
-  then   
-    ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
-    ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
-    ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
-
-    ./arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
-fi
-    ./arch-chroot ${work_dir}/${arch}/airootfs systemctl enable acpid
-    ./arch-chroot ${work_dir}/${arch}/airootfs systemctl enable ntpd
-    ./arch-chroot ${work_dir}/${arch}/airootfs systemctl enable avahi-daemon
-    ./arch-chroot ${work_dir}/${arch}/airootfs systemctl enable NetworkManager.service
-    ./arch-chroot ${work_dir}/${arch}/airootfs systemctl enable getty@tty1
-
-    mkdir -p ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d
-    echo "[Service]" > ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d/autologin.conf
-    echo "ExecStart=" >> ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d/autologin.conf
-    echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d/autologin.conf
-
-    echo "[Service]" > ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d/nodisallocate.conf
-    echo "TTYVTDisallocate=no" >> ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d/nodisallocate.conf
-
-    echo "exec startlxde" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
-
-    ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
-fi
-
-read -p "Soll der Kernel aktualisiert werden? [Y/n] " update1
-if [ "$update1" != "n" ]
-  then   
-    ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
-fi
-
-read -p "Soll das root Passwort werden? [Y/n] " rootpass
-if [ "$rootpass" != "n" ]
-  then   
-read -p "Welches Passwort soll der Root erhalten?: " pass
-./arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
-passwd
-$pass
-$pass
-EOT
 fi
   else
 echo "Wird nicht neu aufgebaut!!!"
@@ -215,7 +169,7 @@ fi
 truncate -s 128M ${work_dir}/iso/EFI/archiso/efiboot.img
 mkfs.fat -n ${iso_label}_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
 
-mount ${work_dir}/iso/EFI/archiso/efiboot.img ${work_dir}/efiboot
+mount -t vfat -o loop ${work_dir}/iso/EFI/archiso/efiboot.img ${work_dir}/efiboot
 
 mkdir -p ${work_dir}/efiboot/EFI/boot
 mkdir -p ${work_dir}/efiboot/EFI/archiso

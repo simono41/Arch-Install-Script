@@ -504,4 +504,13 @@ pacman -Rss $rpackete
 #
 #xset m 2/1 0
 #
+
+mkinitcpio -p linux
+
+read -p "Wie soll das root passwort sein ? : " pass
+passwd <<EOT
+$pass
+$pass
+EOT
+
 echo "Fertig!!!"

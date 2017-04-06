@@ -16,26 +16,28 @@ fi
 #system1=$(echo "${system:0:8}")
 #echo $system1
 
+fdisk -l
+
 read -p "Wie heißt das Laufwerk wo die BTRFS partition erstellt werden soll? sda,sdb,sdc : " system1
 
 #
 if cat /proc/mounts | grep /dev/${system1}1 > /dev/null; then
 echo "gemountet"
-umount /dev/"$device"1
+umount /dev/${system1}1
 else
 echo "nicht gemountet"
 fi
 #
 if cat /proc/mounts | grep /dev/${system1}2 > /dev/null; then
 echo "gemountet"
-umount /dev/"$device"2
+umount /dev/${system1}2
 else
 echo "nicht gemountet"
 fi
 #
 if cat /proc/mounts | grep /dev/${system1}3 > /dev/null; then
 echo "gemountet"
-umount /dev/"$device"3
+umount /dev/${system1}3
 else
 echo "nicht gemountet"
 fi
@@ -43,7 +45,7 @@ fi
 
 read -p "Bitte enter druecken zum fortfahren"
 
-fdisk -W always ${system1} <<EOT
+fdisk -W always /dev/${system1} <<EOT
 p
 n
 
@@ -57,4 +59,4 @@ EOT
 
 sleep 2
 
-mkfs.btrfs -L cow_device ${system1}3
+mkfs.btrfs -L cow_device /dev/${system1}3

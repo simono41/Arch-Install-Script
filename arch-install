@@ -108,7 +108,7 @@ dd if=/dev/zero of=/dev/$device bs=64M count=10 status=progress
 #
 if [ "$aktu" == "y" ]
    then
-     pacman -Sy arch-install-scripts wget gdisk squashfs-tools dosfstools
+     pacman -Sy arch-install-scripts wget gdisk squashfs-tools dosfstools btrfs-progs
 fi
 #
 if [ "$Partition" == "gpt" ]
@@ -141,7 +141,7 @@ w
 y
 EOT
 echo ""
-mkfs.ext4 /dev/"$device"2
+mkfs.btrfs /dev/"$device"2
 mkfs.fat -F32 /dev/"$device"1
 mkswap /dev/"$device"3
 echo ""
@@ -265,7 +265,7 @@ w
 y
 EOT
 echo ""
-mkfs.ext4 /dev/"$device"2
+mkfs.btrfs /dev/"$device"2
 mkfs.fat /dev/"$device"1
 mkswap /dev/"$device"3
 echo ""

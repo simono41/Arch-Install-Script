@@ -6,8 +6,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-iso_name=simon-os
-iso_label="SIMON_OS"
+iso_name=sim-os
+iso_label="SIM_OS"
 iso_version=$(date +%Y.%m.%d)
 work_dir=work
 out_dir=out
@@ -26,14 +26,7 @@ read -p "Soll die base Packete neu aufgebaut werden? [Y/n] " pacstrap
 if [ "$pacstrap" != "n" ]
   then
 pacman -S xorriso cdrtools squashfs-tools wget dosfstools
-    ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts os-prober btrfs-progs
-else
-read -p "Sollen alle Packete neu aufgebaut werden? [Y/n] " pacstrap
-if [ "$pacstrap" != "n" ]
-  then
-pacman -S xorriso cdrtools squashfs-tools wget dosfstools
-    ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts os-prober btrfs-progs pulseaudio pulseaudio-alsa devtools xorriso cdrtools brasero libisoburn libisofs gdisk squashfs-tools simple-scan ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver teeworlds audacity qemu qemu-arch-extra cups hplip python-pyqt5 gedit youtube-dl flac ffmpeg gnuchess cdrdao goobox links x11vnc tigervnc htop git dosfstools lm_sensors sudo openssl acpid ntp dbus avahi cronie wget net-tools procps pacman file-roller zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config alsa-utils mplayer freeciv mumble gparted vlc libdvdread libdvdcss cdrtools libdvdnav transmission-gtk transmission-cli scratch python-pip python2-pip geckodriver inkscape pigz pixz macchanger gimp flashplugin minetest openssh firefox firefox-adblock-plus chromium netbeans jdk8-openjdk murmur libreoffice-fresh libreoffice-fresh-de snapd apache wireshark-gtk hydra nmap pygtk aircrack-ng bless docker nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine obs-studio lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications gnome-flashback gnome-screensaver
-fi
+    ./pacstrap -c -d -G -i -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts os-prober btrfs-progs dosfstools alsa-utils devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz lxde networkmanager network-manager-applet
 fi
 
 cd install
@@ -81,11 +74,30 @@ cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 read -p "Soll das System aktualisiert werden? [Y/n] " update
 if [ "$update" != "n" ]
   then   
+read -p "Soll das Packetsystem aktualisiert werden? [Y/n] " update
+if [ "$update" != "n" ]
+  then   
     ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
     ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
     ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
 
     ./arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
+fi
+    ./arch-chroot ${work_dir}/${arch}/airootfs systemctl enable acpid
+    ./arch-chroot ${work_dir}/${arch}/airootfs systemctl enable ntpd
+    ./arch-chroot ${work_dir}/${arch}/airootfs systemctl enable avahi-daemon
+    ./arch-chroot ${work_dir}/${arch}/airootfs systemctl enable NetworkManager.service
+    ./arch-chroot ${work_dir}/${arch}/airootfs systemctl enable getty@tty1
+
+    mkdir -p ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d
+    echo "[Service]" > ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d/autologin.conf
+    echo "ExecStart=" >> ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d/autologin.conf
+    echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d/autologin.conf
+
+    echo "[Service]" > ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d/nodisallocate.conf
+    echo "TTYVTDisallocate=no" >> ${work_dir}/${arch}/airootfs/etc/systemd/system/getty\@tty1.service.d/nodisallocate.conf
+
+    echo "exec startlxde" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
 
     ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
 fi
@@ -400,7 +412,7 @@ EOT
 
 sleep 2
 
-mkfs.btrfs -L SIM_COW /dev/${device}3
+mkfs.btrfs -L cow_device /dev/${device}3
 
 fi
 

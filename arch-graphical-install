@@ -76,10 +76,112 @@ if [ "$grund" != "n" ]
     then
     pacman-key --refresh-keys
     fi
-    pacman -Syu base base-devel pulseaudio pulseaudio-alsa devtools xorriso cdrtools brasero libisoburn libisofs gdisk squashfs-tools simple-scan ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver teeworlds audacity qemu qemu-arch-extra cups hplip python-pyqt5 gedit youtube-dl flac ffmpeg gnuchess cdrdao goobox links x11vnc tigervnc htop git dosfstools lm_sensors sudo arch-install-scripts openssl acpid ntp dbus avahi cronie wget net-tools procps pacman file-roller zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config alsa-utils mplayer freeciv mumble gparted vlc libdvdread libdvdcss cdrtools libdvdnav transmission-gtk transmission-cli scratch python-pip python2-pip geckodriver inkscape pigz pixz macchanger gimp flashplugin minetest btrfs-progs
+    pacman -Syu base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts os-prober btrfs-progs dosfstools pulseaudio alsa-utils pulseaudio-alsa devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz
 fi
 #
 echo "Grundpackete2 werden installiert!"
+read -p "Soll brasero mitinstalliert werden?: [Y/n] " brasero
+if [ "$brasero" != "n" ]
+  then
+    pacman -S brasero
+fi
+#
+read -p "Soll simple-scan mitinstalliert werden?: [Y/n] " simple
+if [ "$simple" != "n" ]
+  then
+    pacman -S simple-scan
+fi
+#
+read -p "Soll pulseaudio mitinstalliert werden?: [Y/n] " pulseaudio
+if [ "$pulseaudio" != "n" ]
+  then
+    pacman -S pulseaudio pulseaudio-alsa
+fi
+#
+read -p "Soll inkscape mitinstalliert werden?: [Y/n] " inkscape
+if [ "$simple" != "n" ]
+  then
+    pacman -S inkscape
+fi
+#
+read -p "Soll teeworlds mitinstalliert werden?: [Y/n] " teeworlds
+if [ "$teeworlds" != "n" ]
+  then
+    pacman -S openssh
+fi
+#
+read -p "Soll audacity mitinstalliert werden?: [Y/n] " audacity
+if [ "$audacity" != "n" ]
+  then
+    pacman -S audacity
+fi
+#
+read -p "Soll qemu mitinstalliert werden?: [Y/n] " qemu
+if [ "$qemu" != "n" ]
+  then
+    pacman -S qemu qemu-arch-extra
+fi
+#
+read -p "Soll cups mitinstalliert werden?: [Y/n] " cups
+if [ "$cups" != "n" ]
+  then
+    pacman -S cups hplip python-pyqt5
+    systemctl enable org.cups.cupsd.service
+fi
+#
+read -p "Soll youtube-dl mitinstalliert werden?: [Y/n] " youtube
+if [ "$youtube" != "n" ]
+  then
+    pacman -S youtube-dl flac ffmpeg
+fi
+#
+read -p "Soll freeciv mitinstalliert werden?: [Y/n] " freeciv
+if [ "$freeciv" != "n" ]
+  then
+    pacman -S freeciv
+fi
+#
+read -p "Soll vlc mitinstalliert werden?: [Y/n] " vlc
+if [ "$vlc" != "n" ]
+  then
+    pacman -S vlc libdvdread libdvdcss libdvdnav
+fi
+#
+read -p "Soll transmission mitinstalliert werden?: [Y/n] " transmission
+if [ "$transmission" != "n" ]
+  then
+    pacman -S transmission-gtk transmission-cli
+fi
+#
+read -p "Soll scratch mitinstalliert werden?: [Y/n] " scratch
+if [ "$scratch" != "n" ]
+  then
+    pacman -S scratch
+fi
+#
+read -p "Soll geckodriver mitinstalliert werden?: [Y/n] " geckodriver
+if [ "$geckodriver" != "n" ]
+  then
+    pacman -S python-pip python2-pip geckodriver
+fi
+#
+read -p "Soll macchanger mitinstalliert werden?: [Y/n] " macchanger
+if [ "$macchanger" != "n" ]
+  then
+    pacman -S macchanger
+fi
+#
+read -p "Soll gimp mitinstalliert werden?: [Y/n] " gimp
+if [ "$gimp" != "n" ]
+  then
+    pacman -S gimp
+fi
+#
+read -p "Soll minetest mitinstalliert werden?: [Y/n] " minetest
+if [ "$minetest" != "n" ]
+  then
+    pacman -S minetest
+fi
 #
 read -p "Soll openssh mitinstalliert werden?: [Y/n] " openssh
 if [ "$openssh" != "n" ]
@@ -91,7 +193,7 @@ fi
 read -p "Soll firefox mitinstalliert werden?: [Y/n] " firefox
 if [ "$firefox" != "n" ]
   then
-    pacman -S firefox firefox-adblock-plus
+    pacman -S firefox firefox-adblock-plus flashplugin
 fi
 #
 read -p "Soll chromium mitinstalliert werden?: [Y/n] " chromium
@@ -112,10 +214,10 @@ if [ "$netbeans" != "n" ]
 fi
 fi
 #
-read -p "Soll murmur mitinstalliert werden?: [Y/n] " murmur
+read -p "Soll mumble mitinstalliert werden?: [Y/n] " murmur
 if [ "$murmur" != "n" ]
   then
-    pacman -S murmur
+    pacman -S murmur mumble
     systemctl enable murmur
     read -p "Wie soll das Passwort vom murmur-server sein?: " murmurpass
     murmurd -ini /etc/murmur.ini -supw $murmurpass
@@ -267,7 +369,7 @@ echo "set desktops"
 read -p "Welcher desktop soll verwendet werden? all, lxde, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
 if [ "$rootstart" == "gnome" ]
   then    
-    pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
+    pacman -S gnome gnome-extra gnuchess goobox file-roller network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
     echo "exec gnome-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
     
@@ -316,7 +418,7 @@ if [ "$rootstart" == "gnome" ]
 
     elif [ "$rootstart" == "all" ]
     then
-    pacman -S lxde cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications gnome-flashback gnome-screensaver
+    pacman -S lxde cinnamon gnome gnome-extra file-roller gnuchess goobox network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications gnome-flashback gnome-screensaver
     echo "exec startlxde" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
       else
@@ -370,7 +472,6 @@ fi
 systemctl enable acpid
 systemctl enable ntpd
 systemctl enable avahi-daemon
-systemctl enable org.cups.cupsd.service
 # set systemconfiguration
 echo "systemconfiguration"
 #

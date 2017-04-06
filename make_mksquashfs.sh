@@ -86,7 +86,7 @@ chmod +x ${work_dir}/${arch}/airootfs/usr/bin/genfstab
 
 echo "exec startlxde" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
 
-mkinitcpio -p linux
+./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
 
   else
 echo "Wird nicht neu aufgebaut!!!"

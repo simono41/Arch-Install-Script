@@ -72,10 +72,6 @@ read -p "Sollen die Grundpackete installiert werden?: [Y/n] " grund
 if [ "$grund" != "n" ]
   then
     echo "Grundpackete werden installiert!"
-    if [ "$pi" != "y" ]
-    then
-    pacman-key --refresh-keys
-    fi
     pacman -Syu base base-devel syslinux efibootmgr efitools grub intel-ucode arch-install-scripts os-prober btrfs-progs dosfstools pulseaudio alsa-utils pulseaudio-alsa devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz
 fi
 #

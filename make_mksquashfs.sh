@@ -70,9 +70,10 @@ cp install.png ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
 
 cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 
+echo "exec startlxde" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
+
 mkinitcpio -p linux
 
-fi
   else
 echo "Wird nicht neu aufgebaut!!!"
 echo "Es muss aber vorhanden sein für ein reibenloser Ablauf!!!"

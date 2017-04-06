@@ -214,8 +214,8 @@ if [ "$netbeans" != "n" ]
 fi
 fi
 #
-read -p "Soll mumble mitinstalliert werden?: [Y/n] " murmur
-if [ "$murmur" != "n" ]
+read -p "Soll mumble mitinstalliert werden?: [Y/n] " mumble
+if [ "$mumble" != "n" ]
   then
     pacman -S murmur mumble
     systemctl enable murmur

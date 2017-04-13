@@ -6,8 +6,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-iso_name=sim-os
-iso_label="SIM_OS"
+iso_name=simon-os
+iso_label="SIMON_OS"
 iso_version=$(date +%Y.%m.%d)
 work_dir=work
 out_dir=out
@@ -294,12 +294,14 @@ read -p "Soll das Image jetzt gemacht werden? [Y/n] " image
 if [ "$image" != "n" ]
   then
 
+imagename=arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso
+
 read -p "Soll das Image jetzt gemacht werden? [Y/n] " run
 if [ "$run" != "n" ]
 then
-if [ -f ${out_dir}/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso ]
+if [ -f ${out_dir}/${imagename} ]
 then
-rm ${out_dir}/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso
+rm ${out_dir}/${imagename}
 fi
 mkdir -p ${out_dir}
 xorriso -as mkisofs \
@@ -314,13 +316,13 @@ xorriso -as mkisofs \
 -e EFI/archiso/efiboot.img \
 -no-emul-boot \
 -isohybrid-gpt-basdat \
--output ${out_dir}/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso ${work_dir}/iso/
+-output ${out_dir}/${imagename} ${work_dir}/iso/
 fi
 
 read -p "Soll das Image jetzt ausgeführt werden? [Y/n] " run
 if [ "$run" != "n" ]
 then
-qemu-system-x86_64 -enable-kvm -cdrom out/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso -boot d -m 8092
+qemu-system-x86_64 -enable-kvm -cdrom out/${imagename} -boot d -m 8092
 fi
 
 read -p "Soll das Image jetzt geschrieben werden? [Y/n] " write
@@ -329,22 +331,6 @@ then
 fdisk -l
 read -p "Wo das Image jetzt geschrieben werden? [sda/sdb/sdc/sdd] " device
 
-if [ "$device" != "n" ]
-then
-dd bs=4M if=out/arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso of=/dev/${device} status=progress && sync
-fi
-fi
-
-
-
-read -p "Soll das Image jetzt eine btrfs Partition zum Offline-Schreiben erhalten? [Y/n] " btrfs
-if [ "$btrfs" != "n" ]
-then
-if [ "$device" == "" ]
-then
-fdisk -l
-read -p "Wo das Image jetzt geschrieben werden? [sda/sdb/sdc/sdd] " device
-fi
 #
 if cat /proc/mounts | grep /dev/${device}1 > /dev/null; then
 echo "gemountet"
@@ -368,6 +354,17 @@ echo "nicht gemountet"
 fi
 #
 
+dd bs=4M if=out/${imagename} of=/dev/${device} status=progress && sync
+
+read -p "Soll das Image jetzt eine btrfs Partition zum Offline-Schreiben erhalten? [Y/n] " btrfs
+if [ "$btrfs" != "n" ]
+then
+if [ "$device" == "" ]
+then
+fdisk -l
+read -p "Wo das Image jetzt geschrieben werden? [sda/sdb/sdc/sdd] " device
+fi
+
 fdisk -W always /dev/${device} <<EOT
 p
 n
@@ -385,6 +382,6 @@ sleep 2
 mkfs.btrfs -L cow_device /dev/${device}3
 
 fi
-
+fi
 fi
 echo "Fertig!!!"

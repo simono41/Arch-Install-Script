@@ -73,28 +73,10 @@ read -p "Sollen die Grundpackete installiert werden?: [Y/n] " grund
 if [ "$grund" != "n" ]
   then
     echo "Grundpackete werden installiert!"
-    pacman -Syu base base-devel alsa-utils devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz lxde networkmanager network-manager-applet
+    pacman -Syu base base-devel dosfstools btrfs-progs alsa-utils devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz lxde networkmanager network-manager-applet simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de
 fi
 #
 echo "Grundpackete2 werden installiert!"
-read -p "Soll brasero mitinstalliert werden?: [Y/n] " brasero
-if [ "$brasero" != "n" ]
-  then
-    pacman -S brasero
-fi
-#
-read -p "Soll simple-scan mitinstalliert werden?: [Y/n] " simple
-if [ "$simple" != "n" ]
-  then
-    pacman -S simple-scan
-fi
-#
-read -p "Soll pulseaudio mitinstalliert werden?: [Y/n] " pulseaudio
-if [ "$pulseaudio" != "n" ]
-  then
-    pacman -S pulseaudio pulseaudio-alsa
-fi
-#
 read -p "Soll inkscape mitinstalliert werden?: [Y/n] " inkscape
 if [ "$simple" != "n" ]
   then
@@ -131,59 +113,16 @@ if [ "$audacity" != "n" ]
     pacman -S audacity
 fi
 #
-read -p "Soll qemu mitinstalliert werden?: [Y/n] " qemu
-if [ "$qemu" != "n" ]
-  then
-    pacman -S qemu qemu-arch-extra
-fi
-#
-read -p "Soll cups mitinstalliert werden?: [Y/n] " cups
-if [ "$cups" != "n" ]
-  then
-    pacman -S cups hplip python-pyqt5
-    systemctl enable org.cups.cupsd.service
-fi
-#
-read -p "Soll youtube-dl mitinstalliert werden?: [Y/n] " youtube
-if [ "$youtube" != "n" ]
-  then
-    pacman -S youtube-dl flac ffmpeg
-fi
-#
 read -p "Soll freeciv mitinstalliert werden?: [Y/n] " freeciv
 if [ "$freeciv" != "n" ]
   then
     pacman -S freeciv
 fi
 #
-read -p "Soll vlc mitinstalliert werden?: [Y/n] " vlc
-if [ "$vlc" != "n" ]
-  then
-    pacman -S vlc libdvdread libdvdcss libdvdnav
-fi
-#
-read -p "Soll transmission mitinstalliert werden?: [Y/n] " transmission
-if [ "$transmission" != "n" ]
-  then
-    pacman -S transmission-gtk transmission-cli
-fi
-#
 read -p "Soll scratch mitinstalliert werden?: [Y/n] " scratch
 if [ "$scratch" != "n" ]
   then
     pacman -S scratch
-fi
-#
-read -p "Soll geckodriver mitinstalliert werden?: [Y/n] " geckodriver
-if [ "$geckodriver" != "n" ]
-  then
-    pacman -S python-pip python2-pip geckodriver
-fi
-#
-read -p "Soll macchanger mitinstalliert werden?: [Y/n] " macchanger
-if [ "$macchanger" != "n" ]
-  then
-    pacman -S macchanger
 fi
 #
 read -p "Soll gimp mitinstalliert werden?: [Y/n] " gimp
@@ -236,12 +175,6 @@ if [ "$mumble" != "n" ]
     systemctl enable murmur
     read -p "Wie soll das Passwort vom murmur-server sein?: " murmurpass
     murmurd -ini /etc/murmur.ini -supw $murmurpass
-fi
-#
-read -p "Soll libreoffice-fresh mitinstalliert werden?: [Y/n] " libreoffice
-if [ "$libreoffice" != "n" ]
-  then
-    pacman -S libreoffice-fresh libreoffice-fresh-de
 fi
 #
 read -p "Soll snapd mitinstalliert werden?: [Y/n] " snapd
@@ -487,6 +420,7 @@ fi
 systemctl enable acpid
 systemctl enable ntpd
 systemctl enable avahi-daemon
+systemctl enable org.cups.cupsd.service
 # set systemconfiguration
 echo "systemconfiguration"
 #

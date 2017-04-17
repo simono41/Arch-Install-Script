@@ -25,13 +25,13 @@ mkdir -p ${work_dir}/${arch}/airootfs
 read -p "Sollen die base Packete neu aufgebaut werden? [Y/n] " pacstrap
 if [ "$pacstrap" != "n" ]
   then
-    pacman -Sy xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs qemu
-    ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools
-    ./arch-chroot ${work_dir}/${arch}/airootfs passwd root
+    pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs qemu
+    pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts
+    arch-chroot ${work_dir}/${arch}/airootfs passwd root
 fi
 
-./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
-./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
+arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
+arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
 
 cp install/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
 cp hooks/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
@@ -71,20 +71,11 @@ cp install.png ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
 
 cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 
-cp ./arch-chroot ${work_dir}/${arch}/airootfs/usr/bin/arch-chroot
-chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-chroot
-
-cp ./pacstrap ${work_dir}/${arch}/airootfs/usr/bin/pacstrap
-chmod +x ${work_dir}/${arch}/airootfs/usr/bin/pacstrap
-
-cp ./genfstab ${work_dir}/${arch}/airootfs/usr/bin/genfstab 
-chmod +x ${work_dir}/${arch}/airootfs/usr/bin/genfstab
-
 echo "exec startlxde" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
 
-./arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
+arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
 
-./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
+arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
 
   else
 echo "Wird nicht neu aufgebaut!!!"
@@ -94,7 +85,7 @@ echo "Jetzt können sie ihr Betriebssystem nach ihren Belieben anpassen:D"
 read -p "Wollen sie ihr Betriebssystem nach Belieben anpassen? [Y/n] " packete
 if [ "$packete" != "n" ]
   then
-    ./arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install
+    arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install
 fi
 
 # System-image
@@ -110,9 +101,9 @@ mkdir -p ${work_dir}/iso/loader/entries
 
 if [ "$image" != "n" ]
   then
-./arch-chroot ${work_dir}/${arch}/airootfs/ pacman -Q > ${work_dir}/${arch}/airootfs/pkglist.txt
+arch-chroot ${work_dir}/${arch}/airootfs/ pacman -Q > ${work_dir}/${arch}/airootfs/pkglist.txt
 cp ${work_dir}/${arch}/airootfs/pkglist.txt ${work_dir}/iso/${install_dir}/${arch}/
-./arch-chroot ${work_dir}/${arch}/airootfs pacman -Scc
+arch-chroot ${work_dir}/${arch}/airootfs pacman -Scc
 
 if [ -f ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs ]
 then
@@ -141,8 +132,6 @@ cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isolinux.bin ${work_dir}/i
 cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isohdpfx.bin ${work_dir}/iso/isolinux/
 cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/ldlinux.c32 ${work_dir}/iso/isolinux/
 
-read -p "Soll alle Bootoptionen verwendet werden? [Y/n] " bootoptionen
-
 echo "DEFAULT menu.c32" > ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "PROMPT 0" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "MENU TITLE ${iso_label}" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
@@ -151,12 +140,6 @@ echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 
 sed "s|%ISO_LABEL%|${iso_label}|g;
          s|%INSTALL_DIR%|${install_dir}|g" syslinux.cfg >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
-
-if [ "$bootoptionen" != "n" ]
-  then
-sed "s|%ISO_LABEL%|${iso_label}|g;
-         s|%INSTALL_DIR%|${install_dir}|g" syslinux_extra.cfg >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
-fi
 
 echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 echo "ONTIMEOUT arch" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
@@ -237,9 +220,6 @@ echo "default archiso-x86_64-usb-default" >> ${work_dir}/iso/loader/loader.conf
 echo "timeout 3" > ${work_dir}/efiboot/loader/loader.conf
 echo "default archiso-x86_64-cd-default" >> ${work_dir}/efiboot/loader/loader.conf
 
-read -p "Soll alle Bootoptionen verwendet werden? [Y/n] " bootoptionen
-
-if [ "$bootoptionen" != "n" ]
   then
          for _cfg in releng/archiso-x86_64-usb-*.conf; do
         sed "s|%ISO_LABEL%|${iso_label}|g;
@@ -252,39 +232,6 @@ if [ "$bootoptionen" != "n" ]
         sed "s|%ISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g" ${_cfg} > ${work_dir}/efiboot/loader/entries/${_cfg##*/}
     done
-
-    else
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-usb-default.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default_nvidia.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-usb-default_nvidia.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default_nvidia.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default_nvidia.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default_toram.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-usb-default_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default_toram.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default_noimage.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-usb-default_noimage.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default_noimage.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default_noimage.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default_noimage_toram.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-usb-default_noimage_toram.conf
-
-sed "s|%ISO_LABEL%|${iso_label}|g;
-             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default_noimage_toram.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default_noimage_toram.conf
-fi
 
 read -p "efiboot jetzt trennen? [Y/n] "
 if [ "$trennen" != "n" ]

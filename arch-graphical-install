@@ -119,8 +119,8 @@ read -p "Soll Nvidia mitinstalliert werden?: [Y/n] " nvidia
 if [ "$nvidia" != "n" ]
   then
     pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
-    read -p "Soll nvidia-xconfig gestartet werden?: [Y/n] " nvidiax
-      if [ "$nvidiax" != "n" ]
+    read -p "Soll nvidia-xconfig gestartet werden?: [y/N] " nvidiax
+      if [ "$nvidiax" == "y" ]
         then
       nvidia-xconfig   
 fi  

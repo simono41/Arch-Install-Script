@@ -73,105 +73,15 @@ read -p "Sollen die Grundpackete installiert werden?: [Y/n] " grund
 if [ "$grund" != "n" ]
   then
     echo "Grundpackete werden installiert!"
-    pacman -Syu base base-devel dosfstools btrfs-progs alsa-utils devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz lxde networkmanager network-manager-applet simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de
+    pacman -Syu base base-devel dosfstools btrfs-progs alsa-utils devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz lxde networkmanager network-manager-applet simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de inkscape teeworlds 0ad megaglest assaultcube audacity freeciv scratch gimp minetest openssh firefox firefox-adblock-plus flashplugin chromium netbeans jdk8-openjdk wireshark-gtk hydra nmap pygtk aircrack-ng bless mumble
 fi
 #
 echo "Grundpackete2 werden installiert!"
-read -p "Soll inkscape mitinstalliert werden?: [Y/n] " inkscape
-if [ "$simple" != "n" ]
-  then
-    pacman -S inkscape
-fi
 #
-read -p "Soll teeworlds mitinstalliert werden?: [Y/n] " teeworlds
-if [ "$teeworlds" != "n" ]
+read -p "Soll murmur mitinstalliert werden?: [Y/n] " murmur
+if [ "$murmur" != "n" ]
   then
-    pacman -S teeworlds
-fi
-#
-read -p "Soll 0ad mitinstalliert werden?: [Y/n] " ad
-if [ "$ad" != "n" ]
-  then
-    pacman -S 0ad
-fi
-#
-read -p "Soll megaglest mitinstalliert werden?: [Y/n] " megaglest
-if [ "$megaglest" != "n" ]
-  then
-    pacman -S megaglest
-fi
-#
-read -p "Soll assaultcube mitinstalliert werden?: [Y/n] " assaultcube
-if [ "$assaultcube" != "n" ]
-  then
-    pacman -S assaultcube
-fi
-#
-read -p "Soll audacity mitinstalliert werden?: [Y/n] " audacity
-if [ "$audacity" != "n" ]
-  then
-    pacman -S audacity
-fi
-#
-read -p "Soll freeciv mitinstalliert werden?: [Y/n] " freeciv
-if [ "$freeciv" != "n" ]
-  then
-    pacman -S freeciv
-fi
-#
-read -p "Soll scratch mitinstalliert werden?: [Y/n] " scratch
-if [ "$scratch" != "n" ]
-  then
-    pacman -S scratch
-fi
-#
-read -p "Soll gimp mitinstalliert werden?: [Y/n] " gimp
-if [ "$gimp" != "n" ]
-  then
-    pacman -S gimp
-fi
-#
-read -p "Soll minetest mitinstalliert werden?: [Y/n] " minetest
-if [ "$minetest" != "n" ]
-  then
-    pacman -S minetest
-fi
-#
-read -p "Soll openssh mitinstalliert werden?: [Y/n] " openssh
-if [ "$openssh" != "n" ]
-  then
-    pacman -S openssh
-    systemctl enable sshd
-fi
-#
-read -p "Soll firefox mitinstalliert werden?: [Y/n] " firefox
-if [ "$firefox" != "n" ]
-  then
-    pacman -S firefox firefox-adblock-plus flashplugin
-fi
-#
-read -p "Soll chromium mitinstalliert werden?: [Y/n] " chromium
-if [ "$chromium" != "n" ]
-  then
-    pacman -S chromium
-fi
-#
-read -p "Soll netbeans mitinstalliert werden?: [Y/n] " netbeans
-if [ "$netbeans" != "n" ]
-  then
-    pacman -S netbeans jdk8-openjdk
-    else
-    read -p "Soll statdessen java mitinstalliert werden?: [Y/n] " java
-    if [ "$java" != "n" ]
-      then
-      pacman -S jdk8-openjdk
-fi
-fi
-#
-read -p "Soll mumble mitinstalliert werden?: [Y/n] " mumble
-if [ "$mumble" != "n" ]
-  then
-    pacman -S murmur mumble
+    pacman -S murmur
     systemctl enable murmur
     read -p "Wie soll das Passwort vom murmur-server sein?: " murmurpass
     murmurd -ini /etc/murmur.ini -supw $murmurpass
@@ -189,12 +99,6 @@ if [ "$apache" != "n" ]
   then
     pacman -S apache
     systemctl enable httpd
-fi
-#
-read -p "Sollen die Hacker-tools mitinstalliert werden?: [Y/n] " hacker
-if [ "$hacker" != "n" ]
-  then
-    pacman -S wireshark-gtk hydra nmap pygtk aircrack-ng bless
 fi
 #
 read -p "Sollen docker mitinstalliert werden?: [Y/n] " docker
@@ -421,6 +325,7 @@ systemctl enable acpid
 systemctl enable ntpd
 systemctl enable avahi-daemon
 systemctl enable org.cups.cupsd.service
+systemctl enable sshd
 # set systemconfiguration
 echo "systemconfiguration"
 #

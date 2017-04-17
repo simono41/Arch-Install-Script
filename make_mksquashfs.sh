@@ -27,17 +27,11 @@ if [ "$pacstrap" != "n" ]
   then
     pacman -Sy xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs qemu
     ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools
+    ./arch-chroot ${work_dir}/${arch}/airootfs passwd root
 fi
 
-read -p "Sollen die keys neu aufgebaut werden? [Y/n] " pacstrap
-if [ "$pacstrap" != "n" ]
-  then
 ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
 ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
-./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
-fi
-
-./arch-chroot ${work_dir}/${arch}/airootfs passwd root
 
 cp install/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
 cp hooks/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso

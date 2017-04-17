@@ -220,8 +220,7 @@ echo "default archiso-x86_64-usb-default" >> ${work_dir}/iso/loader/loader.conf
 echo "timeout 3" > ${work_dir}/efiboot/loader/loader.conf
 echo "default archiso-x86_64-cd-default" >> ${work_dir}/efiboot/loader/loader.conf
 
-  then
-         for _cfg in releng/archiso-x86_64-usb-*.conf; do
+    for _cfg in releng/archiso-x86_64-usb-*.conf; do
         sed "s|%ISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g" ${_cfg} > ${work_dir}/iso/loader/entries/${_cfg##*/}
     done

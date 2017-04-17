@@ -37,6 +37,8 @@ if [ "$pacstrap" != "n" ]
 ./arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
 fi
 
+./arch-chroot ${work_dir}/${arch}/airootfs passwd root
+
 cp install/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
 cp hooks/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 
@@ -85,6 +87,8 @@ cp ./genfstab ${work_dir}/${arch}/airootfs/usr/bin/genfstab
 chmod +x ${work_dir}/${arch}/airootfs/usr/bin/genfstab
 
 echo "exec startlxde" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
+
+./arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
 
 ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
 
@@ -281,6 +285,12 @@ sed "s|%ISO_LABEL%|${iso_label}|g;
 
 sed "s|%ISO_LABEL%|${iso_label}|g;
              s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default_noimage.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default_noimage.conf
+
+sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-usb-default_noimage_toram.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-usb-default_noimage_toram.conf
+
+sed "s|%ISO_LABEL%|${iso_label}|g;
+             s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-x86_64-cd-default_noimage_toram.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-cd-default_noimage_toram.conf
 fi
 
 read -p "efiboot jetzt trennen? [Y/n] "

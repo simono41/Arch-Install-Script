@@ -103,6 +103,8 @@ if [ "$image" != "n" ]
   then
 arch-chroot ${work_dir}/${arch}/airootfs/ pacman -Q > ${work_dir}/${arch}/airootfs/pkglist.txt
 cp ${work_dir}/${arch}/airootfs/pkglist.txt ${work_dir}/iso/${install_dir}/${arch}/
+
+arch-chroot ${work_dir}/${arch}/airootfs pacman -Sc
 arch-chroot ${work_dir}/${arch}/airootfs pacman -Scc
 
 if [ -f ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs ]

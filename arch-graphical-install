@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+set -x
+
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2
    exit 1
@@ -69,15 +71,37 @@ if [ "$wifi" == "y" ]
     echo "Wifi wird nicht eingerichtet!"
 fi
 #
+
+pacman-key --init
+pacman-key --populate archlinux
+
 read -p "Sollen die Grundpackete installiert werden?: [Y/n] " grund
 if [ "$grund" != "n" ]
   then
     echo "Grundpackete werden installiert!"
-    pacman -Syu base base-devel dosfstools arch-install-scripts btrfs-progs alsa-utils devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de inkscape teeworlds 0ad megaglest assaultcube audacity freeciv scratch gimp minetest openssh firefox firefox-adblock-plus flashplugin chromium netbeans jdk8-openjdk wireshark-gtk hydra nmap pygtk aircrack-ng bless mumble teamspeak3 cmatrix file-roller
+    pacman -Syu base base-devel dosfstools arch-install-scripts btrfs-progs alsa-utils devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de inkscape audacity gimp openssh firefox firefox-adblock-plus flashplugin jdk8-openjdk wireshark-gtk hydra nmap pygtk aircrack-ng bless mumble teamspeak3 cmatrix file-roller
 
 fi
 #
 echo "Grundpackete2 werden installiert!"
+#
+read -p "Soll Spiele mitinstalliert werden?: [Y/n] " game
+if [ "$game" != "n" ]
+  then
+    pacman -S 0ad megaglest assaultcube teeworlds freeciv scratch minetest
+fi
+#
+read -p "Soll netbeans mitinstalliert werden?: [Y/n] " netbeans
+if [ "$netbeans" != "n" ]
+  then
+    pacman -S netbeans
+fi
+#
+read -p "Soll chromium mitinstalliert werden?: [Y/n] " chromium
+if [ "$chromium" != "n" ]
+  then
+    pacman -S chromium
+fi
 #
 read -p "Soll murmur mitinstalliert werden?: [Y/n] " murmur
 if [ "$murmur" != "n" ]
@@ -220,58 +244,69 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 echo "set desktops"
 #
 read -p "Welcher desktop soll verwendet werden? all, lxde, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
-if [ "$rootstart" == "gnome" ] || [ "$rootstart" == "all" ]
-  then    
+
+    if [ "$rootstart" == "gnome" ] || [ "$rootstart" == "all" ]
+    then    
     pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
     echo "exec gnome-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
+    fi
     
-    elif [ "$rootstart" == "gnome-flashback" ] || [ "$rootstart" == "all" ]
+    if [ "$rootstart" == "gnome-flashback" ] || [ "$rootstart" == "all" ]
     then
     pacman -S gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
     echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
     echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
+    fi
 
-    elif [ "$rootstart" == "cinnamon" ] || [ "$rootstart" == "all" ]
+    if [ "$rootstart" == "cinnamon" ] || [ "$rootstart" == "all" ]
     then
     pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
     echo "exec cinnamon-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
+    fi
 
-    elif [ "$rootstart" == "mate" ] || [ "$rootstart" == "all" ]
+    if [ "$rootstart" == "mate" ] || [ "$rootstart" == "all" ]
     then
     pacman -S mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
     echo "exec mate-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
+    fi
 
-    elif [ "$rootstart" == "lxde" ] || [ "$rootstart" == "all" ]
+    if [ "$rootstart" == "lxde" ] || [ "$rootstart" == "all" ]
     then
     pacman -S lxde networkmanager network-manager-applet xfce4-power-manager
     echo "exec startlxde" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
+    fi
 
-    elif [ "$rootstart" == "lxqt" ] || [ "$rootstart" == "all" ]
+    if [ "$rootstart" == "lxqt" ] || [ "$rootstart" == "all" ]
     then
     pacman -S lxqt networkmanager network-manager-applet lxqt-powermanagement
     echo "exec startlxqt" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
+    fi
 
-    elif [ "$rootstart" == "xfce4" ] || [ "$rootstart" == "all" ]
+    if [ "$rootstart" == "xfce4" ] || [ "$rootstart" == "all" ]
     then
     pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager network-manager-applet xfce4-power-manager
     echo "exec startxfce4" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
+    fi
 
-    elif [ "$rootstart" == "kde" ] || [ "$rootstart" == "all" ]
+    if [ "$rootstart" == "kde" ] || [ "$rootstart" == "all" ]
     then
     pacman -S plasma kde-l10n-de kde-applications networkmanager network-manager-applet
     echo "exec startkde" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
+    fi
 
-      else
-    echo "kein desktop erstellt!!!"
-fi
+    if [ "$rootstart" == "all" ]
+    then
+    echo "exec startlxde" > /etc/X11/xinit/xinitrc
+    fi
+
 #
 echo "Systemsprache und dienste werden erstellt!"
 # localectl set-x11-keymap de pc105 nodeadkeys
@@ -284,13 +319,10 @@ if [ "$wifi" == "y" ]
     else
     systemctl disable dhcpcd
 fi
-read -p "Soll xdm wenn der PC bootet gestartet werden?: [Y/n] " xdm
-if [ "$xdm" != "n" ]
-  then
-  systemctl enable xdm
-  else
-  read -p "Soll getty den X-Server automatisch starten?: [Y/n] " getty
-  if [ "$getty" != "n" ]
+
+read -p "Soll getty den X-Server automatisch starten?: [Y/n] " getty
+
+if [ "$getty" != "n" ] #1
   then
     echo "if [ \$(tty) = "/dev/tty1" ]; then" > /root/.bash_profile
     echo "startx" >> /root/.bash_profile
@@ -300,8 +332,9 @@ if [ "$xdm" != "n" ]
     echo "startx" >> /home/"$user"/.bash_profile
     echo "fi" >> /home/"$user"/.bash_profile
     #
+
 read -p "Welcher Nutzer soll automatisch gestartet werden?: [ROOT/"$user"] " start
-if [ "$start" != "$user" ]
+if [ "$start" != "$user" ] #2
   then
     mkdir -p /etc/systemd/system/getty\@tty1.service.d
     echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
@@ -314,9 +347,21 @@ if [ "$start" != "$user" ]
     echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
     echo "ExecStart=-/sbin/agetty --noclear -a "$user" %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
     systemctl enable getty@tty1
-fi
-fi
-fi
+fi #2
+
+  else
+
+read -p "Soll xdm wenn der PC bootet gestartet werden?: [Y/n] " xdm
+if [ "$xdm" != "n" ] #3
+  then
+  systemctl enable xdm
+
+fi #3
+
+
+fi #1
+
+
 systemctl enable acpid
 systemctl enable ntpd
 systemctl enable avahi-daemon
@@ -341,10 +386,17 @@ locale-gen
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
+read -p "Sollen noch Packete hinzugefügt oder entfernt werden? [Y/n] " packete
+while [ "$packete" != "n" ]
+do
 read -p "Sollen sonst noch Packete hinzugefügt werden? [Packetnamen] : " packete
 pacman -Syu $packete
 read -p "Sollen sonst noch Packete entfernt werden? [Packetnamen] : " rpackete
 pacman -Rss $rpackete
+read -p "Soll noch ein Befehl eingegeben werden? [Befehl] : " befehl
+$befehl
+read -p "Sollen sonst noch Packete hinzugefügt oder entfernt werden? [Y/n] " packete
+done
 
 #
 #systemctl start ntpd

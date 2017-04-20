@@ -219,51 +219,51 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 # set desktop
 echo "set desktops"
 #
-read -p "Welcher desktop soll verwendet werden? lxde, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
-if [ "$rootstart" == "gnome" ]
+read -p "Welcher desktop soll verwendet werden? all, lxde, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
+if [ "$rootstart" == "gnome" ] || [ "$rootstart" == "all" ]
   then    
     pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver gnuchess goobox file-roller
     echo "exec gnome-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
     
-    elif [ "$rootstart" == "gnome-flashback" ]
+    elif [ "$rootstart" == "gnome-flashback" ] || [ "$rootstart" == "all" ]
     then
     pacman -S gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver gnuchess goobox file-roller
     echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
     echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
-    elif [ "$rootstart" == "cinnamon" ]
+    elif [ "$rootstart" == "cinnamon" ] || [ "$rootstart" == "all" ]
     then
     pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver gnuchess goobox file-roller
     echo "exec cinnamon-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
-    elif [ "$rootstart" == "mate" ]
+    elif [ "$rootstart" == "mate" ] || [ "$rootstart" == "all" ]
     then
     pacman -S mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine gnuchess goobox file-roller
     echo "exec mate-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
-    elif [ "$rootstart" == "lxde" ]
+    elif [ "$rootstart" == "lxde" ] || [ "$rootstart" == "all" ]
     then
     pacman -S lxde networkmanager network-manager-applet
     echo "exec startlxde" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
-    elif [ "$rootstart" == "lxqt" ]
+    elif [ "$rootstart" == "lxqt" ] || [ "$rootstart" == "all" ]
     then
     pacman -S lxqt networkmanager network-manager-applet
     echo "exec startlxqt" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
-    elif [ "$rootstart" == "xfce4" ]
+    elif [ "$rootstart" == "xfce4" ] || [ "$rootstart" == "all" ]
     then
     pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager network-manager-applet
     echo "exec startxfce4" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
-    elif [ "$rootstart" == "kde" ]
+    elif [ "$rootstart" == "kde" ] || [ "$rootstart" == "all" ]
     then
     pacman -S plasma kde-l10n-de kde-applications networkmanager network-manager-applet
     echo "exec startkde" > /etc/X11/xinit/xinitrc

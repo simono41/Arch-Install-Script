@@ -247,19 +247,19 @@ if [ "$rootstart" == "gnome" ] || [ "$rootstart" == "all" ]
 
     elif [ "$rootstart" == "lxde" ] || [ "$rootstart" == "all" ]
     then
-    pacman -S lxde networkmanager network-manager-applet
+    pacman -S lxde networkmanager network-manager-applet xfce4-power-manager
     echo "exec startlxde" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
     elif [ "$rootstart" == "lxqt" ] || [ "$rootstart" == "all" ]
     then
-    pacman -S lxqt networkmanager network-manager-applet
+    pacman -S lxqt networkmanager network-manager-applet lxqt-powermanagement
     echo "exec startlxqt" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
     elif [ "$rootstart" == "xfce4" ] || [ "$rootstart" == "all" ]
     then
-    pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager network-manager-applet
+    pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager network-manager-applet xfce4-power-manager
     echo "exec startxfce4" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 

@@ -1,0 +1,358 @@
+#!/bin/bash
+#
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+  echo "Als root Angemeldet"
+  #
+read -p "Wollen sie einen neuen Benutzer erstellen?: [y/N] " erstellen
+if [ "$erstellen" == "y" ]
+  then 
+    read -p "Wie soll der neue Benutzer heissen?: " user
+    read -p "Welches Passwort soll "$user" bekommen?: " pass
+    # adduser
+    echo "adduser "$user""
+    useradd $user
+if [ "$1" != "n" ]; then
+    mkdir -p /home/"$user"/Schreibtisch/
+    cp /usr/share/applications/arch-install.desktop /home/"$user"/Schreibtisch/
+    chmod +x /home/"$user"/Schreibtisch/arch-install.desktop
+fi
+    chmod 770 -R -v /home/"$user"/
+    chown -cR "$user" /home/"$user"/
+passwd $user <<EOT
+$pass
+$pass
+EOT
+#
+    echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+      else
+    read -p "Wie heisst der normale Benutzer auf dem PC?: " user
+    chown -cR "$user" /home/"$user"/
+    #
+read -p "Soll "$user" root-rechte gegeben werden?: [y/N] " root
+if [ "$root" == "y" ]
+  then
+    echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+fi
+fi
+#
+read -p "Ist das ein Raspberry PI ?: [y/N] " pi
+read -p "Wollen sie eine Verbindung mit Ethernet aufbauen?: [y/N] " ethernet
+if [ "$ethernet" == "y" ]
+  then
+    ip link
+    read -p "Wie heisst das Ethernet-modul?: " ethernetmodul
+    echo "dhcpcd wird gestartet!"
+    dhcpcd "$ethernetmodul"
+  else
+    echo "Ethernet wird nicht eingerichtet!"
+fi
+#
+read -p "Wollen sie eine Verbindung mit wifi verbindung aufbauen?: [y/N] " wifi
+if [ "$wifi" == "y" ]
+  then
+    echo "Wifi wird eingerichtet!"
+    ip link
+    read -p "Wie heisst das wlan-modul?: " modul
+    ip link set dev "$modul" up
+    sleep 5
+    iw dev "$modul" scan > scan.txt
+    nano scan.txt
+    read -p "Wie heisst das Netzwerk?: " network
+    read -p "Wie heisst das Passwort?: " passwort
+    wpa_passphrase  "$network"  "$passwort"  > /etc/wpa_supplicant/wpa_supplicant-"$modul".conf
+    wpa_supplicant -B -i "$modul" -c /etc/wpa_supplicant/wpa_supplicant-"$modul".conf
+    dhcpcd "$modul"
+  else
+    echo "Wifi wird nicht eingerichtet!"
+fi
+#
+read -p "Sollen die Grundpackete installiert werden?: [Y/n] " grund
+if [ "$grund" != "n" ]
+  then
+    echo "Grundpackete werden installiert!"
+    pacman -Syu base base-devel dosfstools arch-install-scripts btrfs-progs alsa-utils devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de inkscape teeworlds 0ad megaglest assaultcube audacity freeciv scratch gimp minetest openssh firefox firefox-adblock-plus flashplugin chromium netbeans jdk8-openjdk wireshark-gtk hydra nmap pygtk aircrack-ng bless mumble teamspeak3 cmatrix
+
+fi
+#
+echo "Grundpackete2 werden installiert!"
+#
+read -p "Soll murmur mitinstalliert werden?: [Y/n] " murmur
+if [ "$murmur" != "n" ]
+  then
+    pacman -S murmur
+    systemctl enable murmur
+    read -p "Wie soll das Passwort vom murmur-server sein?: " murmurpass
+    murmurd -ini /etc/murmur.ini -supw $murmurpass
+fi
+#
+read -p "Soll snapd mitinstalliert werden?: [Y/n] " snapd
+if [ "$snapd" != "n" ]
+  then
+    pacman -S snapd
+    systemctl enable snapd.socket
+fi
+#
+read -p "Soll apache mitinstalliert werden?: [Y/n] " apache
+if [ "$apache" != "n" ]
+  then
+    pacman -S apache
+    systemctl enable httpd
+fi
+#
+read -p "Sollen docker mitinstalliert werden?: [Y/n] " docker
+if [ "$docker" != "n" ]
+  then
+    pacman -S docker
+    systemctl enable docker
+fi
+#
+echo "Packetliste1 Ende"
+echo "Packetliste2 Start"
+echo "Zusatspackete werden Installiert!"
+#
+if [ "$pi" != "y" ]
+then
+#
+read -p "Soll Nvidia mitinstalliert werden?: [Y/n] " nvidia
+if [ "$nvidia" != "n" ]
+  then
+    pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+    read -p "Soll nvidia-xconfig gestartet werden?: [y/N] " nvidiax
+      if [ "$nvidiax" == "y" ]
+        then
+      nvidia-xconfig   
+fi  
+fi
+#
+read -p "Soll steam mitinstalliert werden?: [Y/n] " steam
+if [ "$steam" != "n" ]
+  then
+    pacman -S steam
+fi
+#
+read -p "Soll wine mitinstalliert werden?: [Y/n] " wine
+if [ "$wine" != "n" ]
+  then
+     pacman -S wine
+fi
+#
+read -p "Soll OBS mitinstalliert werden?: [Y/n] " obs
+if [ "$obs" != "n" ]
+  then
+     pacman -S obs-studio
+fi
+fi
+#
+if [ "$pi" == "y" ]
+then
+read -p "Soll der omxplayer mitinstalliert werden?: [Y/n] " omxplayer
+if [ "$omxplayer" != "n" ]
+  then
+    pacman -S omxplayer
+fi
+fi
+#
+read -p "Soll yaourt mitinstalliert werden?: [Y/n] " yaourt
+if [ "$yaourt" != "n" ]
+  then
+    cd /home/"$user"/
+pwd
+    su "$user" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz"
+pwd
+    su "$user" -c "tar -xvzf package-query.tar.gz"
+pwd
+    cd package-query
+pwd
+    su "$user" -c "makepkg -si"
+pwd
+    cd ..
+pwd
+    su "$user" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz"
+pwd
+    su "$user" -c "tar -xvzf yaourt.tar.gz"
+pwd
+    cd yaourt
+pwd
+    su "$user" -c "makepkg -si"
+pwd
+    cd ..
+pwd
+    su "$user" -c "yaourt -Syu"
+    su "$user" -c "mkdir -p /home/"$user"/aur-pakete"
+    su "$user" -c "yaourt -S pamac-aur --export /home/"$user"/aur-pakete"
+pwd
+#
+read -p "Soll google-chrome mitinstalliert werden?: [Y/n] " chrome
+if [ "$chrome" != "n" ]
+  then
+    su "$user" -c "yaourt -S google-chrome --export /home/"$user"/aur-pakete"
+fi
+#
+read -p "Soll discord mitinstalliert werden?: [Y/n] " discord
+if [ "$discord" != "n" ]
+  then
+    su "$user" -c "yaourt -S discord --export /home/"$user"/aur-pakete"
+fi
+#
+read -p "Soll spotify mitinstalliert werden?: [Y/n] " spotify
+if [ "$spotify" != "n" ]
+  then
+    su "$user" -c "yaourt -S spotify --export /home/"$user"/aur-pakete"
+fi
+#
+read -p "Soll xboxdrv mitinstalliert werden?: [Y/n] " xboxdrv
+if [ "$xboxdrv" != "n" ]
+  then
+    su "$user" -c "yaourt -S xboxdrv --export /home/"$user"/aur-pakete"
+fi
+read -p "Soll telegram mitinstalliert werden?: [Y/n] " telegram
+if [ "$telegram" != "n" ]
+  then
+    su "$user" -c "yaourt -S telegram-desktop --export /home/"$user"/aur-pakete"
+fi
+fi
+echo "Packetliste2 Ende"
+echo "Beginne mit dem Konfigurieren des Systems :D"
+# set desktop
+echo "set desktops"
+#
+read -p "Welcher desktop soll verwendet werden? lxde, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
+if [ "$rootstart" == "gnome" ]
+  then    
+    pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver gnuchess goobox file-roller
+    echo "exec gnome-session" > /etc/X11/xinit/xinitrc
+    systemctl enable NetworkManager.service
+    
+    elif [ "$rootstart" == "gnome-flashback" ]
+    then
+    pacman -S gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver gnuchess goobox file-roller
+    echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
+    echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
+    systemctl enable NetworkManager.service
+
+    elif [ "$rootstart" == "cinnamon" ]
+    then
+    pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver gnuchess goobox file-roller
+    echo "exec cinnamon-session" > /etc/X11/xinit/xinitrc
+    systemctl enable NetworkManager.service
+
+    elif [ "$rootstart" == "mate" ]
+    then
+    pacman -S mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine gnuchess goobox file-roller
+    echo "exec mate-session" > /etc/X11/xinit/xinitrc
+    systemctl enable NetworkManager.service
+
+    elif [ "$rootstart" == "lxde" ]
+    then
+    pacman -S lxde networkmanager network-manager-applet
+    echo "exec startlxde" > /etc/X11/xinit/xinitrc
+    systemctl enable NetworkManager.service
+
+    elif [ "$rootstart" == "lxqt" ]
+    then
+    pacman -S lxqt networkmanager network-manager-applet
+    echo "exec startlxqt" > /etc/X11/xinit/xinitrc
+    systemctl enable NetworkManager.service
+
+    elif [ "$rootstart" == "xfce4" ]
+    then
+    pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager network-manager-applet
+    echo "exec startxfce4" > /etc/X11/xinit/xinitrc
+    systemctl enable NetworkManager.service
+
+    elif [ "$rootstart" == "kde" ]
+    then
+    pacman -S plasma kde-l10n-de kde-applications networkmanager network-manager-applet
+    echo "exec startkde" > /etc/X11/xinit/xinitrc
+    systemctl enable NetworkManager.service
+
+      else
+    echo "kein desktop erstellt!!!"
+fi
+#
+echo "Systemsprache und dienste werden erstellt!"
+# localectl set-x11-keymap de pc105 nodeadkeys
+# set system startup files
+echo "System startup files"
+if [ "$wifi" == "y" ]
+  then
+    systemctl enable wpa_supplicant@"$modul".service
+    systemctl enable dhcpcd@"$modul"
+    else
+    systemctl disable dhcpcd
+fi
+read -p "Soll xdm wenn der PC bootet gestartet werden?: [Y/n] " xdm
+if [ "$xdm" != "n" ]
+  then
+  systemctl enable xdm
+  else
+  read -p "Soll getty den X-Server automatisch starten?: [Y/n] " getty
+  if [ "$getty" != "n" ]
+  then
+    echo "if [ \$(tty) = "/dev/tty1" ]; then" > /root/.bash_profile
+    echo "startx" >> /root/.bash_profile
+    echo "fi" >> /root/.bash_profile
+    #
+    echo "if [ \$(tty) = "/dev/tty1" ]; then" > /home/"$user"/.bash_profile
+    echo "startx" >> /home/"$user"/.bash_profile
+    echo "fi" >> /home/"$user"/.bash_profile
+    #
+read -p "Welcher Nutzer soll automatisch gestartet werden?: [ROOT/"$user"] " start
+if [ "$start" != "$user" ]
+  then
+    mkdir -p /etc/systemd/system/getty\@tty1.service.d
+    echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+    echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+    echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+    systemctl enable getty@tty1
+    else
+    mkdir -p /etc/systemd/system/getty\@tty1.service.d
+    echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+    echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+    echo "ExecStart=-/sbin/agetty --noclear -a "$user" %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+    systemctl enable getty@tty1
+fi
+fi
+fi
+systemctl enable acpid
+systemctl enable ntpd
+systemctl enable avahi-daemon
+systemctl enable org.cups.cupsd.service
+systemctl enable sshd
+# set systemconfiguration
+echo "systemconfiguration"
+#
+echo LANG=de_DE.UTF-8 > /etc/locale.conf
+echo LC_COLLATE=C >> /etc/locale.conf
+echo LANGUAGE=de_DE >> /etc/locale.conf
+#
+echo KEYMAP=de-latin1 > /etc/vconsole.conf
+echo FONT=lat9w-16 >> /etc/vconsole.conf
+#
+echo de_DE.UTF-8 UTF-8 > /etc/locale.gen
+echo de_DE ISO-8859-1 >> /etc/locale.gen
+echo de_DE@euro ISO-8859-15 >> /etc/locale.gen
+#
+locale-gen
+#
+rm /etc/localtime
+ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+
+read -p "Sollen sonst noch Packete hinzugefügt werden? [Packetnamen] : " packete
+pacman -Syu $packete
+read -p "Sollen sonst noch Packete entfernt werden? [Packetnamen] : " rpackete
+pacman -Rss $rpackete
+
+#
+#systemctl start ntpd
+#ntpd -gq
+#date
+#hwclock -w
+#
+#xset m 2/1 0
+#
+
+echo "Fertig!!!"

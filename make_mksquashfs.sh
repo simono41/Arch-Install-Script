@@ -71,8 +71,6 @@ cp install.png ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
 
 cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 
-echo "exec startlxde" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
-
 arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
 
 arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux

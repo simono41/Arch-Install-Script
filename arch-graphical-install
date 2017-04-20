@@ -73,7 +73,7 @@ read -p "Sollen die Grundpackete installiert werden?: [Y/n] " grund
 if [ "$grund" != "n" ]
   then
     echo "Grundpackete werden installiert!"
-    pacman -Syu base base-devel dosfstools arch-install-scripts btrfs-progs alsa-utils devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz lxde networkmanager network-manager-applet simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de inkscape teeworlds 0ad megaglest assaultcube audacity freeciv scratch gimp minetest openssh firefox firefox-adblock-plus flashplugin chromium netbeans jdk8-openjdk wireshark-gtk hydra nmap pygtk aircrack-ng bless mumble teamspeak3
+    pacman -Syu base base-devel dosfstools arch-install-scripts btrfs-progs alsa-utils devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps pacman zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de inkscape teeworlds 0ad megaglest assaultcube audacity freeciv scratch gimp minetest openssh firefox firefox-adblock-plus flashplugin chromium netbeans jdk8-openjdk wireshark-gtk hydra nmap pygtk aircrack-ng bless mumble teamspeak3
 fi
 #
 echo "Grundpackete2 werden installiert!"
@@ -218,29 +218,29 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 # set desktop
 echo "set desktops"
 #
-read -p "Welcher desktop soll verwendet werden? all, lxde, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
+read -p "Welcher desktop soll verwendet werden? lxde, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
 if [ "$rootstart" == "gnome" ]
   then    
-    pacman -S gnome gnome-extra gnuchess goobox file-roller network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
+    pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver gnuchess goobox file-roller
     echo "exec gnome-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
     
     elif [ "$rootstart" == "gnome-flashback" ]
     then
-    pacman -S gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
+    pacman -S gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver gnuchess goobox file-roller
     echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
     echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
     elif [ "$rootstart" == "cinnamon" ]
     then
-    pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
+    pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver gnuchess goobox file-roller
     echo "exec cinnamon-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
     elif [ "$rootstart" == "mate" ]
     then
-    pacman -S mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
+    pacman -S mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine gnuchess goobox file-roller
     echo "exec mate-session" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
@@ -268,11 +268,6 @@ if [ "$rootstart" == "gnome" ]
     echo "exec startkde" > /etc/X11/xinit/xinitrc
     systemctl enable NetworkManager.service
 
-    elif [ "$rootstart" == "all" ]
-    then
-    pacman -S lxde cinnamon gnome gnome-extra file-roller gnuchess goobox network-manager-applet networkmanager system-config-printer blueman gnome-power-manager mate mate-extra mate-power-manager gtk-engine-murrine lxqt xfce4 xfce4-goodies human-icon-theme plasma kde-l10n-de kde-applications gnome-flashback gnome-screensaver
-    echo "exec startlxde" > /etc/X11/xinit/xinitrc
-    systemctl enable NetworkManager.service
       else
     echo "kein desktop erstellt!!!"
 fi

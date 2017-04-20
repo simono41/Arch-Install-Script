@@ -268,11 +268,13 @@ xorriso -as mkisofs \
 -output ${out_dir}/${imagename} ${work_dir}/iso/
 fi
 
+
 read -p "Soll das Image jetzt ausgeführt werden? [Y/n] " run
 if [ "$run" != "n" ]
 then
 qemu-system-x86_64 -enable-kvm -cdrom out/${imagename} -boot d -m 8092
 fi
+
 
 read -p "Soll das Image jetzt geschrieben werden? [Y/n] " write
 if [ "$write" != "n" ]
@@ -304,6 +306,8 @@ fi
 #
 
 dd bs=4M if=out/${imagename} of=/dev/${device} status=progress && sync
+fi
+
 
 read -p "Soll das Image jetzt eine btrfs Partition zum Offline-Schreiben erhalten? [Y/n] " btrfs
 if [ "$btrfs" != "n" ]
@@ -330,7 +334,6 @@ sleep 2
 
 mkfs.btrfs -L cow_device /dev/${device}3
 
-fi
 fi
 fi
 echo "Fertig!!!"

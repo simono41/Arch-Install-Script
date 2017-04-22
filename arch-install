@@ -148,7 +148,7 @@ echo ""
 mount /dev/"$device"2 /mnt
 mkdir /mnt/boot
 mount /dev/"$device"1 /mnt/boot
-swapon /dev/"$device"3
+#swapon /dev/"$device"3
 echo ""
 if [ "$offline" != "n" ]
   then
@@ -169,7 +169,7 @@ fi
    then
      arch-chroot /mnt nvidia-xconfig
   fi
-cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
+#cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
 #
   else
   pacstrap -i /mnt base base-devel grub efibootmgr links 
@@ -272,7 +272,7 @@ echo ""
 mount /dev/"$device"2 /mnt
 mkdir /mnt/boot
 mount /dev/"$device"1 /mnt/boot
-swapon /dev/"$device"3
+#swapon /dev/"$device"3
 echo ""
 if [ "$offline" != "n" ]
   then
@@ -293,7 +293,7 @@ fi
    then
      arch-chroot /mnt nvidia-xconfig
   fi
-cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
+#cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
 #
   else
   pacstrap -i /mnt base base-devel grub efibootmgr links 

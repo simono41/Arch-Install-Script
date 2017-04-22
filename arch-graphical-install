@@ -311,6 +311,7 @@ echo "Section \"InputClass\"" > /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "        Identifier \"keyboard\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "        MatchIsKeyboard \"yes\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "        Option \"XkbLayout\" \"de\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Option \"XkbModel\" \"pc105\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "        Option \"XkbVariant\" \"nodeadkeys\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "EndSection" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 
@@ -384,6 +385,7 @@ echo FONT=lat9w-16 >> /etc/vconsole.conf
 echo de_DE.UTF-8 UTF-8 > /etc/locale.gen
 echo de_DE ISO-8859-1 >> /etc/locale.gen
 echo de_DE@euro ISO-8859-15 >> /etc/locale.gen
+echo en_US.UTF-8 >> /etc/locale.gen
 #
 locale-gen
 #

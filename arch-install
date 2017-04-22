@@ -208,7 +208,7 @@ echo "options  root=PARTUUID=${tobootdevice} rw resume=p_swap" >> /mnt/boot/load
 
 echo "title    "$name"-os" > /mnt/boot/loader/entries/arch-uefi-fallback.conf
 echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
-echo "initrd   initrd   /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
+echo "initrd   /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
 echo "options  root=PARTUUID=${tobootdevice} rw resume=p_swap" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
 
 echo "default   arch-uefi" > /mnt/boot/loader/loader.conf

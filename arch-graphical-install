@@ -88,7 +88,7 @@ echo "Nichtwichtige Packete!"
 read -p "Soll Spiele mitinstalliert werden?: [Y/n] " game
 if [ "$game" != "n" ]
   then
-    pacman -S 0ad megaglest assaultcube teeworlds freeciv scratch minetest
+    pacman -S 0ad megaglest assaultcube teeworlds freeciv scratch minetest gnome-chess gnuchess
 fi
 #
 read -p "Soll netbeans mitinstalliert werden?: [Y/n] " netbeans
@@ -306,6 +306,14 @@ read -p "Welcher desktop soll verwendet werden? all, lxde, gnome, gnome-flashbac
 #
 echo "Systemsprache und dienste werden erstellt!"
 # localectl set-x11-keymap de pc105 nodeadkeys
+
+echo "Section \"InputClass\"" > /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Identifier \"keyboard\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        MatchIsKeyboard \"yes\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Option \"XkbLayout\" \"de\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Option \"XkbVariant\" \"nodeadkeys\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "EndSection" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+
 # set system startup files
 echo "System startup files"
 if [ "$wifi" == "y" ]

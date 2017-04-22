@@ -3,6 +3,8 @@
 ## Generated on 2017-03-17
 ##
 
+Server = https://mirror.f4st.host/archlinux/$repo/os/$arch
+
 ## Worldwide
 Server = https://archlinux.surlyjake.com/archlinux/$repo/os/$arch
 Server = http://mirrors.evowise.com/archlinux/$repo/os/$arch
@@ -470,5 +472,3 @@ Server = http://mirror.yellowfiber.net/archlinux/$repo/os/$arch
 ## Vietnam
 Server = http://f.archlinuxvn.org/archlinux/$repo/os/$arch
 Server = http://mirror-fpt-telecom.fpt.net/archlinux/$repo/os/$arch
-
-

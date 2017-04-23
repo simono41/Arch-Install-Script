@@ -76,13 +76,6 @@ if [ "$1" == "n" ]
 then
   pacman-key --init
   pacman-key --populate archlinux
-  read -p "Sollen die Grundpackete installiert werden?: [Y/n] " grund
-  if [ "$grund" != "n" ]
-  then
-    echo "Grundpackete werden installiert!"
-    pacman -Syu base base-devel dosfstools arch-install-scripts btrfs-progs alsa-utils pulseaudio pulseaudio-alsa devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de inkscape audacity gimp openssh firefox firefox-i18n-de firefox-adblock-plus flashplugin jdk8-openjdk wireshark-gtk hydra nmap pygtk aircrack-ng bless mumble teamspeak3 cmatrix file-roller atom obs-studio 0ad megaglest assaultcube teeworlds freeciv scratch minetest gnome-chess gnuchess netbeans chromium steam wine
-
-  fi
   #
   read -p "Soll murmur mitinstalliert werden?: [Y/n] " murmur
   if [ "$murmur" != "n" ]

@@ -108,7 +108,7 @@ dd if=/dev/zero of=/dev/$device bs=64M count=10 status=progress
 #
 if [ "$aktu" == "y" ]
 then
-  pacman -Sy arch-install-scripts wget gdisk squashfs-tools dosfstools btrfs-progs
+  pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk
 fi
 #
 if [ "$Partition" == "gpt" ]
@@ -172,7 +172,7 @@ EOT
     #cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
     #
   else
-    pacstrap -i /mnt base base-devel grub efibootmgr links
+    pacstrap -i /mnt base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts wget gdisk squashfs-tools
   fi
   echo ""
   genfstab -Up /mnt >> /mnt/etc/fstab
@@ -296,7 +296,7 @@ EOT
     #cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
     #
   else
-    pacstrap -i /mnt base base-devel grub efibootmgr links
+    pacstrap -i /mnt base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts wget gdisk squashfs-tools
   fi
   echo ""
   genfstab -Up /mnt >> /mnt/etc/fstab

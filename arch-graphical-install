@@ -22,7 +22,7 @@ then
     chmod +x /home/"$user"/Schreibtisch/arch-install.desktop
   fi
   chmod 770 -R -v /home/"$user"/
-  chown -cR "$user" /home/"$user"/
+  chown -cR "$user":"$user" /home/"$user"/
 passwd $user <<EOT
 $pass
 $pass
@@ -31,7 +31,7 @@ EOT
   echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 else
   read -p "Wie heisst der normale Benutzer auf dem PC?: " user
-  chown -cR "$user" /home/"$user"/
+  chown -cR "$user":"$user" /home/"$user"/
   #
   read -p "Soll "$user" root-rechte gegeben werden?: [y/N] " root
   if [ "$root" == "y" ]

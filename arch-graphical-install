@@ -22,7 +22,9 @@ then
     chmod +x /home/"$user"/Schreibtisch/arch-install.desktop
   fi
   chmod 770 -R -v /home/"$user"/
-  chown -cR "$user":"$user" /home/"$user"/
+  chown -R -v "$user":"$user" /home/"$user"
+  chmod -R -v u+rwX /home/"$user"
+  chmod 755 /home/"$user"
 passwd $user <<EOT
 $pass
 $pass
@@ -31,7 +33,10 @@ EOT
   echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 else
   read -p "Wie heisst der normale Benutzer auf dem PC?: " user
-  chown -cR "$user":"$user" /home/"$user"/
+  chmod 770 -R -v /home/"$user"/
+  chown -R -v "$user":"$user" /home/"$user" 
+  chmod -R -v u+rwX /home/"$user" 
+  chmod 755 /home/"$user" 
   #
   read -p "Soll "$user" root-rechte gegeben werden?: [y/N] " root
   if [ "$root" == "y" ]
@@ -40,6 +45,8 @@ else
   fi
 fi
 #
+if [ "$1" == "n" ]
+then
 read -p "Ist das ein Raspberry PI ?: [y/N] " pi
 read -p "Wollen sie eine Verbindung mit Ethernet aufbauen?: [y/N] " ethernet
 if [ "$ethernet" == "y" ]
@@ -71,9 +78,6 @@ else
   echo "Wifi wird nicht eingerichtet!"
 fi
 #
-
-if [ "$1" == "n" ]
-then
   pacman-key --init
   pacman-key --populate archlinux
   #

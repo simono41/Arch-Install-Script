@@ -8,6 +8,25 @@ if [[ $EUID -ne 0 ]]; then
 fi
 echo "Als root Angemeldet"
 #
+
+function userrechte {
+  chmod 770 -R -v /home/"$user"/
+  chown -R -v "$user":"$user" /home/"$user"
+  chmod -R -v u+rwX /home/"$user"
+  chmod 755 /home/"$user"
+}
+
+
+
+
+
+
+
+
+
+
+
+#
 read -p "Wollen sie einen neuen Benutzer erstellen?: [y/N] " erstellen
 if [ "$erstellen" == "y" ]
 then
@@ -16,15 +35,7 @@ then
   # adduser
   echo "adduser "$user""
   useradd $user
-  if [ "$1" != "n" ]; then
-    mkdir -p /home/"$user"/Schreibtisch/
-    cp /usr/share/applications/arch-install.desktop /home/"$user"/Schreibtisch/
-    chmod +x /home/"$user"/Schreibtisch/arch-install.desktop
-  fi
-  chmod 770 -R -v /home/"$user"/
-  chown -R -v "$user":"$user" /home/"$user"
-  chmod -R -v u+rwX /home/"$user"
-  chmod 755 /home/"$user"
+  userrechte
 passwd $user <<EOT
 $pass
 $pass
@@ -33,10 +44,7 @@ EOT
   echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 else
   read -p "Wie heisst der normale Benutzer auf dem PC?: " user
-  chmod 770 -R -v /home/"$user"/
-  chown -R -v "$user":"$user" /home/"$user"
-  chmod -R -v u+rwX /home/"$user"
-  chmod 755 /home/"$user"
+  userrechte
   #
   read -p "Soll "$user" root-rechte gegeben werden?: [y/N] " root
   if [ "$root" == "y" ]
@@ -47,37 +55,37 @@ fi
 #
 if [ "$1" == "n" ]
 then
-read -p "Ist das ein Raspberry PI ?: [y/N] " pi
-read -p "Wollen sie eine Verbindung mit Ethernet aufbauen?: [y/N] " ethernet
-if [ "$ethernet" == "y" ]
-then
-  ip link
-  read -p "Wie heisst das Ethernet-modul?: " ethernetmodul
-  echo "dhcpcd wird gestartet!"
-  dhcpcd "$ethernetmodul"
-else
-  echo "Ethernet wird nicht eingerichtet!"
-fi
-#
-read -p "Wollen sie eine Verbindung mit wifi verbindung aufbauen?: [y/N] " wifi
-if [ "$wifi" == "y" ]
-then
-  echo "Wifi wird eingerichtet!"
-  ip link
-  read -p "Wie heisst das wlan-modul?: " modul
-  ip link set dev "$modul" up
-  sleep 5
-  iw dev "$modul" scan > scan.txt
-  nano scan.txt
-  read -p "Wie heisst das Netzwerk?: " network
-  read -p "Wie heisst das Passwort?: " passwort
-  wpa_passphrase  "$network"  "$passwort"  > /etc/wpa_supplicant/wpa_supplicant-"$modul".conf
-  wpa_supplicant -B -i "$modul" -c /etc/wpa_supplicant/wpa_supplicant-"$modul".conf
-  dhcpcd "$modul"
-else
-  echo "Wifi wird nicht eingerichtet!"
-fi
-#
+  read -p "Ist das ein Raspberry PI ?: [y/N] " pi
+  read -p "Wollen sie eine Verbindung mit Ethernet aufbauen?: [y/N] " ethernet
+  if [ "$ethernet" == "y" ]
+  then
+    ip link
+    read -p "Wie heisst das Ethernet-modul?: " ethernetmodul
+    echo "dhcpcd wird gestartet!"
+    dhcpcd "$ethernetmodul"
+  else
+    echo "Ethernet wird nicht eingerichtet!"
+  fi
+  #
+  read -p "Wollen sie eine Verbindung mit wifi verbindung aufbauen?: [y/N] " wifi
+  if [ "$wifi" == "y" ]
+  then
+    echo "Wifi wird eingerichtet!"
+    ip link
+    read -p "Wie heisst das wlan-modul?: " modul
+    ip link set dev "$modul" up
+    sleep 5
+    iw dev "$modul" scan > scan.txt
+    nano scan.txt
+    read -p "Wie heisst das Netzwerk?: " network
+    read -p "Wie heisst das Passwort?: " passwort
+    wpa_passphrase  "$network"  "$passwort"  > /etc/wpa_supplicant/wpa_supplicant-"$modul".conf
+    wpa_supplicant -B -i "$modul" -c /etc/wpa_supplicant/wpa_supplicant-"$modul".conf
+    dhcpcd "$modul"
+  else
+    echo "Wifi wird nicht eingerichtet!"
+  fi
+  #
   pacman-key --init
   pacman-key --populate archlinux
   #
@@ -222,6 +230,23 @@ then
   echo "gtk-application-prefer-dark-theme = true" >> /home/"$user"/.config/gtk-3.0/settings.ini
   echo "# set font name and dimension" >> /home/"$user"/.config/gtk-3.0/settings.ini
   echo "gtk-font-name = Sans 10" >> /home/"$user"/.config/gtk-3.0/settings.ini
+
+  mkdir -p /home/"$user"/.local/share/applications/
+  echo "[Default Applications]" > /home/"$user"/.local/share/applications/mimeapps.list
+  echo "inode/directory=org.gnome.Nautilus.desktop" >> /home/"$user"/.local/share/applications/mimeapps.list
+
+  mkdir -p /root/.config/gtk-3.0/
+  echo "[Settings]" > /root/.config/gtk-3.0/settings.ini
+  echo "gtk-theme-name = Adwaita" >> /root/.config/gtk-3.0/settings.ini
+  echo "# next option is applicable only if selected theme supports it" >> /root/.config/gtk-3.0/settings.ini
+  echo "gtk-application-prefer-dark-theme = true" >> /root/.config/gtk-3.0/settings.ini
+  echo "# set font name and dimension" >> /root/.config/gtk-3.0/settings.ini
+  echo "gtk-font-name = Sans 10" >> /root/.config/gtk-3.0/settings.ini
+
+  mkdir -p /root/.local/share/applications/
+  echo "[Default Applications]" > /root/.local/share/applications/mimeapps.list
+  echo "inode/directory=org.gnome.Nautilus.desktop" >> /root/.local/share/applications/mimeapps.list
+
 fi
 
 if [ "$rootstart" == "gnome-flashback" ] || [ "$rootstart" == "all" ]
@@ -230,6 +255,31 @@ then
   echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
   echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
   systemctl enable NetworkManager.service
+
+  mkdir -p /home/"$user"/.config/gtk-3.0/
+  echo "[Settings]" > /home/"$user"/.config/gtk-3.0/settings.ini
+  echo "gtk-theme-name = Adwaita" >> /home/"$user"/.config/gtk-3.0/settings.ini
+  echo "# next option is applicable only if selected theme supports it" >> /home/"$user"/.config/gtk-3.0/settings.ini
+  echo "gtk-application-prefer-dark-theme = true" >> /home/"$user"/.config/gtk-3.0/settings.ini
+  echo "# set font name and dimension" >> /home/"$user"/.config/gtk-3.0/settings.ini
+  echo "gtk-font-name = Sans 10" >> /home/"$user"/.config/gtk-3.0/settings.ini
+
+  mkdir -p /home/"$user"/.local/share/applications/
+  echo "[Default Applications]" > /home/"$user"/.local/share/applications/mimeapps.list
+  echo "inode/directory=org.gnome.Nautilus.desktop" >> /home/"$user"/.local/share/applications/mimeapps.list
+
+  mkdir -p /root/.config/gtk-3.0/
+  echo "[Settings]" > /root/.config/gtk-3.0/settings.ini
+  echo "gtk-theme-name = Adwaita" >> /root/.config/gtk-3.0/settings.ini
+  echo "# next option is applicable only if selected theme supports it" >> /root/.config/gtk-3.0/settings.ini
+  echo "gtk-application-prefer-dark-theme = true" >> /root/.config/gtk-3.0/settings.ini
+  echo "# set font name and dimension" >> /root/.config/gtk-3.0/settings.ini
+  echo "gtk-font-name = Sans 10" >> /root/.config/gtk-3.0/settings.ini
+
+  mkdir -p /root/.local/share/applications/
+  echo "[Default Applications]" > /root/.local/share/applications/mimeapps.list
+  echo "inode/directory=org.gnome.Nautilus.desktop" >> /root/.local/share/applications/mimeapps.list
+
 fi
 
 if [ "$rootstart" == "cinnamon" ] || [ "$rootstart" == "all" ]
@@ -379,6 +429,8 @@ do
   $befehl
   read -p "Sollen sonst noch Packete hinzugefügt oder entfernt werden? [Y/n] " packete
 done
+
+userrechte
 
 #
 #systemctl start ntpd

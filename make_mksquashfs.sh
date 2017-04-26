@@ -67,10 +67,6 @@ then
   cp arch-install-non_root ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install-non_root
 
-  mkdir -p ${work_dir}/${arch}/airootfs/root/Schreibtisch/
-  cp arch-install.desktop ${work_dir}/${arch}/airootfs/root/Schreibtisch/
-  chmod +x ${work_dir}/${arch}/airootfs/root/Schreibtisch/arch-install.desktop
-
   mkdir -p ${work_dir}/${arch}/airootfs/usr/share/applications/
   cp arch-install.desktop ${work_dir}/${arch}/airootfs/usr/share/applications/
   chmod +x ${work_dir}/${arch}/airootfs/usr/share/applications/arch-install.desktop
@@ -342,6 +338,8 @@ EOT
     sleep 2
 
     mkfs.btrfs -L cow_device /dev/${device}3
+
+    sync
 
   fi
 fi

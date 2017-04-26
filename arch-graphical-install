@@ -34,9 +34,9 @@ EOT
 else
   read -p "Wie heisst der normale Benutzer auf dem PC?: " user
   chmod 770 -R -v /home/"$user"/
-  chown -R -v "$user":"$user" /home/"$user" 
-  chmod -R -v u+rwX /home/"$user" 
-  chmod 755 /home/"$user" 
+  chown -R -v "$user":"$user" /home/"$user"
+  chmod -R -v u+rwX /home/"$user"
+  chmod 755 /home/"$user"
   #
   read -p "Soll "$user" root-rechte gegeben werden?: [y/N] " root
   if [ "$root" == "y" ]
@@ -208,6 +208,20 @@ then
   pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "exec gnome-session" > /etc/X11/xinit/xinitrc
   systemctl enable NetworkManager.service
+  read -p "Soll gnome classic benutzt werden? [Y/n] " classic
+  if [ "$classic" != "n" ]
+  then
+    echo "export XDG_CURRENT_DESKTOP=GNOME-Classic:GNOME" > /etc/X11/xinit/xinitrc
+    echo "export GNOME_SHELL_SESSION_MODE=classic" >> /etc/X11/xinit/xinitrc
+    echo "exec gnome-session --session=gnome-classic" >> /etc/X11/xinit/xinitrc
+  fi
+  mkdir -p /home/"$user"/.config/gtk-3.0/
+  echo "[Settings]" > /home/"$user"/.config/gtk-3.0/settings.ini
+  echo "gtk-theme-name = Adwaita" >> /home/"$user"/.config/gtk-3.0/settings.ini
+  echo "# next option is applicable only if selected theme supports it" >> /home/"$user"/.config/gtk-3.0/settings.ini
+  echo "gtk-application-prefer-dark-theme = true" >> /home/"$user"/.config/gtk-3.0/settings.ini
+  echo "# set font name and dimension" >> /home/"$user"/.config/gtk-3.0/settings.ini
+  echo "gtk-font-name = Sans 10" >> /home/"$user"/.config/gtk-3.0/settings.ini
 fi
 
 if [ "$rootstart" == "gnome-flashback" ] || [ "$rootstart" == "all" ]
@@ -300,8 +314,8 @@ then
   echo "fi" >> /home/"$user"/.bash_profile
   #
 
-  read -p "Welcher Nutzer soll automatisch gestartet werden?: [ROOT/"$user"] " start
-  if [ "$start" != "$user" ] #2
+  read -p "Welcher Nutzer soll automatisch gestartet werden?: ["$user"/root] " start
+  if [ "$start" == "root" ] #2
   then
     mkdir -p /etc/systemd/system/getty\@tty1.service.d
     echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf

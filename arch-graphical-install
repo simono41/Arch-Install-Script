@@ -46,6 +46,14 @@ else
   read -p "Wie heisst der normale Benutzer auf dem PC?: " user
   userrechte
   #
+  mkdir -p /home/"$user"/Schreibtisch/
+  cp /usr/share/applications/arch-install.desktop /home/"$user"/Schreibtisch/Betriebssystem-installieren.desktop
+  chmod +x /home/"$user"/Schreibtisch/Betriebssystem-installieren.desktop
+  #
+  mkdir -p /root/Schreibtisch/
+  cp /usr/share/applications/arch-install.desktop /root/Schreibtisch/Betriebssystem-installieren.desktop
+  chmod +x /root/Schreibtisch/Betriebssystem-installieren.desktop
+  #
   read -p "Soll "$user" root-rechte gegeben werden?: [y/N] " root
   if [ "$root" == "y" ]
   then
@@ -401,17 +409,17 @@ systemctl enable sshd
 # set systemconfiguration
 echo "systemconfiguration"
 #
-echo LANG=de_DE.UTF-8 > /etc/locale.conf
-echo LC_COLLATE=C >> /etc/locale.conf
-echo LANGUAGE=de_DE >> /etc/locale.conf
+echo "LANG=de_DE.UTF-8" > /etc/locale.conf
+echo "LC_COLLATE=C" >> /etc/locale.conf
+echo "LANGUAGE=de_DE" >> /etc/locale.conf
 #
-echo KEYMAP=de-latin1 > /etc/vconsole.conf
-echo FONT=lat9w-16 >> /etc/vconsole.conf
+echo "KEYMAP=de-latin1" > /etc/vconsole.conf
+echo "FONT=lat9w-16" >> /etc/vconsole.conf
 #
-echo de_DE.UTF-8 UTF-8 > /etc/locale.gen
-echo de_DE ISO-8859-1 >> /etc/locale.gen
-echo de_DE@euro ISO-8859-15 >> /etc/locale.gen
-echo en_US.UTF-8 >> /etc/locale.gen
+echo "de_DE.UTF-8 UTF-8" > /etc/locale.gen
+echo "de_DE ISO-8859-1" >> /etc/locale.gen
+echo "de_DE@euro ISO-8859-15" >> /etc/locale.gen
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 #
 locale-gen
 #

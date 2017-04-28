@@ -226,14 +226,14 @@ EOT
     rm /mnt/usr/share/applications/arch-install.desktop
   fi
   echo ""
-  if [ -f /mnt/root/Schreibtisch/arch-install.desktop ]
+  if [ -f /mnt/root/Schreibtisch/Betriebssystem-installieren.desktop ]
   then
-    rm /mnt/root/Schreibtisch/arch-install.desktop
+    rm /mnt/root/Schreibtisch/Betriebssystem-installieren.desktop
   fi
   echo ""
-  if [ -f /mnt/home/user/Schreibtisch/arch-install.desktop ]
+  if [ -f /mnt/home/user/Schreibtisch/Betriebssystem-installieren.desktop ]
   then
-    rm /mnt/home/user/Schreibtisch/arch-install.desktop
+    rm /mnt/home/user/Schreibtisch/Betriebssystem-installieren.desktop
   fi
   echo ""
   echo "Fertig"
@@ -320,14 +320,14 @@ EOT
     rm /mnt/usr/share/applications/arch-install.desktop
   fi
   echo ""
-  if [ -f /mnt/root/Schreibtisch/arch-install.desktop ]
+  if [ -f /mnt/root/Schreibtisch/Betriebssystem-installieren.desktop ]
   then
-    rm /mnt/root/Schreibtisch/arch-install.desktop
+    rm /mnt/root/Schreibtisch/Betriebssystem-installieren.desktop
   fi
   echo ""
-  if [ -f /mnt/home/user/Schreibtisch/arch-install.desktop ]
+  if [ -f /mnt/home/user/Schreibtisch/Betriebssystem-installieren.desktop ]
   then
-    rm /mnt/home/user/Schreibtisch/arch-install.desktop
+    rm /mnt/home/user/Schreibtisch/Betriebssystem-installieren.desktop
   fi
   echo ""
   echo "Fertig"

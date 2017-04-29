@@ -278,7 +278,14 @@ then
   read -p "Soll das Image jetzt ausgeführt werden? [Y/n] " run
   if [ "$run" != "n" ]
   then
-    qemu-system-x86_64 -enable-kvm -cdrom out/${imagename} -boot d -m 8092
+    if [ -f arch.img ]
+    then
+      rm arch.img
+    else
+      echo "arch.img nicht vorhanden!"
+      qemu-img create -f qcow2 arch.img 64G
+    fi
+    qemu-system-x86_64 -enable-kvm -cdrom out/${imagename} -hda arch.img -boot d -m 8092
   fi
 
 

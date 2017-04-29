@@ -46,7 +46,7 @@ then
   cp hooks/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 
   echo "MODULES=\"i915\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-  echo "HOOKS=\"base udev keyboard autodetect block filesystems archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+  echo "HOOKS=\"base udev block filesystems keyboard archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
   echo "COMPRESSION=\"gzip\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
   echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname

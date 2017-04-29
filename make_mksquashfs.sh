@@ -30,7 +30,7 @@ then
     read -p "Sollen weitere Packete installiert werden? [Y/n] " pacstrap
     if [ "$pacstrap" != "n" ]
     then
-      pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel dosfstools arch-install-scripts btrfs-progs alsa-utils pulseaudio pulseaudio-alsa devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de inkscape audacity gimp openssh firefox firefox-i18n-de firefox-adblock-plus flashplugin jdk8-openjdk wireshark-gtk hydra nmap pygtk aircrack-ng bless mumble teamspeak3 cmatrix file-roller atom obs-studio 0ad megaglest assaultcube teeworlds freeciv scratch minetest gnome-chess gnuchess hedgewars netbeans chromium steam wine nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+      pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel dosfstools arch-install-scripts btrfs-progs alsa-utils pulseaudio pulseaudio-alsa devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de inkscape audacity gimp openssh firefox firefox-i18n-de firefox-adblock-plus flashplugin jdk8-openjdk wireshark-gtk hydra nmap pygtk aircrack-ng bless mumble teamspeak3 cmatrix file-roller atom obs-studio 0ad megaglest assaultcube teeworlds freeciv scratch minetest gnome-chess gnuchess hedgewars netbeans chromium steam wine winetricks nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
     fi
     read -p "Soll ein root passwort festgelegt werden? [Y/n] " root
     if [ "$root" != "n" ]
@@ -45,7 +45,7 @@ then
   cp install/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
   cp hooks/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 
-  echo "HOOKS=\"base udev block filesystems keyboard archiso\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+  echo "HOOKS=\"base udev block filesystems archiso\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
   echo "COMPRESSION=\"gzip\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
   echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
@@ -88,7 +88,7 @@ echo "Jetzt können sie ihr Betriebssystem nach ihren Belieben anpassen:D"
 read -p "Wollen sie ihr Betriebssystem nach Belieben anpassen? [Y/n] " packete
 if [ "$packete" != "n" ]
 then
-  arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install
+  arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install n
 fi
 
 # System-image
@@ -314,7 +314,7 @@ then
   fi
 
 
-  read -p "Soll das Image jetzt eine btrfs Partition zum Offline-Schreiben erhalten? [Y/n] " btrfs
+  read -p "Soll das Image jetzt eine Partition zum Offline-Schreiben erhalten? [Y/n] " btrfs
   if [ "$btrfs" != "n" ]
   then
     if [ "$device" == "" ]
@@ -337,7 +337,7 @@ EOT
 
     sleep 2
 
-    mkfs.btrfs -L cow_device /dev/${device}3
+    mkfs.ext4 -L cow_device /dev/${device}3
 
     sync
 

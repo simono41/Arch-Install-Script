@@ -7,7 +7,7 @@ _mnt_dmsnapshot() {
   local img_name="${img_fullname%%.*}"
   local dm_snap_name="${dm_snap_prefix}_${img_name}"
   local ro_dev ro_dev_size rw_dev
-  
+
   ro_dev=$(losetup --find --show --read-only "${img}")
   echo ${ro_dev} >> /run/archiso/used_block_devices
   ro_dev_size=$(blockdev --getsz ${ro_dev})
@@ -264,5 +264,10 @@ archiso_mount_handler() {
     echo "default graphical-desktop"
   fi
 }
+
+if [[ "${shell}" == "y" ]]; then
+  echo "starting interactive_shell"
+  launch_interactive_shell
+fi
 
 # vim:ft=sh:ts=4:sw=4:et:

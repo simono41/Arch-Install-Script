@@ -1,11 +1,34 @@
 #!/bin/bash
 #
-set -e
+set -ex
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root" 1>&2
   exit 1
 fi
 echo "Als root Angemeldet"
+
+function swap {
+  #swap
+  fallocate -l 512M /mnt/swapfile
+  chmod 600 /mnt/swapfile
+  mkswap /mnt/swapfile
+  echo "/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if [ "$1" != "n" ]
 then
   read -p "Soll im Internet geguckt werden ob es ein neues Install-Script gibt und dann ausgefuehrt werden?: [Y/n] " update
@@ -53,17 +76,15 @@ if [ "$Partition" == "gpt" ]
 then
   read -p "Soll mit systemd gebootet werden oder mit grub? [SYSTEMD/grub] : " boot
 fi
-read -p "Wie groß soll die System-Partition sein?: z.b +20G : " speicher
-if [ -z "$speicher" ]; then
-  speicher=+20G
-fi
+read -p "Wie groß soll die System-Partition sein? (wenn nichts eingetragen wird wird die volle Festplatte benutzt!!!): z.b +20G : " speicher
+#
 echo "Name: $name"
 echo "Laufwerk: /dev/"$device""
 echo "Partionsart: $Partition"
 echo "Passwort: $pass"
 echo "Offline installation: $offline"
 echo "Architektur: $(uname -m)"
-echo "NVIDIA Driber: $nvidia"
+echo "NVIDIA Treiber: $nvidia"
 echo "Aktualisierungen: $aktu"
 echo "Systemgroesse: $speicher"
 #
@@ -131,24 +152,18 @@ n
 ${speicher}
 8300
 p
-n
-
-
-+2G
-8200
-p
 w
 y
 EOT
-  echo ""
-  mkfs.btrfs /dev/"$device"2
+  echo "format"
+  mkfs.ext4 -L p_arch /dev/"$device"2
   mkfs.fat -F32 /dev/"$device"1
-  mkswap /dev/"$device"3
-  echo ""
+  echo "mount"
   mount /dev/"$device"2 /mnt
   mkdir /mnt/boot
   mount /dev/"$device"1 /mnt/boot
-  #swapon /dev/"$device"3
+  echo "swap"
+  swap
   echo ""
   if [ "$offline" != "n" ]
   then
@@ -161,7 +176,7 @@ EOT
       unsquashfs -f -d /mnt/ /run/archiso/copytoram/airootfs.sfs
     fi
     echo ""
-    echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
+    echo "HOOKS=\"systemd block filesystems\"" > /mnt/etc/mkinitcpio.conf
     echo "COMPRESSION=\"gzip\"" >> /mnt/etc/mkinitcpio.conf
     echo ""
     echo ""
@@ -204,12 +219,12 @@ EOT
     echo "title    "$name"-os" > /mnt/boot/loader/entries/arch-uefi.conf
     echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi.conf
     echo "initrd   /initramfs-linux.img" >> /mnt/boot/loader/entries/arch-uefi.conf
-    echo "options  root=PARTUUID=${tobootdevice} rw resume=p_swap" >> /mnt/boot/loader/entries/arch-uefi.conf
+    echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/boot/loader/entries/arch-uefi.conf
 
     echo "title    "$name"-os" > /mnt/boot/loader/entries/arch-uefi-fallback.conf
     echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
     echo "initrd   /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
-    echo "options  root=PARTUUID=${tobootdevice} rw resume=p_swap" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
+    echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
 
     echo "default   arch-uefi" > /mnt/boot/loader/loader.conf
     echo "timeout   1" >> /mnt/boot/loader/loader.conf
@@ -226,14 +241,14 @@ EOT
     rm /mnt/usr/share/applications/arch-install.desktop
   fi
   echo ""
-  if [ -f /mnt/root/Schreibtisch/Betriebssystem-installieren.desktop ]
+  if [ -f /mnt/root/Schreibtisch/arch-install.desktop ]
   then
-    rm /mnt/root/Schreibtisch/Betriebssystem-installieren.desktop
+    rm /mnt/root/Schreibtisch/arch-install.desktop
   fi
   echo ""
-  if [ -f /mnt/home/user/Schreibtisch/Betriebssystem-installieren.desktop ]
+  if [ -f /mnt/home/user/Schreibtisch/arch-install.desktop ]
   then
-    rm /mnt/home/user/Schreibtisch/Betriebssystem-installieren.desktop
+    rm /mnt/home/user/Schreibtisch/arch-install.desktop
   fi
   echo ""
   echo "Fertig"
@@ -255,24 +270,18 @@ n
 
 ${speicher}
 p
-n
-
-
-
-+2G
-p
 w
 y
 EOT
-  echo ""
-  mkfs.btrfs /dev/"$device"2
-  mkfs.fat /dev/"$device"1
-  mkswap /dev/"$device"3
-  echo ""
+  echo "format"
+  mkfs.ext4 /dev/"$device"2
+  mkfs.fat -F 32 /dev/"$device"1
+  echo "mount"
   mount /dev/"$device"2 /mnt
   mkdir /mnt/boot
   mount /dev/"$device"1 /mnt/boot
-  #swapon /dev/"$device"3
+  echo "swap"
+  swap
   echo ""
   if [ "$offline" != "n" ]
   then
@@ -285,7 +294,7 @@ EOT
       unsquashfs -f -d /mnt/ /run/archiso/copytoram/airootfs.sfs
     fi
     echo ""
-    echo "HOOKS=\"base udev block filesystems keyboard\"" > /mnt/etc/mkinitcpio.conf
+    echo "HOOKS=\"systemd block filesystems\"" > /mnt/etc/mkinitcpio.conf
     echo "COMPRESSION=\"gzip\"" >> /mnt/etc/mkinitcpio.conf
     echo ""
     echo ""
@@ -320,14 +329,14 @@ EOT
     rm /mnt/usr/share/applications/arch-install.desktop
   fi
   echo ""
-  if [ -f /mnt/root/Schreibtisch/Betriebssystem-installieren.desktop ]
+  if [ -f /mnt/root/Schreibtisch/arch-install.desktop ]
   then
-    rm /mnt/root/Schreibtisch/Betriebssystem-installieren.desktop
+    rm /mnt/root/Schreibtisch/arch-install.desktop
   fi
   echo ""
-  if [ -f /mnt/home/user/Schreibtisch/Betriebssystem-installieren.desktop ]
+  if [ -f /mnt/home/user/Schreibtisch/arch-install.desktop ]
   then
-    rm /mnt/home/user/Schreibtisch/Betriebssystem-installieren.desktop
+    rm /mnt/home/user/Schreibtisch/arch-install.desktop
   fi
   echo ""
   echo "Fertig"

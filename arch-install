@@ -162,8 +162,6 @@ EOT
   mount /dev/"$device"2 /mnt
   mkdir /mnt/boot
   mount /dev/"$device"1 /mnt/boot
-  echo "swap"
-  swap
   echo ""
   if [ "$offline" != "n" ]
   then
@@ -191,6 +189,8 @@ EOT
   fi
   echo ""
   genfstab -Up /mnt >> /mnt/etc/fstab
+  echo "swap"
+  swap
   echo ""
   echo "$name"-os > /mnt/etc/hostname
   echo ""
@@ -280,8 +280,6 @@ EOT
   mount /dev/"$device"2 /mnt
   mkdir /mnt/boot
   mount /dev/"$device"1 /mnt/boot
-  echo "swap"
-  swap
   echo ""
   if [ "$offline" != "n" ]
   then
@@ -309,6 +307,8 @@ EOT
   fi
   echo ""
   genfstab -Up /mnt >> /mnt/etc/fstab
+  echo "swap"
+  swap
   echo ""
   echo "$name"-os > /mnt/etc/hostname
   echo ""

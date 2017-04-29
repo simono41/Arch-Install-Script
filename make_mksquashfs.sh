@@ -45,7 +45,8 @@ then
   cp install/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
   cp hooks/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 
-  echo "HOOKS=\"base udev block filesystems archiso\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+  echo "MODULES=\"i915\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+  echo "HOOKS=\"base udev keyboard autodetect block filesystems archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
   echo "COMPRESSION=\"gzip\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
   echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
@@ -335,8 +336,7 @@ w
 y
 EOT
 
-    sleep 2
-
+    echo "mit j bestätigen"
     mkfs.ext4 -L cow_device /dev/${device}3
 
     sync

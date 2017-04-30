@@ -26,12 +26,9 @@ then
   if [ "$pacstrap" != "n" ]
   then
     pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk
-    pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk
-    read -p "Soll ein OS mit allen Packeten gebaut werden? [Y/n] " pacstrap
-    if [ "$pacstrap" != "n" ]
-    then
-      pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel dosfstools arch-install-scripts btrfs-progs alsa-utils pulseaudio pulseaudio-alsa devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de inkscape audacity gimp openssh firefox firefox-i18n-de firefox-adblock-plus flashplugin jdk8-openjdk wireshark-gtk hydra nmap pygtk aircrack-ng bless mumble teamspeak3 cmatrix file-roller atom obs-studio 0ad megaglest assaultcube teeworlds freeciv scratch minetest gnome-chess gnuchess hedgewars netbeans chromium steam wine winetricks nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
-    fi
+    pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools \
+    grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso \
+    cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk
     read -p "Soll ein root passwort festgelegt werden? [Y/n] " root
     if [ "$root" != "n" ]
     then
@@ -283,7 +280,7 @@ then
   then
     if [ -f arch.img ]
     then
-      rm arch.img
+      echo "arch.img vorhanden!"
     else
       echo "arch.img nicht vorhanden!"
       qemu-img create -f qcow2 arch.img 64G

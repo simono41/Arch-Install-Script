@@ -87,6 +87,19 @@ function gnomeconfig {
   echo "inode/directory=org.gnome.Nautilus.desktop" >> /root/.local/share/applications/mimeapps.list
 }
 
+function minimalinstallation {
+  read -p "Wollen sie eine volle Installation durchführen?: [Y/n] " minimal
+  if [ "$minimal" != "n" ]
+  then
+    pacman -S xorg-server xorg-xinit xorg-utils xorg-server-utils xorg-drivers \
+    xf86-input-synaptics ttf-dejavu xscreensaver \
+    xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa
+    pacman -S firefox firefox-i18n-de vlc mplayer brasero libreoffice-fresh libreoffice-fresh-de gimp \
+    inkscape audacity atom nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam \
+    mumble netbeans jdk8-openjdk cups hplip
+  fi
+}
+
 
 
 
@@ -189,6 +202,8 @@ then
     fi
   fi
 fi
+#
+minimalinstallation
 #
 read -p "Soll yaourt mitinstalliert werden?: [Y/n] " yaourt
 if [ "$yaourt" != "n" ]

@@ -26,8 +26,8 @@ then
   if [ "$pacstrap" != "n" ]
   then
     pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk
-    pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts wget gdisk squashfs-tools
-    read -p "Sollen weitere Packete installiert werden? [Y/n] " pacstrap
+    pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk
+    read -p "Soll ein OS mit allen Packeten gebaut werden? [Y/n] " pacstrap
     if [ "$pacstrap" != "n" ]
     then
       pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel dosfstools arch-install-scripts btrfs-progs alsa-utils pulseaudio pulseaudio-alsa devtools xorriso cdrtools squashfs-tools wget libisoburn libisofs gdisk ntfs-3g android-tools xorg xorg-apps xorg-drivers xorg-fonts xorg-twm xorg-xclock xterm ttf-dejavu xorg-server xorg-utils xorg-server-utils xorg-xinit xorg-xdm xscreensaver cdrdao links x11vnc tigervnc htop git lm_sensors sudo openssl acpid ntp dbus avahi cronie net-tools procps zip gcc autoconf automake make libconfig obconf patch fakeroot pkg-config mplayer gparted pigz pixz simple-scan brasero qemu vlc libdvdread libdvdcss libdvdnav cups hplip python-pyqt5 python-pip python2-pip geckodriver macchanger transmission-gtk transmission-cli youtube-dl flac ffmpeg libreoffice-fresh libreoffice-fresh-de inkscape audacity gimp openssh firefox firefox-i18n-de firefox-adblock-plus flashplugin jdk8-openjdk wireshark-gtk hydra nmap pygtk aircrack-ng bless mumble teamspeak3 cmatrix file-roller atom obs-studio 0ad megaglest assaultcube teeworlds freeciv scratch minetest gnome-chess gnuchess hedgewars netbeans chromium steam wine winetricks nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
@@ -132,8 +132,8 @@ read -p "Soll das BIOS installiert werden?: [Y/n] " bios
 if [ "$bios" != "n" ]
 then
   cp -R ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/* ${work_dir}/iso/${install_dir}/boot/syslinux/
-  cp ${work_dir}/${arch}/airootfs/boot/initramfs-linux.img ${work_dir}/iso/arch/boot/${arch}/archiso.img
-  cp ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux ${work_dir}/iso/arch/boot/${arch}/vmlinuz
+  cp ${work_dir}/${arch}/airootfs/boot/initramfs-linux.img ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
+  cp ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz
   cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isolinux.bin ${work_dir}/iso/isolinux/
   cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isohdpfx.bin ${work_dir}/iso/isolinux/
   cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/ldlinux.c32 ${work_dir}/iso/isolinux/
@@ -145,6 +145,7 @@ then
   echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 
   sed "s|%ISO_LABEL%|${iso_label}|g;
+  s|%arch%|${arch}|g;
   s|%INSTALL_DIR%|${install_dir}|g" syslinux.cfg >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 
   echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
@@ -193,10 +194,10 @@ then
 
   cp ${work_dir}/${arch}/airootfs/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${work_dir}/efiboot/EFI/boot/loader.efi
 
-  cp uefi-shell-v2-x86_64.conf ${work_dir}/efiboot/loader/entries/
-  cp uefi-shell-v1-x86_64.conf ${work_dir}/efiboot/loader/entries/
-  cp uefi-shell-v1-x86_64.conf ${work_dir}/iso/loader/entries/uefi-shell-v1-x86_64.conf
-  cp uefi-shell-v2-x86_64.conf ${work_dir}/iso/loader/entries/uefi-shell-v2-x86_64.conf
+  cp uefi-shell-v2-${arch}.conf ${work_dir}/efiboot/loader/entries/
+  cp uefi-shell-v1-${arch}.conf ${work_dir}/efiboot/loader/entries/
+  cp uefi-shell-v1-${arch}.conf ${work_dir}/iso/loader/entries/uefi-shell-v1-${arch}.conf
+  cp uefi-shell-v2-${arch}.conf ${work_dir}/iso/loader/entries/uefi-shell-v2-${arch}.conf
 
   # EFI Shell 2.0 for UEFI 2.3+
   if [ -f ${work_dir}/iso/EFI/shellx64_v2.efi ]
@@ -222,19 +223,21 @@ then
   cp ${work_dir}/${arch}/airootfs/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${work_dir}/iso/EFI/boot/loader.efi
 
   echo "timeout 3" > ${work_dir}/iso/loader/loader.conf
-  echo "default archiso-x86_64-usb-default" >> ${work_dir}/iso/loader/loader.conf
+  echo "default archiso-${arch}-usb-default" >> ${work_dir}/iso/loader/loader.conf
   echo "timeout 3" > ${work_dir}/efiboot/loader/loader.conf
-  echo "default archiso-x86_64-cd-default" >> ${work_dir}/efiboot/loader/loader.conf
+  echo "default archiso-${arch}-cd-default" >> ${work_dir}/efiboot/loader/loader.conf
 
-  for _cfg in releng/archiso-x86_64-usb-*.conf; do
+  for _cfg in releng/archiso-${arch}-usb-*.conf; do
     sed "s|%ISO_LABEL%|${iso_label}|g;
+    s|%arch%|${arch}|g;
     s|%INSTALL_DIR%|${install_dir}|g" ${_cfg} > ${work_dir}/iso/loader/entries/${_cfg##*/}
   done
 
   ###
 
-  for _cfg in releng/archiso-x86_64-cd-*.conf; do
+  for _cfg in releng/archiso-${arch}-cd-*.conf; do
     sed "s|%ISO_LABEL%|${iso_label}|g;
+    s|%arch%|${arch}|g;
     s|%INSTALL_DIR%|${install_dir}|g" ${_cfg} > ${work_dir}/efiboot/loader/entries/${_cfg##*/}
   done
 
@@ -285,7 +288,7 @@ then
       echo "arch.img nicht vorhanden!"
       qemu-img create -f qcow2 arch.img 64G
     fi
-    qemu-system-x86_64 -enable-kvm -cdrom out/${imagename} -hda arch.img -boot d -m 8092
+    qemu-system-${arch} -enable-kvm -cdrom out/${imagename} -hda arch.img -boot d -m 8092
   fi
 
 

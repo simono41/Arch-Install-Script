@@ -97,7 +97,7 @@ function minimalinstallation {
     pacman -S firefox firefox-i18n-de vlc mplayer brasero libreoffice-fresh libreoffice-fresh-de gimp \
     inkscape audacity atom nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam \
     mumble netbeans jdk8-openjdk cups hplip openssh kdenlive freeciv minetest teeworlds \
-    obs-studio chromium ardour hydrogen python python-pip
+    obs-studio chromium ardour hydrogen python python-pip git
   fi
 }
 

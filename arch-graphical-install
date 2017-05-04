@@ -91,13 +91,15 @@ function minimalinstallation {
   read -p "Wollen sie eine volle Installation durchführen?: [Y/n] " minimal
   if [ "$minimal" != "n" ]
   then
-    pacman -S xorg-server xorg-xinit xorg-utils xorg-server-utils xorg-drivers \
+    pacman -Sy xorg-server xorg-xinit xorg-utils xorg-server-utils xorg-drivers \
     xf86-input-synaptics ttf-dejavu xscreensaver \
     xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa
-    pacman -S firefox firefox-i18n-de vlc mplayer brasero libreoffice-fresh libreoffice-fresh-de gimp \
-    inkscape audacity atom nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam \
-    mumble netbeans jdk8-openjdk cups hplip openssh kdenlive freeciv minetest teeworlds \
-    obs-studio chromium ardour hydrogen python python-pip git
+    pacman -Sy firefox firefox-i18n-de vlc mplayer brasero libreoffice-fresh libreoffice-fresh-de gimp \
+    inkscape audacity atom mumble netbeans jdk8-openjdk cups hplip openssh \
+    kdenlive freeciv minetest teeworlds \
+    obs-studio chromium ardour hydrogen python python-pip git wine \
+    murmur snapd apache docker
+    pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine_gecko wine-mono
   fi
 }
 
@@ -151,7 +153,7 @@ then
   read -p "Soll murmur mitinstalliert werden?: [Y/n] " murmur
   if [ "$murmur" != "n" ]
   then
-    pacman -S murmur
+    pacman -Sy murmur
     systemctl enable murmur
     read -p "Wie soll das Passwort vom murmur-server sein?: " murmurpass
     murmurd -ini /etc/murmur.ini -supw $murmurpass
@@ -160,21 +162,21 @@ then
   read -p "Soll snapd mitinstalliert werden?: [Y/n] " snapd
   if [ "$snapd" != "n" ]
   then
-    pacman -S snapd
+    pacman -Sy snapd
     systemctl enable snapd.socket
   fi
   #
   read -p "Soll apache mitinstalliert werden?: [Y/n] " apache
   if [ "$apache" != "n" ]
   then
-    pacman -S apache
+    pacman -Sy apache
     systemctl enable httpd
   fi
   #
   read -p "Sollen docker mitinstalliert werden?: [Y/n] " docker
   if [ "$docker" != "n" ]
   then
-    pacman -S docker
+    pacman -Sy docker
     systemctl enable docker
   fi
   #
@@ -184,7 +186,7 @@ then
     read -p "Soll Nvidia mitinstalliert werden?: [Y/n] " nvidia
     if [ "$nvidia" != "n" ]
     then
-      pacman -S nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+      pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
       read -p "Soll nvidia-xconfig gestartet werden?: [y/N] " nvidiax
       if [ "$nvidiax" == "y" ]
       then
@@ -199,7 +201,7 @@ then
     read -p "Soll der omxplayer mitinstalliert werden?: [Y/n] " omxplayer
     if [ "$omxplayer" != "n" ]
     then
-      pacman -S omxplayer
+      pacman -Sy omxplayer
     fi
   fi
 fi
@@ -274,7 +276,7 @@ read -p "Welcher desktop soll verwendet werden? all, lxde, gnome, gnome-flashbac
 
 if [ "$rootstart" == "gnome" ] || [ "$rootstart" == "all" ]
 then
-  pacman -S gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
+  pacman -Sy gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "exec gnome-session" > /etc/X11/xinit/xinitrc
   systemctl enable NetworkManager.service
   read -p "Soll gnome classic benutzt werden? [Y/n] " classic
@@ -291,7 +293,7 @@ fi
 
 if [ "$rootstart" == "gnome-flashback" ] || [ "$rootstart" == "all" ]
 then
-  pacman -S gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
+  pacman -Sy gnome-flashback gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
   echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
   systemctl enable NetworkManager.service
@@ -302,44 +304,38 @@ fi
 
 if [ "$rootstart" == "cinnamon" ] || [ "$rootstart" == "all" ]
 then
-  pacman -S cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
+  pacman -Sy cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "exec cinnamon-session" > /etc/X11/xinit/xinitrc
-  systemctl enable NetworkManager.service
 fi
 
 if [ "$rootstart" == "mate" ] || [ "$rootstart" == "all" ]
 then
-  pacman -S mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
+  pacman -Sy mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
   echo "exec mate-session" > /etc/X11/xinit/xinitrc
-  systemctl enable NetworkManager.service
 fi
 
 if [ "$rootstart" == "lxde" ] || [ "$rootstart" == "all" ]
 then
-  pacman -S lxde networkmanager network-manager-applet xfce4-power-manager
+  pacman -Sy lxde networkmanager network-manager-applet xfce4-power-manager
   echo "exec startlxde" > /etc/X11/xinit/xinitrc
-  systemctl enable NetworkManager.service
 fi
 
 if [ "$rootstart" == "lxqt" ] || [ "$rootstart" == "all" ]
 then
-  pacman -S lxqt networkmanager network-manager-applet lxqt-powermanagement
+  pacman -Sy lxqt networkmanager network-manager-applet lxqt-powermanagement breeze-icons oxygen-icons
   echo "exec startlxqt" > /etc/X11/xinit/xinitrc
-  systemctl enable NetworkManager.service
 fi
 
 if [ "$rootstart" == "xfce4" ] || [ "$rootstart" == "all" ]
 then
-  pacman -S xfce4 xfce4-goodies human-icon-theme networkmanager network-manager-applet xfce4-power-manager
+  pacman -Sy xfce4 xfce4-goodies human-icon-theme networkmanager network-manager-applet xfce4-power-manager
   echo "exec startxfce4" > /etc/X11/xinit/xinitrc
-  systemctl enable NetworkManager.service
 fi
 
 if [ "$rootstart" == "kde" ] || [ "$rootstart" == "all" ]
 then
-  pacman -S plasma kde-l10n-de kde-applications networkmanager network-manager-applet
+  pacman -Sy plasma kde-l10n-de kde-applications networkmanager network-manager-applet
   echo "exec startkde" > /etc/X11/xinit/xinitrc
-  systemctl enable NetworkManager.service
 fi
 
 if [ "$rootstart" == "all" ]
@@ -349,8 +345,8 @@ fi
 
 #
 echo "Systemsprache und dienste werden erstellt!"
-# localectl set-x11-keymap de pc105 nodeadkeys
 
+# localectl set-x11-keymap de pc105 nodeadkeys
 echo "Section \"InputClass\"" > /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "        Identifier \"keyboard\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "        MatchIsKeyboard \"yes\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
@@ -358,6 +354,16 @@ echo "        Option \"XkbLayout\" \"de\"" >> /etc/X11/xorg.conf.d/20-keyboard.c
 echo "        Option \"XkbModel\" \"pc105\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "        Option \"XkbVariant\" \"nodeadkeys\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "EndSection" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+
+#xset m 2/1 0
+echo "Section \"InputClass\"" > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Identifier \"Mouse\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	MatchIsPointer \"yes\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "# set the following to 1 1 0 respectively to disable acceleration." >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Option \"AccelerationNumerator\" \"2\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Option \"AccelerationDenominator\" \"1\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Option \"AccelerationThreshold\" \"4\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "EndSection" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
 
 # set system startup files
 echo "System startup files"
@@ -367,6 +373,7 @@ then
   systemctl enable dhcpcd@"$modul"
 else
   systemctl disable dhcpcd
+  systemctl enable NetworkManager.service
 fi
 
 read -p "Soll getty den X-Server automatisch starten?: [Y/n] " getty
@@ -455,8 +462,6 @@ userrechte
 #ntpd -gq
 #date
 #hwclock -w
-#
-#xset m 2/1 0
 #
 
 echo "Fertig!!!"

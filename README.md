@@ -14,7 +14,7 @@ Starten der Grafischen Oberfläche "startx" eingeben
 # Arch-Install-Script
 Scripte für das installieren von Arch Linux auf PC und PI
 
-wget https://raw.githubusercontent.com/simono41/Arch-Install-Script/master/arch-install
+wget https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-install
 
 chmod +x arch-install
 
@@ -38,8 +38,12 @@ qemu-system-x86_64 -enable-kvm -hda arch.img -m 8092
 
 # Für eine Costum-Image für Arch-Linux
 
-wget https://raw.githubusercontent.com/simono41/Arch-Install-Script/master/make_mksquashfs.sh
+wget https://raw.githubusercontent.com/simono41/Simon-OS/master/make_mksquashfs.sh
 
 chmod +x make_mksquashfs.sh
 
 ./make_mksquashfs.sh
+
+# rsync
+
+rsync -P -e ssh arch-simon-os-17.05.06-x86_64.iso masters4k@frs.sourceforge.net:/home/frs/project/simon-os/

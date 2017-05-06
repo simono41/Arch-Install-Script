@@ -15,7 +15,21 @@ function swap {
   echo "/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 }
 
-
+function anwendungen(parameter) {
+  #statements
+  if [ "$anwendungen" == "y" ]
+  then
+    pacman -Sy xorg-server xorg-xinit xorg-utils xorg-server-utils xorg-drivers \
+    xf86-input-synaptics ttf-dejavu xscreensaver \
+    xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa
+    pacman -Sy firefox firefox-i18n-de vlc mplayer brasero libreoffice-fresh libreoffice-fresh-de gimp \
+    inkscape audacity atom mumble netbeans jdk8-openjdk cups hplip openssh \
+    kdenlive freeciv minetest teeworlds \
+    obs-studio chromium ardour hydrogen python python-pip git wine \
+    murmur snapd apache docker
+    pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine_gecko wine-mono
+  fi
+}
 
 
 
@@ -71,6 +85,7 @@ if [ "$offline" == "n" ]
 then
   read -p "Sollen Aktualisierungen installiert werden?: [y/N] " aktu
 fi
+read -p "Sollen Anwendungen nachinstalliert werden?: [y/N] " anwendungen
 read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " nvidia
 if [ "$Partition" == "gpt" ]
 then
@@ -187,6 +202,7 @@ EOT
   else
     pacstrap -i /mnt base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts wget gdisk squashfs-tools
   fi
+  anwendungen
   echo ""
   genfstab -Up /mnt >> /mnt/etc/fstab
   echo "swap"
@@ -305,6 +321,7 @@ EOT
   else
     pacstrap -i /mnt base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts wget gdisk squashfs-tools
   fi
+  anwendungen
   echo ""
   genfstab -Up /mnt >> /mnt/etc/fstab
   echo "swap"

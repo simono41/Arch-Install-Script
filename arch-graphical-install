@@ -92,15 +92,18 @@ function minimalinstallation {
   read -p "Wollen sie eine volle Installation durchführen?: [Y/n] " minimal
   if [ "$minimal" != "n" ]
   then
+    echo "Wichtig"
     pacman -Sy xorg-server xorg-xinit xorg-utils xorg-server-utils xorg-drivers \
-    xf86-input-synaptics ttf-dejavu xscreensaver \
+    xf86-input-synaptics ttf-dejavu xscreensaver openssh git netsurf \
     xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa
-    pacman -Sy firefox firefox-i18n-de vlc mplayer brasero libreoffice-fresh libreoffice-fresh-de gimp \
-    inkscape audacity atom mumble netbeans jdk8-openjdk cups hplip openssh \
+    echo "Standard"
+    pacman -Sy firefox firefox-i18n-de vlc mplayer brasero libreoffice-fresh libreoffice-fresh-de \
+    inkscape audacity atom mumble netbeans jdk8-openjdk gimp cups hplip \
     kdenlive freeciv minetest teeworlds \
-    obs-studio chromium ardour hydrogen python python-pip git wine \
+    obs-studio chromium ardour hydrogen python python-pip \
     murmur snapd apache docker
-    pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine_gecko wine-mono
+    echo "Erweitert"
+    pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine wine_gecko wine-mono
   fi
 }
 
@@ -329,7 +332,7 @@ fi
 
 if [ "$rootstart" == "lxqt" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy lxqt networkmanager network-manager-applet lxqt-powermanagement xfce4-power-manager breeze-icons oxygen-icons
+  pacman -Sy lxqt networkmanager network-manager-applet lxqt-powermanagement breeze-icons oxygen-icons
   echo "exec startlxqt" > /etc/X11/xinit/xinitrc
 fi
 

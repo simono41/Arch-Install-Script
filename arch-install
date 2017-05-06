@@ -19,15 +19,15 @@ function anwendungen(parameter) {
   #statements
   if [ "$anwendungen" == "y" ]
   then
-    pacman -Sy xorg-server xorg-xinit xorg-utils xorg-server-utils xorg-drivers \
+    arch-chroot /mnt pacman -Sy xorg-server xorg-xinit xorg-utils xorg-server-utils xorg-drivers \
     xf86-input-synaptics ttf-dejavu xscreensaver \
     xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa
-    pacman -Sy firefox firefox-i18n-de vlc mplayer brasero libreoffice-fresh libreoffice-fresh-de gimp \
+    arch-chroot /mnt pacman -Sy firefox firefox-i18n-de vlc mplayer brasero libreoffice-fresh libreoffice-fresh-de gimp \
     inkscape audacity atom mumble netbeans jdk8-openjdk cups hplip openssh \
     kdenlive freeciv minetest teeworlds \
     obs-studio chromium ardour hydrogen python python-pip git wine \
     murmur snapd apache docker
-    pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine_gecko wine-mono
+    arch-chroot /mnt pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine_gecko wine-mono
   fi
 }
 

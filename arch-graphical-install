@@ -18,6 +18,7 @@ passwd $user <<EOT
 $pass
 $pass
 EOT
+mkdir -p /home/"$user"/
   echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 }
 
@@ -265,6 +266,12 @@ then
   if [ "$telegram" != "n" ]
   then
     su "$user" -c "yaourt -S telegram-desktop --export /home/"$user"/aur-pakete"
+  fi
+  read -p "Sollen firmwares mitinstalliert werden?: [Y/n] " firmwares
+  if [ "$firmwares" != "n" ]
+  then
+    su "$user" -c "yaourt -S wd719x-firmware aic94xx-firmware --export /home/"$user"/aur-pakete"
+    mkinitcpio -p linux
   fi
 fi
 echo "Packetliste2 Ende"

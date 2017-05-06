@@ -7,7 +7,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 echo "Als root Angemeldet"
 
-function swap {
+function swap() {
   #swap
   fallocate -l 512M /mnt/swapfile
   chmod 600 /mnt/swapfile
@@ -15,7 +15,7 @@ function swap {
   echo "/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 }
 
-function anwendungen(parameter) {
+function anwendungen() {
   #statements
   if [ "$anwendungen" == "y" ]
   then

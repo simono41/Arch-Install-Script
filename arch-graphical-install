@@ -9,7 +9,7 @@ fi
 echo "Als root Angemeldet"
 #
 
-function adduser {
+function adduser() {
   read -p "Wie soll der neue Benutzer heissen?: " user
   read -p "Welches Passwort soll "$user" bekommen?: " pass
   echo "adduser "$user""
@@ -22,14 +22,14 @@ mkdir -p /home/"$user"/
   echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 }
 
-function userrechte {
+function userrechte() {
   chmod 770 -R -v /home/"$user"/
   chown -R -v "$user":"$user" /home/"$user"
   chmod -R -v u+rwX /home/"$user"
   chmod 755 /home/"$user"
 }
 
-function wifi {
+function wifi() {
   echo "Wifi wird eingerichtet!"
   ip link
   read -p "Wie heisst das wlan-modul?: " modul
@@ -44,14 +44,14 @@ function wifi {
   dhcpcd "$modul"
 }
 
-function ethernet {
+function ethernet() {
   ip link
   read -p "Wie heisst das Ethernet-modul?: " ethernetmodul
   echo "dhcpcd wird gestartet!"
   dhcpcd "$ethernetmodul"
 }
 
-function links {
+function links() {
   #
   mkdir -p /home/"$user"/Schreibtisch/
   cp /usr/share/applications/arch-install.desktop /home/"$user"/Schreibtisch/arch-install.desktop
@@ -62,7 +62,7 @@ function links {
   chmod +x /root/Schreibtisch/arch-install.desktop
 }
 
-function gnomeconfig {
+function gnomeconfig() {
   mkdir -p /home/"$user"/.config/gtk-3.0/
   echo "[Settings]" > /home/"$user"/.config/gtk-3.0/settings.ini
   echo "gtk-theme-name = Adwaita" >> /home/"$user"/.config/gtk-3.0/settings.ini
@@ -88,7 +88,7 @@ function gnomeconfig {
   echo "inode/directory=org.gnome.Nautilus.desktop" >> /root/.local/share/applications/mimeapps.list
 }
 
-function minimalinstallation {
+function minimalinstallation() {
   read -p "Wollen sie eine volle Installation durchführen?: [Y/n] " minimal
   if [ "$minimal" != "n" ]
   then

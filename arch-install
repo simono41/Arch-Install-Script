@@ -75,6 +75,10 @@ echo ""
 echo "Bitte die Eingaben klein schreiben :D !!!"
 echo ""
 read -p "Wie moechten sie ihre Festplatte partioniert haben: gpt oder mbr: " Partition
+if [ "$Partition" == "gpt" ]
+then
+  read -p "Soll mit systemd gebootet werden oder mit grub? [SYSTEMD/grub] : " boot
+fi
 fdisk -l
 read -p "Geben sie eine Festplatte an: sda,sdb,sdc: " device
 read -p "Welches Passwort soll der Root erhalten?: " pass
@@ -83,12 +87,7 @@ read -p "Soll eine Offline Installation durchgeführt werden?: [Y/n] " offline
 if [ "$offline" == "n" ]
 then
   read -p "Sollen Aktualisierungen installiert werden?: [y/N] " aktu
-fi
-read -p "Sollen Anwendungen nachinstalliert werden?: [y/N] " anwendungen
-read -p "Sollen unfreie nvidia-treiber aktiviert werden?: [y/N] " nvidia
-if [ "$Partition" == "gpt" ]
-then
-  read -p "Soll mit systemd gebootet werden oder mit grub? [SYSTEMD/grub] : " boot
+  read -p "Sollen Anwendungen nachinstalliert werden?: [y/N] " anwendungen
 fi
 read -p "Wie groß soll die System-Partition sein? (wenn nichts eingetragen wird wird die volle Festplatte benutzt!!!): z.b +20G : " speicher
 #
@@ -98,7 +97,6 @@ echo "Partionsart: $Partition"
 echo "Passwort: $pass"
 echo "Offline installation: $offline"
 echo "Architektur: $(uname -m)"
-echo "NVIDIA Treiber: $nvidia"
 echo "Aktualisierungen: $aktu"
 echo "Systemgroesse: $speicher"
 #
@@ -191,11 +189,6 @@ EOT
     echo "HOOKS=\"systemd block filesystems\"" > /mnt/etc/mkinitcpio.conf
     echo "COMPRESSION=\"gzip\"" >> /mnt/etc/mkinitcpio.conf
     echo ""
-    echo ""
-    if [ "$nvidia" == "y" ]
-    then
-      arch-chroot /mnt nvidia-xconfig
-    fi
     #cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
     #
   else
@@ -310,11 +303,6 @@ EOT
     echo "HOOKS=\"systemd block filesystems\"" > /mnt/etc/mkinitcpio.conf
     echo "COMPRESSION=\"gzip\"" >> /mnt/etc/mkinitcpio.conf
     echo ""
-    echo ""
-    if [ "$nvidia" == "y" ]
-    then
-      arch-chroot /mnt nvidia-xconfig
-    fi
     #cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
     #
   else

@@ -93,13 +93,13 @@ function minimalinstallation() {
   if [ "$minimal" != "n" ]
   then
     echo "Wichtig"
-    pacman -Sy xorg-server xorg-xinit xorg-utils xorg-server-utils xorg-drivers \
-    xf86-input-synaptics ttf-dejavu xscreensaver openssh git netsurf \
+    pacman -Sy xorg-server xorg-xinit xorg-drivers \
+    xf86-input-synaptics ttf-dejavu xscreensaver openssh git netsurf mplayer \
     xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa
     echo "Standard"
-    pacman -Sy firefox firefox-i18n-de vlc mplayer brasero libreoffice-fresh libreoffice-fresh-de \
+    pacman -Sy firefox firefox-i18n-de vlc brasero libreoffice-fresh libreoffice-fresh-de \
     inkscape audacity atom mumble netbeans jdk8-openjdk gimp cups hplip \
-    kdenlive freeciv minetest teeworlds \
+    kdenlive freeciv minetest teeworlds qemu \
     obs-studio chromium ardour hydrogen python python-pip \
     murmur snapd apache docker
     echo "Erweitert"

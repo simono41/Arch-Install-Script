@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 set -ex
+
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root" 1>&2
   exit 1
@@ -15,6 +16,28 @@ install_dir=arch
 
 arch=$(uname -m)
 
+function minimalinstallation() {
+  read -p "Wollen sie eine volle Installation durchführen?: [Y/n] " minimal
+  if [ "$minimal" != "n" ]
+  then
+    echo "Basis"
+    pacstrap -c -d -G -i -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools \
+    grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso \
+    cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk \
+    \
+    xorg-server xorg-xinit xorg-drivers acpid ntp dbus avahi cups cronie \
+    xf86-input-synaptics ttf-dejavu xscreensaver openssh git netsurf mplayer dialog \
+    xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa \
+    \
+    firefox firefox-i18n-de vlc brasero libreoffice-fresh libreoffice-fresh-de \
+    inkscape audacity atom mumble gimp hplip \
+    kdenlive freeciv minetest teeworlds qemu \
+    obs-studio ardour hydrogen python python-pip \
+    \
+    nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine wine_gecko wine-mono
+  fi
+}
+
 read -p "Soll das System neu aufgebaut werden?: [Y/n] " system
 if [ "$system" != "n" ]
 then
@@ -26,9 +49,7 @@ then
   if [ "$pacstrap" != "n" ]
   then
     pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk qemu
-    pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools \
-    grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso \
-    cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk
+    minimalinstallation
     read -p "Soll ein root passwort festgelegt werden? [Y/n] " root
     if [ "$root" != "n" ]
     then

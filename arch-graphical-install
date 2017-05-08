@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-set -x
+set -ex
 
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root" 1>&2
@@ -86,25 +86,6 @@ function gnomeconfig() {
   mkdir -p /root/.local/share/applications/
   echo "[Default Applications]" > /root/.local/share/applications/mimeapps.list
   echo "inode/directory=org.gnome.Nautilus.desktop" >> /root/.local/share/applications/mimeapps.list
-}
-
-function minimalinstallation() {
-  read -p "Wollen sie eine volle Installation durchführen?: [Y/n] " minimal
-  if [ "$minimal" != "n" ]
-  then
-    echo "Wichtig"
-    pacman -Sy xorg-server xorg-xinit xorg-drivers acpid ntp dbus avahi cups cronie \
-    xf86-input-synaptics ttf-dejavu xscreensaver openssh git netsurf mplayer dialog \
-    xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa
-    echo "Standard"
-    pacman -Sy firefox firefox-i18n-de vlc brasero libreoffice-fresh libreoffice-fresh-de \
-    inkscape audacity atom mumble gimp hplip \
-    kdenlive freeciv minetest teeworlds qemu \
-    obs-studio chromium ardour hydrogen python python-pip \
-    murmur snapd apache docker
-    echo "Erweitert"
-    pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine wine_gecko wine-mono
-  fi
 }
 
 
@@ -210,8 +191,6 @@ then
   fi
 fi
 #
-minimalinstallation
-#
 read -p "Soll yaourt mitinstalliert werden?: [Y/n] " yaourt
 if [ "$yaourt" != "n" ]
 then
@@ -289,8 +268,8 @@ then
   pacman -Sy gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "exec gnome-session" > /etc/X11/xinit/xinitrc
   systemctl enable NetworkManager.service
-  read -p "Soll gnome classic benutzt werden? [Y/n] " classic
-  if [ "$classic" != "n" ]
+  read -p "Soll gnome classic benutzt werden? [y/N] " classic
+  if [ "$classic" == "y" ]
   then
     echo "export XDG_CURRENT_DESKTOP=GNOME-Classic:GNOME" > /etc/X11/xinit/xinitrc
     echo "export GNOME_SHELL_SESSION_MODE=classic" >> /etc/X11/xinit/xinitrc
@@ -453,13 +432,8 @@ locale-gen
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
-read -p "Sollen noch Packete hinzugefügt oder entfernt werden? [Y/n] " packete
 while [ "$packete" != "n" ]
 do
-  read -p "Sollen sonst noch Packete hinzugefügt werden? [Packetnamen] : " packete
-  pacman -Syu $packete
-  read -p "Sollen sonst noch Packete entfernt werden? [Packetnamen] : " rpackete
-  pacman -Rss $rpackete
   read -p "Soll noch ein Befehl eingegeben werden? [Befehl] : " befehl
   $befehl
   read -p "Sollen sonst noch Packete hinzugefügt oder entfernt werden? [Y/n] " packete

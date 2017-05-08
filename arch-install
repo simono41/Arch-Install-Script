@@ -15,20 +15,6 @@ function swap() {
   echo "/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 }
 
-function anwendungen() {
-  #statements
-  if [ "$anwendungen" == "y" ]
-  then
-    echo "Standard"
-    arch-chroot /mnt pacman -Sy firefox firefox-i18n-de vlc mplayer brasero libreoffice-fresh libreoffice-fresh-de \
-    inkscape audacity atom mumble netbeans jdk8-openjdk gimp cups hplip \
-    kdenlive freeciv minetest teeworlds \
-    obs-studio chromium ardour hydrogen python python-pip \
-    murmur snapd apache docker
-    echo "Erweitert"
-    arch-chroot /mnt pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine wine_gecko wine-mono
-  fi
-}
 
 
 
@@ -87,7 +73,6 @@ read -p "Soll eine Offline Installation durchgeführt werden?: [Y/n] " offline
 if [ "$offline" == "n" ]
 then
   read -p "Sollen Aktualisierungen installiert werden?: [y/N] " aktu
-  read -p "Sollen Anwendungen nachinstalliert werden?: [y/N] " anwendungen
 fi
 read -p "Wie groß soll die System-Partition sein? (wenn nichts eingetragen wird wird die volle Festplatte benutzt!!!): z.b +20G : " speicher
 #
@@ -194,7 +179,7 @@ EOT
   else
     pacstrap -i /mnt base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts wget gdisk squashfs-tools
   fi
-  anwendungen
+
   echo ""
   genfstab -Up /mnt >> /mnt/etc/fstab
   echo "swap"
@@ -308,7 +293,7 @@ EOT
   else
     pacstrap -i /mnt base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts wget gdisk squashfs-tools
   fi
-  anwendungen
+
   echo ""
   genfstab -Up /mnt >> /mnt/etc/fstab
   echo "swap"

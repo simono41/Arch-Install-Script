@@ -18,7 +18,7 @@ passwd $user <<EOT
 $pass
 $pass
 EOT
-mkdir -p /home/"$user"/
+  mkdir -p /home/"$user"/
   echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 }
 
@@ -94,11 +94,11 @@ function minimalinstallation() {
   then
     echo "Wichtig"
     pacman -Sy xorg-server xorg-xinit xorg-drivers acpid ntp dbus avahi cups cronie \
-    xf86-input-synaptics ttf-dejavu xscreensaver openssh git netsurf mplayer \
+    xf86-input-synaptics ttf-dejavu xscreensaver openssh git netsurf mplayer dialog \
     xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa
     echo "Standard"
     pacman -Sy firefox firefox-i18n-de vlc brasero libreoffice-fresh libreoffice-fresh-de \
-    inkscape audacity atom mumble netbeans jdk8-openjdk gimp cups hplip \
+    inkscape audacity atom mumble gimp hplip \
     kdenlive freeciv minetest teeworlds qemu \
     obs-studio chromium ardour hydrogen python python-pip \
     murmur snapd apache docker

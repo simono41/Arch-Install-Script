@@ -93,7 +93,7 @@ function minimalinstallation() {
   if [ "$minimal" != "n" ]
   then
     echo "Wichtig"
-    pacman -Sy xorg-server xorg-xinit xorg-drivers \
+    pacman -Sy xorg-server xorg-xinit xorg-drivers acpid ntp dbus avahi cups cronie \
     xf86-input-synaptics ttf-dejavu xscreensaver openssh git netsurf mplayer \
     xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa
     echo "Standard"

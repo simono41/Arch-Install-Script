@@ -221,6 +221,7 @@ then
   if [ -f ${work_dir}/iso/EFI/shellx64_v2.efi ]
   then
     echo "Bereits Vorhanden!"
+    sleep 1
   else
     curl -o ${work_dir}/iso/EFI/shellx64_v2.efi https://raw.githubusercontent.com/tianocore/edk2/master/ShellBinPkg/UefiShell/X64/Shell.efi
   fi
@@ -228,6 +229,7 @@ then
   if [ -f ${work_dir}/iso/EFI/shellx64_v1.efi ]
   then
     echo "Bereits Vorhanden!"
+    sleep 1
   else
     curl -o ${work_dir}/iso/EFI/shellx64_v1.efi https://raw.githubusercontent.com/tianocore/edk2/master/EdkShellBinPkg/FullShell/X64/Shell_Full.efi
   fi

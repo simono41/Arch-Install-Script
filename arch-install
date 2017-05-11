@@ -29,7 +29,7 @@ function minimalinstallation() {
     xf86-input-synaptics ttf-dejavu xscreensaver openssh git netsurf mplayer dialog \
     xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa \
     \
-    firefox firefox-i18n-de vlc brasero libreoffice-fresh libreoffice-fresh-de \
+    firefox firefox-i18n-de flashplugin vlc brasero libreoffice-fresh libreoffice-fresh-de \
     inkscape audacity atom mumble gimp hplip exfat-utils ntfs-3g \
     kdenlive freeciv minetest teeworlds qemu blender simplescreenrecorder \
     obs-studio ardour hydrogen python python-pip \

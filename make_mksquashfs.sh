@@ -32,7 +32,7 @@ function minimalinstallation() {
     firefox firefox-i18n-de flashplugin vlc brasero libreoffice-fresh libreoffice-fresh-de \
     inkscape audacity atom mumble gimp hplip exfat-utils ntfs-3g \
     kdenlive freeciv minetest teeworlds qemu blender simplescreenrecorder \
-    obs-studio ardour hydrogen python python-pip \
+    obs-studio ardour hydrogen python python-pip jdk8-openjdk \
     \
     nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine wine_gecko wine-mono
   fi

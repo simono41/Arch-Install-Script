@@ -30,7 +30,7 @@ function minimalinstallation() {
     xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa \
     \
     firefox firefox-i18n-de flashplugin vlc brasero libreoffice-fresh libreoffice-fresh-de \
-    inkscape audacity atom mumble gimp hplip exfat-utils ntfs-3g \
+    inkscape audacity atom mumble gimp hplip exfat-utils ntfs-3g transmission-gtk \
     kdenlive freeciv minetest teeworlds qemu blender simplescreenrecorder \
     obs-studio ardour hydrogen python python-pip jdk8-openjdk \
     \

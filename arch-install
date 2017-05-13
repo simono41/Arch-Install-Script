@@ -21,20 +21,11 @@ function minimalinstallation() {
   if [ "$minimal" != "n" ]
   then
     echo "Basis"
-    pacstrap -c -d -G -i -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools \
-    grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso \
-    cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk \
-    \
-    xorg-server xorg-xinit xorg-drivers acpid ntp dbus avahi cups cronie \
-    xf86-input-synaptics ttf-dejavu xscreensaver openssh git netsurf mplayer dialog \
-    xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa \
-    \
-    firefox firefox-i18n-de chromium flashplugin vlc brasero libreoffice-fresh libreoffice-fresh-de \
-    inkscape audacity atom mumble gimp hplip exfat-utils ntfs-3g transmission-gtk \
-    kdenlive freeciv minetest teeworlds qemu blender simplescreenrecorder \
-    obs-studio ardour hydrogen python python-pip jdk8-openjdk \
-    \
-    nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine wine_gecko wine-mono
+    #Mehrzeiler
+    while read line
+    do
+      pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
+    done < /etc/packages.txt
   fi
 }
 

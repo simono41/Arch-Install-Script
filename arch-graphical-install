@@ -11,13 +11,8 @@ echo "Als root Angemeldet"
 
 function adduser() {
   read -p "Wie soll der neue Benutzer heissen?: " user
-  read -p "Welches Passwort soll "$user" bekommen?: " pass
-  echo "adduser "$user""
   useradd $user
-passwd $user <<EOT
-$pass
-$pass
-EOT
+  passwd $user
   mkdir -p /home/"$user"/
   echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 }
@@ -311,7 +306,7 @@ fi
 
 if [ "$rootstart" == "lxqt" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy lxqt networkmanager network-manager-applet lxqt-powermanagement breeze-icons oxygen-icons
+  pacman -Sy lxqt networkmanager network-manager-applet lxqt-powermanagement oxygen-icons xdg-utils
   echo "exec startlxqt" > /etc/X11/xinit/xinitrc
 fi
 

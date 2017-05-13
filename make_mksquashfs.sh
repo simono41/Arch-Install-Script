@@ -17,24 +17,15 @@ install_dir=arch
 arch=$(uname -m)
 
 function minimalinstallation() {
-  read -p "Wollen sie eine volle Installation durchführen?: [Y/n] " minimal
-  if [ "$minimal" != "n" ]
+  read -p "Wollen sie eine volle Installation durchführen?: [Y/n] " volle
+  if [ "$volle" != "n" ]
   then
     echo "Basis"
-    pacstrap -c -d -G -i -M ${work_dir}/${arch}/airootfs base base-devel syslinux efibootmgr efitools \
-    grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso \
-    cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk \
-    \
-    xorg-server xorg-xinit xorg-drivers acpid ntp dbus avahi cups cronie \
-    xf86-input-synaptics ttf-dejavu xscreensaver openssh git netsurf mplayer dialog \
-    xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa \
-    \
-    firefox firefox-i18n-de chromium flashplugin vlc brasero libreoffice-fresh libreoffice-fresh-de \
-    inkscape audacity atom mumble gimp hplip exfat-utils ntfs-3g transmission-gtk \
-    kdenlive freeciv minetest teeworlds qemu blender simplescreenrecorder \
-    obs-studio ardour hydrogen python python-pip jdk8-openjdk \
-    \
-    nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine wine_gecko wine-mono
+    #Mehrzeiler
+    while read line
+    do
+      pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
+    done < packages.txt
   fi
 }
 
@@ -48,7 +39,7 @@ then
   read -p "Sollen die base Packete neu aufgebaut werden? [Y/n] " pacstrap
   if [ "$pacstrap" != "n" ]
   then
-    pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk qemu
+    #pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk qemu
     minimalinstallation
     read -p "Soll ein root passwort festgelegt werden? [Y/n] " root
     if [ "$root" != "n" ]
@@ -82,6 +73,7 @@ then
 
   cp arch-install ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install
+  cp packages.txt ${work_dir}/${arch}/airootfs/etc/
 
   cp arch-install-non_root ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install-non_root

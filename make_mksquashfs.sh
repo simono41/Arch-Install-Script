@@ -333,8 +333,8 @@ then
   fi
 
 
-  read -p "Soll das Image jetzt eine Partition zum Offline-Schreiben erhalten? [Y/n] " btrfs
-  if [ "$btrfs" != "n" ]
+  read -p "Soll das Image jetzt eine Partition zum Offline-Schreiben erhalten? [Y/n] " partition
+  if [ "$partition" != "n" ]
   then
     if [ "$device" == "" ]
     then

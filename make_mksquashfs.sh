@@ -39,7 +39,7 @@ then
   read -p "Sollen die base Packete neu aufgebaut werden? [Y/n] " pacstrap
   if [ "$pacstrap" != "n" ]
   then
-    #pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk qemu
+    pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk qemu
     minimalinstallation
     read -p "Soll ein root passwort festgelegt werden? [Y/n] " root
     if [ "$root" != "n" ]

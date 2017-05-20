@@ -24,6 +24,7 @@ function adduser() {
   mkdir -p /home/"${username}"/
   echo ""${username}" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
   userrechte
+  autostart
 }
 
 function userrechte() {
@@ -33,7 +34,71 @@ function userrechte() {
   chmod 755 /home/"${username}"
 }
 
+function autostart {
+  echo "if [ \$(tty) = "/dev/tty1" ]; then" > /home/"${username}"/.bash_profile
+  echo "startx" >> /home/"${username}"/.bash_profile
+  echo "fi" >> /home/"${username}"/.bash_profile
+  echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+  echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+  echo "ExecStart=-/sbin/agetty --noclear -a ${username} %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+}
 
+function removeinstaller {
+  echo ""
+  if [ -f /mnt/usr/share/applications/arch-install.desktop ]
+  then
+    rm /mnt/usr/share/applications/arch-install.desktop
+  fi
+  echo ""
+  if [ -f /mnt/root/Schreibtisch/arch-install.desktop ]
+  then
+    rm /mnt/root/Schreibtisch/arch-install.desktop
+  fi
+  echo ""
+  if [ -f /mnt/home/user/Schreibtisch/arch-install.desktop ]
+  then
+    rm /mnt/home/user/Schreibtisch/arch-install.desktop
+  fi
+  echo ""
+}
+
+function offlineinstallation {
+  if [ "$offline" != "n" ]
+  then
+    if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
+    then
+      echo "Es ist kein copytoram System."
+      unsquashfs -f -d /mnt/ /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
+    else
+      echo "Es ist ein copytoram System."
+      unsquashfs -f -d /mnt/ /run/archiso/copytoram/airootfs.sfs
+    fi
+    echo ""
+    echo "MODULES=\"i915\"" > /mnt/etc/mkinitcpio.conf
+    echo "HOOKS=\"systemd block filesystems\"" > /mnt/etc/mkinitcpio.conf
+    echo "COMPRESSION=\"gzip\"" >> /mnt/etc/mkinitcpio.conf
+    echo ""
+    #cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
+    #
+    echo ""
+    genfstab -Up /mnt >> /mnt/etc/fstab
+    echo "swap"
+    swap
+    echo ""
+    echo "$name"-os > /mnt/etc/hostname
+    echo ""
+  fi
+}
+
+function {
+  echo "format"
+  mkfs.ext4 -L p_arch /dev/"$device"2
+  mkfs.fat -F32 /dev/"$device"1
+  echo "mount"
+  mount /dev/"$device"2 /mnt
+  mkdir /mnt/boot
+  mount /dev/"$device"1 /mnt/boot
+}
 
 
 
@@ -171,39 +236,10 @@ p
 w
 y
 EOT
-  echo "format"
-  mkfs.ext4 -L p_arch /dev/"$device"2
-  mkfs.fat -F32 /dev/"$device"1
-  echo "mount"
-  mount /dev/"$device"2 /mnt
-  mkdir /mnt/boot
-  mount /dev/"$device"1 /mnt/boot
-  echo ""
-  if [ "$offline" != "n" ]
-  then
-    if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
-    then
-      echo "Es ist kein copytoram System."
-      unsquashfs -f -d /mnt/ /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
-    else
-      echo "Es ist ein copytoram System."
-      unsquashfs -f -d /mnt/ /run/archiso/copytoram/airootfs.sfs
-    fi
-    echo ""
-    echo "HOOKS=\"systemd block filesystems\"" > /mnt/etc/mkinitcpio.conf
-    echo "COMPRESSION=\"gzip\"" >> /mnt/etc/mkinitcpio.conf
-    echo ""
-    #cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
-    #
-  fi
-
-  echo ""
-  genfstab -Up /mnt >> /mnt/etc/fstab
-  echo "swap"
-  swap
-  echo ""
-  echo "$name"-os > /mnt/etc/hostname
-  echo ""
+  echo "formatieren"
+  formatieren
+  echo "offlineinstallation"
+  offlineinstallation
 arch-chroot /mnt /bin/bash <<EOT
 mkinitcpio -p linux
 passwd
@@ -241,27 +277,7 @@ EOT
     echo "timeout   1" >> /mnt/boot/loader/loader.conf
 
   fi
-
-  if [ "$aktu" == "y" ]
-  then
-    arch-chroot /mnt pacman -Syu
-  fi
-  echo ""
-  if [ -f /mnt/usr/share/applications/arch-install.desktop ]
-  then
-    rm /mnt/usr/share/applications/arch-install.desktop
-  fi
-  echo ""
-  if [ -f /mnt/root/Schreibtisch/arch-install.desktop ]
-  then
-    rm /mnt/root/Schreibtisch/arch-install.desktop
-  fi
-  echo ""
-  if [ -f /mnt/home/user/Schreibtisch/arch-install.desktop ]
-  then
-    rm /mnt/home/user/Schreibtisch/arch-install.desktop
-  fi
-  echo ""
+  removeinstaller
   echo "Fertig"
 elif [ "$Partition" == "mbr" ]
 then
@@ -284,39 +300,10 @@ p
 w
 y
 EOT
-  echo "format"
-  mkfs.ext4 /dev/"$device"2
-  mkfs.fat -F 32 /dev/"$device"1
-  echo "mount"
-  mount /dev/"$device"2 /mnt
-  mkdir /mnt/boot
-  mount /dev/"$device"1 /mnt/boot
-  echo ""
-  if [ "$offline" != "n" ]
-  then
-    if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
-    then
-      echo "Es ist kein copytoram System."
-      unsquashfs -f -d /mnt/ /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
-    else
-      echo "Es ist ein copytoram System."
-      unsquashfs -f -d /mnt/ /run/archiso/copytoram/airootfs.sfs
-    fi
-    echo ""
-    echo "HOOKS=\"systemd block filesystems\"" > /mnt/etc/mkinitcpio.conf
-    echo "COMPRESSION=\"gzip\"" >> /mnt/etc/mkinitcpio.conf
-    echo ""
-    #cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
-    #
-  fi
-
-  echo ""
-  genfstab -Up /mnt >> /mnt/etc/fstab
-  echo "swap"
-  swap
-  echo ""
-  echo "$name"-os > /mnt/etc/hostname
-  echo ""
+  echo "formatieren"
+  formatieren
+  echo "offlineinstallation"
+  offlineinstallation
 arch-chroot /mnt /bin/bash <<EOT
 mkinitcpio -p linux
 passwd
@@ -326,25 +313,7 @@ grub-install --target=i386-pc --recheck /dev/"$device"
 grub-mkconfig -o /boot/grub/grub.cfg
 adduser
 EOT
-  if [ "$aktu" == "y" ]
-  then
-    arch-chroot /mnt pacman -Syu
-  fi
-  if [ -f /mnt/usr/share/applications/arch-install.desktop ]
-  then
-    rm /mnt/usr/share/applications/arch-install.desktop
-  fi
-  echo ""
-  if [ -f /mnt/root/Schreibtisch/arch-install.desktop ]
-  then
-    rm /mnt/root/Schreibtisch/arch-install.desktop
-  fi
-  echo ""
-  if [ -f /mnt/home/user/Schreibtisch/arch-install.desktop ]
-  then
-    rm /mnt/home/user/Schreibtisch/arch-install.desktop
-  fi
-  echo ""
+  removeinstaller
   echo "Fertig"
 else
   echo "Eingabe Ungueltig"

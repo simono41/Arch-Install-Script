@@ -1,0 +1,9 @@
+qemu blender simplescreenrecorder obs-studio ardour hydrogen python python-pip \
+jdk8-openjdk netbeans htop youtube-dl libdvdread libdvdcss libdvdnav kdenlive \
+inkscape audacity atom mumble gimp \
+\
+0ad assaultcube megaglest hedgewars freeciv minetest teeworlds \
+\
+murmur snapd apache docker \
+\
+nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine wine_gecko wine-mono

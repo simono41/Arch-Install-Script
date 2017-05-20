@@ -85,7 +85,7 @@ then
   cp arch-install ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install
   cp packages.txt ${work_dir}/${arch}/airootfs/etc/
-  cp packages_all.txt ${work_dir}/${arch}/airootfs/etc/
+  cp packages_advanced.txt ${work_dir}/${arch}/airootfs/etc/
 
   cp arch-install-non_root ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install-non_root

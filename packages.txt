@@ -2,7 +2,7 @@ base base-devel syslinux efibootmgr efitools \
 grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso \
 cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk \
 \
-xorg xorg-server xorg-xinit xorg-drivers  \
+xorg xorg-server xorg-xinit xorg-drivers xdg-utils \
 xf86-input-synaptics ttf-dejavu xorg-twm xorg-xclock xterm \
 alsa-utils pulseaudio pulseaudio-alsa pavucontrol \
 acpid ntp dbus avahi cups hplip cronie arandr \

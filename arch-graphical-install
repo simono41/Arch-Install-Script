@@ -318,7 +318,7 @@ fi
 
 if [ "$rootstart" == "lxqt" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy lxqt networkmanager network-manager-applet lxqt-powermanagement oxygen-icons xdg-utils
+  pacman -Sy lxqt networkmanager network-manager-applet lxqt-powermanagement oxygen-icons breeze-icons
   echo "exec startlxqt" > /etc/X11/xinit/xinitrc
 fi
 

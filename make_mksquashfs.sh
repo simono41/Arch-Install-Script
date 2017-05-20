@@ -243,15 +243,25 @@ then
   echo "timeout 3" > ${work_dir}/efiboot/loader/loader.conf
   echo "default archiso-${arch}-cd-default" >> ${work_dir}/efiboot/loader/loader.conf
 
-  sed "s|%ISO_LABEL%|${iso_label}|g;
-  s|%arch%|${arch}|g;
-  s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-${arch}-usb-default.conf >> ${work_dir}/iso/loader/entries/archiso-${arch}-usb-default.conf
+  for file in releng/archiso-x86_64-usb*
+    do
+      echo "$file"
+      sed "s|%ISO_LABEL%|${iso_label}|g;
+      s|%arch%|${arch}|g;
+      s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/iso/loader/entries/${file##*/}
+  done
 
   ###
 
-  sed "s|%ISO_LABEL%|${iso_label}|g;
-  s|%arch%|${arch}|g;
-  s|%INSTALL_DIR%|${install_dir}|g" releng/archiso-${arch}-cd-default.conf >> ${work_dir}/efiboot/loader/entries/archiso-${arch}-cd-default.conf
+  for file in releng/archiso-x86_64-cd*
+    do
+      echo "$file"
+      sed "s|%ISO_LABEL%|${iso_label}|g;
+      s|%arch%|${arch}|g;
+      s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/efiboot/loader/entries/${file##*/}
+  done
+
+  ###
 
   read -p "efiboot jetzt trennen? [Y/n] "
   if [ "$trennen" != "n" ]

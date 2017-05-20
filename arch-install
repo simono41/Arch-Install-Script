@@ -34,7 +34,7 @@ function userrechte() {
   chmod 755 /home/"${username}"
 }
 
-function autostart {
+function autostart() {
   echo "if [ \$(tty) = "/dev/tty1" ]; then" > /home/"${username}"/.bash_profile
   echo "startx" >> /home/"${username}"/.bash_profile
   echo "fi" >> /home/"${username}"/.bash_profile
@@ -90,7 +90,7 @@ function offlineinstallation {
   fi
 }
 
-function {
+function formatieren {
   echo "format"
   mkfs.ext4 -L p_arch /dev/"$device"2
   mkfs.fat -F32 /dev/"$device"1
@@ -150,7 +150,7 @@ fi
 fdisk -l
 read -p "Geben sie eine Festplatte an: sda,sdb,sdc: " device
 read -p "Welches Passwort soll der Root erhalten?: " pass
-read -p "Soll ein neuer Benutzer erstellt werden?: " user
+read -p "Soll ein neuer Benutzer erstellt werden?: [Y/n] " user
 if [ "$user" != "n" ]
 then
   read -p "Wie soll der neue Benutzer heissen?: " username
@@ -163,7 +163,11 @@ read -p "Wie groß soll die System-Partition sein? (wenn nichts eingetragen wird
 [[ -z "${boot}" ]] && boot=grub
 [[ -z "${device}" ]] && echo "Wählen sie eine Festplatte aus!" && sleep 5 && exit 1
 [[ -z "${pass}" ]] && pass=root
-[[ -z "${speicher}" ]] && echo "Systemgroesse: Ganze Festplatte" else echo "Systemgroesse: $speicher"
+if [ -z "$speicher" ]; then
+  echo "Ganze Festplatte"
+else
+  echo "System-Partition $speicher"
+fi
 #
 echo "Name: $name"
 echo "Partionsart: $Partition"
@@ -171,7 +175,7 @@ echo "Bootloader: $boot"
 echo "Laufwerk: /dev/"$device""
 echo "Rootpasswort: $pass"
 echo "Architektur: $(uname -m)"
-echo "Username: $user"
+echo "Username: $username"
 echo "Userpasswort: $userpass"
 #
 read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
@@ -245,7 +249,6 @@ mkinitcpio -p linux
 passwd
 $pass
 $pass
-adduser
 EOT
   echo ""
   if [ "$boot" == "grub" ]
@@ -277,6 +280,7 @@ EOT
     echo "timeout   1" >> /mnt/boot/loader/loader.conf
 
   fi
+  adduser
   removeinstaller
   echo "Fertig"
 elif [ "$Partition" == "mbr" ]
@@ -311,8 +315,8 @@ $pass
 $pass
 grub-install --target=i386-pc --recheck /dev/"$device"
 grub-mkconfig -o /boot/grub/grub.cfg
-adduser
 EOT
+  adduser
   removeinstaller
   echo "Fertig"
 else

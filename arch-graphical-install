@@ -10,11 +10,14 @@ echo "Als root Angemeldet"
 #
 
 function adduser() {
-  read -p "Wie soll der neue Benutzer heissen?: " user
-  useradd $user
-  passwd $user
+  useradd -m -g users -s /bin/bash $ $username
+  passwd ${username} << EOT
+  ${userpass}
+  ${userpass}
+  EOT
   mkdir -p /home/"$user"/
   echo ""$user" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+  userrechte
 }
 
 function userrechte() {
@@ -90,16 +93,22 @@ function gnomeconfig() {
 
 
 #
+
+if [ "$1" == "adduser" ]
+then
+adduser
+fi
+
 read -p "Wollen sie einen neuen Benutzer erstellen?: [y/N] " erstellen
 if [ "$erstellen" == "y" ]
 then
+  read -p "Wie soll der neue Benutzer heissen?: " username
+  read -p "Wie soll das Passwort heissen?: " userpass
   adduser
-  userrechte
   links
 else
   read -p "Wie heisst der normale Benutzer auf dem PC?: " user
   userrechte
-  links
   #
   read -p "Soll "$user" root-rechte gegeben werden?: [y/N] " root
   if [ "$root" == "y" ]

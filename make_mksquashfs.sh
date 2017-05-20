@@ -20,29 +20,37 @@ function minimalinstallation() {
   read -p "Sollen alle Packete installiert wernden? [Y/n] " full
   if [ "$full" != "n" ]
   then
-    packages="packages_all.txt"
-  else
-    packages="packages.txt"
-  fi
-    echo "Basis"
+    echo "Advanced"
     #Mehrzeiler
     while read line
     do
-      pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
-    done < $packages
+      line1=$line
+    done < packages_advanced.txt
+  fi
+  echo "Basis"
+  #Mehrzeiler
+  while read line
+  do
+    pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line $line1
+  done < packages.txt
+
 }
 
 read -p "Soll das System neu aufgebaut werden?: [Y/n] " system
 if [ "$system" != "n" ]
 then
-  echo "Scripte werden heruntergeladen!"
+  read -p "Sollen die Scipte installiert wernden? [Y/n] " scripte
+  if [ "$scripte" != "n" ]
+  then
+    echo "Scripte werden heruntergeladen!"
+    pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk qemu
+  fi
 
   mkdir -p ${work_dir}/${arch}/airootfs
 
   read -p "Sollen die base Packete neu aufgebaut werden? [Y/n] " pacstrap
   if [ "$pacstrap" != "n" ]
   then
-    pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk qemu
     minimalinstallation
     read -p "Soll ein root passwort festgelegt werden? [Y/n] " root
     if [ "$root" != "n" ]
@@ -244,21 +252,21 @@ then
   echo "default archiso-${arch}-cd-default" >> ${work_dir}/efiboot/loader/loader.conf
 
   for file in releng/archiso-x86_64-usb*
-    do
-      echo "$file"
-      sed "s|%ISO_LABEL%|${iso_label}|g;
+  do
+    echo "$file"
+    sed "s|%ISO_LABEL%|${iso_label}|g;
       s|%arch%|${arch}|g;
-      s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/iso/loader/entries/${file##*/}
+    s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/iso/loader/entries/${file##*/}
   done
 
   ###
 
   for file in releng/archiso-x86_64-cd*
-    do
-      echo "$file"
-      sed "s|%ISO_LABEL%|${iso_label}|g;
+  do
+    echo "$file"
+    sed "s|%ISO_LABEL%|${iso_label}|g;
       s|%arch%|${arch}|g;
-      s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/efiboot/loader/entries/${file##*/}
+    s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/efiboot/loader/entries/${file##*/}
   done
 
   ###

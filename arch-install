@@ -16,19 +16,22 @@ function swap() {
   echo "/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 }
 
-function minimalinstallation() {
-  read -p "Wollen sie eine volle Installation durchführen?: [Y/n] " minimal
-  if [ "$minimal" != "n" ]
-  then
-    echo "Basis"
-    #Mehrzeiler
-    while read line
-    do
-      pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
-    done < /etc/packages.txt
-  fi
+function adduser() {
+  useradd ${username}
+  passwd ${username}
+  ${userpass}
+  ${userpass}
+  mkdir -p /home/"${username}"/
+  echo ""${username}" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+  userrechte
 }
 
+function userrechte() {
+  chmod 770 -R -v /home/"${username}"/
+  chown -R -v "${username}":"${username}" /home/"${username}"
+  chmod -R -v u+rwX /home/"${username}"
+  chmod 755 /home/"${username}"
+}
 
 
 
@@ -77,27 +80,34 @@ echo ""
 read -p "Wie moechten sie ihre Festplatte partioniert haben: gpt oder mbr: " Partition
 if [ "$Partition" == "gpt" ]
 then
-  read -p "Soll mit systemd gebootet werden oder mit grub? [SYSTEMD/grub] : " boot
+  read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/grub] : " boot
 fi
 fdisk -l
 read -p "Geben sie eine Festplatte an: sda,sdb,sdc: " device
 read -p "Welches Passwort soll der Root erhalten?: " pass
-echo "Mit einer Online Installation können sie ihr persönliches Linux gestalten :D"
-read -p "Soll eine Offline Installation durchgeführt werden?: [Y/n] " offline
-if [ "$offline" == "n" ]
+read -p "Soll ein neuer Benutzer erstellt werden?: " user
+if [ "$user" != "n" ]
 then
-  read -p "Sollen Aktualisierungen installiert werden?: [y/N] " aktu
+  read -p "Wie soll der neue Benutzer heissen?: " username
+  read -p "Welches Passwort soll der neue Benutzer haben?: " userpass
 fi
 read -p "Wie groß soll die System-Partition sein? (wenn nichts eingetragen wird wird die volle Festplatte benutzt!!!): z.b +20G : " speicher
 #
+[[ -z "${name}" ]] && echo "Wählen sie einen Namen!" && sleep 5 && exit 1
+[[ -z "${Partition}" ]] && Partition=gpt
+[[ -z "${boot}" ]] && boot=grub
+[[ -z "${device}" ]] && echo "Wählen sie eine Festplatte aus!" && sleep 5 && exit 1
+[[ -z "${pass}" ]] && pass=root
+[[ -z "${speicher}" ]] && echo "Systemgroesse: Ganze Festplatte" else echo "Systemgroesse: $speicher"
+#
 echo "Name: $name"
-echo "Laufwerk: /dev/"$device""
 echo "Partionsart: $Partition"
-echo "Passwort: $pass"
-echo "Offline installation: $offline"
+echo "Bootloader: $boot"
+echo "Laufwerk: /dev/"$device""
+echo "Rootpasswort: $pass"
 echo "Architektur: $(uname -m)"
-echo "Aktualisierungen: $aktu"
-echo "Systemgroesse: $speicher"
+echo "Username: $user"
+echo "Userpasswort: $userpass"
 #
 read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
 if [ "$sicherheitsabfrage" != "y" ]
@@ -137,11 +147,6 @@ fi
 echo "Eine Säuberung erhört die chance der Installation auf dem System."
 echo "Es kann eine Zeit lang dauern!"
 dd if=/dev/zero of=/dev/$device bs=64M count=10 status=progress
-#
-if [ "$aktu" == "y" ]
-then
-  pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk
-fi
 #
 if [ "$Partition" == "gpt" ]
 then
@@ -190,8 +195,6 @@ EOT
     echo ""
     #cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
     #
-  else
-    minimalinstallation
   fi
 
   echo ""
@@ -206,6 +209,7 @@ mkinitcpio -p linux
 passwd
 $pass
 $pass
+adduser
 EOT
   echo ""
   if [ "$boot" == "grub" ]
@@ -304,8 +308,6 @@ EOT
     echo ""
     #cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
     #
-  else
-    minimalinstallation
   fi
 
   echo ""
@@ -322,6 +324,7 @@ $pass
 $pass
 grub-install --target=i386-pc --recheck /dev/"$device"
 grub-mkconfig -o /boot/grub/grub.cfg
+adduser
 EOT
   if [ "$aktu" == "y" ]
   then
@@ -348,22 +351,9 @@ else
   exit 1
 fi
 echo ""
-if [ "$offline" == "n" ]
-then
-  if [ -f /root/arch-graphical-install ]
-  then
-    rm /root/arch-graphical-install
-  else
-    echo "arch-graphical-install nicht vorhanden!"
-  fi
-  wget https://github.com/simono41/Arch-Install-Script/raw/master/arch-graphical-install -t 0 --output-document=/mnt/root/arch-graphical-install
-  chmod +x /mnt/root/arch-graphical-install
-  arch-chroot /mnt /root/arch-graphical-install n
-fi
-echo ""
 echo "Fertig!!!"
-read -p "Installation erfolgreich Abgeschlossen. Wollen sie den PC NEUSTARTEN?: [Y/n] " sicherheitsabfrage1
-if [ "$sicherheitsabfrage1" != "n" ]
+read -p "Installation erfolgreich Abgeschlossen. Wollen sie den PC NEUSTARTEN?: [Y/n] " sicherheitsabfrage
+if [ "$sicherheitsabfrage" != "n" ]
 then
   echo "starte neu"
   reboot

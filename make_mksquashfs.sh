@@ -17,16 +17,19 @@ install_dir=arch
 arch=$(uname -m)
 
 function minimalinstallation() {
-  read -p "Wollen sie eine volle Installation durchführen?: [Y/n] " volle
-  if [ "$volle" != "n" ]
+  read -p "Sollen alle Packete installiert wernden? [Y/n] " full
+  if [ "$full" != "n" ]
   then
+    packages="packages_all.txt"
+  else
+    packages="packages.txt"
+  fi
     echo "Basis"
     #Mehrzeiler
     while read line
     do
       pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
-    done < packages.txt
-  fi
+    done < $packages
 }
 
 read -p "Soll das System neu aufgebaut werden?: [Y/n] " system
@@ -74,6 +77,7 @@ then
   cp arch-install ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install
   cp packages.txt ${work_dir}/${arch}/airootfs/etc/
+  cp packages_all.txt ${work_dir}/${arch}/airootfs/etc/
 
   cp arch-install-non_root ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install-non_root

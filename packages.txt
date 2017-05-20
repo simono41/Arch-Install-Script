@@ -2,7 +2,9 @@ base base-devel syslinux efibootmgr efitools \
 grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso \
 cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk \
 \
-xorg-server xorg-xinit xorg-drivers acpid ntp dbus avahi cups cronie arandr \
-xf86-input-synaptics ttf-dejavu xscreensaver \
+xorg xorg-server xorg-xinit xorg-drivers  \
+xf86-input-synaptics ttf-dejavu xorg-twm xorg-xclock xterm \
+alsa-utils pulseaudio pulseaudio-alsa pavucontrol \
+acpid ntp dbus avahi cups hplip cronie arandr \
 openssh git netsurf mplayer dialog xorriso cdrtools \
-xorg xorg-twm xorg-xclock xterm alsa-utils pulseaudio pulseaudio-alsa pavucontrol
+exfat-utils ntfs-3g xscreensaver

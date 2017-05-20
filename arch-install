@@ -223,7 +223,7 @@ dd if=/dev/zero of=/dev/$device bs=64M count=10 status=progress
 if [ "$Partition" == "gpt" ]
 then
   echo "Partioniere in GPT"
-    gdisk "/dev/$device" << EOT
+    gdisk "/dev/$device" <<EOT
 2
 p
 o
@@ -247,7 +247,7 @@ EOT
   formatieren
   echo "offlineinstallation"
   offlineinstallation
-arch-chroot /mnt /bin/bash << EOT
+arch-chroot /mnt /bin/bash <<EOT
 mkinitcpio -p linux
 passwd
 $pass
@@ -256,7 +256,7 @@ EOT
   echo ""
   if [ "$boot" == "grub" ]
   then
-arch-chroot /mnt /bin/bash << EOT
+arch-chroot /mnt /bin/bash <<EOT
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$name"-os --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
@@ -289,7 +289,7 @@ EOT
 elif [ "$Partition" == "mbr" ]
 then
   echo "Partioniere in MBR"
-      fdisk -W always "/dev/$device" << EOT
+      fdisk -W always "/dev/$device" <<EOT
 p
 o
 n
@@ -311,7 +311,7 @@ EOT
   formatieren
   echo "offlineinstallation"
   offlineinstallation
-arch-chroot /mnt /bin/bash << EOT
+arch-chroot /mnt /bin/bash <<EOT
 mkinitcpio -p linux
 passwd
 $pass

@@ -96,7 +96,10 @@ function gnomeconfig() {
 
 if [ "$1" == "adduser" ]
 then
+  username=$2
+  userpass=$3
   adduser
+  exit 0
 fi
 
 read -p "Wollen sie einen neuen Benutzer erstellen?: [y/N] " erstellen

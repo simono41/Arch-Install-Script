@@ -16,17 +16,6 @@ function swap() {
   echo "/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 }
 
-function adduser() {
-  useradd ${username}
-  passwd ${username}
-  ${userpass}
-  ${userpass}
-  mkdir -p /home/"${username}"/
-  echo ""${username}" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-  userrechte
-  autostart
-}
-
 function userrechte() {
   chmod 770 -R -v /home/"${username}"/
   chown -R -v "${username}":"${username}" /home/"${username}"
@@ -35,12 +24,12 @@ function userrechte() {
 }
 
 function autostart() {
-  echo "if [ \$(tty) = "/dev/tty1" ]; then" > /home/"${username}"/.bash_profile
-  echo "startx" >> /home/"${username}"/.bash_profile
-  echo "fi" >> /home/"${username}"/.bash_profile
-  echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
-  echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
-  echo "ExecStart=-/sbin/agetty --noclear -a ${username} %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+  echo "if [ \$(tty) = "/dev/tty1" ]; then" > /mnt/home/"${username}"/.bash_profile
+  echo "startx" >> /mnt/home/"${username}"/.bash_profile
+  echo "fi" >> /mnt/home/"${username}"/.bash_profile
+  echo "[Service]" > /mnt/etc/systemd/system/getty\@tty1.service.d/autologin.conf
+  echo "ExecStart=" >> /mnt/etc/systemd/system/getty\@tty1.service.d/autologin.conf
+  echo "ExecStart=-/sbin/agetty --noclear -a ${username} %I 38400 linux" >> /mnt/etc/systemd/system/getty\@tty1.service.d/autologin.conf
 }
 
 function removeinstaller {
@@ -284,6 +273,7 @@ EOT
 
   fi
   arch-chroot /mnt /usr/bin/arch-graphical-install adduser $username $userpass
+  autostart
   removeinstaller
   echo "Fertig"
 elif [ "$Partition" == "mbr" ]
@@ -320,6 +310,7 @@ grub-install --target=i386-pc --recheck /dev/"$device"
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
   arch-chroot /mnt /usr/bin/arch-graphical-install adduser $username $userpass
+  autostart
   removeinstaller
   echo "Fertig"
 else

@@ -12,4 +12,4 @@ exfat-utils ntfs-3g xscreensaver networkmanager network-manager-applet \
 firefox firefox-i18n-de firefox-noscript firefox-adblock-plus flashplugin \
 libreoffice-fresh libreoffice-fresh-de vlc brasero transmission-gtk \
 evince simple-scan file-roller galculator leafpad htop \
-python python-pip gvfs gvfs-smb gvfs-nfs gvfs-mtp gvfs-gphoto2 gvfs-afc mtpfs ifuse
+python python-pip gvfs gvfs-smb gvfs-nfs gvfs-mtp gvfs-gphoto2 gvfs-afc mtpfs ifuse thunderbird thunderbird-i18n-de atom

@@ -1,4 +1,4 @@
-qemu blender simplescreenrecorder obs-studio ardour hydrogen atom \
+qemu blender simplescreenrecorder obs-studio ardour hydrogen \
 jdk8-openjdk netbeans youtube-dl libdvdread libdvdcss libdvdnav kdenlive \
 inkscape audacity mumble gimp \
 \

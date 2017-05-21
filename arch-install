@@ -283,11 +283,11 @@ EOT
     echo "timeout   1" >> /mnt/boot/loader/loader.conf
 
   fi
-if [ "$user" != "n" ]
-then
-  adduser
-  autostart
-fi
+  if [ "$user" != "n" ]
+  then
+    adduser
+    autostart
+  fi
   removeinstaller
   echo "Fertig"
 elif [ "$Partition" == "mbr" ]
@@ -323,11 +323,11 @@ $pass
 grub-install --target=i386-pc --recheck /dev/"$device"
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
-if [ "$user" != "n" ]
-then
-  adduser
-  autostart
-fi
+  if [ "$user" != "n" ]
+  then
+    adduser
+    autostart
+  fi
   removeinstaller
   echo "Fertig"
 else

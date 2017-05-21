@@ -268,7 +268,7 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 # set desktop
 echo "set desktops"
 #
-read -p "Welcher desktop soll verwendet werden? all, lxde, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
+read -p "Welcher desktop soll verwendet werden? all, lxde, lxde-gtk3, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
 
 if [ "$rootstart" == "gnome" ] || [ "$rootstart" == "all" ]
 then
@@ -288,7 +288,7 @@ fi
 
 if [ "$rootstart" == "gnome-flashback" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy gnome-flashback gnome gnome-extra gnuchess   system-config-printer blueman gnome-power-manager gnome-screensaver
+  pacman -Sy gnome-flashback gnome gnome-extra gnuchess system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
   echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
   #
@@ -311,6 +311,12 @@ fi
 if [ "$rootstart" == "lxde" ] || [ "$rootstart" == "all" ]
 then
   pacman -Sy lxde xfce4-power-manager
+  echo "exec startlxde" > /etc/X11/xinit/xinitrc
+fi
+
+if [ "$rootstart" == "lxde-gtk3" ]
+then
+  pacman -Sy lxde-gtk3 xfce4-power-manager
   echo "exec startlxde" > /etc/X11/xinit/xinitrc
 fi
 

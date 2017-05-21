@@ -7,8 +7,9 @@ xf86-input-synaptics ttf-dejavu xorg-twm xorg-xclock xterm \
 alsa-utils pulseaudio pulseaudio-alsa pavucontrol \
 acpid ntp dbus avahi cups hplip cronie arandr \
 openssh git netsurf mplayer dialog xorriso cdrtools \
-exfat-utils ntfs-3g xscreensaver \
+exfat-utils ntfs-3g xscreensaver networkmanager network-manager-applet \
 \
 firefox firefox-i18n-de firefox-noscript firefox-adblock-plus flashplugin \
 libreoffice-fresh libreoffice-fresh-de vlc brasero transmission-gtk \
-evince simple-scan file-roller galculator leafpad
+evince simple-scan file-roller galculator leafpad htop \
+python python-pip gvfs gvfs-smb gvfs-nfs gvfs-mtp gvfs-gphoto2 gvfs-afc mtpfs ifuse

@@ -1,6 +1,6 @@
-qemu blender simplescreenrecorder obs-studio ardour hydrogen python python-pip \
-jdk8-openjdk netbeans htop youtube-dl libdvdread libdvdcss libdvdnav kdenlive \
-inkscape audacity atom mumble gimp \
+qemu blender simplescreenrecorder obs-studio ardour hydrogen atom \
+jdk8-openjdk netbeans youtube-dl libdvdread libdvdcss libdvdnav kdenlive \
+inkscape audacity mumble gimp \
 \
 0ad assaultcube megaglest hedgewars freeciv minetest teeworlds \
 \

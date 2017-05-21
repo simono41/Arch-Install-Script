@@ -272,9 +272,8 @@ read -p "Welcher desktop soll verwendet werden? all, lxde, gnome, gnome-flashbac
 
 if [ "$rootstart" == "gnome" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy gnome gnome-extra gnuchess network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
+  pacman -Sy gnome gnome-extra gnuchess   system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "exec gnome-session" > /etc/X11/xinit/xinitrc
-  systemctl enable NetworkManager.service
   read -p "Soll gnome classic benutzt werden? [y/N] " classic
   if [ "$classic" == "y" ]
   then
@@ -289,10 +288,9 @@ fi
 
 if [ "$rootstart" == "gnome-flashback" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy gnome-flashback gnome gnome-extra gnuchess network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
+  pacman -Sy gnome-flashback gnome gnome-extra gnuchess   system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
   echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
-  systemctl enable NetworkManager.service
   #
   gnomeconfig
   #
@@ -300,37 +298,37 @@ fi
 
 if [ "$rootstart" == "cinnamon" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy cinnamon gnome gnome-extra network-manager-applet networkmanager system-config-printer blueman gnome-power-manager gnome-screensaver
+  pacman -Sy cinnamon gnome gnome-extra system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "exec cinnamon-session" > /etc/X11/xinit/xinitrc
 fi
 
 if [ "$rootstart" == "mate" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy mate mate-extra network-manager-applet networkmanager system-config-printer blueman mate-power-manager gtk-engine-murrine
+  pacman -Sy mate mate-extra system-config-printer blueman mate-power-manager gtk-engine-murrine
   echo "exec mate-session" > /etc/X11/xinit/xinitrc
 fi
 
 if [ "$rootstart" == "lxde" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy lxde networkmanager network-manager-applet xfce4-power-manager
+  pacman -Sy lxde xfce4-power-manager
   echo "exec startlxde" > /etc/X11/xinit/xinitrc
 fi
 
 if [ "$rootstart" == "lxqt" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy lxqt networkmanager network-manager-applet lxqt-powermanagement oxygen-icons breeze-icons
+  pacman -Sy lxqt lxqt-powermanagement oxygen-icons breeze-icons
   echo "exec startlxqt" > /etc/X11/xinit/xinitrc
 fi
 
 if [ "$rootstart" == "xfce4" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy xfce4 xfce4-goodies human-icon-theme networkmanager network-manager-applet xfce4-power-manager
+  pacman -Sy xfce4 xfce4-goodies human-icon-theme xfce4-power-manager xfce4-pulseaudio-plugin xfce4-sensors-plugin libxnvctrl xfce4-xkb-plugin arc-gtk-theme noto-fonts noto-fonts-emoji
   echo "exec startxfce4" > /etc/X11/xinit/xinitrc
 fi
 
 if [ "$rootstart" == "kde" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy plasma kde-l10n-de kde-applications networkmanager network-manager-applet
+  pacman -Sy plasma kde-l10n-de kde-applications
   echo "exec startkde" > /etc/X11/xinit/xinitrc
 fi
 

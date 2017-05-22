@@ -1,9 +1,4 @@
-qemu blender simplescreenrecorder obs-studio ardour hydrogen \
-jdk8-openjdk netbeans youtube-dl libdvdread libdvdcss libdvdnav kdenlive \
-inkscape audacity mumble gimp \
-\
-0ad assaultcube megaglest hedgewars freeciv minetest teeworlds \
-\
-murmur snapd apache docker \
-\
-nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl steam wine wine_gecko wine-mono
+netbeans \
+nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl \
+steam wine wine_gecko wine-mono \
+0ad assaultcube megaglest hedgewars freeciv minetest teeworlds

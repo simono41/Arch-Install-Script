@@ -24,6 +24,11 @@ ${userpass}
 EOT
   mkdir -p /mnt/home/"$username"/
   echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /mnt/etc/sudoers
+  echo ""
+  if [ -d /mnt/home/user/.config ]
+  then
+    cp -R /mnt/home/user/.config /mnt/home/"$username"/
+  fi
   userrechte
 }
 

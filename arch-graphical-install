@@ -58,6 +58,14 @@ function links() {
   mkdir -p /root/Schreibtisch/
   cp /usr/share/applications/arch-install.desktop /root/Schreibtisch/arch-install.desktop
   chmod +x /root/Schreibtisch/arch-install.desktop
+  #
+  mkdir -p /home/"$username"/Desktop/
+  cp /usr/share/applications/arch-install.desktop /home/"$username"/Desktop/arch-install.desktop
+  chmod +x /home/"$username"/Desktop/arch-install.desktop
+  #
+  mkdir -p /root/Desktop/
+  cp /usr/share/applications/arch-install.desktop /root/Desktop/arch-install.desktop
+  chmod +x /root/Desktop/arch-install.desktop
 }
 
 function gnomeconfig() {
@@ -110,8 +118,9 @@ then
   adduser
   links
 else
-  read -p "Wie heisst der normale Benutzer auf dem PC?: " user
+  read -p "Wie heisst der normale Benutzer auf dem PC?: " username
   userrechte
+  links
   #
   read -p "Soll "$username" root-rechte gegeben werden?: [y/N] " root
   if [ "$root" == "y" ]
@@ -443,11 +452,12 @@ locale-gen
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
-while [ "$packete" != "n" ]
+befehl=null
+echo "Wenn kein Befehl mehr ausgefuehrt werden muss Eingabetaste druecken!!!"
+while [ "$befehl" != "" ];
 do
-  read -p "Soll noch ein Befehl eingegeben werden? [Befehl] : " befehl
+  read -p "Befehl : " befehl
   $befehl
-  read -p "Sollen sonst noch Packete hinzugefügt oder entfernt werden? [Y/n] " packete
 done
 
 userrechte

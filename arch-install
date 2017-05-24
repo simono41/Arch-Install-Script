@@ -60,6 +60,16 @@ function removeinstaller {
     rm /mnt/home/user/Schreibtisch/arch-install.desktop
   fi
   echo ""
+  if [ -f /mnt/root/Desktop/arch-install.desktop ]
+  then
+    rm /mnt/root/Desktop/arch-install.desktop
+  fi
+  echo ""
+  if [ -f /mnt/home/user/Desktop/arch-install.desktop ]
+  then
+    rm /mnt/home/user/Desktop/arch-install.desktop
+  fi
+  echo ""
 }
 
 function offlineinstallation {

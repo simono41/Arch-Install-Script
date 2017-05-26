@@ -1,4 +1,4 @@
-netbeans \
+jdk8-openjdk java-openjfx netbeans \
 nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl \
 steam wine wine_gecko wine-mono \
 0ad assaultcube megaglest hedgewars freeciv minetest teeworlds

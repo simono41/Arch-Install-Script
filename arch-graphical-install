@@ -17,7 +17,15 @@ ${userpass}
 EOT
   mkdir -p /home/"$username"/
   echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+  copyconfig
   userrechte
+}
+
+function copyconfig() {
+  if [ -d /root/.config ]
+  then
+    cp -Rv /root/.config /home/"$username"/
+  fi
 }
 
 function userrechte() {
@@ -357,7 +365,7 @@ echo "Systemsprache und dienste werden erstellt!"
 
 # localectl set-x11-keymap de pc105 nodeadkeys
 echo "Section \"InputClass\"" > /etc/X11/xorg.conf.d/20-keyboard.conf
-echo "        Identifier \"keyboard\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Identifier \"Keyboard0\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "        MatchIsKeyboard \"yes\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "        Option \"XkbLayout\" \"de\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "        Option \"XkbModel\" \"pc105\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
@@ -366,7 +374,7 @@ echo "EndSection" >> /etc/X11/xorg.conf.d/20-keyboard.conf
 
 #xset m 2/1 0
 echo "Section \"InputClass\"" > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
-echo "	Identifier \"Mouse\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Identifier \"Mouse0\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
 echo "	MatchIsPointer \"yes\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
 echo "# set the following to 1 1 0 respectively to disable acceleration." >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
 echo "	Option \"AccelerationNumerator\" \"2\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf

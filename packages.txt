@@ -14,6 +14,5 @@ libreoffice-fresh libreoffice-fresh-de vlc brasero transmission-gtk \
 evince simple-scan file-roller galculator leafpad htop \
 python python-pip gvfs gvfs-smb gvfs-nfs gvfs-mtp gvfs-gphoto2 gvfs-afc mtpfs \ ifuse thunderbird thunderbird-i18n-de atom qemu murmur snapd apache docker \
 blender simplescreenrecorder obs-studio ardour hydrogen \
-youtube-dl libdvdread libdvdcss libdvdnav kdenlive cheese \
-inkscape audacity mumble gimp flac ffmpeg vorbis-tools vorbisgain \
-jdk8-openjdk
+youtube-dl libdvdread libdvdcss libdvdnav kdenlive cheese asunder \
+inkscape audacity mumble gimp flac ffmpeg vorbis-tools vorbisgain 

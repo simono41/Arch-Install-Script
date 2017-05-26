@@ -59,6 +59,13 @@ then
     fi
   fi
 
+  read -p "Soll die aktuelle .config mitkoppiert werden?: [Y/n] " config
+  if [ "$config" != "n" ]
+  then
+    read -p "Vom welchen Benutzer soll die .config koppiert werden?: " username
+    cp -Rv /home/${username}/.config ${work_dir}/${arch}/airootfs/root/
+  fi
+
   arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
   arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
 

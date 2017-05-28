@@ -382,6 +382,8 @@ p
 w
 y
 EOT
+    
+    sleep 1
 
     echo "mit j bestätigen"
     mkfs.ext4 -L cow_device /dev/${device}3

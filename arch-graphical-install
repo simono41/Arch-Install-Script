@@ -273,6 +273,11 @@ then
   then
     su "$username" -c "yaourt -S telegram-desktop --export /home/"$username"/aur-pakete"
   fi
+  read -p "Soll vibrancy-colors mitinstalliert werden?: [Y/n] " vibrancy
+  if [ "$vibrancy" != "n" ]
+  then
+    su "$username" -c "yaourt -S vibrancy-colors --export /home/"$username"/aur-pakete"
+  fi
   read -p "Sollen firmwares mitinstalliert werden?: [Y/n] " firmwares
   if [ "$firmwares" != "n" ]
   then

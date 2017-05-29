@@ -16,4 +16,4 @@ python python-pip gvfs gvfs-smb gvfs-nfs gvfs-mtp gvfs-gphoto2 gvfs-afc mtpfs \ 
 blender simplescreenrecorder obs-studio ardour hydrogen \
 youtube-dl libdvdread libdvdcss libdvdnav kdenlive cheese asunder \
 inkscape audacity mumble gimp flac ffmpeg vorbis-tools vorbisgain opus-tools \
-catfish
+catfish cmatrix

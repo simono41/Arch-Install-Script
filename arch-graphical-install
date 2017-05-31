@@ -17,6 +17,7 @@ ${userpass}
 EOT
   mkdir -p /home/"$username"/
   echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+  links
   copyconfig
   userrechte
 }
@@ -124,11 +125,8 @@ then
   read -p "Wie soll der neue Benutzer heissen?: " username
   read -p "Wie soll das Passwort heissen?: " userpass
   adduser
-  links
 else
   read -p "Wie heisst der normale Benutzer auf dem PC?: " username
-  userrechte
-  links
   #
   read -p "Soll "$username" root-rechte gegeben werden?: [y/N] " root
   if [ "$root" == "y" ]

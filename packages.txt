@@ -17,4 +17,5 @@ ifuse thunderbird thunderbird-i18n-de atom qemu murmur snapd apache docker \
 blender simplescreenrecorder obs-studio ardour hydrogen \
 youtube-dl libdvdread libdvdcss libdvdnav kdenlive cheese asunder \
 inkscape audacity mumble gimp flac ffmpeg vorbis-tools vorbisgain opus-tools \
-catfish cmatrix mc bash-completion net-tools
+catfish cmatrix mc bash-completion net-tools usbutils usb_modeswitch \
+modemmanager mobile-broadband-provider-info nm-connection-editor ppp

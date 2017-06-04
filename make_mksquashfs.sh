@@ -124,13 +124,6 @@ fi
 # System-image
 
 read -p "Soll das System-Image neu aufgebaut werden?: [Y/n] " image
-mkdir -p ${work_dir}/iso/isolinux
-mkdir -p ${work_dir}/iso/${install_dir}/${arch}
-mkdir -p ${work_dir}/iso/${install_dir}/boot/${arch}
-mkdir -p ${work_dir}/iso/${install_dir}/boot/syslinux
-mkdir -p ${work_dir}/iso/EFI/archiso
-mkdir -p ${work_dir}/iso/EFI/boot
-mkdir -p ${work_dir}/iso/loader/entries
 
 if [ "$image" != "n" ]
 then
@@ -160,6 +153,10 @@ fi
 read -p "Soll das BIOS installiert werden?: [Y/n] " bios
 if [ "$bios" != "n" ]
 then
+  mkdir -p ${work_dir}/iso/isolinux
+  mkdir -p ${work_dir}/iso/${install_dir}/${arch}
+  mkdir -p ${work_dir}/iso/${install_dir}/boot/${arch}
+  mkdir -p ${work_dir}/iso/${install_dir}/boot/syslinux
   cp -R ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/* ${work_dir}/iso/${install_dir}/boot/syslinux/
   cp ${work_dir}/${arch}/airootfs/boot/initramfs-linux.img ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
   cp ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz
@@ -194,6 +191,9 @@ read -p "Soll das EFI installiert werden?: [Y/n] " efi
 if [ "$efi" != "n" ]
 then
 
+  mkdir -p ${work_dir}/iso/EFI/archiso
+  mkdir -p ${work_dir}/iso/EFI/boot
+  mkdir -p ${work_dir}/iso/loader/entries
   mkdir -p ${work_dir}/efiboot
 
   if [ -f ${work_dir}/iso/EFI/archiso/efiboot.img ]
@@ -382,7 +382,7 @@ p
 w
 y
 EOT
-    
+
     sleep 1
 
     echo "mit j bestätigen"

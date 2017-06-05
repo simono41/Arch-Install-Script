@@ -17,21 +17,10 @@ install_dir=arch
 arch=$(uname -m)
 
 function minimalinstallation() {
-  read -p "Sollen alle Packete installiert wernden? [Y/n] " full
-  if [ "$full" != "n" ]
-  then
-    echo "Advanced"
-    #Mehrzeiler
-    while read line
-    do
-      line1=$line
-    done < packages_advanced.txt
-  fi
-  echo "Basis"
   #Mehrzeiler
   while read line
   do
-    pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line $line1
+    ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
   done < packages.txt
 
 }
@@ -66,45 +55,60 @@ then
     cp -Rv /home/${username}/.config ${work_dir}/${arch}/airootfs/root/
   fi
 
+# initalizise keys
   arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
   arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
 
+# hooks
   cp install/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
   cp hooks/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 
+# module and hooks
   echo "MODULES=\"i915\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
   echo "HOOKS=\"base udev block filesystems keyboard archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
   echo "COMPRESSION=\"gzip\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
+# iso_name
   echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
 
+# makeiso
   cp make_mksquashfs.sh ${work_dir}/${arch}/airootfs/usr/bin/make_mksquashfs
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/make_mksquashfs
 
+# write-partitions manager
   cp write_cowspace ${work_dir}/${arch}/airootfs/usr/bin/write_cowspace
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/write_cowspace
 
+# pacman-config
   cp pacman.conf ${work_dir}/${arch}/airootfs/etc/
 
+# custom-installer
   cp arch-graphical-install ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install
 
+# installer-/usr/bin/
   cp arch-install ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install
   cp packages.txt ${work_dir}/${arch}/airootfs/etc/
-  cp packages_advanced.txt ${work_dir}/${arch}/airootfs/etc/
 
+# sudo-installer
   cp arch-install-non_root ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install-non_root
 
+# installer
   mkdir -p ${work_dir}/${arch}/airootfs/usr/share/applications/
   cp arch-install.desktop ${work_dir}/${arch}/airootfs/usr/share/applications/
   chmod +x ${work_dir}/${arch}/airootfs/usr/share/applications/arch-install.desktop
 
+# install-picture
   mkdir -p ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
   cp install.png ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
 
+# mirrorlist
   cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
+
+# xfce4
+  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
 
   arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
 
@@ -127,6 +131,9 @@ read -p "Soll das System-Image neu aufgebaut werden?: [Y/n] " image
 
 if [ "$image" != "n" ]
 then
+
+  mkdir -p ${work_dir}/iso/${install_dir}/${arch}/airootfs/
+
   arch-chroot ${work_dir}/${arch}/airootfs/ pacman -Q > ${work_dir}/${arch}/airootfs/pkglist.txt
   cp ${work_dir}/${arch}/airootfs/pkglist.txt ${work_dir}/iso/${install_dir}/${arch}/
 
@@ -153,10 +160,12 @@ fi
 read -p "Soll das BIOS installiert werden?: [Y/n] " bios
 if [ "$bios" != "n" ]
 then
+
   mkdir -p ${work_dir}/iso/isolinux
   mkdir -p ${work_dir}/iso/${install_dir}/${arch}
   mkdir -p ${work_dir}/iso/${install_dir}/boot/${arch}
   mkdir -p ${work_dir}/iso/${install_dir}/boot/syslinux
+
   cp -R ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/* ${work_dir}/iso/${install_dir}/boot/syslinux/
   cp ${work_dir}/${arch}/airootfs/boot/initramfs-linux.img ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
   cp ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz
@@ -191,10 +200,10 @@ read -p "Soll das EFI installiert werden?: [Y/n] " efi
 if [ "$efi" != "n" ]
 then
 
+  mkdir -p ${work_dir}/efiboot
   mkdir -p ${work_dir}/iso/EFI/archiso
   mkdir -p ${work_dir}/iso/EFI/boot
   mkdir -p ${work_dir}/iso/loader/entries
-  mkdir -p ${work_dir}/efiboot
 
   if [ -f ${work_dir}/iso/EFI/archiso/efiboot.img ]
   then
@@ -202,6 +211,7 @@ then
   else
     echo "efiboot.img nicht vorhanden!"
   fi
+
   truncate -s 128M ${work_dir}/iso/EFI/archiso/efiboot.img
   mkfs.fat -n ${iso_label}_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
 
@@ -325,7 +335,7 @@ then
       echo "arch.img nicht vorhanden!"
       qemu-img create -f qcow2 arch.img 64G
     fi
-    qemu-system-${arch} -enable-kvm -cdrom out/${imagename} -hda arch.img -boot d -m 8092
+    qemu-system-${arch} -enable-kvm -cdrom out/${imagename} -hda arch.img -boot d -m 2048
   fi
 
 

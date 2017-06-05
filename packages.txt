@@ -19,4 +19,13 @@ youtube-dl libdvdread libdvdcss libdvdnav kdenlive cheese asunder \
 inkscape audacity mumble gimp flac ffmpeg vorbis-tools vorbisgain opus-tools \
 catfish cmatrix wireless_tools iw crda \
 mc bash-completion net-tools usbutils usb_modeswitch \
-modemmanager mobile-broadband-provider-info nm-connection-editor ppp
+modemmanager mobile-broadband-provider-info nm-connection-editor ppp \
+\
+jdk8-openjdk java-openjfx netbeans \
+nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl \
+steam wine wine_gecko wine-mono \
+0ad assaultcube megaglest hedgewars freeciv minetest teeworlds \
+\
+xfce4 xfce4-goodies human-icon-theme xfce4-power-manager xfce4-pulseaudio-plugin \
+xfce4-sensors-plugin libxnvctrl xfce4-xkb-plugin arc-gtk-theme \
+noto-fonts noto-fonts-emoji arc-icon-theme elementary-icon-theme

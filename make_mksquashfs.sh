@@ -200,7 +200,6 @@ read -p "Soll das EFI installiert werden?: [Y/n] " efi
 if [ "$efi" != "n" ]
 then
 
-  mkdir -p ${work_dir}/efiboot
   mkdir -p ${work_dir}/iso/EFI/archiso
   mkdir -p ${work_dir}/iso/EFI/boot
   mkdir -p ${work_dir}/iso/loader/entries
@@ -214,6 +213,8 @@ then
 
   truncate -s 128M ${work_dir}/iso/EFI/archiso/efiboot.img
   mkfs.fat -n ${iso_label}_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
+
+  mkdir -p ${work_dir}/efiboot
 
   mount -t vfat -o loop ${work_dir}/iso/EFI/archiso/efiboot.img ${work_dir}/efiboot
 
@@ -335,7 +336,7 @@ then
       echo "arch.img nicht vorhanden!"
       qemu-img create -f qcow2 arch.img 64G
     fi
-    qemu-system-${arch} -enable-kvm -cdrom out/${imagename} -hda arch.img -boot d -m 2048
+    qemu-system-${arch} -enable-kvm -cdrom out/${imagename} -hda arch.img -boot d -m 1028M
   fi
 
 

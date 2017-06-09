@@ -21,7 +21,7 @@ catfish cmatrix wireless_tools iw crda \
 mc bash-completion net-tools usbutils usb_modeswitch \
 modemmanager mobile-broadband-provider-info nm-connection-editor ppp \
 \
-jdk8-openjdk java-openjfx netbeans \
+jdk8-openjdk java-openjfx netbeans openshot \
 nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl \
 steam wine wine_gecko wine-mono \
 0ad assaultcube megaglest hedgewars freeciv minetest teeworlds \

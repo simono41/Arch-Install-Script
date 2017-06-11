@@ -24,7 +24,7 @@ modemmanager mobile-broadband-provider-info nm-connection-editor ppp \
 jdk8-openjdk java-openjfx netbeans openshot \
 nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl \
 steam wine wine_gecko wine-mono \
-0ad assaultcube megaglest hedgewars freeciv minetest teeworlds \
+0ad assaultcube megaglest hedgewars freeciv minetest teeworlds scratch \
 \
 xfce4 xfce4-goodies human-icon-theme xfce4-power-manager xfce4-pulseaudio-plugin \
 xfce4-sensors-plugin libxnvctrl xfce4-xkb-plugin arc-gtk-theme \

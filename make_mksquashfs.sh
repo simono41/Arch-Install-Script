@@ -7,8 +7,8 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-iso_name=simon-os
-iso_label="SIMON_OS"
+iso_name=spectre-os
+iso_label="SPECTRE_OS"
 iso_version=$(date +%Y.%m.%d)
 work_dir=work
 out_dir=out
@@ -108,7 +108,7 @@ then
   cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 
 # xfce4
-  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
+#  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
 
   arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
 

@@ -8,24 +8,12 @@ alsa-utils pulseaudio pulseaudio-alsa pavucontrol \
 acpid ntp dbus avahi cups hplip cronie arandr \
 openssh git netsurf mplayer dialog xorriso cdrtools \
 exfat-utils ntfs-3g xscreensaver networkmanager network-manager-applet \
-\
 firefox firefox-i18n-de firefox-noscript firefox-adblock-plus flashplugin \
 libreoffice-fresh libreoffice-fresh-de vlc brasero transmission-gtk \
 evince simple-scan file-roller galculator leafpad htop \
-python python-pip gvfs gvfs-smb gvfs-nfs gvfs-mtp gvfs-gphoto2 gvfs-afc mtpfs \
-ifuse thunderbird thunderbird-i18n-de atom qemu murmur snapd apache docker \
-blender simplescreenrecorder obs-studio ardour hydrogen \
-youtube-dl libdvdread libdvdcss libdvdnav kdenlive cheese asunder \
-inkscape audacity mumble gimp flac ffmpeg vorbis-tools vorbisgain opus-tools \
-catfish cmatrix wireless_tools iw crda \
+gvfs gvfs-smb gvfs-nfs gvfs-mtp gvfs-gphoto2 gvfs-afc mtpfs \
+ifuse thunderbird thunderbird-i18n-de qemu \
+youtube-dl libdvdread libdvdcss libdvdnav wireless_tools iw crda \
 mc bash-completion net-tools usbutils usb_modeswitch \
-modemmanager mobile-broadband-provider-info nm-connection-editor ppp \
-\
-jdk8-openjdk java-openjfx netbeans openshot \
-nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl \
-steam wine wine_gecko wine-mono \
-0ad assaultcube megaglest hedgewars freeciv minetest teeworlds scratch \
-\
-xfce4 xfce4-goodies human-icon-theme xfce4-power-manager xfce4-pulseaudio-plugin \
-xfce4-sensors-plugin libxnvctrl xfce4-xkb-plugin arc-gtk-theme \
-noto-fonts noto-fonts-emoji arc-icon-theme elementary-icon-theme
+modemmanager mobile-broadband-provider-info nm-connection-editor ppp
+ 

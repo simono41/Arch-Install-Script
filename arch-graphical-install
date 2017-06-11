@@ -348,7 +348,9 @@ fi
 
 if [ "$rootstart" == "xfce4" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy xfce4 xfce4-goodies human-icon-theme xfce4-power-manager xfce4-pulseaudio-plugin xfce4-sensors-plugin libxnvctrl xfce4-xkb-plugin arc-gtk-theme noto-fonts noto-fonts-emoji
+  pacman -Sy xfce4 xfce4-goodies human-icon-theme xfce4-power-manager xfce4-pulseaudio-plugin \
+xfce4-sensors-plugin libxnvctrl xfce4-xkb-plugin arc-gtk-theme \
+noto-fonts noto-fonts-emoji arc-icon-theme elementary-icon-theme
   echo "exec startxfce4" > /etc/X11/xinit/xinitrc
 fi
 

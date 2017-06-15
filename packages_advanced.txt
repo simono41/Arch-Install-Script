@@ -5,4 +5,4 @@ catfish cmatrix \
 steam wine wine_gecko wine-mono \
 0ad assaultcube megaglest hedgewars freeciv minetest teeworlds scratch \
 mumble flac ffmpeg vorbis-tools vorbisgain opus-tools \
-murmur snapd apache docker
+murmur snapd apache docker filezilla

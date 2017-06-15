@@ -1,9 +1,9 @@
+Server = http://mirror.23media.de/archlinux/$repo/os/$arch
+
 ##
 ## Arch Linux repository mirrorlist
 ## Generated on 2017-03-17
 ##
-
-Server = https://mirror.f4st.host/archlinux/$repo/os/$arch
 
 ## Worldwide
 Server = https://archlinux.surlyjake.com/archlinux/$repo/os/$arch

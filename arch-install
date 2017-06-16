@@ -100,7 +100,7 @@ function offlineinstallation {
     echo "swap"
     swap
     echo ""
-    echo "$name"-os > /mnt/etc/hostname
+    echo "$name"s-os > /mnt/etc/hostname
     echo ""
   fi
 }
@@ -272,7 +272,7 @@ EOT
   if [ "$boot" == "grub" ]
   then
 arch-chroot /mnt /bin/bash <<EOT
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$name"-os --recheck
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$name"s-os --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
   else
@@ -284,12 +284,12 @@ EOT
     cp /mnt/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/BOOT/BOOTX64.EFI
 
     mkdir -p /mnt/boot/loader/entries/
-    echo "title    "$name"-os" > /mnt/boot/loader/entries/arch-uefi.conf
+    echo "title    "$name"s-os" > /mnt/boot/loader/entries/arch-uefi.conf
     echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi.conf
     echo "initrd   /initramfs-linux.img" >> /mnt/boot/loader/entries/arch-uefi.conf
     echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/boot/loader/entries/arch-uefi.conf
 
-    echo "title    "$name"-os" > /mnt/boot/loader/entries/arch-uefi-fallback.conf
+    echo "title    "$name"s-os" > /mnt/boot/loader/entries/arch-uefi-fallback.conf
     echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
     echo "initrd   /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
     echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf

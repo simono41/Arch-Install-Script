@@ -104,6 +104,10 @@ then
   mkdir -p ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
   cp install.png ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
 
+# background
+  mkdir -p ${work_dir}/${arch}/airootfs/usr/share/backgrounds/xfce/
+  cp background.jpg ${work_dir}/${arch}/airootfs/usr/share/backgrounds/xfce/
+
 # mirrorlist
   cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 

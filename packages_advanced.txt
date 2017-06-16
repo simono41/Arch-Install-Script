@@ -1,8 +1,7 @@
 jdk8-openjdk java-openjfx netbeans kdenlive blender gimp inkscape audacity \
 simplescreenrecorder obs-studio ardour hydrogen openshot cheese asunder python python-pip atom \
 nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl \
-catfish cmatrix \
 steam wine wine_gecko wine-mono \
 0ad assaultcube megaglest hedgewars freeciv minetest teeworlds scratch \
 mumble flac ffmpeg vorbis-tools vorbisgain opus-tools \
-murmur snapd apache docker filezilla
+murmur snapd apache docker

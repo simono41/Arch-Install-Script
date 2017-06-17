@@ -20,7 +20,7 @@ function minimalinstallation() {
   #Mehrzeiler
   while read line
   do
-    pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
+    ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
   done < packages.txt
 
 }
@@ -151,7 +151,7 @@ then
     echo "airootfs.sfs nicht vorhanden!"
   fi
 
-  mksquashfs ${work_dir}/${arch}/airootfs ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs -comp gzip
+  mksquashfs ${work_dir}/${arch}/airootfs ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs -comp xz -b 262144
 
   md5sum ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs > ${work_dir}/iso/${install_dir}/${arch}/airootfs.md5
 

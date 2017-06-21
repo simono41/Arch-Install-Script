@@ -48,7 +48,7 @@ then
       arch-chroot ${work_dir}/${arch}/airootfs passwd root
     fi
 # screenfetch
-  echo "screenfetch" >> ${work_dir}/${arch}/airootfs/etc/bash.bashrc
+#  echo "screenfetch" >> ${work_dir}/${arch}/airootfs/etc/bash.bashrc
   fi
 
 ## doppelt bereich

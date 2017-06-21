@@ -115,6 +115,9 @@ then
 # mirrorlist
   cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 
+# bash.bashrc
+  cp bash.bashrc ${work_dir}/${arch}/airootfs/etc/
+
 # xfce4
 #  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
 

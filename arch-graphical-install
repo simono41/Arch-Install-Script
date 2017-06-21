@@ -266,21 +266,36 @@ then
   then
     su "$username" -c "yaourt -S xboxdrv --export /home/"$username"/aur-pakete"
   fi
+  #
   read -p "Soll telegram mitinstalliert werden?: [Y/n] " telegram
   if [ "$telegram" != "n" ]
   then
     su "$username" -c "yaourt -S telegram-desktop --export /home/"$username"/aur-pakete"
   fi
+  #
   read -p "Soll vibrancy-colors mitinstalliert werden?: [Y/n] " vibrancy
   if [ "$vibrancy" != "n" ]
   then
     su "$username" -c "yaourt -S vibrancy-colors --export /home/"$username"/aur-pakete"
   fi
+  #
   read -p "Sollen firmwares mitinstalliert werden?: [Y/n] " firmwares
   if [ "$firmwares" != "n" ]
   then
     su "$username" -c "yaourt -S wd719x-firmware aic94xx-firmware --export /home/"$username"/aur-pakete"
     mkinitcpio -p linux
+  fi
+  #
+  read -p "Soll jp2a mitinstalliert werden?: [Y/n] " jp2a
+  if [ "$jp2a" != "n" ]
+  then
+    su "$username" -c "yaourt -S jp2a --export /home/"$username"/aur-pakete"
+  fi
+  #
+  read -p "Soll firefox-ublock-origin mitinstalliert werden?: [Y/n] " ublock
+  if [ "$ublock" != "n" ]
+  then
+    su "$username" -c "yaourt -S firefox-ublock-origin --export /home/"$username"/aur-pakete"
   fi
 fi
 echo "Packetliste2 Ende"

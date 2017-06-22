@@ -297,6 +297,11 @@ then
   then
     su "$username" -c "yaourt -S firefox-ublock-origin --export /home/"$username"/aur-pakete"
   fi
+  read -p "Soll audio-recorder mitinstalliert werden?: [Y/n] " audio
+  if [ "$audio" != "n" ]
+  then
+    su "$username" -c "yaourt -S audio-recorder --export /home/"$username"/aur-pakete"
+  fi
 fi
 echo "Packetliste2 Ende"
 echo "Beginne mit dem Konfigurieren des Systems :D"

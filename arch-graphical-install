@@ -13,7 +13,7 @@ function vollinstallation() {
   #Mehrzeiler
   while read line
   do
-    pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
+    pacman -Syu $line
   done < /etc/packages_all.txt
 
 }

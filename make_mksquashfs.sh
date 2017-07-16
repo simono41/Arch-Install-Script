@@ -41,17 +41,15 @@ then
   if [ "$pacstrap" != "n" ]
   then
     minimalinstallation
-## nur einmal bereich
+    ## nur einmal bereich
     read -p "Soll ein root passwort festgelegt werden? [Y/n] " root
     if [ "$root" != "n" ]
     then
       arch-chroot ${work_dir}/${arch}/airootfs passwd root
     fi
-# screenfetch
-#  echo "screenfetch" >> ${work_dir}/${arch}/airootfs/etc/bash.bashrc
   fi
 
-## doppelt bereich
+  ## doppelt bereich
   read -p "Soll die aktuelle .config mitkoppiert werden?: [Y/n] " config
   if [ "$config" != "n" ]
   then
@@ -59,82 +57,87 @@ then
     cp -Rv /home/${username}/.config ${work_dir}/${arch}/airootfs/root/
   fi
 
-# initalizise keys
+  # screenfetch
+  #  echo "screenfetch" >> ${work_dir}/${arch}/airootfs/etc/bash.bashrc
+
+  # initalizise keys
   arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
   arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
 
-# hooks
+  # hooks
   cp install/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
   cp hooks/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 
-# module and hooks
+  # module and hooks
   echo "MODULES=\"i915 radeon\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
   echo "HOOKS=\"base udev block filesystems keyboard archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
   echo "COMPRESSION=\"xz\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
-# iso_name
+  # iso_name
   echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
 
-# makeiso
+  # makeiso
   cp make_mksquashfs.sh ${work_dir}/${arch}/airootfs/usr/bin/make_mksquashfs
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/make_mksquashfs
 
-# write-partitions manager
+  # write-partitions manager
   cp write_cowspace ${work_dir}/${arch}/airootfs/usr/bin/write_cowspace
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/write_cowspace
 
-# pacman-config
+  # pacman-config
   cp pacman.conf ${work_dir}/${arch}/airootfs/etc/
 
-# custom-installer
+  # custom-installer
   cp arch-graphical-install ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install
 
-# installer-/usr/bin/
+  # installer-/usr/bin/
   cp arch-install ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install
   cp packages.txt ${work_dir}/${arch}/airootfs/etc/
 
-# sudo-installer
+  # sudo-installer
   cp arch-install-non_root ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install-non_root
 
-# installer
+  # installer
   mkdir -p ${work_dir}/${arch}/airootfs/usr/share/applications/
   cp arch-install.desktop ${work_dir}/${arch}/airootfs/usr/share/applications/
   chmod +x ${work_dir}/${arch}/airootfs/usr/share/applications/arch-install.desktop
 
-# install-picture
+  # install-picture
   mkdir -p ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
   cp install.png ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
 
-# background
+  # background
   mkdir -p ${work_dir}/${arch}/airootfs/usr/share/backgrounds/xfce/
   cp background.jpg ${work_dir}/${arch}/airootfs/usr/share/backgrounds/xfce/
 
-# mirrorlist
+  # mirrorlist
   cp mirrorlist ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist
 
-# bash.bashrc
+  # bash.bashrc
   cp bash.bashrc ${work_dir}/${arch}/airootfs/etc/
 
-# startup
+  # startup
   cp startup ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/startup
-  cp startup.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
-  arch-chroot ${work_dir}/${arch}/airootfs systemctl daemon-reload
-  arch-chroot ${work_dir}/${arch}/airootfs systemctl enable startup.service
-  arch-chroot ${work_dir}/${arch}/airootfs systemctl start startup.service
 
-# packages
+  cp startup.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
+
+  arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
+systemctl daemon-reload
+systemctl enable startup.service
+systemctl start startup.service
+pacman -Syu
+mkinitcpio -p linux
+EOT
+
+  # packages
   cp packages* ${work_dir}/${arch}/airootfs/etc/
 
-# xfce4
-#  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
-
-  arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
-
-  arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
+  # xfce4
+  #  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
 
 else
   echo "Wird nicht neu aufgebaut!!!"

@@ -159,11 +159,14 @@ then
 
   mkdir -p ${work_dir}/iso/${install_dir}/${arch}/airootfs/
 
-  arch-chroot ${work_dir}/${arch}/airootfs/ pacman -Q > ${work_dir}/${arch}/airootfs/pkglist.txt
-  cp ${work_dir}/${arch}/airootfs/pkglist.txt ${work_dir}/iso/${install_dir}/${arch}/
+  arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
+  pacman -Scc
+  y
+  y
+  pacman -Q > /pkglist.txt
+EOT
 
-  arch-chroot ${work_dir}/${arch}/airootfs pacman -Sc
-  arch-chroot ${work_dir}/${arch}/airootfs pacman -Scc
+  cp ${work_dir}/${arch}/airootfs/pkglist.txt ${work_dir}/iso/${install_dir}/${arch}/
 
   if [ -f ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs ]
   then

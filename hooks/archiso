@@ -126,7 +126,7 @@ run_hook() {
   if [[ -n "${cow_label}" ]]; then
     cow_device="/dev/disk/by-label/${cow_label}"
     [[ -z "${cow_persistent}" ]] && cow_persistent="P"
-    elif [[ -n "${cow_device}" ]]; then
+  elif [[ -n "${cow_device}" ]]; then
     [[ -z "${cow_persistent}" ]] && cow_persistent="P"
   else
     cow_persistent="N"
@@ -232,31 +232,31 @@ archiso_mount_handler() {
   if [[ "${desktop}" == "gnome" ]]; then
     echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
 
-    elif [[ "${desktop}" == "gnomeflash" ]]; then
+  elif [[ "${desktop}" == "gnomeflash" ]]; then
     echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
     echo "exec gnome-session --session=gnome-flashback-metacity" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
 
-    elif [[ "${desktop}" == "gnomeclassic" ]]; then
+  elif [[ "${desktop}" == "gnomeclassic" ]]; then
     echo "export XDG_CURRENT_DESKTOP=GNOME-Classic:GNOME" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
     echo "export GNOME_SHELL_SESSION_MODE=classic" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
     echo "exec gnome-session --session=gnome-classic" >> /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
 
-    elif [[ "${desktop}" == "cinnamon" ]]; then
+  elif [[ "${desktop}" == "cinnamon" ]]; then
     echo "exec cinnamon-session" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
 
-    elif [[ "${desktop}" == "mate" ]]; then
+  elif [[ "${desktop}" == "mate" ]]; then
     echo "exec mate-session" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
 
-    elif [[ "${desktop}" == "lxde" ]]; then
+  elif [[ "${desktop}" == "lxde" ]]; then
     echo "exec startlxde" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
 
-    elif [[ "${desktop}" == "lxqt" ]]; then
+  elif [[ "${desktop}" == "lxqt" ]]; then
     echo "exec startlxqt" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
 
-    elif [[ "${desktop}" == "xfce4" ]]; then
+  elif [[ "${desktop}" == "xfce4" ]]; then
     echo "exec startxfce4" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
 
-    elif [[ "${desktop}" == "kde" ]]; then
+  elif [[ "${desktop}" == "kde" ]]; then
     echo "exec startkde" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
 
   else
@@ -265,8 +265,10 @@ archiso_mount_handler() {
 
   mkdir -p -m 755 "/run/archiso/cowspace/${cow_directory}/upperdir/usr/bin"
   if [[ -n "${run}" ]]; then
-    echo ":: run ${run}"
-    echo ${run} >> /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run
+    echo ":: running ${run}"
+    echo ${run} > /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run
+  else
+    rm /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run
   fi
 }
 

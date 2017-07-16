@@ -63,7 +63,7 @@ echo -e "\033[1;33m Speichernutzung: \033[0m" `cat /proc/meminfo|grep 'MemF'| aw
 echo -e "\033[1;33m CPU-Temp:        \033[0m" `cat /sys/class/thermal/thermal_zone0/temp| awk '{print $1/1000}'` "°C"
 echo -e "\033[1;33m Haupt-IP:        \033[0m" `hostname -i`
 echo -e "\033[1;33m IPs:             \033[0m" `ip addr | grep inet`
-echo -e "\033[1;33m Mac:             \033[0m" `ip link | grep ether`
+echo -e "\033[1;33m Macs:            \033[0m" `ip link | grep ether`
 echo -e "\033[1;33m Hostname:        \033[0m" `hostname`
 echo -e "\033[1;33m Benutzer:        \033[0m" `whoami`
 echo -e "\033[1;33m Grafikkarte:     \033[0m" `lspci | grep -e VGA -e 3D -m 1`

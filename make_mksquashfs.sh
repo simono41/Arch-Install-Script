@@ -126,6 +126,13 @@ then
   cp startup.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
 
   arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
+
+mkdir -p /etc/systemd/system/getty\@tty1.service.d
+echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+systemctl enable getty@tty1
+
 systemctl daemon-reload
 systemctl enable startup.service
 systemctl start startup.service

@@ -215,7 +215,7 @@ archiso_mount_handler() {
 
   if [[ "${nvidia}" == "y" ]]; then
 
-    echo "nvidia driver loaded"
+    echo ":: nvidia driver loaded"
 
     mkdir -p -m 755 /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xorg.conf.d/
 
@@ -227,8 +227,7 @@ archiso_mount_handler() {
 
   fi
 
-  echo "set graphical-desktop!"
-  echo "graphical-desktop: ${desktop}"
+  echo ":: set graphical-desktop!"
   mkdir -p -m 755 "/run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit"
   if [[ "${desktop}" == "gnome" ]]; then
     echo "exec gnome-session" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
@@ -261,19 +260,19 @@ archiso_mount_handler() {
     echo "exec startkde" > /run/archiso/cowspace/${cow_directory}/upperdir/etc/X11/xinit/xinitrc
 
   else
-    echo "default graphical-desktop"
+    echo ":: default graphical-desktop"
+  fi
+
+  mkdir -p -m 755 "/run/archiso/cowspace/${cow_directory}/upperdir/usr/bin"
+  if [[ -n "${run}" ]]; then
+    echo ":: run ${run}"
+    echo ${run} >> /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run
   fi
 }
 
 if [[ "${shell}" == "y" ]]; then
   echo "starting interactive_shell"
   launch_interactive_shell
-fi
-
-mkdir -p -m 755 "/run/archiso/cowspace/${cow_directory}/upperdir/usr/bin"
-if [[ -z "${run}" ]]; then
-  echo "run ${run}"
-  echo ${run} >> /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run
 fi
 
 # vim:ft=sh:ts=4:sw=4:et:

@@ -270,8 +270,10 @@ if [[ "${shell}" == "y" ]]; then
   launch_interactive_shell
 fi
 
+mkdir -p -m 755 "/run/archiso/cowspace/${cow_directory}/upperdir/usr/bin"
 if [[ -z "${run}" ]]; then
-  echo $run >> /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/startup
+  echo "run ${run}"
+  echo ${run} >> /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run
 fi
 
 # vim:ft=sh:ts=4:sw=4:et:

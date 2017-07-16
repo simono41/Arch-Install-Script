@@ -10,12 +10,7 @@ echo "Als root Angemeldet"
 #
 
 function vollinstallation() {
-  #Mehrzeiler
-  while read line
-  do
-    pacman -Syu $line
-  done < /etc/packages_all.txt
-
+  pacman -Syu $(cat /etc/packages_all.txt)
 }
 
 function adduser() {

@@ -68,9 +68,9 @@ then
   cp hooks/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
 
 # module and hooks
-  echo "MODULES=\"i915\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+  echo "MODULES=\"i915 radeon\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
   echo "HOOKS=\"base udev block filesystems keyboard archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-  echo "COMPRESSION=\"gzip\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+  echo "COMPRESSION=\"xz\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
 # iso_name
   echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
@@ -117,6 +117,17 @@ then
 
 # bash.bashrc
   cp bash.bashrc ${work_dir}/${arch}/airootfs/etc/
+
+# startup
+  cp startup ${work_dir}/${arch}/airootfs/usr/bin/
+  chmod +x ${work_dir}/${arch}/airootfs/usr/bin/startup
+  cp startup.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
+  arch-chroot ${work_dir}/${arch}/airootfs systemctl daemon-reload
+  arch-chroot ${work_dir}/${arch}/airootfs systemctl enable startup.service
+  arch-chroot ${work_dir}/${arch}/airootfs systemctl start startup.service
+
+# packages
+  cp packages* ${work_dir}/${arch}/airootfs/etc/
 
 # xfce4
 #  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc

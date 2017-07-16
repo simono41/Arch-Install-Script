@@ -9,6 +9,15 @@ fi
 echo "Als root Angemeldet"
 #
 
+function vollinstallation() {
+  #Mehrzeiler
+  while read line
+  do
+    pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
+  done < /etc/packages_all.txt
+
+}
+
 function adduser() {
   useradd -m -g users -s /bin/bash $username
 passwd ${username} <<EOT
@@ -212,6 +221,8 @@ then
     fi
   fi
 fi
+#
+vollinstallation
 #
 read -p "Soll yaourt mitinstalliert werden?: [Y/n] " yaourt
 if [ "$yaourt" != "n" ]

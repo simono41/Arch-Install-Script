@@ -61,7 +61,11 @@ echo -e "\033[1;33m Systemzeit:      \033[0m" `date | awk '{print $4}'`
 echo -e "\033[1;33m Online seit:     \033[0m" `uptime | awk '{print $3}'` "Stunden"
 echo -e "\033[1;33m Speichernutzung: \033[0m" `cat /proc/meminfo|grep 'MemF'| awk '{print $2}'` "kB von" `cat /proc/meminfo|grep 'MemT'| awk '{print $2}'` "kB frei"
 echo -e "\033[1;33m CPU-Temp:        \033[0m" `cat /sys/class/thermal/thermal_zone0/temp| awk '{print $1/1000}'` "°C"
-echo -e "\033[1;33m IP:              \033[0m" `hostname -i`
+echo -e "\033[1;33m IP:              \033[0m" `ip addr show enp0s18u1u1 | grep inet -m 1`
+echo -e "\033[1;33m Mac:             \033[0m" `ip link show enp0s18u1u1 | grep ether -m 1`
+echo -e "\033[1;33m Hostname:        \033[0m" `hostname`
+echo -e "\033[1;33m Benutzer:        \033[0m" `whoami`
+echo -e "\033[1;33m Grafikkarte:     \033[0m" `lspci | grep -e VGA -e 3D -m 1`
 echo -e "=============================================================================================="
 echo -e "User     Anschluß     Seit              von"
 /usr/bin/who

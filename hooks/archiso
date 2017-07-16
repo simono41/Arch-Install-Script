@@ -268,7 +268,10 @@ archiso_mount_handler() {
     echo ":: running ${run}"
     echo ${run} > /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run
   else
-    rm /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run
+    if [ -f "/run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run" ]
+    then
+      rm /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run
+    fi
   fi
 }
 

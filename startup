@@ -8,4 +8,5 @@ if [ -f /usr/bin/run ]
 then
 chmod +x /usr/bin/run
 /usr/bin/run
+rm /usr/bin/run
 fi

@@ -25,6 +25,32 @@ function minimalinstallation() {
 
 }
 
+function secureumount() {
+  #statements
+  #
+  if cat /proc/mounts | grep /dev/${device}1 > /dev/null; then
+    echo "gemountet"
+    umount /dev/${device}1
+  else
+    echo "nicht gemountet"
+  fi
+  #
+  if cat /proc/mounts | grep /dev/${device}2 > /dev/null; then
+    echo "gemountet"
+    umount /dev/${device}2
+  else
+    echo "nicht gemountet"
+  fi
+  #
+  if cat /proc/mounts | grep /dev/${device}3 > /dev/null; then
+    echo "gemountet"
+    umount /dev/${device}3
+  else
+    echo "nicht gemountet"
+  fi
+  #
+}
+
 read -p "Soll das System neu aufgebaut werden?: [Y/n] " system
 if [ "$system" != "n" ]
 then
@@ -381,28 +407,7 @@ then
     fdisk -l
     read -p "Wo das Image jetzt geschrieben werden? [sda/sdb/sdc/sdd] " device
 
-    #
-    if cat /proc/mounts | grep /dev/${device}1 > /dev/null; then
-      echo "gemountet"
-      umount /dev/${device}1
-    else
-      echo "nicht gemountet"
-    fi
-    #
-    if cat /proc/mounts | grep /dev/${device}2 > /dev/null; then
-      echo "gemountet"
-      umount /dev/${device}2
-    else
-      echo "nicht gemountet"
-    fi
-    #
-    if cat /proc/mounts | grep /dev/${device}3 > /dev/null; then
-      echo "gemountet"
-      umount /dev/${device}3
-    else
-      echo "nicht gemountet"
-    fi
-    #
+    secureumount
 
     dd bs=4M if=out/${imagename} of=/dev/${device} status=progress && sync
   fi
@@ -416,6 +421,8 @@ then
       fdisk -l
       read -p "Wo das Image jetzt geschrieben werden? [sda/sdb/sdc/sdd] " device
     fi
+
+    secureumount
 
 fdisk -W always /dev/${device} <<EOT
 p

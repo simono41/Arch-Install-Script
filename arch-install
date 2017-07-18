@@ -255,30 +255,30 @@ then
   then
     echo "Partioniere in GPT"
       gdisk "$device" <<EOT
-  2
-  p
-  o
-  y
-  n
+2
+p
+o
+y
+n
 
 
-  ${speicher}
-  8300
-  p
-  n
+${speicher}
+8300
+p
+n
 
 
-  +1024M
-  8200
-  p
-  n
++1024M
+8200
+p
+n
 
 
-  +512M
-  ef00
-  p
-  w
-  y
++512M
+ef00
+p
+w
+y
 EOT
     echo "formatieren"
     formatieren
@@ -331,28 +331,28 @@ elif [ "$Partition" == "mbr" ]
   then
     echo "Partioniere in MBR"
         fdisk -W always "$device" <<EOT
-  p
-  o
-  n
+p
+o
+n
 
 
 
-  ${speicher}
-  p
-  n
+${speicher}
+p
+n
 
 
 
-  +1024M
-  p
-  n
++1024M
+p
+n
 
 
 
-  +512M
-  p
-  w
-  y
++512M
+p
+w
+y
 EOT
     echo "formatieren"
     formatieren

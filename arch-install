@@ -98,8 +98,7 @@ function offlineinstallation {
     echo ""
     genfstab -Up /mnt >> /mnt/etc/fstab
     swappartition=$(blkid -s UUID -o value "$device"2)
-    echo "UUID="$swappartition" none swap defaults 0 0
-" >> /mnt/etc/fstab
+    echo "UUID="$swappartition" none swap defaults 0 0" >> /mnt/etc/fstab
     #echo "swap"
     #swap
     echo ""

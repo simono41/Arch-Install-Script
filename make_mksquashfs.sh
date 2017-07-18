@@ -28,23 +28,23 @@ function minimalinstallation() {
 function secureumount() {
   #statements
   #
-  if cat /proc/mounts | grep ${$device}1 > /dev/null; then
+  if cat /proc/mounts | grep ${device}1 > /dev/null; then
     echo "gemountet"
-    umount ${$device}1
+    umount ${device}1
   else
     echo "nicht gemountet"
   fi
   #
-  if cat /proc/mounts | grep ${$device}2 > /dev/null; then
+  if cat /proc/mounts | grep ${device}2 > /dev/null; then
     echo "gemountet"
-    umount ${$device}2
+    umount ${device}2
   else
     echo "nicht gemountet"
   fi
   #
   if cat /proc/mounts | grep ${$device}3 > /dev/null; then
     echo "gemountet"
-    umount ${$device}3
+    umount ${device}3
   else
     echo "nicht gemountet"
   fi
@@ -411,7 +411,7 @@ then
 
     dd bs=4M if=out/${imagename} of=${$device} status=progress && sync
   fi
-  
+
 
   read -p "Soll das Image jetzt eine Partition zum Offline-Schreiben erhalten? [Y/n] " partition
   if [ "$partition" != "n" ]

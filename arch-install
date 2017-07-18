@@ -125,7 +125,6 @@ function update() {
   local of="${2}"
   local parameters="${3}"
   local before="${4}"
-  [[ -n "${5}" ]] &&  of="${5}"
   if [ -f $of ]
   then
     rm $of
@@ -134,6 +133,7 @@ function update() {
   fi
   wget $if -t 0 --output-document="$of"
   chmod +x $of
+  [[ -n "${5}" ]] && of="${5}"
   $before $of $parameters
   exit 0
 }

@@ -409,7 +409,7 @@ then
 
     secureumount
 
-    dd bs=4M if=out/${imagename} of=${$device} status=progress && sync
+    dd bs=4M if=out/${imagename} of=${device} status=progress && sync
   fi
 
 
@@ -424,7 +424,7 @@ then
 
     secureumount
 
-fdisk -W always ${$device} <<EOT
+fdisk -W always ${device} <<EOT
 p
 n
 
@@ -439,7 +439,7 @@ EOT
     sleep 1
 
     echo "mit j bestätigen"
-    mkfs.btrfs -L cow_device ${$device}3
+    mkfs.btrfs -L cow_device ${device}3
 
     sync
 

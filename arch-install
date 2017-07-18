@@ -156,223 +156,229 @@ then
     update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-install /root/arch-install.new n
   fi
 fi
-# Partionierung
-# GPT oder MBR
+
+# debug = Installation überspringen zu arch-graphical-install
 read -p "Wie heissen sie?: " name
-echo ""
-echo "GPT = GUID Partition Table 64 Bit UEFI"
-echo "Empfohlen fuer Neuere PCs"
-echo "WICHTIG DAFUER MUESSEN SIE IM BOOTMENUE DEN UEFI USB_STICK AUSGEWAEHLT HABEN SONST KANN KEIN UEFI BOOTEINTRAG ERSTELLT WERDEN!!!"
-echo ""
-echo "MBR = Master Boot Record 32 Bit Legacy"
-echo "Empfohlen fuer Alte PCs und portable USB-Sticks"
-echo ""
-echo "Bitte die Eingaben klein schreiben :D !!!"
-echo ""
-read -p "Wie moechten sie ihre Festplatte partioniert haben: [gpt/MBR] " Partition
-if [ "$Partition" == "gpt" ]
+if [ "$name" != "debug" ]
 then
-  read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/GRUB] : " boot
-fi
-fdisk -l
-read -p "Geben sie eine Festplatte an: /dev/sda " device
-read -p "Welches Passwort soll der Root erhalten?: root " pass
-read -p "Soll ein neuer Benutzer erstellt werden?: [Y/n] " user
-if [ "$user" != "n" ]
-then
-  read -p "Wie soll der neue Benutzer heissen?: " username
-  read -p "Welches Passwort soll der neue Benutzer haben?: " userpass
-fi
-read -p "Wie groß soll die System-Partition sein? +20G : " speicher
-#
-[[ -z "${name}" ]] && name=arch-linux
-[[ -z "${Partition}" ]] && Partition=mbr
-[[ -z "${boot}" ]] && boot=grub
-[[ -z "${device}" ]] && device=/dev/sda
-[[ -z "${pass}" ]] && pass=root
-[[ -z "${username}" ]] && username=user
-[[ -z "${userpass}" ]] && userpass=user
-[[ -z "${speicher}" ]] && speicher="+20G"
-
-#
-echo "Name: $name"
-echo "Partionsart: $Partition"
-echo "Bootloader: $boot"
-echo "Laufwerk: $device"
-echo "System-Partition $speicher"
-echo "Rootpasswort: $pass"
-echo "Architektur: $(uname -m)"
-if [ "$user" != "n" ]
-then
-  echo "Username: $username"
-  echo "Userpasswort: $userpass"
-fi
-#
-read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
-if [ "$sicherheitsabfrage" != "y" ]
-then
-  echo "ABGEBROCHEN"
-  exit 1
-fi
-#
-if cat /proc/mounts | grep "$device"1 > /dev/null; then
-  echo "gemountet"
-  umount "$device"1
-else
-  echo "nicht gemountet"
-fi
-#
-if cat /proc/mounts | grep "$device"2 > /dev/null; then
-  echo "gemountet"
-  umount "$device"2
-else
-  echo "nicht gemountet"
-fi
-#
-if cat /proc/mounts | grep "$device"3 > /dev/null; then
-  echo "gemountet"
-  umount "$device"2
-else
-  echo "nicht gemountet"
-fi
-#
-if cat /proc/mounts | grep /mnt > /dev/null; then
-  echo "gemountet"
-  umount /mnt
-else
-  echo "nicht gemountet"
-fi
-#
-echo "Eine Säuberung erhört die chance der Installation auf dem System."
-echo "Es kann eine Zeit lang dauern!"
-dd if=/dev/zero of="$device" bs=64M count=10 status=progress
-#
-if [ "$Partition" == "gpt" ]
-then
-  echo "Partioniere in GPT"
-    gdisk "$device" <<EOT
-2
-p
-o
-y
-n
-
-
-${speicher}
-8300
-p
-n
-
-
-+1024M
-8200
-p
-n
-
-
-+512M
-ef00
-p
-w
-y
-EOT
-  echo "formatieren"
-  formatieren
-  echo "offlineinstallation"
-  offlineinstallation
-arch-chroot /mnt /bin/bash <<EOT
-mkinitcpio -p linux
-passwd
-$pass
-$pass
-EOT
+  # Partionierung
+  # GPT oder MBR
   echo ""
-  if [ "$boot" == "grub" ]
+  echo "GPT = GUID Partition Table 64 Bit UEFI"
+  echo "Empfohlen fuer Neuere PCs"
+  echo "WICHTIG DAFUER MUESSEN SIE IM BOOTMENUE DEN UEFI USB_STICK AUSGEWAEHLT HABEN SONST KANN KEIN UEFI BOOTEINTRAG ERSTELLT WERDEN!!!"
+  echo ""
+  echo "MBR = Master Boot Record 32 Bit Legacy"
+  echo "Empfohlen fuer Alte PCs und portable USB-Sticks"
+  echo ""
+  echo "Bitte die Eingaben klein schreiben :D !!!"
+  echo ""
+  read -p "Wie moechten sie ihre Festplatte partioniert haben: [gpt/MBR] " Partition
+  if [ "$Partition" == "gpt" ]
   then
-arch-chroot /mnt /bin/bash <<EOT
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$name"s-os --recheck
-grub-mkconfig -o /boot/grub/grub.cfg
-EOT
+    read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/GRUB] : " boot
+  fi
+  fdisk -l
+  read -p "Geben sie eine Festplatte an: /dev/sda " device
+  read -p "Welches Passwort soll der Root erhalten?: root " pass
+  read -p "Soll ein neuer Benutzer erstellt werden?: [Y/n] " user
+  if [ "$user" != "n" ]
+  then
+    read -p "Wie soll der neue Benutzer heissen?: " username
+    read -p "Welches Passwort soll der neue Benutzer haben?: " userpass
+  fi
+  read -p "Wie groß soll die System-Partition sein? +20G : " speicher
+  #
+  [[ -z "${name}" ]] && name=arch-linux
+  [[ -z "${Partition}" ]] && Partition=mbr
+  [[ -z "${boot}" ]] && boot=grub
+  [[ -z "${device}" ]] && device=/dev/sda
+  [[ -z "${pass}" ]] && pass=root
+  [[ -z "${username}" ]] && username=user
+  [[ -z "${userpass}" ]] && userpass=user
+  [[ -z "${speicher}" ]] && speicher="+20G"
+
+  #
+  echo "Name: $name"
+  echo "Partionsart: $Partition"
+  echo "Bootloader: $boot"
+  echo "Laufwerk: $device"
+  echo "System-Partition $speicher"
+  echo "Rootpasswort: $pass"
+  echo "Architektur: $(uname -m)"
+  if [ "$user" != "n" ]
+  then
+    echo "Username: $username"
+    echo "Userpasswort: $userpass"
+  fi
+  #
+  read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
+  if [ "$sicherheitsabfrage" != "y" ]
+  then
+    echo "ABGEBROCHEN"
+    exit 1
+  fi
+  #
+  if cat /proc/mounts | grep "$device"1 > /dev/null; then
+    echo "gemountet"
+    umount "$device"1
   else
-    tobootdevice=$(blkid -s PARTUUID -o value "$device"1)
-
-    mkdir -p /mnt/boot/EFI/systemd/
-    mkdir -p /mnt/boot/EFI/BOOT/
-    cp /mnt/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/systemd/systemd-bootx64.efi
-    cp /mnt/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/BOOT/BOOTX64.EFI
-
-    mkdir -p /mnt/boot/loader/entries/
-    echo "title    "$name"s-os" > /mnt/boot/loader/entries/arch-uefi.conf
-    echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi.conf
-    echo "initrd   /initramfs-linux.img" >> /mnt/boot/loader/entries/arch-uefi.conf
-    echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/boot/loader/entries/arch-uefi.conf
-
-    echo "title    "$name"s-os" > /mnt/boot/loader/entries/arch-uefi-fallback.conf
-    echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
-    echo "initrd   /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
-    echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
-
-    echo "default   arch-uefi" > /mnt/boot/loader/loader.conf
-    echo "timeout   1" >> /mnt/boot/loader/loader.conf
-
+    echo "nicht gemountet"
   fi
-  if [ "$user" != "n" ]
+  #
+  if cat /proc/mounts | grep "$device"2 > /dev/null; then
+    echo "gemountet"
+    umount "$device"2
+  else
+    echo "nicht gemountet"
+  fi
+  #
+  if cat /proc/mounts | grep "$device"3 > /dev/null; then
+    echo "gemountet"
+    umount "$device"2
+  else
+    echo "nicht gemountet"
+  fi
+  #
+  if cat /proc/mounts | grep /mnt > /dev/null; then
+    echo "gemountet"
+    umount /mnt
+  else
+    echo "nicht gemountet"
+  fi
+  #
+  echo "Eine Säuberung erhört die chance der Installation auf dem System."
+  echo "Es kann eine Zeit lang dauern!"
+  dd if=/dev/zero of="$device" bs=64M count=10 status=progress
+  #
+  if [ "$Partition" == "gpt" ]
   then
-    adduser
-    autostart
-  fi
-  removeinstaller
-  echo "Fertig"
+    echo "Partioniere in GPT"
+      gdisk "$device" <<EOT
+  2
+  p
+  o
+  y
+  n
+
+
+  ${speicher}
+  8300
+  p
+  n
+
+
+  +1024M
+  8200
+  p
+  n
+
+
+  +512M
+  ef00
+  p
+  w
+  y
+EOT
+    echo "formatieren"
+    formatieren
+    echo "offlineinstallation"
+    offlineinstallation
+  arch-chroot /mnt /bin/bash <<EOT
+  mkinitcpio -p linux
+  passwd
+  $pass
+  $pass
+EOT
+    echo ""
+    if [ "$boot" == "grub" ]
+    then
+  arch-chroot /mnt /bin/bash <<EOT
+  grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$name"s-os --recheck
+  grub-mkconfig -o /boot/grub/grub.cfg
+EOT
+    else
+      tobootdevice=$(blkid -s PARTUUID -o value "$device"1)
+
+      mkdir -p /mnt/boot/EFI/systemd/
+      mkdir -p /mnt/boot/EFI/BOOT/
+      cp /mnt/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/systemd/systemd-bootx64.efi
+      cp /mnt/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/BOOT/BOOTX64.EFI
+
+      mkdir -p /mnt/boot/loader/entries/
+      echo "title    "$name"s-os" > /mnt/boot/loader/entries/arch-uefi.conf
+      echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi.conf
+      echo "initrd   /initramfs-linux.img" >> /mnt/boot/loader/entries/arch-uefi.conf
+      echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/boot/loader/entries/arch-uefi.conf
+
+      echo "title    "$name"s-os" > /mnt/boot/loader/entries/arch-uefi-fallback.conf
+      echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
+      echo "initrd   /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
+      echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
+
+      echo "default   arch-uefi" > /mnt/boot/loader/loader.conf
+      echo "timeout   1" >> /mnt/boot/loader/loader.conf
+
+    fi
+    if [ "$user" != "n" ]
+    then
+      adduser
+      autostart
+    fi
+    removeinstaller
+    echo "Fertig"
 elif [ "$Partition" == "mbr" ]
-then
-  echo "Partioniere in MBR"
-      fdisk -W always "$device" <<EOT
-p
-o
-n
-
-
-
-${speicher}
-p
-n
-
-
-
-+1024M
-p
-n
-
-
-
-+512M
-p
-w
-y
-EOT
-  echo "formatieren"
-  formatieren
-  echo "offlineinstallation"
-  offlineinstallation
-arch-chroot /mnt /bin/bash <<EOT
-mkinitcpio -p linux
-passwd
-$pass
-$pass
-grub-install --target=i386-pc --recheck "$device"
-grub-mkconfig -o /boot/grub/grub.cfg
-EOT
-  if [ "$user" != "n" ]
   then
-    adduser
-    autostart
+    echo "Partioniere in MBR"
+        fdisk -W always "$device" <<EOT
+  p
+  o
+  n
+
+
+
+  ${speicher}
+  p
+  n
+
+
+
+  +1024M
+  p
+  n
+
+
+
+  +512M
+  p
+  w
+  y
+EOT
+    echo "formatieren"
+    formatieren
+    echo "offlineinstallation"
+    offlineinstallation
+  arch-chroot /mnt /bin/bash <<EOT
+  mkinitcpio -p linux
+  passwd
+  $pass
+  $pass
+  grub-install --target=i386-pc --recheck "$device"
+  grub-mkconfig -o /boot/grub/grub.cfg
+EOT
+    if [ "$user" != "n" ]
+    then
+      adduser
+      autostart
+    fi
+    removeinstaller
+    echo "Fertig"
+  else
+    echo "Eingabe Ungueltig"
+    exit 1
   fi
-  removeinstaller
-  echo "Fertig"
-else
-  echo "Eingabe Ungueltig"
-  exit 1
 fi
+
 read -p "Soll eine graphische Installation durchgeführt werden? [Y/n] " graphical
 if [ "$sicherheitsabfrage" != "n" ]
 then

@@ -28,23 +28,23 @@ function minimalinstallation() {
 function secureumount() {
   #statements
   #
-  if cat /proc/mounts | grep /dev/${device}1 > /dev/null; then
+  if cat /proc/mounts | grep ${$device}1 > /dev/null; then
     echo "gemountet"
-    umount /dev/${device}1
+    umount ${$device}1
   else
     echo "nicht gemountet"
   fi
   #
-  if cat /proc/mounts | grep /dev/${device}2 > /dev/null; then
+  if cat /proc/mounts | grep ${$device}2 > /dev/null; then
     echo "gemountet"
-    umount /dev/${device}2
+    umount ${$device}2
   else
     echo "nicht gemountet"
   fi
   #
-  if cat /proc/mounts | grep /dev/${device}3 > /dev/null; then
+  if cat /proc/mounts | grep ${$device}3 > /dev/null; then
     echo "gemountet"
-    umount /dev/${device}3
+    umount ${$device}3
   else
     echo "nicht gemountet"
   fi
@@ -409,9 +409,9 @@ then
 
     secureumount
 
-    dd bs=4M if=out/${imagename} of=/dev/${device} status=progress && sync
+    dd bs=4M if=out/${imagename} of=${$device} status=progress && sync
   fi
-
+  
 
   read -p "Soll das Image jetzt eine Partition zum Offline-Schreiben erhalten? [Y/n] " partition
   if [ "$partition" != "n" ]
@@ -419,12 +419,12 @@ then
     if [ "$device" == "" ]
     then
       fdisk -l
-      read -p "Wo das Image jetzt geschrieben werden? [sda/sdb/sdc/sdd] " device
+      read -p "Wo das Image jetzt geschrieben werden? /dev/sda " device
     fi
 
     secureumount
 
-fdisk -W always /dev/${device} <<EOT
+fdisk -W always ${$device} <<EOT
 p
 n
 
@@ -439,7 +439,7 @@ EOT
     sleep 1
 
     echo "mit j bestätigen"
-    mkfs.ext4 -L cow_device /dev/${device}3
+    mkfs.btrfs -L cow_device ${$device}3
 
     sync
 

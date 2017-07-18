@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 echo "Als root Angemeldet"
 
-function swap() {
+function swapfile() {
   #swap
   fallocate -l 512M /mnt/swapfile
   chmod 600 /mnt/swapfile
@@ -97,8 +97,8 @@ function offlineinstallation {
     #
     echo ""
     genfstab -Up /mnt >> /mnt/etc/fstab
-    echo "swap"
-    swap
+    #echo "swap"
+    #swap
     echo ""
     echo "$name"s-os > /mnt/etc/hostname
     echo ""
@@ -106,14 +106,35 @@ function offlineinstallation {
 }
 
 function formatieren {
+  #root
+  #swap
+  #boot
   echo "format"
-  mkfs.ext4 -L p_arch /dev/"$device"2
-  mkfs.fat -F32 /dev/"$device"1
+  mkfs.btrfs -L p_arch "$device"1
+  mkswap -L p_swap "$device"2
+  mkfs.fat -F32 "$device"3
   echo "mount"
-  mount /dev/"$device"2 /mnt
-  mkdir /mnt/boot
-  mount /dev/"$device"1 /mnt/boot
+  mount "$device"1 /mnt
+  mkdir -p /mnt/boot
+  mount "$device"3 /mnt/boot
 }
+
+function update() {
+  #statements
+  local if="${1}"
+  local of="${2}"
+    then
+      if [ -f $of ]
+      then
+        rm $of
+      else
+        echo "$of nicht vorhanden!"
+      fi
+      wget $if -t 0 --output-document="$of"
+      chmod +x $of
+      $of n
+      exit 0
+  }
 
 
 
@@ -127,22 +148,11 @@ function formatieren {
 
 if [ "$1" != "n" ]
 then
-  read -p "Soll im Internet geguckt werden ob es ein neues Install-Script gibt und dann ausgefuehrt werden?: [Y/n] " update
-  if [ "$update" != "n" ]
-  then
-    if [ -f /root/arch-install.new ]
-    then
-      rm /root/arch-install.new
-    else
-      echo "arch-install.new nicht vorhanden!"
-    fi
-    wget https://raw.githubusercontent.com/simono41/Arch-Install-Script/master/arch-install -t 0 --output-document=/root/arch-install.new
-    chmod +x /root/arch-install.new
-    /root/arch-install.new n
-    exit 0
-  fi
-else
-  echo "Bereits neue Version im Internet!"
+    read -p "Soll im Internet geguckt werden ob es ein neues Install-Script gibt und dann ausgefuehrt werden?: [Y/n] " update
+    if [ "$update" != "n" ]
+then
+update https://raw.githubusercontent.com/simono41/Arch-Install-Script/master/arch-install /root/arch-install.new
+fi
 fi
 # Partionierung
 # GPT oder MBR
@@ -157,37 +167,37 @@ echo "Empfohlen fuer Alte PCs und portable USB-Sticks"
 echo ""
 echo "Bitte die Eingaben klein schreiben :D !!!"
 echo ""
-read -p "Wie moechten sie ihre Festplatte partioniert haben: gpt oder mbr: " Partition
+read -p "Wie moechten sie ihre Festplatte partioniert haben: [GPT/mbr] " Partition
 if [ "$Partition" == "gpt" ]
 then
-  read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/grub] : " boot
+  read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/GRUB] : " boot
 fi
 fdisk -l
-read -p "Geben sie eine Festplatte an: sda,sdb,sdc: " device
-read -p "Welches Passwort soll der Root erhalten?: " pass
+read -p "Geben sie eine Festplatte an: /dev/sda " device
+read -p "Welches Passwort soll der Root erhalten?: root " pass
 read -p "Soll ein neuer Benutzer erstellt werden?: [Y/n] " user
 if [ "$user" != "n" ]
 then
   read -p "Wie soll der neue Benutzer heissen?: " username
   read -p "Welches Passwort soll der neue Benutzer haben?: " userpass
 fi
-read -p "Wie groß soll die System-Partition sein? (wenn nichts eingetragen wird wird die volle Festplatte benutzt!!!): z.b +20G : " speicher
+read -p "Wie groß soll die System-Partition sein? +20G : " speicher
 #
-[[ -z "${name}" ]] && echo "Wählen sie einen Namen!" && sleep 5 && exit 1
+[[ -z "${name}" ]] && name=arch-linux && sleep 5 && exit 1
 [[ -z "${Partition}" ]] && Partition=gpt
 [[ -z "${boot}" ]] && boot=grub
-[[ -z "${device}" ]] && echo "Wählen sie eine Festplatte aus!" && sleep 5 && exit 1
+[[ -z "${device}" ]] && device=/dev/sda && sleep 5 && exit 1
 [[ -z "${pass}" ]] && pass=root
-if [ -z "$speicher" ]; then
-  echo "Ganze Festplatte"
-else
-  echo "System-Partition $speicher"
-fi
+[[ -z "${username}" ]] && username=user
+[[ -z "${userpass}" ]] && userpass=user
+[[ -z "${speicher}" ]] && speicher="+20G"
+
 #
 echo "Name: $name"
 echo "Partionsart: $Partition"
 echo "Bootloader: $boot"
-echo "Laufwerk: /dev/"$device""
+echo "Laufwerk: $device"
+echo "System-Partition $speicher"
 echo "Rootpasswort: $pass"
 echo "Architektur: $(uname -m)"
 if [ "$user" != "n" ]
@@ -203,23 +213,23 @@ then
   exit 1
 fi
 #
-if cat /proc/mounts | grep /dev/"$device"1 > /dev/null; then
+if cat /proc/mounts | grep "$device"1 > /dev/null; then
   echo "gemountet"
-  umount /dev/"$device"1
+  umount "$device"1
 else
   echo "nicht gemountet"
 fi
 #
-if cat /proc/mounts | grep /dev/"$device"2 > /dev/null; then
+if cat /proc/mounts | grep "$device"2 > /dev/null; then
   echo "gemountet"
-  umount /dev/"$device"2
+  umount "$device"2
 else
   echo "nicht gemountet"
 fi
 #
-if cat /proc/mounts | grep /dev/"$device"3 > /dev/null; then
+if cat /proc/mounts | grep "$device"3 > /dev/null; then
   echo "gemountet"
-  umount /dev/"$device"2
+  umount "$device"2
 else
   echo "nicht gemountet"
 fi
@@ -246,14 +256,20 @@ y
 n
 
 
-+512M
-ef00
+${speicher}
+8300
 p
 n
 
 
-${speicher}
-8300
++1024M
+8200
+p
+n
+
+
++512M
+ef00
 p
 w
 y
@@ -276,7 +292,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$name"s-
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
   else
-    tobootdevice=$(blkid -s PARTUUID -o value /dev/"$device"2)
+    tobootdevice=$(blkid -s PARTUUID -o value "$device"1)
 
     mkdir -p /mnt/boot/EFI/systemd/
     mkdir -p /mnt/boot/EFI/BOOT/
@@ -315,13 +331,19 @@ n
 
 
 
-+512M
+${speicher}
 p
 n
 
 
 
-${speicher}
++1024M
+p
+n
+
+
+
++512M
 p
 w
 y
@@ -335,7 +357,7 @@ mkinitcpio -p linux
 passwd
 $pass
 $pass
-grub-install --target=i386-pc --recheck /dev/"$device"
+grub-install --target=i386-pc --recheck "$device"
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
   if [ "$user" != "n" ]
@@ -348,6 +370,11 @@ EOT
 else
   echo "Eingabe Ungueltig"
   exit 1
+fi
+read -p "Soll eine graphische Installation durchgeführt werden? [Y/n] " graphical
+if [ "$sicherheitsabfrage" != "n" ]
+then
+  update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install /root/arch-graphical-install
 fi
 echo ""
 echo "Fertig!!!"

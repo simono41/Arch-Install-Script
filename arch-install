@@ -22,57 +22,57 @@ arch-chroot /mnt passwd ${username} <<EOT
 ${userpass}
 ${userpass}
 EOT
-  mkdir -p /mnt/home/"$username"/
+  mkdir -p /mnt/btrfs-current/home/"$username"/
   echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /mnt/etc/sudoers
   echo ""
-  if [ -d /mnt/home/user/.config ]
+  if [ -d /mnt/btrfs-current/home/user/.config ]
   then
-    cp -R /mnt/home/user/.config /mnt/home/"$username"/
+    cp -R /mnt/btrfs-current/home/user/.config /mnt/home/"$username"/
   fi
   userrechte
 }
 
 function userrechte() {
-  arch-chroot /mnt chmod 770 -R -v /home/"$username"/
-  arch-chroot /mnt chown -R -v "$username":users /home/"$username"
-  arch-chroot /mnt chmod -R -v u+rwX /home/"$username"
-  arch-chroot /mnt chmod 755 /home/"$username"
+  arch-chroot /mnt/btrfs-current chmod 770 -R -v /home/"$username"/
+  arch-chroot /mnt/btrfs-current chown -R -v "$username":users /home/"$username"
+  arch-chroot /mnt/btrfs-current chmod -R -v u+rwX /home/"$username"
+  arch-chroot /mnt/btrfs-current chmod 755 /home/"$username"
 }
 
 function autostart() {
   echo "if [ \$(tty) = "/dev/tty1" ]; then" > /mnt/home/"${username}"/.bash_profile
   echo "startx" >> /mnt/home/"${username}"/.bash_profile
-  echo "fi" >> /mnt/home/"${username}"/.bash_profile
-  echo "[Service]" > /mnt/etc/systemd/system/getty\@tty1.service.d/autologin.conf
-  echo "ExecStart=" >> /mnt/etc/systemd/system/getty\@tty1.service.d/autologin.conf
-  echo "ExecStart=-/sbin/agetty --noclear -a ${username} %I 38400 linux" >> /mnt/etc/systemd/system/getty\@tty1.service.d/autologin.conf
+  echo "fi" >> /mnt/btrfs-current/home/"${username}"/.bash_profile
+  echo "[Service]" > /mnt/btrfs-current/etc/systemd/system/getty\@tty1.service.d/autologin.conf
+  echo "ExecStart=" >> /mnt/btrfs-current/etc/systemd/system/getty\@tty1.service.d/autologin.conf
+  echo "ExecStart=-/sbin/agetty --noclear -a ${username} %I 38400 linux" >> /mnt/btrfs-current/etc/systemd/system/getty\@tty1.service.d/autologin.conf
 }
 
 function removeinstaller {
   echo ""
-  if [ -f /mnt/usr/share/applications/arch-install.desktop ]
+  if [ -f /mnt/usr/share/applications/btrfs-current/arch-install.desktop ]
   then
-    rm /mnt/usr/share/applications/arch-install.desktop
+    rm /mnt/usr/share/applications/btrfs-current/arch-install.desktop
   fi
   echo ""
-  if [ -f /mnt/root/Schreibtisch/arch-install.desktop ]
+  if [ -f /mnt/root/Schreibtisch/btrfs-current/arch-install.desktop ]
   then
-    rm /mnt/root/Schreibtisch/arch-install.desktop
+    rm /mnt/root/Schreibtisch/btrfs-current/arch-install.desktop
   fi
   echo ""
-  if [ -f /mnt/home/user/Schreibtisch/arch-install.desktop ]
+  if [ -f /mnt/home/user/Schreibtisch/btrfs-current/arch-install.desktop ]
   then
-    rm /mnt/home/user/Schreibtisch/arch-install.desktop
+    rm /mnt/home/user/Schreibtisch/btrfs-current/arch-install.desktop
   fi
   echo ""
-  if [ -f /mnt/root/Desktop/arch-install.desktop ]
+  if [ -f /mnt/root/Desktop/btrfs-current/arch-install.desktop ]
   then
-    rm /mnt/root/Desktop/arch-install.desktop
+    rm /mnt/root/Desktop/btrfs-current/arch-install.desktop
   fi
   echo ""
-  if [ -f /mnt/home/user/Desktop/arch-install.desktop ]
+  if [ -f /mnt/home/user/Desktop/btrfs-current/arch-install.desktop ]
   then
-    rm /mnt/home/user/Desktop/arch-install.desktop
+    rm /mnt/home/user/Desktop/btrfs-current/arch-install.desktop
   fi
   echo ""
 }
@@ -83,26 +83,26 @@ function offlineinstallation {
     if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
     then
       echo "Es ist kein copytoram System."
-      unsquashfs -f -d /mnt/ /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
+      unsquashfs -f -d /mnt/btrfs-current /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
     else
       echo "Es ist ein copytoram System."
-      unsquashfs -f -d /mnt/ /run/archiso/copytoram/airootfs.sfs
+      unsquashfs -f -d /mnt/btrfs-current /run/archiso/copytoram/airootfs.sfs
     fi
     echo ""
-    echo "MODULES=\"i915 radeon\"" > /mnt/etc/mkinitcpio.conf
-    echo "HOOKS=\"systemd block filesystems\"" > /mnt/etc/mkinitcpio.conf
-    echo "COMPRESSION=\"xz\"" >> /mnt/etc/mkinitcpio.conf
+    echo "MODULES=\"i915 radeon\"" > /mnt/etc/btrfs-current/mkinitcpio.conf
+    echo "HOOKS=\"systemd block filesystems\"" > /mnt/btrfs-current/etc/mkinitcpio.conf
+    echo "COMPRESSION=\"xz\"" >> /mnt/btrfs-current/etc/mkinitcpio.conf
     echo ""
     #cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
     #
     echo ""
-    genfstab -Up /mnt >> /mnt/etc/fstab
+    genfstab -Up /mnt/btrfs-current >> /mnt/btrfs-current/etc/fstab
     swappartition=$(blkid -s UUID -o value "$device"2)
-    echo "UUID="$swappartition" none swap defaults 0 0" >> /mnt/etc/fstab
+    echo "UUID="$swappartition" none swap defaults 0 0" >> /mnt/btrfs-current/etc/fstab
     #echo "swap"
     #swap
     echo ""
-    echo "$name"s-os > /mnt/etc/hostname
+    echo "$name"s-os > /mnt/btrfs-current/etc/hostname
     echo ""
   fi
 }
@@ -116,9 +116,37 @@ function formatieren {
   mkswap -L p_swap "$device"2
   mkfs.fat -F32 "$device"3
   echo "mount"
-  mount "$device"1 /mnt
-  mkdir -p /mnt/boot
-  mount "$device"3 /mnt/boot
+  #mount "$device"1 /mnt
+  mkdir -p /mnt/btrfs-current/boot
+  mount "$device"3 /mnt/btrfs-current/boot
+  subvolume
+}
+
+function subvolume() {
+
+  # Mount
+  mkdir /mnt/btrfs-root
+  mount -o defaults,relatime,discard,ssd,nodev,nosuid "$device"1 /mnt/btrfs-root
+
+  # Create
+  mkdir -p /mnt/btrfs/__snapshot
+  mkdir -p /mnt/btrfs/__current
+  btrfs subvolume create /mnt/btrfs-root/__current/root
+  btrfs subvolume create /mnt/btrfs-root/__current/home
+
+  # Mount
+  mkdir -p /mnt/btrfs-current
+
+  mount -o defaults,relatime,discard,ssd,nodev,subvol=__current/root "$device"1 /mnt/btrfs-current
+  mkdir -p /mnt/btrfs-current/home
+
+  mount -o defaults,relatime,discard,ssd,nodev,nosuid,subvol=__current/home "$device"1 /mnt/btrfs-current/home
+
+
+
+
+
+
 }
 
 function update() {
@@ -286,7 +314,7 @@ EOT
     formatieren
     echo "offlineinstallation"
     offlineinstallation
-  arch-chroot /mnt /bin/bash <<EOT
+  arch-chroot /mnt/btrfs-current /bin/bash <<EOT
   mkinitcpio -p linux
   passwd
   $pass
@@ -295,31 +323,31 @@ EOT
     echo ""
     if [ "$boot" == "grub" ]
     then
-  arch-chroot /mnt /bin/bash <<EOT
+  arch-chroot /mnt/btrfs-current /bin/bash <<EOT
   grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$name"s-os --recheck
   grub-mkconfig -o /boot/grub/grub.cfg
 EOT
     else
       tobootdevice=$(blkid -s PARTUUID -o value "$device"1)
 
-      mkdir -p /mnt/boot/EFI/systemd/
-      mkdir -p /mnt/boot/EFI/BOOT/
-      cp /mnt/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/systemd/systemd-bootx64.efi
-      cp /mnt/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/BOOT/BOOTX64.EFI
+      mkdir -p /mnt/btrfs-current/boot/EFI/systemd/
+      mkdir -p /mnt/btrfs-current/boot/EFI/BOOT/
+      cp /mnt/btrfs-current/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/systemd/systemd-bootx64.efi
+      cp /mnt/btrfs-current/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/BOOT/BOOTX64.EFI
 
       mkdir -p /mnt/boot/loader/entries/
-      echo "title    "$name"s-os" > /mnt/boot/loader/entries/arch-uefi.conf
-      echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi.conf
-      echo "initrd   /initramfs-linux.img" >> /mnt/boot/loader/entries/arch-uefi.conf
-      echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/boot/loader/entries/arch-uefi.conf
+      echo "title    "$name"s-os" > /mnt/btrfs-current/boot/loader/entries/arch-uefi.conf
+      echo "linux    /vmlinuz-linux" >> /mnt/btrfs-current/boot/loader/entries/arch-uefi.conf
+      echo "initrd   /initramfs-linux.img" >> /mnt/btrfs-current/boot/loader/entries/arch-uefi.conf
+      echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/btrfs-current/boot/loader/entries/arch-uefi.conf
 
-      echo "title    "$name"s-os" > /mnt/boot/loader/entries/arch-uefi-fallback.conf
-      echo "linux    /vmlinuz-linux" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
-      echo "initrd   /initramfs-linux-fallback.img" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
-      echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/boot/loader/entries/arch-uefi-fallback.conf
+      echo "title    "$name"s-os" > /mnt/btrfs-current/boot/loader/entries/arch-uefi-fallback.conf
+      echo "linux    /vmlinuz-linux" >> /mnt/btrfs-current/boot/loader/entries/arch-uefi-fallback.conf
+      echo "initrd   /initramfs-linux-fallback.img" >> /mnt/btrfs-current/boot/loader/entries/arch-uefi-fallback.conf
+      echo "options  root=PARTUUID=${tobootdevice} rw" >> /mnt/btrfs-current/boot/loader/entries/arch-uefi-fallback.conf
 
-      echo "default   arch-uefi" > /mnt/boot/loader/loader.conf
-      echo "timeout   1" >> /mnt/boot/loader/loader.conf
+      echo "default   arch-uefi" > /mnt/btrfs-current/boot/loader/loader.conf
+      echo "timeout   1" >> /mnt/btrfs-current/boot/loader/loader.conf
 
     fi
     if [ "$user" != "n" ]
@@ -360,7 +388,7 @@ EOT
     formatieren
     echo "offlineinstallation"
     offlineinstallation
-  arch-chroot /mnt /bin/bash <<EOT
+  arch-chroot /mnt/btrfs-current /bin/bash <<EOT
   mkinitcpio -p linux
   passwd
   $pass
@@ -384,7 +412,7 @@ fi
 read -p "Soll eine graphische Installation durchgeführt werden? [Y/n] " graphical
 if [ "$graphical" != "n" ]
 then
-  update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install /mnt/root/arch-graphical-install n "arch-chroot /mnt/" /root/arch-graphical-install
+  update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install /mnt/btrfs-current/root/arch-graphical-install n "arch-chroot /mnt/btrfs-current" /root/arch-graphical-install
 fi
 echo ""
 echo "Fertig!!!"

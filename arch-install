@@ -135,7 +135,6 @@ function update() {
   chmod +x $of
   [[ -n "${5}" ]] && of="${5}"
   $before $of $parameters
-  exit 0
 }
 
 
@@ -154,6 +153,7 @@ then
   if [ "$update" != "n" ]
   then
     update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-install /root/arch-install.new n
+    exit 0
   fi
 fi
 

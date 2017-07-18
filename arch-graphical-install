@@ -418,6 +418,7 @@ echo "EndSection" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
 echo "System startup files"
 if [ "$wifi" == "y" ]
 then
+  systemctl disable dhcpcd
   systemctl enable wpa_supplicant@"$modul".service
   systemctl enable dhcpcd@"$modul"
 else

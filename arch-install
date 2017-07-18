@@ -89,7 +89,7 @@ function offlineinstallation {
       unsquashfs -f -d /mnt/btrfs-current /run/archiso/copytoram/airootfs.sfs
     fi
     echo ""
-    echo "MODULES=\"i915 radeon\"" > /mnt/etc/btrfs-current/mkinitcpio.conf
+    echo "MODULES=\"i915 radeon\"" > /mnt/btrfs-current/etc/mkinitcpio.conf
     echo "HOOKS=\"systemd block filesystems\"" > /mnt/btrfs-current/etc/mkinitcpio.conf
     echo "COMPRESSION=\"xz\"" >> /mnt/btrfs-current/etc/mkinitcpio.conf
     echo ""
@@ -119,18 +119,19 @@ function formatieren {
   #mount "$device"1 /mnt
   mkdir -p /mnt/btrfs-current/boot
   mount "$device"3 /mnt/btrfs-current/boot
+  echo "subvolume"
   subvolume
 }
 
 function subvolume() {
 
   # Mount
-  mkdir /mnt/btrfs-root
+  mkdir -p /mnt/btrfs-root
   mount -o defaults,relatime,discard,ssd,nodev,nosuid "$device"1 /mnt/btrfs-root
 
   # Create
-  mkdir -p /mnt/btrfs/__snapshot
-  mkdir -p /mnt/btrfs/__current
+  mkdir -p /mnt/btrfs-root/__snapshot
+  mkdir -p /mnt/btrfs-root/__current
   btrfs subvolume create /mnt/btrfs-root/__current/root
   btrfs subvolume create /mnt/btrfs-root/__current/home
 
@@ -335,7 +336,7 @@ EOT
       cp /mnt/btrfs-current/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/systemd/systemd-bootx64.efi
       cp /mnt/btrfs-current/usr/lib/systemd/boot/efi/systemd-bootx64.efi /mnt/boot/EFI/BOOT/BOOTX64.EFI
 
-      mkdir -p /mnt/boot/loader/entries/
+      mkdir -p /mnt/btrfs-current/boot/loader/entries/
       echo "title    "$name"s-os" > /mnt/btrfs-current/boot/loader/entries/arch-uefi.conf
       echo "linux    /vmlinuz-linux" >> /mnt/btrfs-current/boot/loader/entries/arch-uefi.conf
       echo "initrd   /initramfs-linux.img" >> /mnt/btrfs-current/boot/loader/entries/arch-uefi.conf

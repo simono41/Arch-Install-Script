@@ -151,6 +151,9 @@ then
 
   cp startup.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
 
+  read -p "Soll das System aktualisiert werden? [Y/n] " update
+  if [ "$update" != "n" ]
+  then
   arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
 
 mkdir -p /etc/systemd/system/getty\@tty1.service.d
@@ -166,6 +169,7 @@ systemctl enable dhcpcd.service
 pacman -Syu
 mkinitcpio -p linux
 EOT
+  fi
 
   # packages
   cp packages* ${work_dir}/${arch}/airootfs/etc/

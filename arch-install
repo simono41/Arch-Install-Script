@@ -380,7 +380,7 @@ EOT
 fi
 
 read -p "Soll eine graphische Installation durchgeführt werden? [Y/n] " graphical
-if [ "$sicherheitsabfrage" != "n" ]
+if [ "$graphical" != "n" ]
 then
   update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install /mnt/root/arch-graphical-install n "arch-chroot /mnt/" /root/arch-graphical-install
 fi

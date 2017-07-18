@@ -395,6 +395,7 @@ fi
 #
 echo "Systemsprache und dienste werden erstellt!"
 
+mkdir -p /etc/X11/xorg.conf.d/
 # localectl set-x11-keymap de pc105 nodeadkeys
 echo "Section \"InputClass\"" > /etc/X11/xorg.conf.d/20-keyboard.conf
 echo "        Identifier \"Keyboard0\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
@@ -511,3 +512,5 @@ userrechte
 #
 
 echo "Fertig!!!"
+
+exit 0

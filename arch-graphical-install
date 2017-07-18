@@ -218,7 +218,11 @@ then
   fi
 fi
 #
+read -p "Soll ein Vollinstallation werden?: [Y/n] " vollinstallation
+if [ "$vollinstallation" != "n" ]
+then
 vollinstallation
+fi
 #
 read -p "Soll yaourt mitinstalliert werden?: [Y/n] " yaourt
 if [ "$yaourt" != "n" ]

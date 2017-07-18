@@ -221,7 +221,7 @@ fi
 read -p "Soll ein Vollinstallation werden?: [Y/n] " vollinstallation
 if [ "$vollinstallation" != "n" ]
 then
-vollinstallation
+  vollinstallation
 fi
 #
 read -p "Soll yaourt mitinstalliert werden?: [Y/n] " yaourt
@@ -428,7 +428,10 @@ then
   systemctl enable dhcpcd@"$modul"
 else
   systemctl disable dhcpcd
-  systemctl enable NetworkManager.service
+  if [ "$vollinstallation" != "n" ]
+  then
+    systemctl enable NetworkManager.service
+  fi
 fi
 
 read -p "Soll getty den X-Server automatisch starten?: [Y/n] " getty
@@ -474,11 +477,11 @@ fi #1
 
 if [ "$vollinstallation" != "n" ]
 then
-systemctl enable acpid
-systemctl enable ntpd
-systemctl enable avahi-daemon
-systemctl enable org.cups.cupsd.service
-systemctl enable sshd
+  systemctl enable acpid
+  systemctl enable ntpd
+  systemctl enable avahi-daemon
+  systemctl enable org.cups.cupsd.service
+  systemctl enable sshd
 fi
 # set systemconfiguration
 echo "systemconfiguration"

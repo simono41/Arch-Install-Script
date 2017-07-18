@@ -123,18 +123,17 @@ function update() {
   #statements
   local if="${1}"
   local of="${2}"
-    then
-      if [ -f $of ]
-      then
-        rm $of
-      else
-        echo "$of nicht vorhanden!"
-      fi
-      wget $if -t 0 --output-document="$of"
-      chmod +x $of
-      $of n
-      exit 0
-  }
+  if [ -f $of ]
+  then
+    rm $of
+  else
+    echo "$of nicht vorhanden!"
+  fi
+  wget $if -t 0 --output-document="$of"
+  chmod +x $of
+  $of n
+  exit 0
+}
 
 
 
@@ -148,11 +147,11 @@ function update() {
 
 if [ "$1" != "n" ]
 then
-    read -p "Soll im Internet geguckt werden ob es ein neues Install-Script gibt und dann ausgefuehrt werden?: [Y/n] " update
-    if [ "$update" != "n" ]
-then
-update https://raw.githubusercontent.com/simono41/Arch-Install-Script/master/arch-install /root/arch-install.new
-fi
+  read -p "Soll im Internet geguckt werden ob es ein neues Install-Script gibt und dann ausgefuehrt werden?: [Y/n] " update
+  if [ "$update" != "n" ]
+  then
+    update https://raw.githubusercontent.com/simono41/Arch-Install-Script/master/arch-install /root/arch-install.new
+  fi
 fi
 # Partionierung
 # GPT oder MBR
@@ -167,7 +166,7 @@ echo "Empfohlen fuer Alte PCs und portable USB-Sticks"
 echo ""
 echo "Bitte die Eingaben klein schreiben :D !!!"
 echo ""
-read -p "Wie moechten sie ihre Festplatte partioniert haben: [GPT/mbr] " Partition
+read -p "Wie moechten sie ihre Festplatte partioniert haben: [gpt/MBR] " Partition
 if [ "$Partition" == "gpt" ]
 then
   read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/GRUB] : " boot
@@ -183,10 +182,10 @@ then
 fi
 read -p "Wie groß soll die System-Partition sein? +20G : " speicher
 #
-[[ -z "${name}" ]] && name=arch-linux && sleep 5 && exit 1
-[[ -z "${Partition}" ]] && Partition=gpt
+[[ -z "${name}" ]] && name=arch-linux
+[[ -z "${Partition}" ]] && Partition=mbr
 [[ -z "${boot}" ]] && boot=grub
-[[ -z "${device}" ]] && device=/dev/sda && sleep 5 && exit 1
+[[ -z "${device}" ]] && device=/dev/sda
 [[ -z "${pass}" ]] && pass=root
 [[ -z "${username}" ]] && username=user
 [[ -z "${userpass}" ]] && userpass=user

@@ -42,7 +42,7 @@ function secureumount() {
     echo "nicht gemountet"
   fi
   #
-  if cat /proc/mounts | grep ${$device}3 > /dev/null; then
+  if cat /proc/mounts | grep ${device}3 > /dev/null; then
     echo "gemountet"
     umount ${device}3
   else
@@ -162,6 +162,7 @@ systemctl enable getty@tty1
 systemctl daemon-reload
 systemctl enable startup.service
 systemctl start startup.service
+systemctl enable dhcpcd.service
 pacman -Syu
 mkinitcpio -p linux
 EOT
@@ -405,7 +406,7 @@ then
   if [ "$write" != "n" ]
   then
     fdisk -l
-    read -p "Wo das Image jetzt geschrieben werden? [sda/sdb/sdc/sdd] " device
+    read -p "Wo das Image jetzt geschrieben werden? /dev/sda " device
 
     secureumount
 

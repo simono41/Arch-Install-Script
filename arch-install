@@ -134,14 +134,40 @@ function formatieren {
   echo "subvolume"
   subvolume
   mkdir -p ${mountpoint}/boot
+  btrfsmount 5
+}
+
+function btrfsmount() {
+[[ -z "${device}" ]] && device=/dev/sda
+if [ "${1}" == "1" || "${1}" == "all" ]
+then
+  mount -o defaults,relatime,discard,ssd ${device}2 /mnt/btrfs-root
+fi
+if [ "${1}" == "2" || "${1}" == "all" ]
+then
+  mount -o defaults,relatime,discard,ssd,nodev,subvol=__current/ROOT ${device}2 ${mountpoint}
+fi
+if [ "${1}" == "3" || "${1}" == "all" ]
+then
+  mount -o defaults,relatime,discard,ssd,nodev,nosuid,subvol=__current/home ${device}2 ${mountpoint}/home
+  mount -o defaults,relatime,discard,ssd,nodev,nosuid,subvol=__current/opt ${device}2 ${mountpoint}/opt
+  mount -o defaults,relatime,discard,ssd,nodev,nosuid,noexec,subvol=__current/var ${device}2 ${mountpoint}/var
+fi
+if [ "${1}" == "4" || "${1}" == "all" ]
+then
+  mount --bind /mnt/btrfs-root/__current/ROOT/var/lib ${mountpoint}/var/lib
+fi
+if [ "${1}" == "5" || "${1}" == "all" ]
+then
   mount ${device}1 ${mountpoint}/boot
+fi
 }
 
 function subvolume() {
 
   # Mount
   mkdir -p /mnt/btrfs-root
-  mount -o defaults,relatime,discard,ssd ${device}2 /mnt/btrfs-root
+  btrfsmount 1
 
   # Create
   mkdir -p /mnt/btrfs-root/__snapshot
@@ -156,18 +182,15 @@ function subvolume() {
   # Mount
   mkdir -p ${mountpoint}
 
-  mount -o defaults,relatime,discard,ssd,nodev,subvol=__current/ROOT ${device}2 ${mountpoint}
+  btrfsmount 2
   mkdir -p ${mountpoint}/home
   mkdir -p ${mountpoint}/opt
   mkdir -p ${mountpoint}/var/lib
 
-  mount -o defaults,relatime,discard,ssd,nodev,nosuid,subvol=__current/home ${device}2 ${mountpoint}/home
-  mount -o defaults,relatime,discard,ssd,nodev,nosuid,subvol=__current/opt ${device}2 ${mountpoint}/opt
-  mount -o defaults,relatime,discard,ssd,nodev,nosuid,noexec,subvol=__current/var ${device}2 ${mountpoint}/var
+  btrfsmount 3
 
   mkdir -p ${mountpoint}/var/lib
-  mount --bind /mnt/btrfs-root/__current/ROOT/var/lib ${mountpoint}/var/lib
-
+  btrfsmount 4
 
 
 
@@ -282,7 +305,7 @@ then
   #
   if cat /proc/mounts | grep ${device}2 > /dev/null; then
     echo "gemountet"
-    umount ${device}2
+v    umount ${device}2
   else
     echo "nicht gemountet"
   fi
@@ -435,6 +458,21 @@ EOT
   fi
 fi
 
+if [ "${name}" == "debug" ]
+then
+  echo "DEBEUG-MODUS"
+  echo "Wenn kein befehl mehr ausgefuehrt werden muss einfach eingabetaste druecken"
+  echo "Welcher befehl soll ausgefuert werden? : " befehl
+
+  befehl=blablabla
+  while [ "$befehl" != "" ]
+  do
+    read -p "" befehl
+    $befehl
+  done
+
+fi
+
 read -p "Soll eine graphische Installation durchgeführt werden? [Y/n] " graphical
 if [ "$graphical" != "n" ]
 then
@@ -457,3 +495,4 @@ then
   reboot
 fi
 exit 0
+v

@@ -97,9 +97,9 @@ function offlineinstallation {
     #
     echo ""
     genfstab -Up /mnt/btrfs-current >> /mnt/btrfs-current/etc/fstab
-    #rootbind=$(blkid -s UUID -o value "$device"1)
-    #mkdir -p /mnt/btrfs-current/run/btrfs-root
-    #echo "UUID="$rootbind" /run/btrfs-root/ btrfs nodev,nosuid,noexec 0 0" >> /mnt/btrfs-current/etc/fstab
+    rootbind=$(blkid -s UUID -o value "$device"1)
+    mkdir -p /mnt/btrfs-current/run/btrfs-root
+    echo "UUID="$rootbind" /run/btrfs-root/ btrfs nodev,nosuid,noexec 0 0" >> /mnt/btrfs-current/etc/fstab
     swappartition=$(blkid -s UUID -o value "$device"2)
     echo "UUID="$swappartition" none swap defaults 0 0" >> /mnt/btrfs-current/etc/fstab
     #echo "swap"
@@ -155,7 +155,7 @@ function subvolume() {
   mount -o defaults,relatime,discard,ssd,nodev,nosuid,noexec,subvol=__current/var "$device"1 /mnt/btrfs-current/var
 
   mkdir -p /mnt/btrfs-current/var/lib
-  mount --bind /mnt/btrfs-root/__current/ROOT/var/lib /mnt/btrfs-current/var/lib
+  mount --bind /mnt/btrfs-root/__current/root/var/lib /mnt/btrfs-current/var/lib
 
 
 

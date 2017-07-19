@@ -97,9 +97,18 @@ function offlineinstallation {
     #
     echo ""
     genfstab -Up /mnt/btrfs-current >> /mnt/btrfs-current/etc/fstab
+
+    echo "tmpfs /tmp tmpfs nodev,nosuid 0 0" >> /mnt/btrfs-current/etc/fstab
+    echo "tmpfs /dev/shm tmpfs nodev,nosuid,noexec 0 0" >> /mnt/btrfs-current/etc/fstab
+
     rootbind=$(blkid -s UUID -o value "$device"1)
     mkdir -p /mnt/btrfs-current/run/btrfs-root
     echo "UUID="$rootbind" /run/btrfs-root/ btrfs nodev,nosuid,noexec 0 0" >> /mnt/btrfs-current/etc/fstab
+
+    grep -v "/var/lib" < /mnt/btrfs-current/etc/fstab > fstab.neu; mv fstab.neu /mnt/btrfs-current/etc/fstab
+
+    echo "/run/btrfs-root/__current/ROOT/var/lib /var/lib none bind 0 0" >> /mnt/btrfs-current/etc/fstab
+
     swappartition=$(blkid -s UUID -o value "$device"2)
     echo "UUID="$swappartition" none swap defaults 0 0" >> /mnt/btrfs-current/etc/fstab
     #echo "swap"
@@ -135,7 +144,7 @@ function subvolume() {
   # Create
   mkdir -p /mnt/btrfs-root/__snapshot
   mkdir -p /mnt/btrfs-root/__current
-  btrfs subvolume create /mnt/btrfs-root/__current/root
+  btrfs subvolume create /mnt/btrfs-root/__current/ROOT
   btrfs subvolume create /mnt/btrfs-root/__current/home
   btrfs subvolume create /mnt/btrfs-root/__current/opt
   btrfs subvolume create /mnt/btrfs-root/__current/var
@@ -145,7 +154,7 @@ function subvolume() {
   # Mount
   mkdir -p /mnt/btrfs-current
 
-  mount -o defaults,relatime,discard,ssd,nodev,subvol=__current/root "$device"1 /mnt/btrfs-current
+  mount -o defaults,relatime,discard,ssd,nodev,subvol=__current/ROOT "$device"1 /mnt/btrfs-current
   mkdir -p /mnt/btrfs-current/home
   mkdir -p /mnt/btrfs-current/opt
   mkdir -p /mnt/btrfs-current/var/lib
@@ -155,7 +164,7 @@ function subvolume() {
   mount -o defaults,relatime,discard,ssd,nodev,nosuid,noexec,subvol=__current/var "$device"1 /mnt/btrfs-current/var
 
   mkdir -p /mnt/btrfs-current/var/lib
-  mount --bind /mnt/btrfs-root/__current/root/var/lib /mnt/btrfs-current/var/lib
+  mount --bind /mnt/btrfs-root/__current/ROOT/var/lib /mnt/btrfs-current/var/lib
 
 
 

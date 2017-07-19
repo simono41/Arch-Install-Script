@@ -415,6 +415,7 @@ then
   then
     fdisk -l
     read -p "Wo das Image jetzt geschrieben werden? /dev/sda " device
+    [[ -z "${device}" ]] && device=/dev/sda
 
     secureumount
 
@@ -429,6 +430,7 @@ then
     then
       fdisk -l
       read -p "Wo das Image jetzt geschrieben werden? /dev/sda " device
+      [[ -z "${device}" ]] && device=/dev/sda
     fi
 
     secureumount

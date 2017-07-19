@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 echo "Als root Angemeldet"
 
-mountpoint="${mountpoint}"
+mountpoint="/mnt/btrfs-current"
 
 function swapfile() {
   #swap

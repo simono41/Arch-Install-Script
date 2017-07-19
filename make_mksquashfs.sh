@@ -99,6 +99,10 @@ then
   echo "HOOKS=\"base udev block filesystems keyboard archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
   echo "COMPRESSION=\"xz\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
+  # modprobe.d
+
+  cp wifi.conf ${work_dir}/${arch}/airootfs/etc/modprobe.d/
+
   # iso_name
   echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
 

@@ -17,13 +17,13 @@ function swapfile() {
 }
 
 function adduser() {
-  arch-chroot /mnt useradd -m -g users -s /bin/bash $username
-arch-chroot /mnt passwd ${username} <<EOT
+  arch-chroot /mnt/btrfs-current useradd -m -g users -s /bin/bash $username
+arch-chroot /mnt/btrfs-current passwd ${username} <<EOT
 ${userpass}
 ${userpass}
 EOT
   mkdir -p /mnt/btrfs-current/home/"$username"/
-  echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /mnt/etc/sudoers
+  echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /mnt/btrfs-current/etc/sudoers
   echo ""
   if [ -d /mnt/btrfs-current/home/user/.config ]
   then
@@ -97,6 +97,9 @@ function offlineinstallation {
     #
     echo ""
     genfstab -Up /mnt/btrfs-current >> /mnt/btrfs-current/etc/fstab
+    rootbind=$(blkid -s UUID -o value "$device"1)
+    mkdir -p /mnt/btrfs-current/run/btrfs-root
+    echo "UUID="$rootbind" /run/btrfs-root/ btrfs nodev,nosuid,noexec 0 0" >> /mnt/btrfs-current/etc/fstab
     swappartition=$(blkid -s UUID -o value "$device"2)
     echo "UUID="$swappartition" none swap defaults 0 0" >> /mnt/btrfs-current/etc/fstab
     #echo "swap"

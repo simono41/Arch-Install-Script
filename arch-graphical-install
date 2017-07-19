@@ -329,7 +329,7 @@ read -p "Welcher desktop soll verwendet werden? all, lxde, lxde-gtk3, gnome, gno
 
 if [ "$rootstart" == "gnome" ] || [ "$rootstart" == "all" ]
 then
-  pacman -Sy gnome gnome-extra gnuchess   system-config-printer blueman gnome-power-manager gnome-screensaver
+  pacman -Sy gnome gnome-extra gnuchess system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "exec gnome-session" > /etc/X11/xinit/xinitrc
   read -p "Soll gnome classic benutzt werden? [y/N] " classic
   if [ "$classic" == "y" ]
@@ -387,7 +387,8 @@ if [ "$rootstart" == "xfce4" ] || [ "$rootstart" == "all" ]
 then
   pacman -Sy xfce4 xfce4-goodies human-icon-theme xfce4-power-manager xfce4-pulseaudio-plugin \
   xfce4-sensors-plugin libxnvctrl xfce4-xkb-plugin arc-gtk-theme \
-  noto-fonts noto-fonts-emoji arc-icon-theme elementary-icon-theme
+  noto-fonts noto-fonts-emoji arc-icon-theme elementary-icon-theme \
+  gnome gnome-extra gnuchess system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "exec startxfce4" > /etc/X11/xinit/xinitrc
   #
   gnomeconfig

@@ -96,10 +96,10 @@ function offlineinstallation {
     #cp /etc/X11/xinit/xinitrc /mnt/etc/X11/xinit/xinitrc
     #
     echo ""
-    genfstab -Up /mnt/btrfs-current >> /mnt/btrfs-current/etc/fstab
-
     echo "tmpfs /tmp tmpfs nodev,nosuid 0 0" >> /mnt/btrfs-current/etc/fstab
     echo "tmpfs /dev/shm tmpfs nodev,nosuid,noexec 0 0" >> /mnt/btrfs-current/etc/fstab
+
+    genfstab -Up /mnt/btrfs-current >> /mnt/btrfs-current/etc/fstab
 
     rootbind=$(blkid -s UUID -o value "$device"1)
     mkdir -p /mnt/btrfs-current/run/btrfs-root

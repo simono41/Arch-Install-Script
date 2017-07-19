@@ -389,6 +389,9 @@ then
   xfce4-sensors-plugin libxnvctrl xfce4-xkb-plugin arc-gtk-theme \
   noto-fonts noto-fonts-emoji arc-icon-theme elementary-icon-theme
   echo "exec startxfce4" > /etc/X11/xinit/xinitrc
+  #
+  gnomeconfig
+  #
 fi
 
 if [ "$rootstart" == "kde" ] || [ "$rootstart" == "all" ]

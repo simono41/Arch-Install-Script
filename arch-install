@@ -339,10 +339,10 @@ EOT
     echo "offlineinstallation"
     offlineinstallation
   arch-chroot ${mountpoint} /bin/bash <<EOT
-  mkinitcpio -p linux
-  passwd
-  ${pass}
-  ${pass}
+mkinitcpio -p linux
+passwd
+${pass}
+${pass}
 EOT
     echo ""
     if [ "${boot}" == "grub" ]

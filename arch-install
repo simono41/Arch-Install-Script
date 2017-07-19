@@ -40,8 +40,8 @@ function userrechte() {
 }
 
 function autostart() {
-  echo "if [ \$(tty) = "/dev/tty1" ]; then" > /mnt/home/"${username}"/.bash_profile
-  echo "startx" >> /mnt/home/"${username}"/.bash_profile
+  echo "if [ \$(tty) = "/dev/tty1" ]; then" > /mnt/btrfs-current/home/"${username}"/.bash_profile
+  echo "startx" >> /mnt/btrfs-current/home/"${username}"/.bash_profile
   echo "fi" >> /mnt/btrfs-current/home/"${username}"/.bash_profile
   echo "[Service]" > /mnt/btrfs-current/etc/systemd/system/getty\@tty1.service.d/autologin.conf
   echo "ExecStart=" >> /mnt/btrfs-current/etc/systemd/system/getty\@tty1.service.d/autologin.conf

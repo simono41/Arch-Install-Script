@@ -89,6 +89,7 @@ then
   # initalizise keys
   arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
   arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
+  arch-chroot ${work_dir}/${arch}/airootfs pacman -Syu
 
   # hooks
   cp install/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
@@ -170,7 +171,6 @@ systemctl daemon-reload
 systemctl enable startup.service
 systemctl start startup.service
 systemctl enable dhcpcd.service
-pacman -Syu
 mkinitcpio -p linux
 EOT
   fi

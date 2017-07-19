@@ -362,11 +362,13 @@ EOT
       mkdir -p ${mountpoint}/boot/loader/entries/
       echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi.conf
       echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+      echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
       echo "initrd   /initramfs-linux.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
       echo "options  root=PARTUUID=${tobootdevice} rw" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
 
       echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
       echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+      echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
       echo "initrd   /initramfs-linux-fallback.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
       echo "options  root=PARTUUID=${tobootdevice} rw" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
 

@@ -100,7 +100,7 @@ then
   echo "COMPRESSION=\"xz\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
   # modprobe.d
-
+  mkdir -p ${work_dir}/${arch}/airootfs/etc/modprobe.d/
   cp wifi.conf ${work_dir}/${arch}/airootfs/etc/modprobe.d/
 
   # iso_name

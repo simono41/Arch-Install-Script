@@ -92,7 +92,7 @@ function offlineinstallation {
     fi
     echo ""
     echo "MODULES=\"i915 radeon\"" > ${mountpoint}/etc/mkinitcpio.conf
-    echo "HOOKS=\"systemd block filesystems\"" >> ${mountpoint}/etc/mkinitcpio.conf
+    echo "HOOKS=\"base udev block filesystems keyboard\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo "COMPRESSION=\"cat\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo ""
     #cp /etc/X11/xinit/xinitrc ${mountpoint}/etc/X11/xinit/xinitrc
@@ -387,13 +387,13 @@ EOT
       echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
       echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
       echo "initrd   /initramfs-linux.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-      echo "options  root=PARTUUID=${tobootdevice} rw" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+      echo "options  root=PARTUUID=${tobootdevice} rw rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
 
       echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
       echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
       echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
       echo "initrd   /initramfs-linux-fallback.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-      echo "options  root=PARTUUID=${tobootdevice} rw" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+      echo "options  root=PARTUUID=${tobootdevice} rw rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
 
       echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
       echo "timeout   1" >> ${mountpoint}/boot/loader/loader.conf

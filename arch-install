@@ -138,7 +138,7 @@ function formatieren {
 }
 
 function btrfsmount() {
-[[ -z "${device}" ]] && device=/dev/sda
+[[ -z "${device}" ]] && device=${2}
 if [ "${1}" == "1" ] || [ "${1}" == "all" ]
 then
   mount -o defaults,relatime,discard,ssd ${device}2 /mnt/btrfs-root
@@ -305,7 +305,7 @@ then
   #
   if cat /proc/mounts | grep ${device}2 > /dev/null; then
     echo "gemountet"
-v    umount ${device}2
+    umount ${device}2
   else
     echo "nicht gemountet"
   fi

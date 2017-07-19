@@ -415,6 +415,12 @@ EOT
       autostart
     fi
     removeinstaller
+    umount /mnt/btrfs-current/home
+    umount /mnt/btrfs-current/opt
+    umount /mnt/btrfs-current/var/lib
+    umount /mnt/btrfs-current/var
+    umount /mnt/btrfs-current
+    umount /mnt/btrfs-root
     echo "Fertig"
   else
     echo "Eingabe Ungueltig"

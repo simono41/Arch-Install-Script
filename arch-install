@@ -93,7 +93,7 @@ function offlineinstallation {
     echo ""
     echo "MODULES=\"i915 radeon\"" > ${mountpoint}/etc/mkinitcpio.conf
     echo "HOOKS=\"systemd block filesystems\"" > ${mountpoint}/etc/mkinitcpio.conf
-    echo "COMPRESSION=\"xz\"" >> ${mountpoint}/etc/mkinitcpio.conf
+    echo "COMPRESSION=\"cat\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo ""
     #cp /etc/X11/xinit/xinitrc ${mountpoint}/etc/X11/xinit/xinitrc
     #
@@ -103,7 +103,7 @@ function offlineinstallation {
 
     genfstab -Up ${mountpoint} >> ${mountpoint}/etc/fstab
 
-    rootbind=$(blkid -s UUID -o value ${device}1)
+    rootbind=$(blkid -s UUID -o value ${device}2)
     mkdir -p ${mountpoint}/run/btrfs-root
     echo "UUID=${rootbind} /run/btrfs-root/ btrfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab
 
@@ -111,7 +111,7 @@ function offlineinstallation {
 
     echo "/run/btrfs-root/__current/ROOT/var/lib /var/lib none bind 0 0" >> ${mountpoint}/etc/fstab
 
-    swappartition=$(blkid -s UUID -o value ${device}2)
+    swappartition=$(blkid -s UUID -o value ${device}3)
     echo "UUID=${swappartition} none swap defaults 0 0" >> ${mountpoint}/etc/fstab
     #echo "swap"
     #swap
@@ -122,26 +122,26 @@ function offlineinstallation {
 }
 
 function formatieren {
+  #boot
   #root
   #swap
-  #boot
   echo "format"
-  mkfs.btrfs -L p_arch ${device}1
-  mkswap -L p_swap ${device}2
-  mkfs.fat -F32 ${device}3
-  echo "mount"
+  mkfs.fat -F32 ${device}1
+  mkfs.btrfs -L p_arch ${device}2
+  mkswap -L p_swap ${device}3
+  #echo "mount"
   #mount ${device}1 ${mountpoint}
-  mkdir -p ${mountpoint}/boot
-  mount ${device}3 ${mountpoint}/boot
   echo "subvolume"
   subvolume
+  mkdir -p ${mountpoint}/boot
+  mount ${device}3 ${mountpoint}/boot
 }
 
 function subvolume() {
 
   # Mount
   mkdir -p /mnt/btrfs-root
-  mount -o defaults,relatime,discard,ssd ${device}1 /mnt/btrfs-root
+  mount -o defaults,relatime,discard,ssd ${device}2 /mnt/btrfs-root
 
   # Create
   mkdir -p /mnt/btrfs-root/__snapshot
@@ -156,14 +156,14 @@ function subvolume() {
   # Mount
   mkdir -p ${mountpoint}
 
-  mount -o defaults,relatime,discard,ssd,nodev,subvol=__current/ROOT ${device}1 ${mountpoint}
+  mount -o defaults,relatime,discard,ssd,nodev,subvol=__current/ROOT ${device}2 ${mountpoint}
   mkdir -p ${mountpoint}/home
   mkdir -p ${mountpoint}/opt
   mkdir -p ${mountpoint}/var/lib
 
-  mount -o defaults,relatime,discard,ssd,nodev,nosuid,subvol=__current/home ${device}1 ${mountpoint}/home
-  mount -o defaults,relatime,discard,ssd,nodev,nosuid,subvol=__current/opt ${device}1 ${mountpoint}/opt
-  mount -o defaults,relatime,discard,ssd,nodev,nosuid,noexec,subvol=__current/var ${device}1 ${mountpoint}/var
+  mount -o defaults,relatime,discard,ssd,nodev,nosuid,subvol=__current/home ${device}2 ${mountpoint}/home
+  mount -o defaults,relatime,discard,ssd,nodev,nosuid,subvol=__current/opt ${device}2 ${mountpoint}/opt
+  mount -o defaults,relatime,discard,ssd,nodev,nosuid,noexec,subvol=__current/var ${device}2 ${mountpoint}/var
 
   mkdir -p ${mountpoint}/var/lib
   mount --bind /mnt/btrfs-root/__current/ROOT/var/lib ${mountpoint}/var/lib
@@ -316,6 +316,12 @@ y
 n
 
 
++512M
+ef00
+p
+n
+
+
 ${speicher}
 8300
 p
@@ -324,12 +330,6 @@ n
 
 +1024M
 8200
-p
-n
-
-
-+512M
-ef00
 p
 w
 y
@@ -352,7 +352,7 @@ EOT
   grub-mkconfig -o /boot/grub/grub.cfg
 EOT
     else
-      tobootdevice=$(blkid -s PARTUUID -o value ${device}1)
+      tobootdevice=$(blkid -s PARTUUID -o value ${device}2)
 
       mkdir -p ${mountpoint}/boot/EFI/systemd/
       mkdir -p ${mountpoint}/boot/EFI/BOOT/
@@ -393,6 +393,12 @@ n
 
 
 
++512M
+p
+n
+
+
+
 ${speicher}
 p
 n
@@ -400,12 +406,6 @@ n
 
 
 +1024M
-p
-n
-
-
-
-+512M
 p
 w
 y

@@ -426,12 +426,6 @@ EOT
       autostart
     fi
     removeinstaller
-    umount ${mountpoint}/home
-    umount ${mountpoint}/opt
-    umount ${mountpoint}/var/lib
-    umount ${mountpoint}/var
-    umount ${mountpoint}
-    umount /mnt/btrfs-root
     echo "Fertig"
   else
     echo "Eingabe Ungueltig"
@@ -444,6 +438,13 @@ if [ "$graphical" != "n" ]
 then
   update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install ${mountpoint}/root/arch-graphical-install n "arch-chroot ${mountpoint}" /root/arch-graphical-install
 fi
+echo "umount!!!"
+umount ${mountpoint}/home
+umount ${mountpoint}/opt
+umount ${mountpoint}/var/lib
+umount ${mountpoint}/var
+umount ${mountpoint}
+umount /mnt/btrfs-root
 echo ""
 echo "Fertig!!!"
 read -p "Installation erfolgreich Abgeschlossen. Wollen sie den PC NEUSTARTEN?: [Y/n] " sicherheitsabfrage

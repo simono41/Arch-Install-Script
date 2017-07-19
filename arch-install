@@ -134,7 +134,7 @@ function formatieren {
   echo "subvolume"
   subvolume
   mkdir -p ${mountpoint}/boot
-  mount ${device}3 ${mountpoint}/boot
+  mount ${device}1 ${mountpoint}/boot
 }
 
 function subvolume() {
@@ -445,6 +445,7 @@ umount ${mountpoint}/home
 umount ${mountpoint}/opt
 umount ${mountpoint}/var/lib
 umount ${mountpoint}/var
+umount ${mountpoint}/boot
 umount ${mountpoint}
 umount /mnt/btrfs-root
 echo ""

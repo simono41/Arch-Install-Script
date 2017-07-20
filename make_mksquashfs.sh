@@ -97,7 +97,7 @@ then
 
   # module and hooks
   echo "MODULES=\"i915 radeon\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-  echo "HOOKS=\"base udev block filesystems keyboard archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+  echo "HOOKS=\"base udev autodetect modconf block filesystems keyboard archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
   echo "COMPRESSION=\"cat\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
   # modprobe.d
@@ -156,6 +156,12 @@ then
 
   cp startup.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
 
+  # packages
+  cp packages* ${work_dir}/${arch}/airootfs/etc/
+
+  # xfce4
+  #  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
+
   read -p "Soll das System aktualisiert werden? [Y/n] " update
   if [ "$update" != "n" ]
   then
@@ -174,12 +180,6 @@ systemctl enable dhcpcd.service
 mkinitcpio -p linux
 EOT
   fi
-
-  # packages
-  cp packages* ${work_dir}/${arch}/airootfs/etc/
-
-  # xfce4
-  #  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
 
 else
   echo "Wird nicht neu aufgebaut!!!"

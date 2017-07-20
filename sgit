@@ -1,10 +1,12 @@
-user=$2
-pass=$3
-email=$4
+#!/bin/bash
+user=$3
+pass=$4
+email=$5
 
 git config --global user.email "${email}"
 git add $1
-git commit -m fix
+git commit -m $2
 git push <<EOT
 ${user}
 ${pass}
+EOT

@@ -80,7 +80,15 @@ then
   if [ "$config" != "n" ]
   then
     read -p "Vom welchen Benutzer soll die .config koppiert werden?: " username
-    cp -Rv /home/${username}/.config ${work_dir}/${arch}/airootfs/root/
+    echo "Wenn kein befehl mehr ausgefuehrt werden muss einfach eingabetaste druecken"
+    mkdir -p ${work_dir}/${arch}/airootfs/root/.config/
+
+    config=blablabla
+    while [ "$config" != "" ]
+    do
+      read -p "Was soll von der .config kopiert werden?: " config
+      [ -n "$config" ] && cp -Rv /home/${username}/.config/${config} ${work_dir}/${arch}/airootfs/root/.config/
+    done
   fi
 
   # screenfetch

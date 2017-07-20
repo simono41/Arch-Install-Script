@@ -203,8 +203,8 @@ then
 
   arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
   pacman -Scc
-  y
-  y
+j
+j
   pacman -Q > /pkglist.txt
 EOT
 

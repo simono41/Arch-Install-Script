@@ -92,7 +92,7 @@ function offlineinstallation {
     fi
     echo ""
     echo "MODULES=\"i915 radeon\"" > ${mountpoint}/etc/mkinitcpio.conf
-    echo "HOOKS=\"base udev autodetect modconf block filesystems keyboard fsck\"" >> ${mountpoint}/etc/mkinitcpio.conf
+    echo "HOOKS=\"base udev autodetect modconf block filesystems keyboard\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo "COMPRESSION=\"cat\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo ""
     #cp /etc/X11/xinit/xinitrc ${mountpoint}/etc/X11/xinit/xinitrc

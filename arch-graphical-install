@@ -513,6 +513,8 @@ locale-gen
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
+userrechte
+
 befehl=null
 echo "Wenn kein Befehl mehr ausgefuehrt werden muss Eingabetaste druecken!!!"
 while [ "$befehl" != "" ];
@@ -520,8 +522,6 @@ do
   read -p "Befehl : " befehl
   $befehl
 done
-
-userrechte
 
 #
 #systemctl start ntpd

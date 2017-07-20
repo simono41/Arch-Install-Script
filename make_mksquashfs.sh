@@ -82,6 +82,7 @@ then
     read -p "Vom welchen Benutzer soll die .config koppiert werden?: " username
     echo "Wenn kein befehl mehr ausgefuehrt werden muss einfach eingabetaste druecken"
     mkdir -p ${work_dir}/${arch}/airootfs/root/.config/
+    ls /home/${username}/.config/
 
     config=blablabla
     while [ "$config" != "" ]

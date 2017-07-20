@@ -1,9 +1,8 @@
 #!/bin/bash
-user=$3
-pass=$4
-email=$5
 
-git config --global user.email "${email}"
+set -ex
+
+git config --global user.email "${3}"
 git add $1
 git commit -m $2
-git push <<Test hihihsi shais Test
+git push

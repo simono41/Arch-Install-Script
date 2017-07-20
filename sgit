@@ -2,9 +2,9 @@
 
 set -ex
 
-[ -n $"{3}" ] && git config --global user.email "${3}"
-git add $1
-git commit -m $2
+[ -n $"{1}" ] && git config --global user.email "${1}"
+git add --all
+git commit --all
 git push
 git show
 git status

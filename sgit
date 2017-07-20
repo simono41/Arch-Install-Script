@@ -1,0 +1,10 @@
+user=$2
+pass=$3
+email=$4
+
+git config --global user.email "${email}"
+git add $1
+git commit -m fix
+git push <<EOT
+${user}
+${pass}

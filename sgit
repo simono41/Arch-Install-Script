@@ -6,8 +6,4 @@ email=$5
 git config --global user.email "${email}"
 git add $1
 git commit -m $2
-git push <<EOT
-
-${user}
-${pass}
-EOT
+git push <<Test

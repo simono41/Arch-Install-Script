@@ -9,4 +9,3 @@ git commit -m $2
 git push <<EOT
 ${user}
 ${pass}
-EOT

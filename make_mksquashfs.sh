@@ -97,7 +97,7 @@ then
 
   # module and hooks
   echo "MODULES=\"i915 radeon\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-  echo "HOOKS=\"base udev autodetect modconf block filesystems keyboard archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+  echo "HOOKS=\"base udev autodetect modconf block filesystems keyboard fsck archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
   echo "COMPRESSION=\"cat\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
   # modprobe.d

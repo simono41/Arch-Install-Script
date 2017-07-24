@@ -21,7 +21,7 @@ function minimalinstallation() {
   while read line
   do
     ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
-  done < packages.txt
+  done < packages_all.txt
 
 }
 

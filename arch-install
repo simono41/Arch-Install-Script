@@ -15,7 +15,7 @@ function minimalinstallation() {
   while read line
   do
     pacstrap -c -d -G -M ${mountpoint} $line
-  done < /etc/packages.txt
+  done < /etc/packages_all.txt
 
 }
 

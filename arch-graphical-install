@@ -227,7 +227,9 @@ fi
 read -p "Soll ein Vollinstallation werden?: [Y/n] " vollinstallation
 if [ "$vollinstallation" != "n" ]
 then
-  vollinstallation
+  if [ "$vollinstallation" != "debug" ]; then
+    vollinstallation
+  fi
 fi
 #
 read -p "Soll yaourt mitinstalliert werden?: [Y/n] " yaourt

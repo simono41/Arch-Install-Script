@@ -2,7 +2,8 @@
 
 set -ex
 
-[[ -n $"{1}" ]] && git config --global user.email "${1}"
+if [[ -n $"{1}" ]]; then git config --global user.email "${1}"; fi
+
 git add --all
 git commit --all -m fix
 git push

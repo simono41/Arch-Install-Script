@@ -191,6 +191,7 @@ systemctl enable x11vnc.service
 systemctl start startup.service
 systemctl enable dhcpcd.service
 pacman -Syu
+j
 mkinitcpio -p linux
 EOT
   fi

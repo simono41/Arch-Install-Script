@@ -73,6 +73,7 @@ then
     then
       arch-chroot ${work_dir}/${arch}/airootfs passwd root
     fi
+    arch-chroot ${work_dir}/${arch}/airootfs x11vnc -storepasswd /etc/x11vnc.pass
   fi
 
   ## doppelt bereich
@@ -164,6 +165,9 @@ then
 
   cp startup.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
 
+  # x11vnc
+  cp x11vnc.service ${work_dir}/${arch}/airootfs/lib/systemd/system/x11vnc.service
+
   # packages
   cp packages* ${work_dir}/${arch}/airootfs/etc/
 
@@ -183,6 +187,7 @@ systemctl enable getty@tty1
 
 systemctl daemon-reload
 systemctl enable startup.service
+systemctl enable x11vnc.service
 systemctl start startup.service
 systemctl enable dhcpcd.service
 pacman -Syu

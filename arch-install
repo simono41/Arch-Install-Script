@@ -129,9 +129,9 @@ function formatieren {
   mkfs.fat -F32 ${device}1
   mkfs.btrfs -L p_arch ${device}2
   mkswap -L p_swap ${device}3
-  #echo "mount"
+  #echo "EXT4 mount"
   #mount ${device}2 ${mountpoint}
-  echo "subvolume"
+  echo "BTRFS subvolume-mount"
   subvolume
   mkdir -p ${mountpoint}/boot
   mount ${device}1 ${mountpoint}/boot

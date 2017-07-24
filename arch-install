@@ -10,6 +10,15 @@ echo "Als root Angemeldet"
 
 mountpoint="/mnt/btrfs-current"
 
+function minimalinstallation() {
+  #Mehrzeiler
+  while read line
+  do
+    pacstrap -c -d -G -M ${mountpoint} $line
+  done < /etc/packages.txt
+
+}
+
 function swapfile() {
   #swap
   fallocate -l 512M ${mountpoint}/swapfile
@@ -90,35 +99,37 @@ function offlineinstallation {
       echo "Es ist ein copytoram System."
       unsquashfs -f -d ${mountpoint} /run/archiso/copytoram/airootfs.sfs
     fi
-    echo ""
-    echo "MODULES=\"i915 radeon\"" > ${mountpoint}/etc/mkinitcpio.conf
-    echo "HOOKS=\"base udev block filesystems keyboard\"" >> ${mountpoint}/etc/mkinitcpio.conf
-    echo "COMPRESSION=\"xz\"" >> ${mountpoint}/etc/mkinitcpio.conf
-    echo ""
-    #cp /etc/X11/xinit/xinitrc ${mountpoint}/etc/X11/xinit/xinitrc
-    #
-    echo ""
-    echo "tmpfs /tmp tmpfs nodev,nosuid 0 0" >> ${mountpoint}/etc/fstab
-    echo "tmpfs /dev/shm tmpfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab
-
-    genfstab -Up ${mountpoint} >> ${mountpoint}/etc/fstab
-
-    rootbind=$(blkid -s UUID -o value ${device}2)
-    mkdir -p ${mountpoint}/run/btrfs-root
-    echo "UUID=${rootbind} /run/btrfs-root/ btrfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab
-
-    grep -v "/var/lib" < ${mountpoint}/etc/fstab > fstab.neu; mv fstab.neu ${mountpoint}/etc/fstab
-
-    echo "/run/btrfs-root/__current/ROOT/var/lib /var/lib none bind 0 0" >> ${mountpoint}/etc/fstab
-
-    swappartition=$(blkid -s UUID -o value ${device}3)
-    echo "UUID=${swappartition} none swap defaults 0 0" >> ${mountpoint}/etc/fstab
-    #echo "swap"
-    #swap
-    echo ""
-    echo "${name}"s-os > ${mountpoint}/etc/hostname
-    echo ""
+  else
+    minimalinstallation
   fi
+  echo ""
+  echo "MODULES=\"i915 radeon\"" > ${mountpoint}/etc/mkinitcpio.conf
+  echo "HOOKS=\"base udev block filesystems keyboard\"" >> ${mountpoint}/etc/mkinitcpio.conf
+  echo "COMPRESSION=\"xz\"" >> ${mountpoint}/etc/mkinitcpio.conf
+  echo ""
+  #cp /etc/X11/xinit/xinitrc ${mountpoint}/etc/X11/xinit/xinitrc
+  #
+  echo ""
+  echo "tmpfs /tmp tmpfs nodev,nosuid 0 0" >> ${mountpoint}/etc/fstab
+  echo "tmpfs /dev/shm tmpfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab
+
+  genfstab -Up ${mountpoint} >> ${mountpoint}/etc/fstab
+
+  rootbind=$(blkid -s UUID -o value ${device}2)
+  mkdir -p ${mountpoint}/run/btrfs-root
+  echo "UUID=${rootbind} /run/btrfs-root/ btrfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab
+
+  grep -v "/var/lib" < ${mountpoint}/etc/fstab > fstab.neu; mv fstab.neu ${mountpoint}/etc/fstab
+
+  echo "/run/btrfs-root/__current/ROOT/var/lib /var/lib none bind 0 0" >> ${mountpoint}/etc/fstab
+
+  swappartition=$(blkid -s UUID -o value ${device}3)
+  echo "UUID=${swappartition} none swap defaults 0 0" >> ${mountpoint}/etc/fstab
+  #echo "swap"
+  #swap
+  echo ""
+  echo "${name}"s-os > ${mountpoint}/etc/hostname
+  echo ""
 }
 
 function formatieren {
@@ -138,25 +149,25 @@ function formatieren {
 }
 
 function btrfsmount() {
-[[ -z "${device}" ]] && device=${2}
-if [ "${1}" == "1" ] || [ "${1}" == "all" ]
-then
-  mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo ${device}2 /mnt/btrfs-root
-fi
-if [ "${1}" == "2" ] || [ "${1}" == "all" ]
-then
-  mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/ROOT ${device}2 ${mountpoint}
-fi
-if [ "${1}" == "3" ] || [ "${1}" == "all" ]
-then
-  mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/home ${device}2 ${mountpoint}/home
-  mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/opt ${device}2 ${mountpoint}/opt
-  mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,noexec,subvol=--__current/var ${device}2 ${mountpoint}/var
-fi
-if [ "${1}" == "4" ] || [ "${1}" == "all" ]
-then
-  mount --bind /mnt/btrfs-root/__current/ROOT/var/lib ${mountpoint}/var/lib
-fi
+  [[ -z "${device}" ]] && device=${2}
+  if [ "${1}" == "1" ] || [ "${1}" == "all" ]
+  then
+    mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo ${device}2 /mnt/btrfs-root
+  fi
+  if [ "${1}" == "2" ] || [ "${1}" == "all" ]
+  then
+    mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/ROOT ${device}2 ${mountpoint}
+  fi
+  if [ "${1}" == "3" ] || [ "${1}" == "all" ]
+  then
+    mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/home ${device}2 ${mountpoint}/home
+    mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/opt ${device}2 ${mountpoint}/opt
+    mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,noexec,subvol=--__current/var ${device}2 ${mountpoint}/var
+  fi
+  if [ "${1}" == "4" ] || [ "${1}" == "all" ]
+  then
+    mount --bind /mnt/btrfs-root/__current/ROOT/var/lib ${mountpoint}/var/lib
+  fi
 }
 
 function subvolume() {
@@ -261,6 +272,7 @@ then
     read -p "Welches Passwort soll der neue Benutzer haben?: " userpass
   fi
   read -p "Wie groß soll die System-Partition sein? +20G : " speicher
+  read -p "Soll eine Offline-Installation durchgefuehrt werden? : " offline
   #
   [[ -z "${name}" ]] && name=arch-linux
   [[ -z "${Partition}" ]] && Partition=mbr
@@ -270,7 +282,12 @@ then
   [[ -z "${username}" ]] && username=user
   [[ -z "${userpass}" ]] && userpass=user
   [[ -z "${speicher}" ]] && speicher="+20G"
-
+  if [ "${offline}" != "n" ]
+  then
+    install="offline"
+  else
+    install="online"
+  fi
   #
   echo "Name: ${name}"
   echo "Partionsart: ${Partition}"
@@ -279,6 +296,7 @@ then
   echo "System-Partition ${speicher}"
   echo "Rootpasswort: ${pass}"
   echo "Architektur: $(uname -m)"
+  echo "Installation: ${install}"
   if [ "${user}" != "n" ]
   then
     echo "Username: ${username}"

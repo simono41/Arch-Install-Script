@@ -9,7 +9,7 @@ if [ "make" == "$1" ]; then
 echo `date "+%Y%m%d-%H%M%S"` > /run/btrfs-root/__current/${pfad}/SNAPSHOT
 echo "${3}" >> /run/btrfs-root/__current/${pfad}/SNAPSHOT
 
-btrfs subvolume snapshot -r /run/btrfs-root/__current/${pfad} /run/btrfs-root/__snapshot/ROOT@`head -n 1 /run/btrfs-root/__snapshot/${pfad}/SNAPSHOT`
+btrfs subvolume snapshot -r /run/btrfs-root/__current/${pfad} /run/btrfs-root/__snapshot/ROOT@`head -n 1 /run/btrfs-root/__current/${pfad}/SNAPSHOT`
 
 rm /run/btrfs-root/__current/${pfad}/SNAPSHOT
 

@@ -170,7 +170,7 @@ function btrfsmount() {
     mkdir -p ${mountpoint}/var/lib
     mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/home ${device}2 ${mountpoint}/home
     mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/opt ${device}2 ${mountpoint}/opt
-    mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,noexec,subvol=--__current/var ${device}2 ${mountpoint}/var
+    mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,noexec,subvol=__current/var ${device}2 ${mountpoint}/var
   fi
 
   if [ "${1}" == "4" ] || [ "${1}" == "all" ]
@@ -195,7 +195,10 @@ function subvolume() {
 
   btrfs subvolume list -p /mnt/btrfs-root
 
-  btrfsmount all
+  # Mount
+  btrfsmount 2
+  btrfsmount 3
+  btrfsmount 4
 
 }
 
@@ -304,7 +307,7 @@ then
     read -p "Welches Passwort soll der neue Benutzer haben?: " userpass
   fi
   read -p "Wie groß soll die System-Partition sein? +20G : " speicher
-  read -p "Soll eine Offline-Installation durchgefuehrt werden? : " offline
+  read -p "Soll eine Offline-Installation durchgefuehrt werden? : [Y/n] " offline
   #
   [[ -z "${name}" ]] && name=arch-linux
   [[ -z "${Partition}" ]] && Partition=mbr

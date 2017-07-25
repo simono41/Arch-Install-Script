@@ -66,6 +66,7 @@ then
   read -p "Sollen die base Packete neu aufgebaut werden? [Y/n] " pacstrap
   if [ "$pacstrap" != "n" ]
   then
+    pacman -Syu
     minimalinstallation
     ## nur einmal bereich
     read -p "Soll ein root passwort festgelegt werden? [Y/n] " root
@@ -465,7 +466,7 @@ EOT
     sleep 1
 
     echo "mit j bestätigen"
-    mkfs.btrfs -L cow_device ${device}3
+    mkfs.btrfs -f -L cow_device ${device}3
 
     sync
 

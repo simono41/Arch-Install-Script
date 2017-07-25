@@ -138,7 +138,7 @@ function formatieren {
   #swap
   echo "format"
   mkfs.fat -F32 ${device}1
-  mkfs.btrfs -L p_arch ${device}2
+  mkfs.btrfs -f -L p_arch ${device}2
   mkswap -L p_swap ${device}3
   #echo "EXT4 mount"
   #mount ${device}2 ${mountpoint}
@@ -223,6 +223,8 @@ function update() {
 
 funktion systemdboot() {
   tobootdevice=$(blkid -s PARTUUID -o value ${device}2)
+  swappartitionpart=$(blkid -s PARTUUID -o value ${device}3)
+
 
   mkdir -p ${mountpoint}/boot/EFI/systemd/
   mkdir -p ${mountpoint}/boot/EFI/BOOT/
@@ -234,13 +236,13 @@ funktion systemdboot() {
   echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
   echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
   echo "initrd   /initramfs-linux.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-  echo "options  root=PARTUUID=${tobootdevice} rw resume=p_swap rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+  echo "options  root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
 
   echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
   echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
   echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
   echo "initrd   /initramfs-linux-fallback.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-  echo "options  root=PARTUUID=${tobootdevice} rw resume=p_swap rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+  echo "options  root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
 
   echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
   echo "timeout   1" >> ${mountpoint}/boot/loader/loader.conf
@@ -249,7 +251,7 @@ funktion systemdboot() {
 
   arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux efistub" -u "initrd=/initramfs-linux.img root=LABEL=p_arch rw"
 
-  arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz(-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=LABEL=p_arch rw"
+  arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=LABEL=p_arch rw"
 
   #arch-chroot ${mountpoint} bootctl install
 

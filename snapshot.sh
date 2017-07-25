@@ -19,7 +19,9 @@ echo "Heutiges datum $(date "+%Y%m%d-%H%M%S")"
 ls /run/btrfs-root/__snapshot
 read -p "Welches datum hat das Image? : " datum
 
-rm -R /run/btrfs-root/__current/${pfad}.old
+if [ -d /run/btrfs-root/__current/ROOT.old ]; then
+  btrfs subvolume delete /run/btrfs-root/__current/${pfad}.old
+fi
 mv /run/btrfs-root/__current/${pfad} /run/btrfs-root/__current/${pfad}.old
 btrfs subvolume snapshot /run/btrfs-root/__snapshot/${pfad}@${datum} /run/btrfs-root/__current/${pfad}
 reboot

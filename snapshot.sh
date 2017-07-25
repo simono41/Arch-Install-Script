@@ -15,9 +15,13 @@ rm /run/btrfs-root/__current/${pfad}/SNAPSHOT
 
 elif [ "restore" == "$1" ]; then
 
-echo "Heutiges datum $(date "+%Y%m%d-%H%M%S")"
-ls /run/btrfs-root/__snapshot
-read -p "Welches datum hat das Image? : " datum
+if [ "$3" == '' ]; then
+  echo "Heutiges datum $(date "+%Y%m%d-%H%M%S")"
+  ls /run/btrfs-root/__snapshot
+  read -p "Welches datum hat das Image? : " datum
+    else
+  datum="$3"
+fi
 
 if [ -d /run/btrfs-root/__current/ROOT.old ]; then
   btrfs subvolume delete /run/btrfs-root/__current/${pfad}.old
@@ -30,6 +34,8 @@ else
 
 echo "bash ./snapshot.sh PARAMETER PFAD BESCHREIBUNG"
 echo "Parameters: make restore"
+echo "make ROOT fix"
+echo "restore ROOT 20170725-235544"
 
 btrfs subvolume list -p /
 

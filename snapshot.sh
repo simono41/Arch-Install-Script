@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -ex
+
 if [ "make" == "$1" ]; then
 
 echo `date "+%Y%m%d-%H%M%S"` > /run/btrfs-root/__current/ROOT/SNAPSHOT

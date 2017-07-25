@@ -135,7 +135,6 @@ then
   # installer-/usr/bin/
   cp arch-install ${work_dir}/${arch}/airootfs/usr/bin/
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-install
-  cp packages.txt ${work_dir}/${arch}/airootfs/etc/
 
   # sudo-installer
   cp arch-install-non_root ${work_dir}/${arch}/airootfs/usr/bin/
@@ -171,6 +170,10 @@ then
 
   # packages
   cp packages* ${work_dir}/${arch}/airootfs/etc/
+
+  # snapshot.sh
+  cp snapshot.sh ${work_dir}/${arch}/airootfs/usr/bin/snapshot
+  chmod +x ${work_dir}/${arch}/airootfs/usr/bin/snapshot
 
   # xfce4
   #  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc

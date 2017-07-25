@@ -1,5 +1,6 @@
 [Unit]
 Description=startup
+After=multi-user.target
 
 [Service]
 User=root

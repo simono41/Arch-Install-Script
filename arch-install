@@ -221,6 +221,40 @@ function update() {
   ${before} ${of} ${parameters}
 }
 
+funktion systemdboot() {
+  tobootdevice=$(blkid -s PARTUUID -o value ${device}2)
+
+  mkdir -p ${mountpoint}/boot/EFI/systemd/
+  mkdir -p ${mountpoint}/boot/EFI/BOOT/
+  cp ${mountpoint}/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${mountpoint}/boot/EFI/systemd/systemd-bootx64.efi
+  cp ${mountpoint}/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${mountpoint}/boot/EFI/BOOT/BOOTX64.EFI
+
+  mkdir -p ${mountpoint}/boot/loader/entries/
+  echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi.conf
+  echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+  echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+  echo "initrd   /initramfs-linux.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+  echo "options  root=PARTUUID=${tobootdevice} rw resume=p_swap rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+
+  echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+  echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+  echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+  echo "initrd   /initramfs-linux-fallback.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+  echo "options  root=PARTUUID=${tobootdevice} rw resume=p_swap rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+
+  echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
+  echo "timeout   1" >> ${mountpoint}/boot/loader/loader.conf
+
+  arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "Linux Boot Manager"
+
+  arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux efistub" -u "initrd=/initramfs-linux.img root=LABEL=p_arch rw"
+
+  arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz(-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=LABEL=p_arch rw"
+
+  #arch-chroot ${mountpoint} bootctl install
+
+}
+
 
 
 
@@ -389,29 +423,7 @@ EOT
   grub-mkconfig -o /boot/grub/grub.cfg
 EOT
     else
-      tobootdevice=$(blkid -s PARTUUID -o value ${device}2)
-
-      mkdir -p ${mountpoint}/boot/EFI/systemd/
-      mkdir -p ${mountpoint}/boot/EFI/BOOT/
-      cp ${mountpoint}/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${mountpoint}/boot/EFI/systemd/systemd-bootx64.efi
-      cp ${mountpoint}/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${mountpoint}/boot/EFI/BOOT/BOOTX64.EFI
-
-      mkdir -p ${mountpoint}/boot/loader/entries/
-      echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi.conf
-      echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-      echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-      echo "initrd   /initramfs-linux.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-      echo "options  root=PARTUUID=${tobootdevice} rw rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-
-      echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-      echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-      echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-      echo "initrd   /initramfs-linux-fallback.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-      echo "options  root=PARTUUID=${tobootdevice} rw rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-
-      echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
-      echo "timeout   1" >> ${mountpoint}/boot/loader/loader.conf
-
+      systemdboot
     fi
     if [ "${user}" != "n" ]
     then
@@ -493,13 +505,13 @@ then
   update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install ${mountpoint}/root/arch-graphical-install n "arch-chroot ${mountpoint}" /root/arch-graphical-install
 fi
 echo "umount!!!"
-umount ${mountpoint}/home
-umount ${mountpoint}/opt
-umount ${mountpoint}/var/lib
-umount ${mountpoint}/var
-umount ${mountpoint}/boot
-umount ${mountpoint}
-umount /mnt/btrfs-root
+#umount ${mountpoint}/home
+#umount ${mountpoint}/opt
+#umount ${mountpoint}/var/lib
+#umount ${mountpoint}/var
+#umount ${mountpoint}/boot
+umount -R ${mountpoint}
+#umount /mnt/btrfs-root
 echo ""
 echo "Fertig!!!"
 read -p "Installation erfolgreich Abgeschlossen. Wollen sie den PC NEUSTARTEN?: [Y/n] " sicherheitsabfrage

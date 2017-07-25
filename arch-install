@@ -167,7 +167,7 @@ function btrfsmount() {
   then
     mkdir -p ${mountpoint}/home
     mkdir -p ${mountpoint}/opt
-    mkdir -p ${mountpoint}/var
+    mkdir -p ${mountpoint}/var/lib
     mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/home ${device}2 ${mountpoint}/home
     mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/opt ${device}2 ${mountpoint}/opt
     mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,noexec,subvol=__current/var ${device}2 ${mountpoint}/var

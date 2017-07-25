@@ -217,7 +217,7 @@ function update() {
   ${before} ${of} ${parameters}
 }
 
-funktion systemdboot() {
+function systemdboot() {
   tobootdevice=$(blkid -s PARTUUID -o value ${device}2)
   swappartitionpart=$(blkid -s PARTUUID -o value ${device}3)
 

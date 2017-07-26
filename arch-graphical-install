@@ -534,6 +534,9 @@ done
 #hwclock -w
 #
 
+# last command
+userrechte
+
 echo "Fertig!!!"
 
 exit 0

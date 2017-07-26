@@ -61,12 +61,14 @@ then
     pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk qemu
   fi
 
-  mkdir -p ${work_dir}/${arch}/airootfs
-
   read -p "Sollen die base Packete neu aufgebaut werden? [Y/n] " pacstrap
   if [ "$pacstrap" != "n" ]
   then
     pacman -Syu
+    if [ -d ${work_dir} ]; then
+      rm -Rv ${work_dir}
+    fi
+    mkdir -p ${work_dir}/${arch}/airootfs
     minimalinstallation
     ## nur einmal bereich
     read -p "Soll ein root passwort festgelegt werden? [Y/n] " root

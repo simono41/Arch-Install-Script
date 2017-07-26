@@ -108,6 +108,7 @@ function offlineinstallation {
   echo "COMPRESSION=\"xz\"" >> ${mountpoint}/etc/mkinitcpio.conf
   echo ""
   #cp /etc/X11/xinit/xinitrc ${mountpoint}/etc/X11/xinit/xinitrc
+  echo "exec startxfce4" > ${mountpoint}/etc/X11/xinit/xinitrc
   #
   echo ""
   echo "tmpfs /tmp tmpfs nodev,nosuid 0 0" >> ${mountpoint}/etc/fstab
@@ -150,31 +151,25 @@ function formatieren {
 
 function btrfsmount() {
   [[ -z "${device}" ]] && device=${2}
-  mkdir -p /mnt/btrfs-root
-  mkdir -p ${mountpoint}
 
   if [ "${1}" == "1" ] || [ "${1}" == "all" ]
   then
+    mkdir -p /mnt/btrfs-root
     mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo ${device}2 /mnt/btrfs-root
   fi
 
   if [ "${1}" == "2" ] || [ "${1}" == "all" ]
   then
+    mkdir -p ${mountpoint}
     mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/ROOT ${device}2 ${mountpoint}
-  fi
 
-  if [ "${1}" == "3" ] || [ "${1}" == "all" ]
-  then
     mkdir -p ${mountpoint}/home
     mkdir -p ${mountpoint}/opt
     mkdir -p ${mountpoint}/var/lib
     mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/home ${device}2 ${mountpoint}/home
     mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/opt ${device}2 ${mountpoint}/opt
     mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,noexec,subvol=__current/var ${device}2 ${mountpoint}/var
-  fi
 
-  if [ "${1}" == "4" ] || [ "${1}" == "all" ]
-  then
     mkdir -p ${mountpoint}/var/lib
     mount --bind /mnt/btrfs-root/__current/ROOT/var/lib ${mountpoint}/var/lib
   fi
@@ -197,8 +192,6 @@ function subvolume() {
 
   # Mount
   btrfsmount 2
-  btrfsmount 3
-  btrfsmount 4
 
 }
 

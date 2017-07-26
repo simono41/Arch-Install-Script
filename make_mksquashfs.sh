@@ -176,7 +176,7 @@ then
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/snapshot
 
   # xfce4
-  #  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
+  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
 
   read -p "Soll das System aktualisiert werden? [Y/n] " update
   if [ "$update" != "n" ]

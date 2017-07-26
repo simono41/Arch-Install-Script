@@ -224,11 +224,13 @@ then
   fi
 fi
 #
-read -p "Soll ein Vollinstallation werden?: [Y/n] " vollinstallation
-if [ "$vollinstallation" != "n" ]
-then
-  if [ "$vollinstallation" != "debug" ]; then
-    vollinstallation
+if [ "$1" != "n" ]; then
+  read -p "Soll ein Vollinstallation werden?: [Y/n] " vollinstallation
+  if [ "$vollinstallation" != "n" ]
+  then
+    if [ "$vollinstallation" != "debug" ]; then
+      vollinstallation
+    fi
   fi
 fi
 #

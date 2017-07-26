@@ -237,32 +237,45 @@ fi
 read -p "Soll yaourt mitinstalliert werden?: [Y/n] " yaourt
 if [ "$yaourt" != "n" ]
 then
-  cd /home/"$username"/
-  pwd
-  su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz"
-  pwd
-  su "$username" -c "tar -xvzf package-query.tar.gz"
-  pwd
-  cd package-query
-  pwd
-  su "$username" -c "makepkg -si"
-  pwd
-  cd ..
-  pwd
-  su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz"
-  pwd
-  su "$username" -c "tar -xvzf yaourt.tar.gz"
-  pwd
-  cd yaourt
-  pwd
-  su "$username" -c "makepkg -si"
-  pwd
-  cd ..
-  pwd
-  su "$username" -c "yaourt -Syu"
-  su "$username" -c "mkdir -p /home/"$username"/aur-pakete"
-  su "$username" -c "yaourt -S pamac-aur --export /home/"$username"/aur-pakete"
-  pwd
+  if [ "$yaourt" != "debug" ]; then
+    cd /home/"$username"/
+    pwd
+    su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz"
+    pwd
+    su "$username" -c "tar -xvzf package-query.tar.gz"
+    pwd
+    cd package-query
+    pwd
+    su "$username" -c "makepkg -si"
+    pwd
+    cd ..
+    pwd
+    su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz"
+    pwd
+    su "$username" -c "tar -xvzf yaourt.tar.gz"
+    pwd
+    cd yaourt
+    pwd
+    su "$username" -c "makepkg -si"
+    pwd
+    cd ..
+    pwd
+    su "$username" -c "yaourt -Syu"
+    su "$username" -c "mkdir -p /home/"$username"/aur-pakete"
+    pwd
+  fi
+  #
+  read -p "Soll pamac-aur mitinstalliert werden?: [Y/n] " pamac
+  if [ "$pamac" != "n" ]
+  then
+    su "$username" -c "yaourt -S pamac-aur --export /home/"$username"/aur-pakete"
+  fi
+  #
+  read -p "Soll pacaur mitinstalliert werden?: [Y/n] " pacaur
+  if [ "$pacaur" != "n" ]
+  then
+    su "$username" -c "yaourt -S pacaur --export /home/"$username"/aur-pakete"
+  fi
   #
   read -p "Soll google-chrome mitinstalliert werden?: [Y/n] " chrome
   if [ "$chrome" != "n" ]
@@ -323,6 +336,17 @@ then
   then
     su "$username" -c "yaourt -S audio-recorder --export /home/"$username"/aur-pakete"
   fi
+
+  echo "Sollen sonst noch welche packete aus dem aur installiert werden?"
+  befehl=blablabla
+  while [ "$befehl" != "" ]
+  do
+    read -p "package: " befehl
+    if [ "$befehl" != "" ]; then
+      su "$username" -c "yaourt -S $befehl --export /home/"$username"/aur-pakete"
+    fi
+  done
+
 fi
 echo "Packetliste2 Ende"
 echo "Beginne mit dem Konfigurieren des Systems :D"

@@ -482,7 +482,7 @@ if [ "${name}" == "debug" ]
 then
   echo "DEBEUG-MODUS"
   echo "Wenn kein befehl mehr ausgefuehrt werden muss einfach eingabetaste druecken"
-  echo "Welcher befehl soll ausgefuert werden? : " befehl
+  echo "Welcher befehl soll ausgefuert werden? "
 
   befehl=blablabla
   while [ "$befehl" != "" ]

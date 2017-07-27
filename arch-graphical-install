@@ -520,9 +520,15 @@ then
   systemctl enable avahi-daemon
   systemctl enable org.cups.cupsd.service
   systemctl enable sshd
+  systemctl enable cronie
 fi
+
 # set systemconfiguration
 echo "systemconfiguration"
+#
+echo "cron-job snapshot"
+mkdir -p /var/spool/cron/
+echo "0 18 * * * /usr/bin/snapshot make ROOT home opt var" >> /var/spool/cron/root
 #
 echo "LANG=de_DE.UTF-8" > /etc/locale.conf
 echo "LC_COLLATE=C" >> /etc/locale.conf

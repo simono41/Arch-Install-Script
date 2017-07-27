@@ -2,6 +2,12 @@
 
 set -ex
 
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root" 1>&2
+  exit 1
+fi
+echo "Als root Angemeldet"
+
 pfad="${2}"
 
 if [ "make" == "$1" ]; then
@@ -23,7 +29,7 @@ if [ "$3" == '' ]; then
   datum="$3"
 fi
 
-if [ -d /run/btrfs-root/__current/ROOT.old ]; then
+if [ -d /run/btrfs-root/__current/${pfad}.old ]; then
   btrfs subvolume delete /run/btrfs-root/__current/${pfad}.old
 fi
 mv /run/btrfs-root/__current/${pfad} /run/btrfs-root/__current/${pfad}.old

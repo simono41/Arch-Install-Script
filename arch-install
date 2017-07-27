@@ -23,8 +23,10 @@ function cron() {
 echo "cron-job snapshot"
 mkdir -p ${mountpoint}/var/spool/cron/
 echo "0 18 * * * /usr/bin/snapshot make ROOT home opt var" > ${mountpoint}/var/spool/cron/root
-wget https://raw.githubusercontent.com/simono41/Simon-OS/master/snapshot.sh -t 0 --output-document=${mountpoint}/usr/bin/snapshot
-chmod +x ${mountpoint}/usr/bin/snapshot
+if [ "${update}" != "n" ]; then
+  wget https://raw.githubusercontent.com/simono41/Simon-OS/master/snapshot.sh -t 0 --output-document=${mountpoint}/usr/bin/snapshot
+  chmod +x ${mountpoint}/usr/bin/snapshot
+fi
 }
 
 function swapfile() {
@@ -502,10 +504,12 @@ then
 
 fi
 
-read -p "Soll eine graphische Installation durchgeführt werden? [Y/n] " graphical
-if [ "$graphical" != "n" ]
-then
-  update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install ${mountpoint}/root/arch-graphical-install n "arch-chroot ${mountpoint}" /root/arch-graphical-install
+if [ "${update}" != "n" ]; then
+  read -p "Soll eine graphische Installation durchgeführt werden? [Y/n] " graphical
+  if [ "$graphical" != "n" ]
+    then
+      update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install ${mountpoint}/root/arch-graphical-install n "arch-chroot ${mountpoint}" /root/arch-graphical-install
+  fi
 fi
 echo "umount!!!"
 umount ${mountpoint}/home

@@ -19,6 +19,14 @@ function minimalinstallation() {
 
 }
 
+function cron() {
+echo "cron-job snapshot"
+mkdir -p ${mountpoint}/var/spool/cron/
+echo "0 18 * * * /usr/bin/snapshot make ROOT home opt var" > ${mountpoint}/var/spool/cron/root
+wget https://raw.githubusercontent.com/simono41/Simon-OS/master/snapshot.sh -t 0 --output-document=${mountpoint}/usr/bin/snapshot
+chmod +x ${mountpoint}/usr/bin/snapshot
+}
+
 function swapfile() {
   #swap
   fallocate -l 512M ${mountpoint}/swapfile
@@ -131,6 +139,7 @@ function offlineinstallation {
   echo ""
   echo "${name}"s-os > ${mountpoint}/etc/hostname
   echo ""
+  cron
 }
 
 function formatieren {

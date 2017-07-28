@@ -30,7 +30,7 @@ EOT
 function copyconfig() {
   if [ -d /root/.config ]
   then
-    cp -Rv /root/* /home/"$username"/
+    cp -avr /root/. /home/"$username"/
   fi
 }
 

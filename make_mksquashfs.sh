@@ -92,7 +92,7 @@ then
     while [ "$config" != "" ]
     do
       read -p "Was soll von kopiert werden?: " config
-      [ -n "$config" ] && cp -Rv /home/${username}/${config} ${work_dir}/${arch}/airootfs/root/
+      [ -n "$config" ] && cp -avr /home/${username}/${config} ${work_dir}/${arch}/airootfs/root/
     done
   fi
 

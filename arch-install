@@ -48,7 +48,7 @@ EOT
   echo ""
   if [ -d /home/user/.config ]
   then
-    cp -Rv /home/user/* ${mountpoint}/home/"${username}"/
+    cp -avr /home/user/. ${mountpoint}/home/"${username}"/
   fi
   userrechte
 }

@@ -160,6 +160,7 @@ then
 
   # bash.bashrc
   cp bash.bashrc ${work_dir}/${arch}/airootfs/etc/
+  cp .bashrc ${work_dir}/${arch}/airootfs/root/
 
   # startup
   cp startup ${work_dir}/${arch}/airootfs/usr/bin/

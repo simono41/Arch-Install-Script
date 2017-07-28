@@ -43,7 +43,7 @@ function userrechte() {
 
 function wifi() {
   echo "Treiber werden geladen!"
-  
+
   # WLAN aktivieren auf 100%
 
   modprobe -r rtl8723be

@@ -46,9 +46,9 @@ EOT
   mkdir -p ${mountpoint}/home/"${username}"/
   echo ""${username}" ALL=(ALL) NOPASSWD: ALL" >> ${mountpoint}/etc/sudoers
   echo ""
-  if [ -d ${mountpoint}/home/user/.config ]
+  if [ -d /home/user/.config ]
   then
-    cp -Rv ${mountpoint}/home/user/* ${mountpoint}/home/"${username}"/
+    cp -Rv /home/user/* ${mountpoint}/home/"${username}"/
   fi
   userrechte
 }

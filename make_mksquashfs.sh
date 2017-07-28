@@ -91,8 +91,8 @@ then
     config=blablabla
     while [ "$config" != "" ]
     do
-      read -p "Was soll von der .config kopiert werden?: " config
-      [ -n "$config" ] && cp -Rv /home/${username}/.config/${config} ${work_dir}/${arch}/airootfs/root/.config/
+      read -p "Was soll von kopiert werden?: " config
+      [ -n "$config" ] && cp -Rv /home/${username}/${config} ${work_dir}/${arch}/airootfs/root/
     done
   fi
 

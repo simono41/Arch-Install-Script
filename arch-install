@@ -156,8 +156,6 @@ function formatieren {
   #mount ${device}2 ${mountpoint}
   echo "BTRFS subvolume-mount"
   subvolume
-  mkdir -p ${mountpoint}/boot
-  mount ${device}1 ${mountpoint}/boot
 }
 
 function btrfsmount() {
@@ -183,6 +181,11 @@ function btrfsmount() {
 
     mkdir -p ${mountpoint}/var/lib
     mount --bind /mnt/btrfs-root/__current/ROOT/var/lib ${mountpoint}/var/lib
+
+    # boot mount
+    mkdir -p ${mountpoint}/boot
+    mount ${device}1 ${mountpoint}/boot
+
   fi
 }
 

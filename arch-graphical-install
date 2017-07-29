@@ -521,6 +521,9 @@ then
   systemctl enable org.cups.cupsd.service
   systemctl enable sshd
   systemctl enable cronie
+  echo "Bitte OpenVPN config in die /etc/openvpn/client/client.conf kopieren!!!"
+  ln /lib/systemd/system/openvpn-client@.service /lib/systemd/system/openvpn-client@client.service
+  systemctl enable openvpn-client@client.service
 fi
 
 # set systemconfiguration

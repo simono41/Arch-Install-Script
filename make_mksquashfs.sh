@@ -17,7 +17,7 @@ install_dir=arch
 arch=$(uname -m)
 
 function vollinstallation() {
-  wget https://raw.githubusercontent.com/simono41/Simon-OS/master/packages_all.txt -t 0 --output-document=/root/packages_all.$
+  wget https://raw.githubusercontent.com/simono41/Simon-OS/master/packages_all.txt -t 0 --output-document=/root/packages_all.txt
   pacman -Sw $(cat /root/packages_all.txt)
 }
 

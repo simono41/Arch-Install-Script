@@ -185,7 +185,7 @@ then
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/snapshot
 
   # nano
-  echo "include "/usr/share/nano/*.nanorc"" >> ${work_dir}/${arch}/airootfs/etc/.nanorc
+  echo "include "/usr/share/nano/*.nanorc"" > ${work_dir}/${arch}/airootfs/etc/.nanorc
 
   # xfce4
   echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc

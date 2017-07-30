@@ -263,6 +263,86 @@ function systemdboot() {
 
 }
 
+function abfrage() {
+
+  read -p "Wie heissen sie?: " name
+  if [ "${name}" != "debug" ]
+  then
+    # Partionierung
+    # GPT oder MBR
+    echo ""
+    echo "GPT = GUID Partition Table 64 Bit UEFI"
+    echo "Empfohlen fuer Neuere PCs"
+    echo "WICHTIG DAFUER MUESSEN SIE IM BOOTMENUE DEN UEFI USB_STICK AUSGEWAEHLT HABEN SONST KANN KEIN UEFI BOOTEINTRAG ERSTELLT WERDEN!!!"
+    echo ""
+    echo "MBR = Master Boot Record 32 Bit Legacy"
+    echo "Empfohlen fuer Alte PCs und portable USB-Sticks"
+    echo ""
+    echo "Bitte die Eingaben klein schreiben :D !!!"
+    echo ""
+    read -p "Wie moechten sie ihre Festplatte partioniert haben: [gpt/MBR] " Partition
+    if [ "${Partition}" == "gpt" ]
+    then
+      read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/GRUB] : " boot
+    fi
+    fdisk -l
+    read -p "Geben sie eine Festplatte an: /dev/sda " device
+    read -p "Welches Passwort soll der Root erhalten?: root " pass
+    read -p "Soll ein neuer Benutzer erstellt werden?: [Y/n] " user
+    if [ "${user}" != "n" ]
+    then
+      read -p "Wie soll der neue Benutzer heissen?: " username
+      read -p "Welches Passwort soll der neue Benutzer haben?: " userpass
+    fi
+    read -p "Wie groß soll die System-Partition sein? +20G : " speicher
+    read -p "Soll eine Offline-Installation durchgefuehrt werden? : [Y/n] " offline
+    #
+    [[ -z "${name}" ]] && name=arch-linux
+    [[ -z "${Partition}" ]] && Partition=mbr
+    [[ -z "${boot}" ]] && boot=grub
+    [[ -z "${device}" ]] && device=/dev/sda
+    [[ -z "${pass}" ]] && pass=root
+    [[ -z "${username}" ]] && username=user
+    [[ -z "${userpass}" ]] && userpass=user
+    [[ -z "${speicher}" ]] && speicher="+20G"
+    if [ "${offline}" != "n" ]
+    then
+      install="offline"
+    else
+      install="online"
+    fi
+    #
+    echo "Name: ${name}"
+    echo "Partionsart: ${Partition}"
+    echo "Bootloader: ${boot}"
+    echo "Laufwerk: ${device}"
+    echo "System-Partition ${speicher}"
+    echo "Rootpasswort: ${pass}"
+    echo "Architektur: $(uname -m)"
+    echo "Installation: ${install}"
+    if [ "${user}" != "n" ]
+    then
+      echo "Username: ${username}"
+      echo "Userpasswort: ${userpass}"
+    fi
+    #
+    read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
+    if [ "$sicherheitsabfrage" != "y" ]
+    then
+      echo "ABGEBROCHEN"
+      exit 1
+    fi
+
+
+
+
+
+
+
+
+
+}
+
 
 
 
@@ -283,102 +363,36 @@ then
   fi
 fi
 
-# debug = Installation überspringen zu arch-graphical-install
-read -p "Wie heissen sie?: " name
-if [ "${name}" != "debug" ]
-then
-  # Partionierung
-  # GPT oder MBR
-  echo ""
-  echo "GPT = GUID Partition Table 64 Bit UEFI"
-  echo "Empfohlen fuer Neuere PCs"
-  echo "WICHTIG DAFUER MUESSEN SIE IM BOOTMENUE DEN UEFI USB_STICK AUSGEWAEHLT HABEN SONST KANN KEIN UEFI BOOTEINTRAG ERSTELLT WERDEN!!!"
-  echo ""
-  echo "MBR = Master Boot Record 32 Bit Legacy"
-  echo "Empfohlen fuer Alte PCs und portable USB-Sticks"
-  echo ""
-  echo "Bitte die Eingaben klein schreiben :D !!!"
-  echo ""
-  read -p "Wie moechten sie ihre Festplatte partioniert haben: [gpt/MBR] " Partition
-  if [ "${Partition}" == "gpt" ]
-  then
-    read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/GRUB] : " boot
-  fi
-  fdisk -l
-  read -p "Geben sie eine Festplatte an: /dev/sda " device
-  read -p "Welches Passwort soll der Root erhalten?: root " pass
-  read -p "Soll ein neuer Benutzer erstellt werden?: [Y/n] " user
-  if [ "${user}" != "n" ]
-  then
-    read -p "Wie soll der neue Benutzer heissen?: " username
-    read -p "Welches Passwort soll der neue Benutzer haben?: " userpass
-  fi
-  read -p "Wie groß soll die System-Partition sein? +20G : " speicher
-  read -p "Soll eine Offline-Installation durchgefuehrt werden? : [Y/n] " offline
-  #
-  [[ -z "${name}" ]] && name=arch-linux
-  [[ -z "${Partition}" ]] && Partition=mbr
-  [[ -z "${boot}" ]] && boot=grub
-  [[ -z "${device}" ]] && device=/dev/sda
-  [[ -z "${pass}" ]] && pass=root
-  [[ -z "${username}" ]] && username=user
-  [[ -z "${userpass}" ]] && userpass=user
-  [[ -z "${speicher}" ]] && speicher="+20G"
-  if [ "${offline}" != "n" ]
-  then
-    install="offline"
-  else
-    install="online"
-  fi
-  #
-  echo "Name: ${name}"
-  echo "Partionsart: ${Partition}"
-  echo "Bootloader: ${boot}"
-  echo "Laufwerk: ${device}"
-  echo "System-Partition ${speicher}"
-  echo "Rootpasswort: ${pass}"
-  echo "Architektur: $(uname -m)"
-  echo "Installation: ${install}"
-  if [ "${user}" != "n" ]
-  then
-    echo "Username: ${username}"
-    echo "Userpasswort: ${userpass}"
-  fi
-  #
-  read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
-  if [ "$sicherheitsabfrage" != "y" ]
-  then
-    echo "ABGEBROCHEN"
-    exit 1
-  fi
-  #
-  if cat /proc/mounts | grep ${device}1 > /dev/null; then
-    echo "gemountet"
-    umount ${device}1
-  else
-    echo "nicht gemountet"
-  fi
-  #
-  if cat /proc/mounts | grep ${device}2 > /dev/null; then
-    echo "gemountet"
-    umount ${device}2
-  else
-    echo "nicht gemountet"
-  fi
-  #
-  if cat /proc/mounts | grep ${device}3 > /dev/null; then
-    echo "gemountet"
-    umount ${device}2
-  else
-    echo "nicht gemountet"
-  fi
-  #
-  if cat /proc/mounts | grep /mnt > /dev/null; then
-    echo "gemountet"
-    umount /mnt
-  else
-    echo "nicht gemountet"
-  fi
+# debug = Installation überspringen zu arch-graphical-install und DEBEUG-MODUS
+abfrage
+#
+if cat /proc/mounts | grep ${device}1 > /dev/null; then
+  echo "gemountet"
+  umount ${device}1
+else
+  echo "nicht gemountet"
+fi
+#
+if cat /proc/mounts | grep ${device}2 > /dev/null; then
+  echo "gemountet"
+  umount ${device}2
+else
+  echo "nicht gemountet"
+fi
+#
+if cat /proc/mounts | grep ${device}3 > /dev/null; then
+  echo "gemountet"
+  umount ${device}2
+else
+  echo "nicht gemountet"
+fi
+#
+if cat /proc/mounts | grep /mnt > /dev/null; then
+  echo "gemountet"
+  umount /mnt
+else
+  echo "nicht gemountet"
+fi
   #
   echo "Eine Säuberung erhört die chance der Installation auf dem System."
   echo "Es kann eine Zeit lang dauern!"

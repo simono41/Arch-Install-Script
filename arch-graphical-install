@@ -558,6 +558,8 @@ left_meter_modes=1 1 1
 right_meters=Tasks LoadAverage Uptime
 right_meter_modes=2 2 2 " > /home/"$username"/.htoprc
 
+cp /home/"$username"/.htoprc /root/
+
 userrechte
 
 befehl=null

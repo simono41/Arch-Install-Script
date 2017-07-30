@@ -154,7 +154,7 @@ function formatieren {
   mkswap -L p_swap ${device}3
   #echo "EXT4 mount"
   #mount ${device}2 ${mountpoint}
-  echo "BTRFS subvolume-mount"
+  echo "BTRFS subvolume-mount + BOOT mount"
   subvolume
 }
 
@@ -259,7 +259,7 @@ function systemdboot() {
 
   arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT"
 
-  #arch-chroot ${mountpoint} bootctl install
+  arch-chroot ${mountpoint} bootctl install
 
 }
 
@@ -393,6 +393,7 @@ if cat /proc/mounts | grep /mnt > /dev/null; then
 else
   echo "nicht gemountet"
 fi
+
   #
   echo "Eine Säuberung erhört die chance der Installation auf dem System."
   echo "Es kann eine Zeit lang dauern!"

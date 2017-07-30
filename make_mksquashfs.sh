@@ -184,12 +184,6 @@ then
   cp snapshot.sh ${work_dir}/${arch}/airootfs/usr/bin/snapshot
   chmod +x ${work_dir}/${arch}/airootfs/usr/bin/snapshot
 
-  # nano
-  echo "include "/usr/share/nano/*.nanorc"" > ${work_dir}/${arch}/airootfs/etc/.nanorc
-
-  # xfce4
-  echo "exec startxfce4" > ${work_dir}/${arch}/airootfs/etc/X11/xinit/xinitrc
-
   read -p "Soll das System aktualisiert werden? [Y/n] " update
   if [ "$update" != "n" ]
   then

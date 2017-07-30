@@ -353,9 +353,9 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 # set desktop
 echo "set desktops"
 #
-read -p "Welcher desktop soll verwendet werden? all, lxde, lxde-gtk3, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
+read -p "Welcher desktop soll verwendet werden? lxde, lxde-gtk3, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
 
-if [ "$rootstart" == "gnome" ] || [ "$rootstart" == "all" ]
+if [ "$rootstart" == "gnome" ]
 then
   pacman -Sy gnome gnome-extra gnuchess system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "exec gnome-session" > /etc/X11/xinit/xinitrc
@@ -369,9 +369,7 @@ then
   #
   gnomeconfig
   #
-fi
-
-if [ "$rootstart" == "gnome-flashback" ] || [ "$rootstart" == "all" ]
+elif [ "$rootstart" == "gnome-flashback" ]
 then
   pacman -Sy gnome-flashback gnome gnome-extra gnuchess system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
@@ -379,39 +377,27 @@ then
   #
   gnomeconfig
   #
-fi
-
-if [ "$rootstart" == "cinnamon" ] || [ "$rootstart" == "all" ]
+elif [ "$rootstart" == "cinnamon" ]
 then
   pacman -Sy cinnamon gnome gnome-extra system-config-printer blueman gnome-power-manager gnome-screensaver
   echo "exec cinnamon-session" > /etc/X11/xinit/xinitrc
-fi
-
-if [ "$rootstart" == "mate" ] || [ "$rootstart" == "all" ]
+elif [ "$rootstart" == "mate" ]
 then
   pacman -Sy mate mate-extra system-config-printer blueman mate-power-manager gtk-engine-murrine
   echo "exec mate-session" > /etc/X11/xinit/xinitrc
-fi
-
-if [ "$rootstart" == "lxde" ] || [ "$rootstart" == "all" ]
+elif [ "$rootstart" == "lxde" ]
 then
   pacman -Sy lxde xfce4-power-manager
   echo "exec startlxde" > /etc/X11/xinit/xinitrc
-fi
-
-if [ "$rootstart" == "lxde-gtk3" ]
+elif [ "$rootstart" == "lxde-gtk3" ]
 then
   pacman -Sy lxde-gtk3 xfce4-power-manager
   echo "exec startlxde" > /etc/X11/xinit/xinitrc
-fi
-
-if [ "$rootstart" == "lxqt" ] || [ "$rootstart" == "all" ]
+elif [ "$rootstart" == "lxqt" ]
 then
   pacman -Sy lxqt lxqt-powermanagement oxygen-icons breeze-icons
   echo "exec startlxqt" > /etc/X11/xinit/xinitrc
-fi
-
-if [ "$rootstart" == "xfce4" ] || [ "$rootstart" == "all" ]
+elif [ "$rootstart" == "xfce4" ]
 then
   pacman -Sy xfce4 xfce4-goodies human-icon-theme xfce4-power-manager xfce4-pulseaudio-plugin \
   xfce4-sensors-plugin libxnvctrl xfce4-xkb-plugin arc-gtk-theme \
@@ -421,17 +407,16 @@ then
   #
   gnomeconfig
   #
-fi
-
-if [ "$rootstart" == "kde" ] || [ "$rootstart" == "all" ]
+elif [ "$rootstart" == "kde" ]
 then
   pacman -Sy plasma kde-l10n-de kde-applications
   echo "exec startkde" > /etc/X11/xinit/xinitrc
-fi
-
-if [ "$rootstart" == "all" ]
+elif [ "$rootstart" == "all" ]
 then
   echo "exec startlxde" > /etc/X11/xinit/xinitrc
+else
+  # xfce4
+  echo "exec startxfce4" > /etc/X11/xinit/xinitrc
 fi
 
 #
@@ -545,6 +530,11 @@ locale-gen
 #
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+
+# custom-installer
+
+# nano
+echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
 
 userrechte
 

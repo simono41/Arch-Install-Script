@@ -264,10 +264,7 @@ function systemdboot() {
 }
 
 function abfrage() {
-
   read -p "Wie heissen sie?: " name
-  if [ "${name}" != "debug" ]
-  then
     # Partionierung
     # GPT oder MBR
     echo ""
@@ -332,15 +329,6 @@ function abfrage() {
       echo "ABGEBROCHEN"
       exit 1
     fi
-
-
-
-
-
-
-
-
-
 }
 
 
@@ -365,6 +353,8 @@ fi
 
 # debug = Installation überspringen zu arch-graphical-install und DEBEUG-MODUS
 abfrage
+if [ "${name}" != "debug" ]
+then
 #
 if cat /proc/mounts | grep ${device}1 > /dev/null; then
   echo "gemountet"

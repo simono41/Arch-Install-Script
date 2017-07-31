@@ -3,268 +3,268 @@
 set -ex
 
 if [[ $EUID -ne 0 ]]; then
-  echo "This script must be run as root" 1>&2
-  exit 1
+    echo "This script must be run as root" 1>&2
+    exit 1
 fi
 echo "Als root Angemeldet"
 
 mountpoint="/mnt/btrfs-current"
 
 function minimalinstallation() {
-  #Mehrzeiler
-  while read line
-  do
-    pacstrap -c -d -G -M ${mountpoint} $line
-  done < /etc/packages_all.txt
-
+    #Mehrzeiler
+    while read line
+    do
+        pacstrap -c -d -G -M ${mountpoint} $line
+    done < /etc/packages_all.txt
+    
 }
 
 function cron() {
-echo "cron-job snapshot"
-mkdir -p ${mountpoint}/var/spool/cron/
-echo "0 18 * * * /usr/bin/snapshot make ROOT home opt var" > ${mountpoint}/var/spool/cron/root
-if [ "${update}" != "n" ]; then
-  wget https://raw.githubusercontent.com/simono41/Simon-OS/master/snapshot.sh -t 0 --output-document=${mountpoint}/usr/bin/snapshot
-  chmod +x ${mountpoint}/usr/bin/snapshot
-fi
+    echo "cron-job snapshot"
+    mkdir -p ${mountpoint}/var/spool/cron/
+    echo "0 18 * * * /usr/bin/snapshot make ROOT home opt var" > ${mountpoint}/var/spool/cron/root
+    if [ "${update}" != "n" ]; then
+        wget https://raw.githubusercontent.com/simono41/Simon-OS/master/snapshot.sh -t 0 --output-document=${mountpoint}/usr/bin/snapshot
+        chmod +x ${mountpoint}/usr/bin/snapshot
+    fi
 }
 
 function swapfile() {
-  #swap
-  fallocate -l 512M ${mountpoint}/swapfile
-  chmod 600 ${mountpoint}/swapfile
-  mkswap ${mountpoint}/swapfile
-  echo "/swapfile none swap defaults 0 0" >> ${mountpoint}/etc/fstab
+    #swap
+    fallocate -l 512M ${mountpoint}/swapfile
+    chmod 600 ${mountpoint}/swapfile
+    mkswap ${mountpoint}/swapfile
+    echo "/swapfile none swap defaults 0 0" >> ${mountpoint}/etc/fstab
 }
 
 function adduser() {
-  arch-chroot ${mountpoint} useradd -m -g users -s /bin/bash ${username}
+    arch-chroot ${mountpoint} useradd -m -g users -s /bin/bash ${username}
 arch-chroot ${mountpoint} passwd ${username} <<EOT
 ${userpass}
 ${userpass}
 EOT
-  mkdir -p ${mountpoint}/home/"${username}"/
-  echo ""${username}" ALL=(ALL) NOPASSWD: ALL" >> ${mountpoint}/etc/sudoers
-  echo ""
-  if [ -d /home/user/.config ]
-  then
-    cp -avr /home/user/. ${mountpoint}/home/"${username}"/
-  fi
-  userrechte
+    mkdir -p ${mountpoint}/home/"${username}"/
+    echo ""${username}" ALL=(ALL) NOPASSWD: ALL" >> ${mountpoint}/etc/sudoers
+    echo ""
+    if [ -d /home/user/.config ]
+    then
+        cp -avr /home/user/. ${mountpoint}/home/"${username}"/
+    fi
+    userrechte
 }
 
 function userrechte() {
-  arch-chroot ${mountpoint} chmod 770 -R -v /home/"${username}"/
-  arch-chroot ${mountpoint} chown -R -v "${username}":users /home/"${username}"
-  arch-chroot ${mountpoint} chmod -R -v u+rwX /home/"${username}"
-  arch-chroot ${mountpoint} chmod 755 /home/"${username}"
+    arch-chroot ${mountpoint} chmod 770 -R -v /home/"${username}"/
+    arch-chroot ${mountpoint} chown -R -v "${username}":users /home/"${username}"
+    arch-chroot ${mountpoint} chmod -R -v u+rwX /home/"${username}"
+    arch-chroot ${mountpoint} chmod 755 /home/"${username}"
 }
 
 function autostart() {
-  echo "if [ \$(tty) = "/dev/tty1" ]; then" > ${mountpoint}/home/"${username}"/.bash_profile
-  echo "startx" >> ${mountpoint}/home/"${username}"/.bash_profile
-  echo "fi" >> ${mountpoint}/home/"${username}"/.bash_profile
-  echo "[Service]" > ${mountpoint}/etc/systemd/system/getty\@tty1.service.d/autologin.conf
-  echo "ExecStart=" >> ${mountpoint}/etc/systemd/system/getty\@tty1.service.d/autologin.conf
-  echo "ExecStart=-/sbin/agetty --noclear -a ${username} %I 38400 linux" >> ${mountpoint}/etc/systemd/system/getty\@tty1.service.d/autologin.conf
+    echo "if [ \$(tty) = "/dev/tty1" ]; then" > ${mountpoint}/home/"${username}"/.bash_profile
+    echo "startx" >> ${mountpoint}/home/"${username}"/.bash_profile
+    echo "fi" >> ${mountpoint}/home/"${username}"/.bash_profile
+    echo "[Service]" > ${mountpoint}/etc/systemd/system/getty\@tty1.service.d/autologin.conf
+    echo "ExecStart=" >> ${mountpoint}/etc/systemd/system/getty\@tty1.service.d/autologin.conf
+    echo "ExecStart=-/sbin/agetty --noclear -a ${username} %I 38400 linux" >> ${mountpoint}/etc/systemd/system/getty\@tty1.service.d/autologin.conf
 }
 
 function removeinstaller {
-  echo ""
-  if [ -f ${mountpoint}/usr/share/applications/arch-install.desktop ]
-  then
-    rm ${mountpoint}/usr/share/applications/arch-install.desktop
-  fi
-  echo ""
-  if [ -f ${mountpoint}/root/Schreibtisch/arch-install.desktop ]
-  then
-    rm ${mountpoint}/root/Schreibtisch/arch-install.desktop
-  fi
-  echo ""
-  if [ -f ${mountpoint}/home/user/Schreibtisch/arch-install.desktop ]
-  then
-    rm ${mountpoint}/home/user/Schreibtisch/arch-install.desktop
-  fi
-  echo ""
-  if [ -f ${mountpoint}/root/Desktop/arch-install.desktop ]
-  then
-    rm ${mountpoint}/root/Desktop/arch-install.desktop
-  fi
-  echo ""
-  if [ -f ${mountpoint}/home/user/Desktop/arch-install.desktop ]
-  then
-    rm ${mountpoint}/home/user/Desktop/arch-install.desktop
-  fi
-  echo ""
+    echo ""
+    if [ -f ${mountpoint}/usr/share/applications/arch-install.desktop ]
+    then
+        rm ${mountpoint}/usr/share/applications/arch-install.desktop
+    fi
+    echo ""
+    if [ -f ${mountpoint}/root/Schreibtisch/arch-install.desktop ]
+    then
+        rm ${mountpoint}/root/Schreibtisch/arch-install.desktop
+    fi
+    echo ""
+    if [ -f ${mountpoint}/home/user/Schreibtisch/arch-install.desktop ]
+    then
+        rm ${mountpoint}/home/user/Schreibtisch/arch-install.desktop
+    fi
+    echo ""
+    if [ -f ${mountpoint}/root/Desktop/arch-install.desktop ]
+    then
+        rm ${mountpoint}/root/Desktop/arch-install.desktop
+    fi
+    echo ""
+    if [ -f ${mountpoint}/home/user/Desktop/arch-install.desktop ]
+    then
+        rm ${mountpoint}/home/user/Desktop/arch-install.desktop
+    fi
+    echo ""
 }
 
 function offlineinstallation {
-  if [ "${offline}" != "n" ]
-  then
-    if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
+    if [ "${offline}" != "n" ]
     then
-      echo "Es ist kein copytoram System."
-      unsquashfs -f -d ${mountpoint} /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
+        if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
+        then
+            echo "Es ist kein copytoram System."
+            unsquashfs -f -d ${mountpoint} /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
+        else
+            echo "Es ist ein copytoram System."
+            unsquashfs -f -d ${mountpoint} /run/archiso/copytoram/airootfs.sfs
+        fi
     else
-      echo "Es ist ein copytoram System."
-      unsquashfs -f -d ${mountpoint} /run/archiso/copytoram/airootfs.sfs
+        minimalinstallation
     fi
-  else
-    minimalinstallation
-  fi
-  echo ""
-  echo "MODULES=\"i915 radeon\"" > ${mountpoint}/etc/mkinitcpio.conf
-  echo "HOOKS=\"base udev resume block filesystems keyboard\"" >> ${mountpoint}/etc/mkinitcpio.conf
-  echo "COMPRESSION=\"xz\"" >> ${mountpoint}/etc/mkinitcpio.conf
-  echo ""
-  #cp /etc/X11/xinit/xinitrc ${mountpoint}/etc/X11/xinit/xinitrc
-  echo "exec startxfce4" > ${mountpoint}/etc/X11/xinit/xinitrc
-  #
-  echo ""
-  echo "tmpfs /tmp tmpfs nodev,nosuid 0 0" >> ${mountpoint}/etc/fstab
-  echo "tmpfs /dev/shm tmpfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab
-
-  genfstab -Up ${mountpoint} >> ${mountpoint}/etc/fstab
-
-  rootbind=$(blkid -s UUID -o value ${device}2)
-  mkdir -p ${mountpoint}/run/btrfs-root
-  echo "UUID=${rootbind} /run/btrfs-root/ btrfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab
-
-  grep -v "/var/lib" < ${mountpoint}/etc/fstab > fstab.neu; mv fstab.neu ${mountpoint}/etc/fstab
-
-  echo "/run/btrfs-root/__current/ROOT/var/lib /var/lib none bind 0 0" >> ${mountpoint}/etc/fstab
-
-  swappartition=$(blkid -s UUID -o value ${device}3)
-  echo "UUID=${swappartition} none swap defaults 0 0" >> ${mountpoint}/etc/fstab
-  #echo "swap"
-  #swap
-  echo ""
-  echo "${name}"s-os > ${mountpoint}/etc/hostname
-  echo ""
-  cron
+    echo ""
+    echo "MODULES=\"i915 radeon\"" > ${mountpoint}/etc/mkinitcpio.conf
+    echo "HOOKS=\"base udev resume block filesystems keyboard\"" >> ${mountpoint}/etc/mkinitcpio.conf
+    echo "COMPRESSION=\"xz\"" >> ${mountpoint}/etc/mkinitcpio.conf
+    echo ""
+    #cp /etc/X11/xinit/xinitrc ${mountpoint}/etc/X11/xinit/xinitrc
+    echo "exec startxfce4" > ${mountpoint}/etc/X11/xinit/xinitrc
+    #
+    echo ""
+    echo "tmpfs /tmp tmpfs nodev,nosuid 0 0" >> ${mountpoint}/etc/fstab
+    echo "tmpfs /dev/shm tmpfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab
+    
+    genfstab -Up ${mountpoint} >> ${mountpoint}/etc/fstab
+    
+    rootbind=$(blkid -s UUID -o value ${device}2)
+    mkdir -p ${mountpoint}/run/btrfs-root
+    echo "UUID=${rootbind} /run/btrfs-root/ btrfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab
+    
+    grep -v "/var/lib" < ${mountpoint}/etc/fstab > fstab.neu; mv fstab.neu ${mountpoint}/etc/fstab
+    
+    echo "/run/btrfs-root/__current/ROOT/var/lib /var/lib none bind 0 0" >> ${mountpoint}/etc/fstab
+    
+    swappartition=$(blkid -s UUID -o value ${device}3)
+    echo "UUID=${swappartition} none swap defaults 0 0" >> ${mountpoint}/etc/fstab
+    #echo "swap"
+    #swap
+    echo ""
+    echo "${name}"s-os > ${mountpoint}/etc/hostname
+    echo ""
+    cron
 }
 
 function formatieren {
-  #boot
-  #root
-  #swap
-  echo "format"
-  mkfs.fat -F32 ${device}1
-  mkfs.btrfs -f -L p_arch ${device}2
-  mkswap -L p_swap ${device}3
-  #echo "EXT4 mount"
-  #mount ${device}2 ${mountpoint}
-  echo "BTRFS subvolume-mount + BOOT mount"
-  subvolume
+    #boot
+    #root
+    #swap
+    echo "format"
+    mkfs.fat -F32 ${device}1
+    mkfs.btrfs -f -L p_arch ${device}2
+    mkswap -L p_swap ${device}3
+    #echo "EXT4 mount"
+    #mount ${device}2 ${mountpoint}
+    echo "BTRFS subvolume-mount + BOOT mount"
+    subvolume
 }
 
 function btrfsmount() {
-  [[ -z "${device}" ]] && device=${2}
-
-  if [ "${1}" == "1" ] || [ "${1}" == "all" ]
-  then
-    mkdir -p /mnt/btrfs-root
-    mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo ${device}2 /mnt/btrfs-root
-  fi
-
-  if [ "${1}" == "2" ] || [ "${1}" == "all" ]
-  then
-    mkdir -p ${mountpoint}
-    mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/ROOT ${device}2 ${mountpoint}
-
-    mkdir -p ${mountpoint}/home
-    mkdir -p ${mountpoint}/opt
-    mkdir -p ${mountpoint}/var/lib
-    mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/home ${device}2 ${mountpoint}/home
-    mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/opt ${device}2 ${mountpoint}/opt
-    mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,noexec,subvol=__current/var ${device}2 ${mountpoint}/var
-
-    mkdir -p ${mountpoint}/var/lib
-    mount --bind /mnt/btrfs-root/__current/ROOT/var/lib ${mountpoint}/var/lib
-
-    # boot mount
-    mkdir -p ${mountpoint}/boot
-    mount ${device}1 ${mountpoint}/boot
-
-  fi
+    [[ -z "${device}" ]] && device=${2}
+    
+    if [ "${1}" == "1" ] || [ "${1}" == "all" ]
+    then
+        mkdir -p /mnt/btrfs-root
+        mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo ${device}2 /mnt/btrfs-root
+    fi
+    
+    if [ "${1}" == "2" ] || [ "${1}" == "all" ]
+    then
+        mkdir -p ${mountpoint}
+        mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/ROOT ${device}2 ${mountpoint}
+        
+        mkdir -p ${mountpoint}/home
+        mkdir -p ${mountpoint}/opt
+        mkdir -p ${mountpoint}/var/lib
+        mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/home ${device}2 ${mountpoint}/home
+        mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/opt ${device}2 ${mountpoint}/opt
+        mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,noexec,subvol=__current/var ${device}2 ${mountpoint}/var
+        
+        mkdir -p ${mountpoint}/var/lib
+        mount --bind /mnt/btrfs-root/__current/ROOT/var/lib ${mountpoint}/var/lib
+        
+        # boot mount
+        mkdir -p ${mountpoint}/boot
+        mount ${device}1 ${mountpoint}/boot
+        
+    fi
 }
 
 function subvolume() {
-
-  # Mount
-  btrfsmount 1
-
-  # Create
-  mkdir -p /mnt/btrfs-root/__snapshot
-  mkdir -p /mnt/btrfs-root/__current
-  btrfs subvolume create /mnt/btrfs-root/__current/ROOT
-  btrfs subvolume create /mnt/btrfs-root/__current/home
-  btrfs subvolume create /mnt/btrfs-root/__current/opt
-  btrfs subvolume create /mnt/btrfs-root/__current/var
-
-  btrfs subvolume list -p /mnt/btrfs-root
-
-  # Mount
-  btrfsmount 2
-
+    
+    # Mount
+    btrfsmount 1
+    
+    # Create
+    mkdir -p /mnt/btrfs-root/__snapshot
+    mkdir -p /mnt/btrfs-root/__current
+    btrfs subvolume create /mnt/btrfs-root/__current/ROOT
+    btrfs subvolume create /mnt/btrfs-root/__current/home
+    btrfs subvolume create /mnt/btrfs-root/__current/opt
+    btrfs subvolume create /mnt/btrfs-root/__current/var
+    
+    btrfs subvolume list -p /mnt/btrfs-root
+    
+    # Mount
+    btrfsmount 2
+    
 }
 
 function update() {
-  #statements
-  local if="${1}"
-  local of="${2}"
-  local parameters="${3}"
-  local before="${4}"
-  if [ -f "${of}" ]
-  then
-    rm ${of}
-  else
-    echo "${of} nicht vorhanden!"
-  fi
-  wget ${if} -t 0 --output-document=${of}
-  chmod +x ${of}
-  [[ -n "${5}" ]] && of=${5}
-  ${before} ${of} ${parameters}
+    #statements
+    local if="${1}"
+    local of="${2}"
+    local parameters="${3}"
+    local before="${4}"
+    if [ -f "${of}" ]
+    then
+        rm ${of}
+    else
+        echo "${of} nicht vorhanden!"
+    fi
+    wget ${if} -t 0 --output-document=${of}
+    chmod +x ${of}
+    [[ -n "${5}" ]] && of=${5}
+    ${before} ${of} ${parameters}
 }
 
 function systemdboot() {
-  tobootdevice=$(blkid -s PARTUUID -o value ${device}2)
-  swappartitionpart=$(blkid -s PARTUUID -o value ${device}3)
-
-
-  mkdir -p ${mountpoint}/boot/EFI/systemd/
-  mkdir -p ${mountpoint}/boot/EFI/BOOT/
-  cp ${mountpoint}/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${mountpoint}/boot/EFI/systemd/systemd-bootx64.efi
-  cp ${mountpoint}/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${mountpoint}/boot/EFI/BOOT/BOOTX64.EFI
-
-  mkdir -p ${mountpoint}/boot/loader/entries/
-  echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi.conf
-  echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-  echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-  echo "initrd   /initramfs-linux.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-  echo "options  root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-
-  echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-  echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-  echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-  echo "initrd   /initramfs-linux-fallback.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-  echo "options  root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-
-  echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
-  echo "timeout   1" >> ${mountpoint}/boot/loader/loader.conf
-
-  arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "Linux Boot Manager"
-
-  arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux efistub" -u "initrd=/initramfs-linux.img root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT"
-
-  arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT"
-
-  arch-chroot ${mountpoint} bootctl install
-
+    tobootdevice=$(blkid -s PARTUUID -o value ${device}2)
+    swappartitionpart=$(blkid -s PARTUUID -o value ${device}3)
+    
+    
+    mkdir -p ${mountpoint}/boot/EFI/systemd/
+    mkdir -p ${mountpoint}/boot/EFI/BOOT/
+    cp ${mountpoint}/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${mountpoint}/boot/EFI/systemd/systemd-bootx64.efi
+    cp ${mountpoint}/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${mountpoint}/boot/EFI/BOOT/BOOTX64.EFI
+    
+    mkdir -p ${mountpoint}/boot/loader/entries/
+    echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi.conf
+    echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+    echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+    echo "initrd   /initramfs-linux.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+    echo "options  root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+    
+    echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+    echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+    echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+    echo "initrd   /initramfs-linux-fallback.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+    echo "options  root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+    
+    echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
+    echo "timeout   1" >> ${mountpoint}/boot/loader/loader.conf
+    
+    arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "Linux Boot Manager"
+    
+    arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux efistub" -u "initrd=/initramfs-linux.img root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT"
+    
+    arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT"
+    
+    arch-chroot ${mountpoint} bootctl install
+    
 }
 
 function abfrage() {
-  read -p "Wie heissen sie?: " name
+    read -p "Wie heissen sie?: " name
     # Partionierung
     # GPT oder MBR
     echo ""
@@ -280,7 +280,7 @@ function abfrage() {
     read -p "Wie moechten sie ihre Festplatte partioniert haben: [gpt/MBR] " Partition
     if [ "${Partition}" == "gpt" ]
     then
-      read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/GRUB] : " boot
+        read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/GRUB] : " boot
     fi
     fdisk -l
     read -p "Geben sie eine Festplatte an: /dev/sda " device
@@ -288,8 +288,8 @@ function abfrage() {
     read -p "Soll ein neuer Benutzer erstellt werden?: [Y/n] " user
     if [ "${user}" != "n" ]
     then
-      read -p "Wie soll der neue Benutzer heissen?: " username
-      read -p "Welches Passwort soll der neue Benutzer haben?: " userpass
+        read -p "Wie soll der neue Benutzer heissen?: " username
+        read -p "Welches Passwort soll der neue Benutzer haben?: " userpass
     fi
     read -p "Wie groß soll die System-Partition sein? +20G : " speicher
     read -p "Soll eine Offline-Installation durchgefuehrt werden? : [Y/n] " offline
@@ -304,9 +304,9 @@ function abfrage() {
     [[ -z "${speicher}" ]] && speicher="+20G"
     if [ "${offline}" != "n" ]
     then
-      install="offline"
+        install="offline"
     else
-      install="online"
+        install="online"
     fi
     #
     echo "Name: ${name}"
@@ -319,15 +319,15 @@ function abfrage() {
     echo "Installation: ${install}"
     if [ "${user}" != "n" ]
     then
-      echo "Username: ${username}"
-      echo "Userpasswort: ${userpass}"
+        echo "Username: ${username}"
+        echo "Userpasswort: ${userpass}"
     fi
     #
     read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
     if [ "$sicherheitsabfrage" != "y" ]
     then
-      echo "ABGEBROCHEN"
-      exit 1
+        echo "ABGEBROCHEN"
+        exit 1
     fi
 }
 
@@ -343,55 +343,55 @@ function abfrage() {
 
 if [ "${1}" != "n" ]
 then
-  read -p "Soll im Internet geguckt werden ob es ein neues Install-Script gibt und dann ausgefuehrt werden?: [Y/n] " update
-  if [ "${update}" != "n" ]
-  then
-    update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-install /root/arch-install.new n
-    exit 0
-  fi
+    read -p "Soll im Internet geguckt werden ob es ein neues Install-Script gibt und dann ausgefuehrt werden?: [Y/n] " update
+    if [ "${update}" != "n" ]
+    then
+        update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-install /root/arch-install.new n
+        exit 0
+    fi
 fi
 
 # debug = Installation überspringen zu arch-graphical-install und DEBEUG-MODUS
 abfrage
 if [ "${name}" != "debug" ]
 then
-#
-if cat /proc/mounts | grep ${device}1 > /dev/null; then
-  echo "gemountet"
-  umount ${device}1
-else
-  echo "nicht gemountet"
-fi
-#
-if cat /proc/mounts | grep ${device}2 > /dev/null; then
-  echo "gemountet"
-  umount ${device}2
-else
-  echo "nicht gemountet"
-fi
-#
-if cat /proc/mounts | grep ${device}3 > /dev/null; then
-  echo "gemountet"
-  umount ${device}2
-else
-  echo "nicht gemountet"
-fi
-#
-if cat /proc/mounts | grep /mnt > /dev/null; then
-  echo "gemountet"
-  umount /mnt
-else
-  echo "nicht gemountet"
-fi
-
-  #
-  echo "Eine Säuberung erhört die chance der Installation auf dem System."
-  echo "Es kann eine Zeit lang dauern!"
-  dd if=/dev/zero of=${device} bs=64M count=10 status=progress
-  #
-  if [ "${Partition}" == "gpt" ]
-  then
-    echo "Partioniere in GPT"
+    #
+    if cat /proc/mounts | grep ${device}1 > /dev/null; then
+        echo "gemountet"
+        umount ${device}1
+    else
+        echo "nicht gemountet"
+    fi
+    #
+    if cat /proc/mounts | grep ${device}2 > /dev/null; then
+        echo "gemountet"
+        umount ${device}2
+    else
+        echo "nicht gemountet"
+    fi
+    #
+    if cat /proc/mounts | grep ${device}3 > /dev/null; then
+        echo "gemountet"
+        umount ${device}2
+    else
+        echo "nicht gemountet"
+    fi
+    #
+    if cat /proc/mounts | grep /mnt > /dev/null; then
+        echo "gemountet"
+        umount /mnt
+    else
+        echo "nicht gemountet"
+    fi
+    
+    #
+    echo "Eine Säuberung erhört die chance der Installation auf dem System."
+    echo "Es kann eine Zeit lang dauern!"
+    dd if=/dev/zero of=${device} bs=64M count=10 status=progress
+    #
+    if [ "${Partition}" == "gpt" ]
+    then
+        echo "Partioniere in GPT"
       gdisk ${device} <<EOT
 2
 p
@@ -418,36 +418,36 @@ p
 w
 y
 EOT
-    echo "formatieren"
-    formatieren
-    echo "offlineinstallation"
-    offlineinstallation
+        echo "formatieren"
+        formatieren
+        echo "offlineinstallation"
+        offlineinstallation
   arch-chroot ${mountpoint} /bin/bash <<EOT
 mkinitcpio -p linux
 passwd
 ${pass}
 ${pass}
 EOT
-    echo ""
-    if [ "${boot}" == "grub" ]
-    then
+        echo ""
+        if [ "${boot}" == "grub" ]
+        then
   arch-chroot ${mountpoint} /bin/bash <<EOT
   grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="${name}"s-os --recheck
   grub-mkconfig -o /boot/grub/grub.cfg
 EOT
-    else
-      systemdboot
-    fi
-    if [ "${user}" != "n" ]
-    then
-      adduser
-      autostart
-    fi
-    removeinstaller
-    echo "Fertig"
+        else
+            systemdboot
+        fi
+        if [ "${user}" != "n" ]
+        then
+            adduser
+            autostart
+        fi
+        removeinstaller
+        echo "Fertig"
 elif [ "${Partition}" == "mbr" ]
-  then
-    echo "Partioniere in MBR"
+    then
+        echo "Partioniere in MBR"
         fdisk -W always ${device} <<EOT
 p
 o
@@ -472,10 +472,10 @@ p
 w
 y
 EOT
-    echo "formatieren"
-    formatieren
-    echo "offlineinstallation"
-    offlineinstallation
+        echo "formatieren"
+        formatieren
+        echo "offlineinstallation"
+        offlineinstallation
   arch-chroot ${mountpoint} /bin/bash <<EOT
 mkinitcpio -p linux
 passwd
@@ -484,40 +484,40 @@ ${pass}
 grub-install --target=i386-pc --recheck ${device}
 grub-mkconfig -o /boot/grub/grub.cfg
 EOT
-    if [ "${user}" != "n" ]
-    then
-      adduser
-      autostart
+        if [ "${user}" != "n" ]
+        then
+            adduser
+            autostart
+        fi
+        removeinstaller
+        echo "Fertig"
+    else
+        echo "Eingabe Ungueltig"
+        exit 1
     fi
-    removeinstaller
-    echo "Fertig"
-  else
-    echo "Eingabe Ungueltig"
-    exit 1
-  fi
 fi
 
 if [ "${name}" == "debug" ]
 then
-  echo "DEBEUG-MODUS"
-  echo "Wenn kein befehl mehr ausgefuehrt werden muss einfach eingabetaste druecken"
-  echo "Welcher befehl soll ausgefuert werden? "
-
-  befehl=blablabla
-  while [ "$befehl" != "" ]
-  do
-    read -p "" befehl
-    $befehl
-  done
-
+    echo "DEBEUG-MODUS"
+    echo "Wenn kein befehl mehr ausgefuehrt werden muss einfach eingabetaste druecken"
+    echo "Welcher befehl soll ausgefuert werden? "
+    
+    befehl=blablabla
+    while [ "$befehl" != "" ]
+    do
+        read -p "" befehl
+        $befehl
+    done
+    
 fi
 
 if [ "${update}" != "n" ]; then
-  read -p "Soll eine graphische Installation durchgeführt werden? [Y/n] " graphical
-  if [ "$graphical" != "n" ]
+    read -p "Soll eine graphische Installation durchgeführt werden? [Y/n] " graphical
+    if [ "$graphical" != "n" ]
     then
-      update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install ${mountpoint}/root/arch-graphical-install n "arch-chroot ${mountpoint}" /root/arch-graphical-install
-  fi
+        update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install ${mountpoint}/root/arch-graphical-install n "arch-chroot ${mountpoint}" /root/arch-graphical-install
+    fi
 fi
 echo "umount!!!"
 umount ${mountpoint}/home
@@ -532,8 +532,8 @@ echo "Fertig!!!"
 read -p "Installation erfolgreich Abgeschlossen. Wollen sie den PC NEUSTARTEN?: [Y/n] " sicherheitsabfrage
 if [ "$sicherheitsabfrage" != "n" ]
 then
-  echo "starte neu"
-  reboot
+    echo "starte neu"
+    reboot
 fi
 exit 0
 v

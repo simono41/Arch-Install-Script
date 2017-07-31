@@ -300,171 +300,180 @@ function BIOS() {
 
 function UEFI() {
     
-    mkdir -p ${work_dir}/iso/EFI/archiso
-    mkdir -p ${work_dir}/iso/EFI/boot
-    mkdir -p ${work_dir}/iso/loader/entries
-    
-    if [ -f ${work_dir}/iso/EFI/archiso/efiboot.img ]
+    read -p "Soll das EFI installiert werden?: [Y/n] " efi
+    if [ "$efi" != "n" ]
     then
-        rm ${work_dir}/iso/EFI/archiso/efiboot.img
-    else
-        echo "efiboot.img nicht vorhanden!"
-    fi
-    
-    truncate -s 128M ${work_dir}/iso/EFI/archiso/efiboot.img
-    mkfs.fat -n ${iso_label}_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
-    
-    mkdir -p ${work_dir}/efiboot
-    
-    mount -t vfat -o loop ${work_dir}/iso/EFI/archiso/efiboot.img ${work_dir}/efiboot
-    
-    mkdir -p ${work_dir}/efiboot/EFI/boot
-    mkdir -p ${work_dir}/efiboot/EFI/archiso
-    mkdir -p ${work_dir}/efiboot/loader/entries
-    
-    cp ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz ${work_dir}/efiboot/EFI/archiso/vmlinuz.efi
-    cp ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img ${work_dir}/efiboot/EFI/archiso/archiso.img
-    
-    cp ${work_dir}/${arch}/airootfs/boot/intel-ucode.img ${work_dir}/iso/${install_dir}/boot/intel_ucode.img
-    cp ${work_dir}/iso/${install_dir}/boot/intel_ucode.img ${work_dir}/efiboot/EFI/archiso/intel_ucode.img
-    
-    cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/PreLoader.efi ${work_dir}/efiboot/EFI/boot/bootx64.efi
-    
-    cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/HashTool.efi ${work_dir}/efiboot/EFI/boot/
-    
-    cp ${work_dir}/${arch}/airootfs/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${work_dir}/efiboot/EFI/boot/loader.efi
-    
-    cp uefi-shell-v2-${arch}.conf ${work_dir}/efiboot/loader/entries/
-    cp uefi-shell-v1-${arch}.conf ${work_dir}/efiboot/loader/entries/
-    cp uefi-shell-v1-${arch}.conf ${work_dir}/iso/loader/entries/uefi-shell-v1-${arch}.conf
-    cp uefi-shell-v2-${arch}.conf ${work_dir}/iso/loader/entries/uefi-shell-v2-${arch}.conf
-    
-    # EFI Shell 2.0 for UEFI 2.3+
-    if [ -f ${work_dir}/iso/EFI/shellx64_v2.efi ]
-    then
-        echo "Bereits Vorhanden!"
-        sleep 1
-    else
-        curl -o ${work_dir}/iso/EFI/shellx64_v2.efi https://raw.githubusercontent.com/tianocore/edk2/master/ShellBinPkg/UefiShell/X64/Shell.efi
-    fi
-    # EFI Shell 1.0 for non UEFI 2.3+
-    if [ -f ${work_dir}/iso/EFI/shellx64_v1.efi ]
-    then
-        echo "Bereits Vorhanden!"
-        sleep 1
-    else
-        curl -o ${work_dir}/iso/EFI/shellx64_v1.efi https://raw.githubusercontent.com/tianocore/edk2/master/EdkShellBinPkg/FullShell/X64/Shell_Full.efi
-    fi
-    
-    cp ${work_dir}/iso/EFI/shellx64_v2.efi ${work_dir}/efiboot/EFI/
-    cp ${work_dir}/iso/EFI/shellx64_v1.efi ${work_dir}/efiboot/EFI/
-    
-    cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/PreLoader.efi ${work_dir}/iso/EFI/boot/bootx64.efi
-    cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/HashTool.efi ${work_dir}/iso/EFI/boot/
-    
-    cp ${work_dir}/${arch}/airootfs/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${work_dir}/iso/EFI/boot/loader.efi
-    
-    echo "timeout 3" > ${work_dir}/iso/loader/loader.conf
-    echo "default archiso-${arch}-usb-default" >> ${work_dir}/iso/loader/loader.conf
-    echo "timeout 3" > ${work_dir}/efiboot/loader/loader.conf
-    echo "default archiso-${arch}-cd-default" >> ${work_dir}/efiboot/loader/loader.conf
-    
-    for file in releng/archiso-x86_64-usb*
-    do
-        echo "$file"
-        sed "s|%ISO_LABEL%|${iso_label}|g;
+        
+        mkdir -p ${work_dir}/iso/EFI/archiso
+        mkdir -p ${work_dir}/iso/EFI/boot
+        mkdir -p ${work_dir}/iso/loader/entries
+        
+        if [ -f ${work_dir}/iso/EFI/archiso/efiboot.img ]
+        then
+            rm ${work_dir}/iso/EFI/archiso/efiboot.img
+        else
+            echo "efiboot.img nicht vorhanden!"
+        fi
+        
+        truncate -s 128M ${work_dir}/iso/EFI/archiso/efiboot.img
+        mkfs.fat -n ${iso_label}_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
+        
+        mkdir -p ${work_dir}/efiboot
+        
+        mount -t vfat -o loop ${work_dir}/iso/EFI/archiso/efiboot.img ${work_dir}/efiboot
+        
+        mkdir -p ${work_dir}/efiboot/EFI/boot
+        mkdir -p ${work_dir}/efiboot/EFI/archiso
+        mkdir -p ${work_dir}/efiboot/loader/entries
+        
+        cp ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz ${work_dir}/efiboot/EFI/archiso/vmlinuz.efi
+        cp ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img ${work_dir}/efiboot/EFI/archiso/archiso.img
+        
+        cp ${work_dir}/${arch}/airootfs/boot/intel-ucode.img ${work_dir}/iso/${install_dir}/boot/intel_ucode.img
+        cp ${work_dir}/iso/${install_dir}/boot/intel_ucode.img ${work_dir}/efiboot/EFI/archiso/intel_ucode.img
+        
+        cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/PreLoader.efi ${work_dir}/efiboot/EFI/boot/bootx64.efi
+        
+        cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/HashTool.efi ${work_dir}/efiboot/EFI/boot/
+        
+        cp ${work_dir}/${arch}/airootfs/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${work_dir}/efiboot/EFI/boot/loader.efi
+        
+        cp uefi-shell-v2-${arch}.conf ${work_dir}/efiboot/loader/entries/
+        cp uefi-shell-v1-${arch}.conf ${work_dir}/efiboot/loader/entries/
+        cp uefi-shell-v1-${arch}.conf ${work_dir}/iso/loader/entries/uefi-shell-v1-${arch}.conf
+        cp uefi-shell-v2-${arch}.conf ${work_dir}/iso/loader/entries/uefi-shell-v2-${arch}.conf
+        
+        # EFI Shell 2.0 for UEFI 2.3+
+        if [ -f ${work_dir}/iso/EFI/shellx64_v2.efi ]
+        then
+            echo "Bereits Vorhanden!"
+            sleep 1
+        else
+            curl -o ${work_dir}/iso/EFI/shellx64_v2.efi https://raw.githubusercontent.com/tianocore/edk2/master/ShellBinPkg/UefiShell/X64/Shell.efi
+        fi
+        # EFI Shell 1.0 for non UEFI 2.3+
+        if [ -f ${work_dir}/iso/EFI/shellx64_v1.efi ]
+        then
+            echo "Bereits Vorhanden!"
+            sleep 1
+        else
+            curl -o ${work_dir}/iso/EFI/shellx64_v1.efi https://raw.githubusercontent.com/tianocore/edk2/master/EdkShellBinPkg/FullShell/X64/Shell_Full.efi
+        fi
+        
+        cp ${work_dir}/iso/EFI/shellx64_v2.efi ${work_dir}/efiboot/EFI/
+        cp ${work_dir}/iso/EFI/shellx64_v1.efi ${work_dir}/efiboot/EFI/
+        
+        cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/PreLoader.efi ${work_dir}/iso/EFI/boot/bootx64.efi
+        cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/HashTool.efi ${work_dir}/iso/EFI/boot/
+        
+        cp ${work_dir}/${arch}/airootfs/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${work_dir}/iso/EFI/boot/loader.efi
+        
+        echo "timeout 3" > ${work_dir}/iso/loader/loader.conf
+        echo "default archiso-${arch}-usb-default" >> ${work_dir}/iso/loader/loader.conf
+        echo "timeout 3" > ${work_dir}/efiboot/loader/loader.conf
+        echo "default archiso-${arch}-cd-default" >> ${work_dir}/efiboot/loader/loader.conf
+        
+        for file in releng/archiso-x86_64-usb*
+        do
+            echo "$file"
+            sed "s|%ISO_LABEL%|${iso_label}|g;
       s|%arch%|${arch}|g;
-        s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/iso/loader/entries/${file##*/}
-    done
-    
-    ###
-    
-    for file in releng/archiso-x86_64-cd*
-    do
-        echo "$file"
-        sed "s|%ISO_LABEL%|${iso_label}|g;
+            s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/iso/loader/entries/${file##*/}
+        done
+        
+        ###
+        
+        for file in releng/archiso-x86_64-cd*
+        do
+            echo "$file"
+            sed "s|%ISO_LABEL%|${iso_label}|g;
       s|%arch%|${arch}|g;
-        s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/efiboot/loader/entries/${file##*/}
-    done
-    
-    ###
-    
-    read -p "efiboot jetzt trennen? [Y/n] "
-    if [ "$trennen" != "n" ]
-    then
-        umount -d ${work_dir}/efiboot
+            s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/efiboot/loader/entries/${file##*/}
+        done
+        
+        ###
+        
+        read -p "efiboot jetzt trennen? [Y/n] "
+        if [ "$trennen" != "n" ]
+        then
+            umount -d ${work_dir}/efiboot
+        fi
+        
     fi
     
 }
 
 function makeiso() {
     
-    
-    imagename=arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso
-    
-    read -p "Soll das Image jetzt gemacht werden? [Y/n] " run
-    if [ "$run" != "n" ]
+    read -p "Soll das Image jetzt gemacht werden? [Y/n] " image
+    if [ "$image" != "n" ]
     then
-        if [ -f ${out_dir}/${imagename} ]
-        then
-            rm ${out_dir}/${imagename}
-        fi
-        mkdir -p ${out_dir}
-        xorriso -as mkisofs \
-        -iso-level 3 \
-        -full-iso9660-filenames \
-        -volid "${iso_label}" \
-        -eltorito-boot isolinux/isolinux.bin \
-        -eltorito\-catalog isolinux/boot.cat \
-        -no-emul-boot -boot-load-size 4 -boot-info-table \
-        -isohybrid-mbr $(pwd)/${work_dir}/iso/isolinux/isohdpfx.bin \
-        -eltorito-alt-boot \
-        -e EFI/archiso/efiboot.img \
-        -no-emul-boot \
-        -isohybrid-gpt-basdat \
-        -output ${out_dir}/${imagename} ${work_dir}/iso/
-    fi
-    
-    
-    read -p "Soll das Image jetzt ausgeführt werden? [Y/n] " run
-    if [ "$run" != "n" ]
-    then
-        if [ -f arch.img ]
-        then
-            echo "arch.img vorhanden!"
-        else
-            echo "arch.img nicht vorhanden!"
-            qemu-img create -f qcow2 arch.img 64G
-        fi
-        qemu-system-${arch} -enable-kvm -cdrom out/${imagename} -hda arch.img -boot d -m 1028M
-    fi
-    
-    
-    read -p "Soll das Image jetzt geschrieben werden? [Y/n] " write
-    if [ "$write" != "n" ]
-    then
-        fdisk -l
-        read -p "Wo das Image jetzt geschrieben werden? /dev/sda " device
-        [[ -z "${device}" ]] && device=/dev/sda
         
-        secureumount
+        imagename=arch-${iso_name}-$(date "+%y.%m.%d")-${arch}.iso
         
-        dd bs=4M if=out/${imagename} of=${device} status=progress && sync
-    fi
-    
-    
-    read -p "Soll das Image jetzt eine Partition zum Offline-Schreiben erhalten? [Y/n] " partition
-    if [ "$partition" != "n" ]
-    then
-        if [ "$device" == "" ]
+        read -p "Soll das Image jetzt gemacht werden? [Y/n] " run
+        if [ "$run" != "n" ]
+        then
+            if [ -f ${out_dir}/${imagename} ]
+            then
+                rm ${out_dir}/${imagename}
+            fi
+            mkdir -p ${out_dir}
+            xorriso -as mkisofs \
+            -iso-level 3 \
+            -full-iso9660-filenames \
+            -volid "${iso_label}" \
+            -eltorito-boot isolinux/isolinux.bin \
+            -eltorito\-catalog isolinux/boot.cat \
+            -no-emul-boot -boot-load-size 4 -boot-info-table \
+            -isohybrid-mbr $(pwd)/${work_dir}/iso/isolinux/isohdpfx.bin \
+            -eltorito-alt-boot \
+            -e EFI/archiso/efiboot.img \
+            -no-emul-boot \
+            -isohybrid-gpt-basdat \
+            -output ${out_dir}/${imagename} ${work_dir}/iso/
+        fi
+        
+        
+        read -p "Soll das Image jetzt ausgeführt werden? [Y/n] " run
+        if [ "$run" != "n" ]
+        then
+            if [ -f arch.img ]
+            then
+                echo "arch.img vorhanden!"
+            else
+                echo "arch.img nicht vorhanden!"
+                qemu-img create -f qcow2 arch.img 64G
+            fi
+            qemu-system-${arch} -enable-kvm -cdrom out/${imagename} -hda arch.img -boot d -m 1028M
+        fi
+        
+        
+        read -p "Soll das Image jetzt geschrieben werden? [Y/n] " write
+        if [ "$write" != "n" ]
         then
             fdisk -l
             read -p "Wo das Image jetzt geschrieben werden? /dev/sda " device
             [[ -z "${device}" ]] && device=/dev/sda
+            
+            secureumount
+            
+            dd bs=4M if=out/${imagename} of=${device} status=progress && sync
         fi
         
-        secureumount
         
+        read -p "Soll das Image jetzt eine Partition zum Offline-Schreiben erhalten? [Y/n] " partition
+        if [ "$partition" != "n" ]
+        then
+            if [ "$device" == "" ]
+            then
+                fdisk -l
+                read -p "Wo das Image jetzt geschrieben werden? /dev/sda " device
+                [[ -z "${device}" ]] && device=/dev/sda
+            fi
+            
+            secureumount
+            
   fdisk -W always ${device} <<EOT
 p
 n
@@ -476,13 +485,15 @@ p
 w
 y
 EOT
-        
-        sleep 1
-        
-        echo "mit j bestätigen"
-        mkfs.btrfs -f -L cow_device ${device}3
-        
-        sync
+            
+            sleep 1
+            
+            echo "mit j bestätigen"
+            mkfs.btrfs -f -L cow_device ${device}3
+            
+            sync
+            
+        fi
         
     fi
     
@@ -509,19 +520,10 @@ BIOS
 
 # EFI
 
-read -p "Soll das EFI installiert werden?: [Y/n] " efi
-if [ "$efi" != "n" ]
-then
-    
-    UEFI
-    
-fi
+UEFI
 
-read -p "Soll das Image jetzt gemacht werden? [Y/n] " image
-if [ "$image" != "n" ]
-then
-    
-    makeiso
-    
-fi
+# MAKEISO
+
+makeiso
+
 echo "Fertig!!!"

@@ -43,9 +43,9 @@ function userrechte() {
 
 function wifi() {
     echo "Treiber werden geladen!"
-    
+
     # WLAN aktivieren auf 100%
-    
+
     modprobe -r rtl8723be
     modprobe rtl8723be ant_sel=1 fwlps=N
     echo "Wifi wird eingerichtet!"
@@ -96,11 +96,11 @@ function gnomeconfig() {
     echo "gtk-application-prefer-dark-theme = true" >> /home/"$username"/.config/gtk-3.0/settings.ini
     echo "# set font name and dimension" >> /home/"$username"/.config/gtk-3.0/settings.ini
     echo "gtk-font-name = Sans 10" >> /home/"$username"/.config/gtk-3.0/settings.ini
-    
+
     mkdir -p /home/"$username"/.local/share/applications/
     echo "[Default Applications]" > /home/"$username"/.local/share/applications/mimeapps.list
     echo "inode/directory=org.gnome.Nautilus.desktop" >> /home/"$username"/.local/share/applications/mimeapps.list
-    
+
     mkdir -p /root/.config/gtk-3.0/
     echo "[Settings]" > /root/.config/gtk-3.0/settings.ini
     echo "gtk-theme-name = Adwaita" >> /root/.config/gtk-3.0/settings.ini
@@ -108,7 +108,7 @@ function gnomeconfig() {
     echo "gtk-application-prefer-dark-theme = true" >> /root/.config/gtk-3.0/settings.ini
     echo "# set font name and dimension" >> /root/.config/gtk-3.0/settings.ini
     echo "gtk-font-name = Sans 10" >> /root/.config/gtk-3.0/settings.ini
-    
+
     mkdir -p /root/.local/share/applications/
     echo "[Default Applications]" > /root/.local/share/applications/mimeapps.list
     echo "inode/directory=org.gnome.Nautilus.desktop" >> /root/.local/share/applications/mimeapps.list
@@ -336,7 +336,7 @@ then
     then
         su "$username" -c "yaourt -S audio-recorder --export /home/"$username"/aur-pakete"
     fi
-    
+
     echo "Sollen sonst noch welche packete aus dem aur installiert werden?"
     befehl=blablabla
     while [ "$befehl" != "" ]
@@ -346,7 +346,7 @@ then
             su "$username" -c "yaourt -S $befehl --export /home/"$username"/aur-pakete"
         fi
     done
-    
+
 fi
 echo "Packetliste2 Ende"
 echo "Beginne mit dem Konfigurieren des Systems :D"
@@ -469,7 +469,7 @@ then
     echo "startx" >> /home/"$username"/.bash_profile
     echo "fi" >> /home/"$username"/.bash_profile
     #
-    
+
     read -p "Welcher Nutzer soll automatisch gestartet werden?: ["$username"/root] " start
     if [ "$start" == "root" ] #2
     then
@@ -485,17 +485,17 @@ then
         echo "ExecStart=-/sbin/agetty --noclear -a "$username" %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
         systemctl enable getty@tty1
     fi #2
-    
+
 else
-    
+
     read -p "Soll xdm wenn der PC bootet gestartet werden?: [Y/n] " xdm
     if [ "$xdm" != "n" ] #3
     then
         systemctl enable xdm
-        
+
     fi #3
-    
-    
+
+
 fi #1
 
 if [ "$vollinstallation" != "n" ]
@@ -532,6 +532,8 @@ rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # custom-installer
+
+pip install beautysh
 
 # nano
 echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc

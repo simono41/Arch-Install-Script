@@ -170,14 +170,14 @@ function btrfsmount() {
     if [ "${1}" == "2" ] || [ "${1}" == "all" ]
     then
         mkdir -p ${mountpoint}
-        mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/ROOT ${device}2 ${mountpoint}
+        mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/ROOT ${device}2 ${mountpoint}
         
         mkdir -p ${mountpoint}/home
         mkdir -p ${mountpoint}/opt
         mkdir -p ${mountpoint}/var/lib
-        mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/home ${device}2 ${mountpoint}/home
-        mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,subvol=__current/opt ${device}2 ${mountpoint}/opt
-        mount -o defaults,noatime,nodiratime,discard,ssd,nodev,compress=lzo,noexec,subvol=__current/var ${device}2 ${mountpoint}/var
+        mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/home ${device}2 ${mountpoint}/home
+        mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/opt ${device}2 ${mountpoint}/opt
+        mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/var ${device}2 ${mountpoint}/var
         
         mkdir -p ${mountpoint}/var/lib
         mount --bind /mnt/btrfs-root/__current/ROOT/var/lib ${mountpoint}/var/lib

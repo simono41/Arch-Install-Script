@@ -94,7 +94,7 @@ function filesystem() {
             read -p "Vom welchen Benutzer soll die .config koppiert werden?: " username
             echo "Wenn kein befehl mehr ausgefuehrt werden muss einfach eingabetaste druecken"
             mkdir -p ${work_dir}/${arch}/airootfs/root/.config/
-            ls /home/${username}/.config/
+            ls -a /home/${username}/.config/
             
             config=blablabla
             while [ "$config" != "" ]
@@ -122,7 +122,7 @@ function filesystem() {
         
         # modprobe.d
         mkdir -p ${work_dir}/${arch}/airootfs/etc/modprobe.d/
-        cp wifi.conf ${work_dir}/${arch}/airootfs/etc/modprobe.d/
+        echo "options rtl8723be ant_sel=1 fwlps=N" ${work_dir}/${arch}/airootfs/etc/modprobe.d/rtl8723be.conf
         
         # iso_name
         echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname

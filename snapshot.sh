@@ -28,14 +28,21 @@ done
 
 elif [ "restore" == "$1" ]; then
 
-pfad=${2}
-datum=${3}
+while (( "$(expr $# - 1)" ))
+do
+
+pfad="${2}"
 
 if [ -d /run/btrfs-root/__current/${pfad}.old ]; then
   btrfs subvolume delete /run/btrfs-root/__current/${pfad}.old
 fi
 mv /run/btrfs-root/__current/${pfad} /run/btrfs-root/__current/${pfad}.old
-btrfs subvolume snapshot /run/btrfs-root/__snapshot/${pfad}@${datum} /run/btrfs-root/__current/${pfad}
+btrfs subvolume snapshot /run/btrfs-root/__snapshot/${pfad} /run/btrfs-root/__current/${pfad}
+
+shift
+
+done
+
 reboot
 
 else
@@ -43,7 +50,7 @@ else
 echo "bash ./snapshot.sh PARAMETER PFAD"
 echo "Parameters: make restore"
 echo "make ROOT home opt var"
-echo "restore ROOT 20170725-235544"
+echo "restore ROOT@20170725-235544"
 
 btrfs subvolume list -p /
 

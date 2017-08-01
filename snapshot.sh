@@ -40,7 +40,6 @@ mv /run/btrfs-root/__current/${pfad/@*} /run/btrfs-root/__current/${pfad/@*}.old
 btrfs subvolume snapshot /run/btrfs-root/__snapshot/${pfad} /run/btrfs-root/__current/${pfad/@*}
 
 shift
-shift
 
 done
 

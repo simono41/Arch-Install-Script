@@ -259,7 +259,7 @@ function systemdboot() {
     
     arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=PARTUUID=${tobootdevice} rw resume=PARTUUID=${swappartitionpart} rootflags=subvol=__current/ROOT"
     
-    arch-chroot ${mountpoint} bootctl install
+    #arch-chroot ${mountpoint} bootctl install
     
 }
 

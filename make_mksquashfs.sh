@@ -98,7 +98,7 @@ function filesystem() {
             read -p "Vom welchen Benutzer soll die .config koppiert werden?: " username
             echo "Wenn kein befehl mehr ausgefuehrt werden muss einfach eingabetaste druecken"
             mkdir -p ${work_dir}/${arch}/airootfs/root/.config/
-            ls -a /home/${username}/.config/
+            ls -a /home/${username}/
             
             config=blablabla
             while [ "$config" != "" ]
@@ -206,8 +206,8 @@ systemctl enable startup.service
 systemctl enable x11vnc.service
 systemctl start startup.service
 systemctl enable dhcpcd.service
-pacman -Syu
-j
+#pacman -Syu
+#j
 mkinitcpio -p linux
 EOT
         fi

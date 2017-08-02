@@ -23,7 +23,6 @@ function offlinedownload() {
 
 function minimalinstallation() {
     #Mehrzeiler
-    offlinedownload
     while read line
     do
         ./pacstrap -c -d -G -M ${work_dir}/${arch}/airootfs $line
@@ -77,6 +76,11 @@ function filesystem() {
                 rm -Rv ${work_dir}
             fi
             mkdir -p ${work_dir}/${arch}/airootfs
+            read -p "Sollen die Packete schonmal runtergeladen werden? [Y/n] " pacstrap1
+            if [ "$pacstrap1" != "n" ]
+            then
+                offlinedownload
+            fi
             minimalinstallation
             ## nur einmal bereich
             read -p "Soll ein root passwort festgelegt werden? [Y/n] " root

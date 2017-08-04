@@ -15,7 +15,7 @@ function vollinstallation() {
 }
 
 function adduser() {
-    useradd -m -g users -s /bin/bash $username
+    useradd -m -g users -G wheel,audio,video -s /bin/bash $username
 passwd ${username} <<EOT
 ${userpass}
 ${userpass}
@@ -506,6 +506,7 @@ then
     systemctl enable org.cups.cupsd.service
     systemctl enable sshd
     systemctl enable cronie
+    systemctl enable systemd-timesyncd.service
     echo "Bitte OpenVPN config in die /etc/openvpn/client/client.conf kopieren!!!"
     ln /lib/systemd/system/openvpn-client@.service /lib/systemd/system/openvpn-client@client.service
     systemctl enable openvpn-client@client.service

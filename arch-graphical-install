@@ -463,6 +463,8 @@ read -p "Was soll den X-Server starten: [getty/xdm/lightdm] " start
 
 if [ "$start" == "getty" ]
 then
+
+if [ "${fertig}" == "1" ]; then
     echo "if [ \$(tty) = "/dev/tty1" ]; then" > /root/.bash_profile
     echo "startx" >> /root/.bash_profile
     echo "fi" >> /root/.bash_profile
@@ -471,7 +473,8 @@ then
     echo "startx" >> /home/"$username"/.bash_profile
     echo "fi" >> /home/"$username"/.bash_profile
     #
-    
+fi
+
     read -p "Welcher Nutzer soll automatisch gestartet werden?: ["$username"/root] " start
     if [ "$start" == "root" ]
     then

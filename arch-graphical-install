@@ -12,6 +12,7 @@ echo "Als root Angemeldet"
 function vollinstallation() {
     wget https://raw.githubusercontent.com/simono41/Simon-OS/master/packages_all1.txt -t 0 --output-document=/root/packages_all1.txt
     pacman -Syu $(cat /root/packages_all1.txt)
+    fertig=1
 }
 
 function adduser() {
@@ -452,9 +453,9 @@ then
     systemctl enable wpa_supplicant@"$modul".service
     systemctl enable dhcpcd@"$modul"
 else
-    systemctl disable dhcpcd
-    if [ "$vollinstallation" != "n" ]
+    if [ "${fertig}" == "1" ]; then
     then
+        systemctl disable dhcpcd
         systemctl enable NetworkManager.service
     fi
 fi
@@ -498,7 +499,7 @@ else
     echo "Kein Start gewählt!!!"
 fi
 
-if [ "$vollinstallation" != "n" ]
+if [ "${fertig}" == "1" ]; then
 then
     systemctl enable acpid
     systemctl enable ntpd
@@ -577,7 +578,9 @@ right_meter_modes=2 2 2 " > /home/"$username"/.htoprc
 
 cp /home/"$username"/.htoprc /root/
 
-userrechte
+if [ "${fertig}" == "1" ]; then
+  userrechte
+fi
 
 befehl=null
 echo "Wenn kein Befehl mehr ausgefuehrt werden muss Eingabetaste druecken!!!"
@@ -594,9 +597,12 @@ done
 #hwclock -w
 #
 
-# last command
-userrechte
+if [ "${fertig}" == "1" ]; then
+  #last command
+  userrechte
+fi
 
 echo "Fertig!!!"
 
 exit 0
+

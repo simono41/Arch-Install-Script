@@ -67,6 +67,11 @@ function ethernet() {
 }
 
 function links() {
+    #
+    mkdir -p /home/"$username"/Schreibtisch/
+    cp /usr/share/applications/arch-install.desktop /home/"$username"/Schreibtisch/arch-install.desktop
+    chmod +x /home/"$username"/Schreibtisch/arch-install.desktop
+    #
     mkdir -p /root/Schreibtisch/
     cp /usr/share/applications/arch-install.desktop /root/Schreibtisch/arch-install.desktop
     chmod +x /root/Schreibtisch/arch-install.desktop

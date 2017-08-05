@@ -547,6 +547,12 @@ echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
 
 echo "vboxdrv" > /etc/modules-load.d/virtualbox-host-modules-arch.conf
 
+# x11vnc
+
+x11vnc -storepasswd /etc/x11vnc.pass
+
+systemctl enable x11vnc.service
+
 # htop
 
 echo "fields=0 48 17 18 38 39 40 2 46 47 49 1

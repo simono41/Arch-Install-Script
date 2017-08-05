@@ -88,7 +88,6 @@ function filesystem() {
             then
                 arch-chroot ${work_dir}/${arch}/airootfs passwd root
             fi
-            arch-chroot ${work_dir}/${arch}/airootfs x11vnc -storepasswd /etc/x11vnc.pass
         fi
 
         ## doppelt bereich
@@ -206,7 +205,6 @@ function filesystem() {
 
 systemctl daemon-reload
 systemctl enable startup.service
-systemctl enable x11vnc.service
 systemctl start startup.service
 systemctl enable dhcpcd.service
 #pacman -Syu

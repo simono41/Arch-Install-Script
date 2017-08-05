@@ -10,8 +10,8 @@ echo "Als root Angemeldet"
 #
 
 function vollinstallation() {
-    wget https://raw.githubusercontent.com/simono41/Simon-OS/master/packages_all.txt -t 0 --output-document=/root/packages_all.txt
-    pacman -Syu $(cat /root/packages_all.txt)
+    wget https://raw.githubusercontent.com/simono41/Simon-OS/master/packages_all1.txt -t 0 --output-document=/root/packages_all1.txt
+    pacman -Syu $(cat /root/packages_all1.txt)
 }
 
 function adduser() {

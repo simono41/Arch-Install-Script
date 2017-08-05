@@ -535,6 +535,10 @@ locale-gen
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
+
+
+if [ "${fertig}" == "1" ]; then
+
 # custom-installer
 
 pip install beautysh
@@ -575,6 +579,8 @@ right_meters=Tasks LoadAverage Uptime
 right_meter_modes=2 2 2 " > /home/"$username"/.htoprc
 
 cp /home/"$username"/.htoprc /root/
+
+fi
 
 if [ "${fertig}" == "1" ]; then
   userrechte

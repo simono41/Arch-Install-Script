@@ -1,4 +1,0 @@
-base base-devel syslinux efibootmgr efitools \
-grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso \
-cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk dialog bash-completion git \
-iw wireless_tools wpa_supplicant

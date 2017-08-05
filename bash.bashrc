@@ -71,3 +71,6 @@ echo -e "=======================================================================
 echo -e "User     Anschluß     Seit              von"
 /usr/bin/who
 echo -e "=============================================================================================="
+
+alias reboot='sudo shutdown -r now'
+alias shutdown='sudo shutdown now'

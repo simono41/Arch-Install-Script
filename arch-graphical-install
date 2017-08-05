@@ -543,6 +543,10 @@ pip install beautysh
 # nano
 echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
 
+# vboxdrv
+
+echo "vboxdrv" > /etc/modules-load.d/virtualbox-host-modules-arch.conf
+
 # htop
 
 echo "fields=0 48 17 18 38 39 40 2 46 47 49 1

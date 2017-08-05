@@ -122,7 +122,7 @@ function filesystem() {
         # module and hooks
         echo "MODULES=\"i915 radeon\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
         echo "HOOKS=\"base udev block filesystems keyboard archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-        echo "COMPRESSION=\"xz\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+        echo "COMPRESSION=\"gzip\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
         # modprobe.d
         mkdir -p ${work_dir}/${arch}/airootfs/etc/modprobe.d/
@@ -198,11 +198,11 @@ function filesystem() {
         then
     arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
 
-mkdir -p /etc/systemd/system/getty\@tty1.service.d
-echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
-echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
-echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
-systemctl enable getty@tty1
+#mkdir -p /etc/systemd/system/getty\@tty1.service.d
+#echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+#echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+#echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+#systemctl enable getty@tty1
 
 systemctl daemon-reload
 systemctl enable startup.service
@@ -250,7 +250,8 @@ EOT
             echo "airootfs.sfs nicht vorhanden!"
         fi
 
-        mksquashfs ${work_dir}/${arch}/airootfs ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs -comp xz -b 262144
+        mksquashfs ${work_dir}/${arch}/airootfs ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs
+# -comp xz -b 262144
 
         md5sum ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs > ${work_dir}/iso/${install_dir}/${arch}/airootfs.md5
 

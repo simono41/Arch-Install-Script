@@ -22,7 +22,9 @@ ${userpass}
 EOT
     mkdir -p /home/"$username"/
     echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-    links
+    if [ "$2" != "install" ]; then
+      links
+    fi
     copyconfig
     userrechte
 }

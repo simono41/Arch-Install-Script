@@ -454,7 +454,6 @@ then
     systemctl enable dhcpcd@"$modul"
 else
     if [ "${fertig}" == "1" ]; then
-    then
         systemctl disable dhcpcd
         systemctl enable NetworkManager.service
     fi
@@ -500,7 +499,6 @@ else
 fi
 
 if [ "${fertig}" == "1" ]; then
-then
     systemctl enable acpid
     systemctl enable ntpd
     systemctl enable avahi-daemon

@@ -189,7 +189,8 @@ function filesystem() {
         cp snapshot.sh ${work_dir}/${arch}/airootfs/usr/bin/snapshot
         chmod +x ${work_dir}/${arch}/airootfs/usr/bin/snapshot
         
-        # wheel
+        # sudoers/wheel
+        echo "root ALL=(ALL) ALL" > ${work_dir}/${arch}/airootfs/etc/sudoers
         echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> ${work_dir}/${arch}/airootfs/etc/sudoers
         
         read -p "Soll das System aktualisiert werden? [Y/n] " update

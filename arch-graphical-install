@@ -31,10 +31,7 @@ EOT
 }
 
 function copyconfig() {
-    if [ -d /root/.config ]
-    then
-        cp -avr /root/. /home/"$username"/
-    fi
+  cp -avr /root/. /home/"$username"/
 }
 
 function userrechte() {
@@ -609,7 +606,7 @@ done
 #hwclock -w
 #
 
-if [ "${fertig}" == "1" ]; then
+if [ "${fertig}" == "1" ]  || [ "$erstellen" == "y" ]; then
   copyconfig
   #last command
   userrechte

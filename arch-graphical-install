@@ -539,14 +539,6 @@ rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 
-# custom-bereich standart
-
-# nano
-
-echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
-
-
-
 
 # custom-bereich vollinstallation
 
@@ -565,6 +557,16 @@ echo "vboxdrv" > /etc/modules-load.d/virtualbox-host-modules-arch.conf
 x11vnc -storepasswd /etc/x11vnc.pass
 
 systemctl enable x11vnc.service
+
+fi
+
+
+
+# custom-bereich standart
+
+# nano
+
+echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
 
 # htop
 
@@ -586,11 +588,7 @@ delay=15
 left_meters=AllCPUs Memory Swap
 left_meter_modes=1 1 1
 right_meters=Tasks LoadAverage Uptime
-right_meter_modes=2 2 2 " > /home/"$username"/.htoprc
-
-cp /home/"$username"/.htoprc /root/
-
-fi
+right_meter_modes=2 2 2 " > /root/.htoprc
 
 if [ "${fertig}" == "1" ]; then
   userrechte
@@ -612,6 +610,7 @@ done
 #
 
 if [ "${fertig}" == "1" ]; then
+  copyconfig
   #last command
   userrechte
 fi

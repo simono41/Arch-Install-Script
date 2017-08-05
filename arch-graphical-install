@@ -23,7 +23,7 @@ EOT
     mkdir -p /home/"$username"/
     echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
     if [ "$2" != "install" ]; then
-      links
+        links
     fi
     copyconfig
     userrechte
@@ -45,9 +45,9 @@ function userrechte() {
 
 function wifi() {
     echo "Treiber werden geladen!"
-
+    
     # WLAN aktivieren auf 100%
-
+    
     modprobe -r rtl8723be
     modprobe rtl8723be ant_sel=1 fwlps=N
     echo "Wifi wird eingerichtet!"
@@ -98,11 +98,11 @@ function gnomeconfig() {
     echo "gtk-application-prefer-dark-theme = true" >> /home/"$username"/.config/gtk-3.0/settings.ini
     echo "# set font name and dimension" >> /home/"$username"/.config/gtk-3.0/settings.ini
     echo "gtk-font-name = Sans 10" >> /home/"$username"/.config/gtk-3.0/settings.ini
-
+    
     mkdir -p /home/"$username"/.local/share/applications/
     echo "[Default Applications]" > /home/"$username"/.local/share/applications/mimeapps.list
     echo "inode/directory=org.gnome.Nautilus.desktop" >> /home/"$username"/.local/share/applications/mimeapps.list
-
+    
     mkdir -p /root/.config/gtk-3.0/
     echo "[Settings]" > /root/.config/gtk-3.0/settings.ini
     echo "gtk-theme-name = Adwaita" >> /root/.config/gtk-3.0/settings.ini
@@ -110,7 +110,7 @@ function gnomeconfig() {
     echo "gtk-application-prefer-dark-theme = true" >> /root/.config/gtk-3.0/settings.ini
     echo "# set font name and dimension" >> /root/.config/gtk-3.0/settings.ini
     echo "gtk-font-name = Sans 10" >> /root/.config/gtk-3.0/settings.ini
-
+    
     mkdir -p /root/.local/share/applications/
     echo "[Default Applications]" > /root/.local/share/applications/mimeapps.list
     echo "inode/directory=org.gnome.Nautilus.desktop" >> /root/.local/share/applications/mimeapps.list
@@ -226,15 +226,15 @@ then
     fi
 fi
 #
-if [ "$1" != "n" ]; then
-    read -p "Soll ein Vollinstallation werden?: [Y/n] " vollinstallation
-    if [ "$vollinstallation" != "n" ]
-    then
-        if [ "$vollinstallation" != "debug" ]; then
-            vollinstallation
-        fi
+#if [ "$1" != "n" ]; then
+read -p "Soll ein Vollinstallation werden?: [Y/n] " vollinstallation
+if [ "$vollinstallation" != "n" ]
+then
+    if [ "$vollinstallation" != "debug" ]; then
+        vollinstallation
     fi
 fi
+#fi
 #
 read -p "Soll yaourt mitinstalliert werden?: [Y/n] " yaourt
 if [ "$yaourt" != "n" ]
@@ -338,7 +338,7 @@ then
     then
         su "$username" -c "yaourt -S audio-recorder --export /home/"$username"/aur-pakete"
     fi
-
+    
     echo "Sollen sonst noch welche packete aus dem aur installiert werden?"
     befehl=blablabla
     while [ "$befehl" != "" ]
@@ -348,7 +348,7 @@ then
             su "$username" -c "yaourt -S $befehl --export /home/"$username"/aur-pakete"
         fi
     done
-
+    
 fi
 echo "Packetliste2 Ende"
 echo "Beginne mit dem Konfigurieren des Systems :D"
@@ -471,7 +471,7 @@ then
     echo "startx" >> /home/"$username"/.bash_profile
     echo "fi" >> /home/"$username"/.bash_profile
     #
-
+    
     read -p "Welcher Nutzer soll automatisch gestartet werden?: ["$username"/root] " start
     if [ "$start" == "root" ]
     then
@@ -487,7 +487,7 @@ then
         echo "ExecStart=-/sbin/agetty --noclear -a "$username" %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
         systemctl enable getty@tty1
     fi
-
+    
 elif [ "$start" == "xdm" ]
 then
     systemctl enable xdm
@@ -509,9 +509,9 @@ then
     systemctl enable systemd-timesyncd.service
     echo "Bitte OpenVPN config in die /etc/openvpn/client/client.conf kopieren!!!"
     if [ -f /lib/systemd/system/openvpn-client@client.service ]; then
-      echo "link vorhanden!"
+        echo "link vorhanden!"
     else
-      ln /lib/systemd/system/openvpn-client@.service /lib/systemd/system/openvpn-client@client.service
+        ln /lib/systemd/system/openvpn-client@.service /lib/systemd/system/openvpn-client@client.service
     fi
     systemctl enable openvpn-client@client.service
 fi

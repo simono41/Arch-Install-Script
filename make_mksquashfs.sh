@@ -513,7 +513,7 @@ echo "Jetzt können sie ihr Betriebssystem nach ihren Belieben anpassen:D"
 read -p "Wollen sie ihr Betriebssystem nach Belieben anpassen? [Y/n] " packete
 if [ "$packete" != "n" ]
 then
-    arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install n
+    arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install n iso
 fi
 
 # System-image

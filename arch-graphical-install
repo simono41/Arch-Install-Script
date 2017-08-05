@@ -23,9 +23,6 @@ ${userpass}
 EOT
     mkdir -p /home/"$username"/
     echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-    if [ "$2" != "install" ]; then
-        links
-    fi
     copyconfig
     userrechte
 }
@@ -70,11 +67,6 @@ function ethernet() {
 }
 
 function links() {
-    #
-    mkdir -p /home/"$username"/Schreibtisch/
-    cp /usr/share/applications/arch-install.desktop /home/"$username"/Schreibtisch/arch-install.desktop
-    chmod +x /home/"$username"/Schreibtisch/arch-install.desktop
-    #
     mkdir -p /root/Schreibtisch/
     cp /usr/share/applications/arch-install.desktop /root/Schreibtisch/arch-install.desktop
     chmod +x /root/Schreibtisch/arch-install.desktop
@@ -587,9 +579,6 @@ left_meter_modes=1 1 1
 right_meters=Tasks LoadAverage Uptime
 right_meter_modes=2 2 2 " > /root/.htoprc
 
-if [ "${fertig}" == "1" ]; then
-  userrechte
-fi
 
 befehl=null
 echo "Wenn kein Befehl mehr ausgefuehrt werden muss Eingabetaste druecken!!!"
@@ -607,6 +596,9 @@ done
 #
 
 if [ "${fertig}" == "1" ]  || [ "$erstellen" == "y" ]; then
+  if [ "$2" == "iso" ]; then
+    links
+  fi
   copyconfig
   #last command
   userrechte

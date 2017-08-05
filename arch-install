@@ -465,7 +465,7 @@ if [ "${update}" != "n" ]; then
     read -p "Soll eine graphische Installation durchgeführt werden? [Y/n] " graphical
     if [ "$graphical" != "n" ]
     then
-        update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install ${mountpoint}/root/arch-graphical-install "n install" "arch-chroot ${mountpoint}" /root/arch-graphical-install
+        update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install ${mountpoint}/root/arch-graphical-install "n" "arch-chroot ${mountpoint}" /root/arch-graphical-install
     fi
 fi
 echo "umount!!!"

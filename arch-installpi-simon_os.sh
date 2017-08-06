@@ -3,10 +3,10 @@
 set -ex
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 1>&2
-   exit 1
+    echo "This script must be run as root" 1>&2
+    exit 1
 fi
-  echo "Als root Angemeldet"
+echo "Als root Angemeldet"
 
 fdisk -l
 
@@ -14,11 +14,11 @@ read -p "Wo soll das Image aufgespielt werden?: sda,sdb,sdc : " device
 
 if [ -f arch-simon_os-*-armV7.tar.gz ]
 then
-image=$(find arch-simon_os-*-armV7.tar.gz)
-echo $datei
+    image=$(find arch-simon_os-*-armV7.tar.gz)
+    echo $datei
 else
-echo "ABGEBROCHEN"
-exit 1
+    echo "ABGEBROCHEN"
+    exit 1
 fi
 
 echo "device:" $device
@@ -27,30 +27,30 @@ echo "Image:" $image
 read -p "Sind alle Angaben Richtig?: [Y/n] " sicherheitsabfrage
 
 if [ "$sicherheitsabfrage" == "n" ]
-   then
-     echo "ABGEBROCHEN"
-     exit 1
+then
+    echo "ABGEBROCHEN"
+    exit 1
 fi
 
 if [ -f /usr/bin/pacman ]
-  then
+then
     pacman -S dosfstools wget
-  else
+else
     apt-get install bsdtar dosfstools
 fi
 
 if cat /proc/mounts | grep /dev/"$device"1 > /dev/null; then
-echo "gemountet"
-umount /dev/"$device"1
+    echo "gemountet"
+    umount /dev/"$device"1
 else
-echo "nicht gemountet"
+    echo "nicht gemountet"
 fi
 
 if cat /proc/mounts | grep /dev/"$device"2 > /dev/null; then
-echo "gemountet"
-umount /dev/"$device"2
+    echo "gemountet"
+    umount /dev/"$device"2
 else
-echo "nicht gemountet"
+    echo "nicht gemountet"
 fi
 
 fdisk -W always /dev/"$device" <<EOT

@@ -28,7 +28,7 @@ EOT
 }
 
 function copyconfig() {
-  cp -avr /root/. /home/"$username"/
+    cp -avr /root/. /home/"$username"/
 }
 
 function userrechte() {
@@ -457,18 +457,18 @@ read -p "Was soll den X-Server starten: [getty/xdm/lightdm] " start
 
 if [ "$start" == "getty" ]
 then
-
-if [ "${fertig}" == "1" ]; then
-    echo "if [ \$(tty) = "/dev/tty1" ]; then" > /root/.bash_profile
-    echo "startx" >> /root/.bash_profile
-    echo "fi" >> /root/.bash_profile
-    #
-    echo "if [ \$(tty) = "/dev/tty1" ]; then" > /home/"$username"/.bash_profile
-    echo "startx" >> /home/"$username"/.bash_profile
-    echo "fi" >> /home/"$username"/.bash_profile
-    #
-fi
-
+    
+    if [ "${fertig}" == "1" ]; then
+        echo "if [ \$(tty) = "/dev/tty1" ]; then" > /root/.bash_profile
+        echo "startx" >> /root/.bash_profile
+        echo "fi" >> /root/.bash_profile
+        #
+        echo "if [ \$(tty) = "/dev/tty1" ]; then" > /home/"$username"/.bash_profile
+        echo "startx" >> /home/"$username"/.bash_profile
+        echo "fi" >> /home/"$username"/.bash_profile
+        #
+    fi
+    
     read -p "Welcher Nutzer soll automatisch gestartet werden?: ["$username"/root] " start
     if [ "$start" == "root" ]
     then
@@ -537,21 +537,21 @@ ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 # custom-bereich vollinstallation
 
 if [ "${fertig}" == "1" ]; then
-
-# custom-installer
-
-pip install beautysh
-
-# vboxdrv
-
-echo "vboxdrv" > /etc/modules-load.d/virtualbox-host-modules-arch.conf
-
-# x11vnc
-
-x11vnc -storepasswd /etc/x11vnc.pass
-
-systemctl enable x11vnc.service
-
+    
+    # custom-installer
+    
+    pip install beautysh
+    
+    # vboxdrv
+    
+    echo "vboxdrv" > /etc/modules-load.d/virtualbox-host-modules-arch.conf
+    
+    # x11vnc
+    
+    x11vnc -storepasswd /etc/x11vnc.pass
+    
+    systemctl enable x11vnc.service
+    
 fi
 
 
@@ -600,13 +600,13 @@ done
 #hwclock -w
 #
 
-if [ "${fertig}" == "1" ]  || [ "$erstellen" == "y" ]; then
-  if [ "$2" == "iso" ]; then
-    links
-  fi
-  copyconfig
-  #last command
-  userrechte
+if [ "$erstellen" == "y" ]; then
+    if [ "$2" == "iso" ]; then
+        links
+    fi
+    copyconfig
+    #last command
+    userrechte
 fi
 
 echo "Fertig!!!"

@@ -3,10 +3,10 @@
 set -ex
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 1>&2
-   exit 1
+    echo "This script must be run as root" 1>&2
+    exit 1
 fi
-  echo "Als root Angemeldet"
+echo "Als root Angemeldet"
 
 fdisk -l
 
@@ -20,30 +20,30 @@ echo "image vorhanden:" $image
 read -p "Sind alle Angaben Richtig?: [Y/n] " sicherheitsabfrage
 
 if [ "$sicherheitsabfrage" == "n" ]
-   then
-     echo "ABGEBROCHEN"
-     exit 1
+then
+    echo "ABGEBROCHEN"
+    exit 1
 fi
 
 if [ -f /usr/bin/pacman ]
-  then
+then
     pacman -S dosfstools wget
-  else
+else
     apt-get install bsdtar dosfstools
 fi
 
 if cat /proc/mounts | grep /dev/"$device"1 > /dev/null; then
-echo "gemountet"
-umount /dev/"$device"1
+    echo "gemountet"
+    umount /dev/"$device"1
 else
-echo "nicht gemountet"
+    echo "nicht gemountet"
 fi
 
 if cat /proc/mounts | grep /dev/"$device"2 > /dev/null; then
-echo "gemountet"
-umount /dev/"$device"2
+    echo "gemountet"
+    umount /dev/"$device"2
 else
-echo "nicht gemountet"
+    echo "nicht gemountet"
 fi
 
 fdisk -W always /dev/"$device" <<EOT
@@ -77,8 +77,8 @@ mkdir -p root
 mount /dev/"$device"2 root
 
 if [ "$image" == "n" ]
-   then
-   wget -c -t 0 "http://archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz"
+then
+    wget -c -t 0 "http://archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz"
 fi
 
 tar -xpf ArchLinuxARM-rpi-2-latest.tar.gz -C root

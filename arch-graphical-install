@@ -600,7 +600,7 @@ done
 #hwclock -w
 #
 
-if [ "${fertig}" == "1" ]  || [ "$erstellen" == "y" ]; then
+if [ "$erstellen" == "y" ]; then
   if [ "$2" == "iso" ]; then
     links
   fi

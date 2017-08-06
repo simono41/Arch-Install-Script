@@ -180,6 +180,12 @@ function filesystem() {
         cp startup.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
         
         # x11vnc
+        if [ -f "${work_dir}/${arch}/airootfs/etc/systemd/system/multi-user.target.wants/x11vnc.service" ]; then
+          rm ${work_dir}/${arch}/airootfs/etc/systemd/system/multi-user.target.wants/x11vnc.service
+        fi
+        if [ -f "${work_dir}/${arch}/airootfs/usr/lib/systemd/system/x11vnc.service" ]; then
+          rm ${work_dir}/${arch}/airootfs/usr/lib/systemd/system/x11vnc.service
+        fi
         cp x11vnc.service ${work_dir}/${arch}/airootfs/lib/systemd/system/x11vnc.service
         
         # packages

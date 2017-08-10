@@ -119,7 +119,8 @@ function formatieren {
     #swap
     echo "format"
     mkfs.vfat -F 32 ${device}1
-    mkfs.btrfs -f -L p_arch ${device}2
+    #mkfs.btrfs -f -L p_arch ${device}2
+    btrfsformat
     mkswap -L p_swap ${device}3
     #echo "EXT4 mount"
     #mount ${device}2 ${mountpoint}
@@ -127,20 +128,70 @@ function formatieren {
     subvolume
 }
 
+function btrfsformat() {
+    if [ "$raid" == "raid0" ]; then
+        mkfs.btrfs -m raid0 -d raid0 ${device}2 ${device1}
+    elif [ "$raid" == "raid1" ]; then
+        mkfs.btrfs -m raid1 -d raid1 ${device}2 ${device1}
+    elif [ "$raid" == "raid10" ]; then
+        mkfs.btrfs -m raid10 -d raid10 ${device}2 ${device1}
+    else
+        mkfs.btrfs ${device}2
+    fi
+    btrfs filesystem show
+    
+}
+
 function btrfsfstab() {
-
-  rootbind=$(blkid -s UUID -o value ${device}2)
-
-  echo -e "UUID=${rootbind} / btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/ROOT 0 0" >> ${mountpoint}/etc/fstab
-
-  echo -e "UUID=${rootbind} /home btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/home 0 0" >> ${mountpoint}/etc/fstab
-  echo -e "UUID=${rootbind} /opt btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/opt 0 0" >> ${mountpoint}/etc/fstab
-  echo -e "UUID=${rootbind} /var btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/var 0 0" >> ${mountpoint}/etc/fstab
-
-  bootbind=$(blkid -s UUID -o value ${device}1)
-
-  echo -e "UUID=${bootbind} /boot vfat rw,relatime 0 2" >> ${mountpoint}/etc/fstab
-
+    
+    rootbind=$(blkid -s UUID -o value ${device}2)
+    
+    if [ "${raid}" != "n" ]; then
+        
+        anzahl=$(echo -e $device1 | wc -w)
+        echo "Festplatten: $anzahl"
+        
+#        i=0
+#        for wort in ${device1}
+#        do
+#            i=$(expr ${i} + 1)
+#            disk${i}=$(blkid -s UUID -o value "$wort")
+#        done
+        
+        case "$anzahl" in
+            1) devices="device=$(echo -e $device1 | awk '{print $1}')"
+            ;;
+            2) devices="device=$(echo -e $device1 | awk '{print $1}'),device=$(echo -e $device1 | awk '{print $2}')"
+            ;;
+            3) devices="device=$(echo -e $device1 | awk '{print $1}'),device=$(echo -e $device1 | awk '{print $2}'),device=$(echo -e $device1 | awk '{print $3}')"
+            ;;
+            4) devices="device=$(echo -e $device1 | awk '{print $1}'),device=$(echo -e $device1 | awk '{print $2}'),device=$(echo -e $device1 | awk '{print $3}'),device=$(echo -e $device1 | awk '{print $4}')"
+            ;;
+            *) echo "Zu viele Festplatten Max.4 !!!"
+               exit 1
+            ;;
+        esac
+        
+        echo -e "UUID=${rootbind} / btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,${devices},subvol=__current/ROOT 0 0" >> ${mountpoint}/etc/fstab
+        
+        echo -e "UUID=${rootbind} /home btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,${devices},subvol=__current/home 0 0" >> ${mountpoint}/etc/fstab
+        echo -e "UUID=${rootbind} /opt btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,${devices},subvol=__current/opt 0 0" >> ${mountpoint}/etc/fstab
+        echo -e "UUID=${rootbind} /var btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,${devices},subvol=__current/var 0 0" >> ${mountpoint}/etc/fstab
+        
+    else
+        
+        echo -e "UUID=${rootbind} / btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/ROOT 0 0" >> ${mountpoint}/etc/fstab
+        
+        echo -e "UUID=${rootbind} /home btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/home 0 0" >> ${mountpoint}/etc/fstab
+        echo -e "UUID=${rootbind} /opt btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/opt 0 0" >> ${mountpoint}/etc/fstab
+        echo -e "UUID=${rootbind} /var btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/var 0 0" >> ${mountpoint}/etc/fstab
+        
+    fi
+    
+    bootbind=$(blkid -s UUID -o value ${device}1)
+    
+    echo -e "UUID=${bootbind} /boot vfat rw,relatime 0 2" >> ${mountpoint}/etc/fstab
+    
 }
 
 function btrfsmount() {
@@ -272,6 +323,13 @@ function abfrage() {
     fi
     fdisk -l
     read -p "Geben sie eine Festplatte an: /dev/sda " device
+    read -p "Soll ein raid gemacht werden?: [raid0/raid1/raid10/n] " raid
+    if [ "${raid}" == "n" ]; then
+        echo "Kein raid wird erzeugt!"
+    else
+        fdisk -l
+        read -p "Bitte geben sie die Festplatten in eine Reihe an die zu einem Raid verbunden werden sollen!!!: " device1
+    fi
     read -p "Welches Passwort soll der Root erhalten?: root " pass
     read -p "Wie groß soll die System-Partition sein? +20G : " speicher
     read -p "Soll eine Offline-Installation durchgefuehrt werden? : [Y/n] " offline
@@ -293,6 +351,10 @@ function abfrage() {
     echo "Partionsart: ${Partition}"
     echo "Bootloader: ${boot}"
     echo "Laufwerk: ${device}"
+    if [ "${raid}" != "n" ]; then
+        echo "Raid: ${raid}"
+        echo "Festplatten: ${device1}"
+    fi
     echo "System-Partition ${speicher}"
     echo "Rootpasswort: ${pass}"
     echo "Architektur: $(uname -m)"

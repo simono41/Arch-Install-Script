@@ -458,7 +458,15 @@ function makeiso() {
                 echo "arch.img nicht vorhanden!"
                 qemu-img create -f qcow2 arch.img 64G
             fi
-            qemu-system-${arch} -enable-kvm -cdrom out/${imagename} -hda arch.img -boot d -m 1028M
+            # arch1
+            if [ -f arch1.img ]
+            then
+                echo "arch.img vorhanden!"
+            else
+                echo "arch.img nicht vorhanden!"
+                qemu-img create -f qcow2 arch1.img 64G
+            fi
+            qemu-system-${arch} -enable-kvm -cdrom out/${imagename} -hda arch.img -hdb arch1.img -boot d -m 2048M
         fi
         
         

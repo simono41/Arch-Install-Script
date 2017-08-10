@@ -18,6 +18,9 @@ function check() {
   if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
     rm /usr/lib/systemd/system/x11vnc.service
   fi
+}
+
+function checkend() {
   wget https://raw.githubusercontent.com/simono41/Simon-OS/master/x11vnc.service -t 0 --output-document=/usr/lib/systemd/system/x11vnc.service
 }
 
@@ -235,6 +238,7 @@ then
     if [ "$vollinstallation" != "debug" ]; then
         vollinstallation
     fi
+    checkend
 fi
 #fi
 #

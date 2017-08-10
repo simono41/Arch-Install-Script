@@ -46,7 +46,7 @@ elif [ "restore" == "$1" ]; then
 
     btrfs subvolume list -p /
 
-    echo "Bitte noch die /etc/fstab editieren und die neuen IDs eintragen!!!"
+    #echo "Bitte noch die /etc/fstab editieren und die neuen IDs eintragen!!!"
     
     #reboot
     

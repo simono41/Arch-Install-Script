@@ -18,7 +18,7 @@ function check() {
   if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
     rm /usr/lib/systemd/system/x11vnc.service
   fi
-
+  wget https://raw.githubusercontent.com/simono41/Simon-OS/master/x11vnc.service -t 0 --output-document=/usr/lib/systemd/system/x11vnc.service
 }
 
 function adduser() {
@@ -222,7 +222,6 @@ then
         read -p "Soll der omxplayer mitinstalliert werden?: [Y/n] " omxplayer
         if [ "$omxplayer" != "n" ]
         then
-            check
             pacman -Sy omxplayer
         fi
     fi
@@ -232,6 +231,7 @@ fi
 read -p "Soll ein Vollinstallation werden?: [Y/n] " vollinstallation
 if [ "$vollinstallation" != "n" ]
 then
+    check
     if [ "$vollinstallation" != "debug" ]; then
         vollinstallation
     fi
@@ -454,7 +454,7 @@ then
     systemctl enable wpa_supplicant@"$modul".service
     systemctl enable dhcpcd@"$modul"
 else
-    if [ "${vollinstallation}" == "1" ]; then
+    if [ "${vollinstallation}" != "n" ]; then
         systemctl disable dhcpcd
         systemctl enable NetworkManager.service
     fi
@@ -465,7 +465,7 @@ read -p "Was soll den X-Server starten: [getty/xdm/lightdm] " start
 if [ "$start" == "getty" ]
 then
     
-    if [ "${vollinstallation}" == "1" ]; then
+    if [ "${vollinstallation}" != "n" ]; then
         echo "if [ \$(tty) = "/dev/tty1" ]; then" > /root/.bash_profile
         echo "startx" >> /root/.bash_profile
         echo "fi" >> /root/.bash_profile
@@ -502,7 +502,7 @@ else
     echo "Kein Start gewählt!!!"
 fi
 
-if [ "${vollinstallation}" == "1" ]; then
+if [ "${vollinstallation}" != "n" ]; then
     systemctl enable acpid
     systemctl enable ntpd
     systemctl enable avahi-daemon
@@ -543,7 +543,7 @@ ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # custom-bereich vollinstallation
 
-if [ "${vollinstallation}" == "1" ]; then
+if [ "${vollinstallation}" != "n" ]; then
     
     # custom-installer
     
@@ -613,8 +613,8 @@ if [ "$erstellen" == "y" ]; then
     fi
     copyconfig
     #last command
-    userrechte
 fi
+userrechte
 
 echo "Fertig!!!"
 

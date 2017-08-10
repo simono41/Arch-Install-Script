@@ -391,7 +391,7 @@ function UEFI() {
             echo "$file"
             sed "s|%ISO_LABEL%|${iso_label}|g;
       s|%arch%|${arch}|g;
-            s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/iso/loader/entries/${file##*/}
+            s|%INSTALL_DIR%|${install_dir}|g" $file > ${work_dir}/iso/loader/entries/${file##*/}
         done
         
         ###
@@ -401,7 +401,7 @@ function UEFI() {
             echo "$file"
             sed "s|%ISO_LABEL%|${iso_label}|g;
       s|%arch%|${arch}|g;
-            s|%INSTALL_DIR%|${install_dir}|g" $file >> ${work_dir}/efiboot/loader/entries/${file##*/}
+            s|%INSTALL_DIR%|${install_dir}|g" $file > ${work_dir}/efiboot/loader/entries/${file##*/}
         done
         
         ###

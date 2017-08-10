@@ -136,7 +136,7 @@ function btrfsformat() {
     elif [ "$raid" == "raid10" ]; then
         mkfs.btrfs -f -m raid10 -d raid10 ${device}2 ${device1}
     else
-        mkfs.btrfs ${device}2
+        mkfs.btrfs -m single ${device}2
     fi
     btrfs filesystem show
     
@@ -159,13 +159,13 @@ function btrfsfstab() {
 #        done
         
         case "$anzahl" in
-            1) devices="device=$(echo -e $device1 | awk '{print $1}')"
+            1) devices="device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $1}'))"
             ;;
-            2) devices="device=$(echo -e $device1 | awk '{print $1}'),device=$(echo -e $device1 | awk '{print $2}')"
+            2) devices="device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $1}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $2}'))"
             ;;
-            3) devices="device=$(echo -e $device1 | awk '{print $1}'),device=$(echo -e $device1 | awk '{print $2}'),device=$(echo -e $device1 | awk '{print $3}')"
+            3) devices="device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $1}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $2}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $3}'))"
             ;;
-            4) devices="device=$(echo -e $device1 | awk '{print $1}'),device=$(echo -e $device1 | awk '{print $2}'),device=$(echo -e $device1 | awk '{print $3}'),device=$(echo -e $device1 | awk '{print $4}')"
+            4) devices="device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $1}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $2}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $3}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $4}'))"
             ;;
             *) echo "Zu viele Festplatten Max.4 !!!"
                exit 1

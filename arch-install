@@ -159,13 +159,13 @@ function btrfsfstab() {
 #        done
         
         case "$anzahl" in
-            1) devices="device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $1}'))"
+            1) devices="device=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}'))"
             ;;
-            2) devices="device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $1}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $2}'))"
+            2) devices="device=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}'))"
             ;;
-            3) devices="device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $1}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $2}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $3}'))"
+            3) devices="device=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),device=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $3}'))"
             ;;
-            4) devices="device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $1}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $2}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $3}')),device=$(blkid -s UUID -o value$(echo -e $device1 | awk '{print $4}'))"
+            4) devices="device=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),device=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $3}')),device=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $4}'))"
             ;;
             *) echo "Zu viele Festplatten Max.4 !!!"
                exit 1
@@ -550,6 +550,9 @@ if [ "${update}" != "n" ]; then
         update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-graphical-install ${mountpoint}/root/arch-graphical-install "n" "arch-chroot ${mountpoint}" /root/arch-graphical-install
     fi
 fi
+echo "df!!!"
+df -h /mnt
+btrfs fi df /mnt
 echo "umount!!!"
 umount ${mountpoint}/home
 umount ${mountpoint}/opt

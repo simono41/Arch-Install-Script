@@ -551,8 +551,8 @@ if [ "${update}" != "n" ]; then
     fi
 fi
 echo "df!!!"
-df -h /mnt
-btrfs fi df /mnt
+df -h ${mountpoint}
+btrfs fi df ${mountpoint}
 echo "umount!!!"
 umount ${mountpoint}/home
 umount ${mountpoint}/opt

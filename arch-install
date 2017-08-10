@@ -99,7 +99,7 @@ function offlineinstallation {
     mkdir -p ${mountpoint}/run/btrfs-root
     echo "UUID=${rootbind} /run/btrfs-root/ btrfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab
     
-    grep -v "/var/lib" < ${mountpoint}/etc/fstab > fstab.neu; mv fstab.neu ${mountpoint}/etc/fstab
+    #grep -v "/var/lib" < ${mountpoint}/etc/fstab > fstab.neu; mv fstab.neu ${mountpoint}/etc/fstab
     
     echo "/run/btrfs-root/__current/ROOT/var/lib /var/lib none bind 0 0" >> ${mountpoint}/etc/fstab
     
@@ -131,15 +131,15 @@ function btrfsfstab() {
 
   rootbind=$(blkid -s UUID -o value ${device}2)
 
-  echo -e "UUID=$(rootbind) / btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/ROOT 0 0" >> ${mountpoint}/etc/fstab
+  echo -e "UUID=${rootbind} / btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/ROOT 0 0" >> ${mountpoint}/etc/fstab
 
-  echo -e "UUID=$(rootbind) /home btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/home 0 0" >> ${mountpoint}/etc/fstab
-  echo -e "UUID=$(rootbind) /opt btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/opt 0 0" >> ${mountpoint}/etc/fstab
-  echo -e "UUID=$(rootbind) /var btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/var 0 0" >> ${mountpoint}/etc/fstab
+  echo -e "UUID=${rootbind} /home btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/home 0 0" >> ${mountpoint}/etc/fstab
+  echo -e "UUID=${rootbind} /opt btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/opt 0 0" >> ${mountpoint}/etc/fstab
+  echo -e "UUID=${rootbind} /var btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/var 0 0" >> ${mountpoint}/etc/fstab
 
   bootbind=$(blkid -s UUID -o value ${device}1)
 
-  echo -e "UUID=$(bootbind) /boot vfat rw,relatime,fmask=0022,dmask,0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro 0 2" >> ${mountpoint}/etc/fstab
+  echo -e "UUID=${bootbind} /boot vfat rw,relatime 0 2" >> ${mountpoint}/etc/fstab
 
 }
 
@@ -505,4 +505,3 @@ then
     reboot
 fi
 exit 0
-v

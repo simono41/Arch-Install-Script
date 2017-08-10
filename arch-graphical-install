@@ -556,6 +556,8 @@ if [ "${vollinstallation}" != "n" ]; then
     # vboxdrv
     
     echo "vboxdrv" > /etc/modules-load.d/virtualbox-host-modules-arch.conf
+    echo "vboxguest" >> /etc/modules-load.d/virtualbox-host-modules-arch.conf
+    echo "vboxsf" >> /etc/modules-load.d/virtualbox-host-modules-arch.conf
     
     # x11vnc
     

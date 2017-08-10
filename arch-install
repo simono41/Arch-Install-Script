@@ -130,11 +130,11 @@ function formatieren {
 
 function btrfsformat() {
     if [ "$raid" == "raid0" ]; then
-        mkfs.btrfs -m raid0 -d raid0 ${device}2 ${device1}
+        mkfs.btrfs -f -m raid0 -d raid0 ${device}2 ${device1}
     elif [ "$raid" == "raid1" ]; then
-        mkfs.btrfs -m raid1 -d raid1 ${device}2 ${device1}
+        mkfs.btrfs -f -m raid1 -d raid1 ${device}2 ${device1}
     elif [ "$raid" == "raid10" ]; then
-        mkfs.btrfs -m raid10 -d raid10 ${device}2 ${device1}
+        mkfs.btrfs -f -m raid10 -d raid10 ${device}2 ${device1}
     else
         mkfs.btrfs ${device}2
     fi

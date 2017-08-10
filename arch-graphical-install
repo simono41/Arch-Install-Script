@@ -12,7 +12,13 @@ echo "Als root Angemeldet"
 function vollinstallation() {
     wget https://raw.githubusercontent.com/simono41/Simon-OS/master/packages_all1.txt -t 0 --output-document=/root/packages_all1.txt
     pacman -Syu $(cat /root/packages_all1.txt)
-    fertig="1"
+}
+
+function check() {
+  if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
+    rm /usr/lib/systemd/system/x11vnc.service
+  fi
+
 }
 
 function adduser() {
@@ -216,6 +222,7 @@ then
         read -p "Soll der omxplayer mitinstalliert werden?: [Y/n] " omxplayer
         if [ "$omxplayer" != "n" ]
         then
+            check
             pacman -Sy omxplayer
         fi
     fi
@@ -447,7 +454,7 @@ then
     systemctl enable wpa_supplicant@"$modul".service
     systemctl enable dhcpcd@"$modul"
 else
-    if [ "${fertig}" == "1" ]; then
+    if [ "${vollinstallation}" == "1" ]; then
         systemctl disable dhcpcd
         systemctl enable NetworkManager.service
     fi
@@ -458,7 +465,7 @@ read -p "Was soll den X-Server starten: [getty/xdm/lightdm] " start
 if [ "$start" == "getty" ]
 then
     
-    if [ "${fertig}" == "1" ]; then
+    if [ "${vollinstallation}" == "1" ]; then
         echo "if [ \$(tty) = "/dev/tty1" ]; then" > /root/.bash_profile
         echo "startx" >> /root/.bash_profile
         echo "fi" >> /root/.bash_profile
@@ -495,7 +502,7 @@ else
     echo "Kein Start gewählt!!!"
 fi
 
-if [ "${fertig}" == "1" ]; then
+if [ "${vollinstallation}" == "1" ]; then
     systemctl enable acpid
     systemctl enable ntpd
     systemctl enable avahi-daemon
@@ -536,7 +543,7 @@ ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # custom-bereich vollinstallation
 
-if [ "${fertig}" == "1" ]; then
+if [ "${vollinstallation}" == "1" ]; then
     
     # custom-installer
     

@@ -82,7 +82,7 @@ function offlineinstallation {
     fi
     echo ""
     echo "MODULES=\"i915 radeon\"" > ${mountpoint}/etc/mkinitcpio.conf
-    echo "HOOKS=\"base udev resume block filesystems keyboard\"" >> ${mountpoint}/etc/mkinitcpio.conf
+    echo "HOOKS=\"base udev resume block filesystems keyboard btrfs\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo "COMPRESSION=\"gzip\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo ""
     #cp /etc/X11/xinit/xinitrc ${mountpoint}/etc/X11/xinit/xinitrc

@@ -26,6 +26,8 @@ qemu-system-x86_64 -enable-kvm -cdrom out/arch-*.iso -boot d -m 8092
 
 oder
 
+sudo qemu-system-x86_64 -enable-kvm -cdrom out/arch-spectre-os-17.08.10-x86_64.iso -hdb /dev/sdd -boot d -m 2048M
+
 qemu-system-x86_64 -enable-kvm -hdb /dev/sdd -m 8092
 
 oder

@@ -148,8 +148,8 @@ function btrfsfstab() {
     
     if [ "${raid}" != "n" ]; then
         
-        anzahl=$(echo -e $device1 | wc -w)
-        echo "Festplatten: $anzahl"
+#        anzahl=$(echo -e $device1 | wc -w)
+#        echo "Festplatten: $anzahl"
         
 #        i=0
 #        for wort in ${device1}
@@ -158,19 +158,18 @@ function btrfsfstab() {
 #        done
 #        anzahl=$i
         
-        case "$anzahl" in
-            1) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),"
-            ;;
-            2) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),"
-            ;;
-            3) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $3}')),"
-            ;;
-            4) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $3}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $4}')),"
-            ;;
-            *) echo "Zu viele Festplatten Max.4 !!!"
-               exit 1
-            ;;
-        esac
+#        case "$anzahl" in
+#            1) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),"
+#            ;;
+#            2) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),"
+#            ;;
+#            3) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $3}')),"
+#            ;;
+#            4) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $3}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $4}')),"
+#            ;;
+#            *) echo "Zu viele Festplatten Max.4 !!!"
+#            ;;
+#        esac
         
         echo -e "UUID=${rootbind} / btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,${devices}subvol=__current/ROOT 0 0" >> ${mountpoint}/etc/fstab
         

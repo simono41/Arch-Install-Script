@@ -122,10 +122,13 @@ function filesystem() {
         echo "MODULES=\"i915 radeon\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
         echo "HOOKS=\"base udev block filesystems keyboard archiso\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
         echo "COMPRESSION=\"gzip\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
         
         # modprobe.d
         mkdir -p ${work_dir}/${arch}/airootfs/etc/modprobe.d/
         echo "options rtl8723be ant_sel=1 fwlps=N" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/rtl8723be.conf
+        
+        echo "blacklist floppy" | sudo tee ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist-floppy.conf
         
         # iso_name
         echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname

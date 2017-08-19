@@ -84,6 +84,9 @@ function offlineinstallation {
     echo "MODULES=\"i915 radeon\"" > ${mountpoint}/etc/mkinitcpio.conf
     echo "HOOKS=\"base udev resume block filesystems keyboard btrfs\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo "COMPRESSION=\"gzip\"" >> ${mountpoint}/etc/mkinitcpio.conf
+    echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\" >> ${mountpoint}/etc/mkinitcpio.conf
+    echo ""
+    echo "blacklist floppy" | sudo tee ${mountpoint}/etc/modprobe.d/blacklist-floppy.con
     echo ""
     #cp /etc/X11/xinit/xinitrc ${mountpoint}/etc/X11/xinit/xinitrc
     echo "exec startxfce4" > ${mountpoint}/etc/X11/xinit/xinitrc
@@ -330,6 +333,7 @@ function abfrage() {
         read -p "Bitte geben sie die Festplatten in eine Reihe an die zu einem Raid verbunden werden sollen!!!: " device1
     fi
     read -p "Welches Passwort soll der Root erhalten?: root " pass
+    echo "Bitte berechnen sie 512MB für die boot-partition und 8GB für die swap-partition ein!!!"
     read -p "Wie groß soll die System-Partition sein? +20G : " speicher
     read -p "Soll eine Offline-Installation durchgefuehrt werden? : [Y/n] " offline
     #

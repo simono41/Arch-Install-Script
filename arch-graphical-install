@@ -268,7 +268,7 @@ then
         pwd
         cd ..
         pwd
-        su "$username" -c "yaourt -Syu"
+        #su "$username" -c "yaourt -Syu"
         su "$username" -c "mkdir -p /home/"$username"/aur-pakete"
         pwd
     fi

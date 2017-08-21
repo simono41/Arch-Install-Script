@@ -41,10 +41,8 @@ function copyconfig() {
 }
 
 function userrechte() {
-    chmod 770 -R -v /home/"$username"/
-    chown -R -v "$username":users /home/"$username"
-    chmod -R -v u+rwX /home/"$username"
-    chmod 755 /home/"$username"
+    chown -cR -v "$username":users /home/"$username"
+    chmod 755 -Rv /home/"$username"
 }
 
 function wifi() {

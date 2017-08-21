@@ -1,0 +1,628 @@
+#!/bin/bash
+#
+set -ex
+
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root" 1>&2
+    exit 1
+fi
+echo "Als root Angemeldet"
+#
+
+function vollinstallation() {
+    wget https://raw.githubusercontent.com/simono41/Simon-OS/master/packages_all1.txt -t 0 --output-document=/root/packages_all1.txt
+    pacman -Syu $(cat /root/packages_all1.txt)
+}
+
+function check() {
+  if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
+    rm /usr/lib/systemd/system/x11vnc.service
+  fi
+}
+
+function checkend() {
+  wget https://raw.githubusercontent.com/simono41/Simon-OS/master/x11vnc.service -t 0 --output-document=/usr/lib/systemd/system/x11vnc.service
+}
+
+function adduser() {
+    useradd -m -g users -G wheel,audio,video -s /bin/bash $username
+passwd ${username} <<EOT
+${userpass}
+${userpass}
+EOT
+    mkdir -p /home/"$username"/
+    #echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    copyconfig
+    userrechte
+}
+
+function copyconfig() {
+    cp -avr /root/. /home/"$username"/
+}
+
+function userrechte() {
+    chmod 770 -R -v /home/"$username"/
+    chown -R -v "$username":users /home/"$username"
+    chmod -R -v u+rwX /home/"$username"
+    chmod 755 /home/"$username"
+}
+
+function wifi() {
+    echo "Treiber werden geladen!"
+    
+    # WLAN aktivieren auf 100%
+    
+    modprobe -r rtl8723be
+    modprobe rtl8723be ant_sel=1 fwlps=N
+    echo "Wifi wird eingerichtet!"
+    ip link
+    read -p "Wie heisst das wlan-modul?: " modul
+    ip link set dev "$modul" up
+    sleep 5
+    iw dev "$modul" scan > scan.txt
+    nano scan.txt
+    read -p "Wie heisst das Netzwerk?: " network
+    read -p "Wie heisst das Passwort?: " passwort
+    wpa_passphrase  "$network"  "$passwort"  > /etc/wpa_supplicant/wpa_supplicant-"$modul".conf
+    wpa_supplicant -B -i "$modul" -c /etc/wpa_supplicant/wpa_supplicant-"$modul".conf
+    dhcpcd "$modul"
+}
+
+function ethernet() {
+    ip link
+    read -p "Wie heisst das Ethernet-modul?: " ethernetmodul
+    echo "dhcpcd wird gestartet!"
+    dhcpcd "$ethernetmodul"
+}
+
+function links() {
+    #
+    mkdir -p /home/"$username"/Schreibtisch/
+    cp /usr/share/applications/arch-install.desktop /home/"$username"/Schreibtisch/arch-install.desktop
+    chmod +x /home/"$username"/Schreibtisch/arch-install.desktop
+    #
+    mkdir -p /root/Schreibtisch/
+    cp /usr/share/applications/arch-install.desktop /root/Schreibtisch/arch-install.desktop
+    chmod +x /root/Schreibtisch/arch-install.desktop
+    #
+    mkdir -p /home/"$username"/Desktop/
+    cp /usr/share/applications/arch-install.desktop /home/"$username"/Desktop/arch-install.desktop
+    chmod +x /home/"$username"/Desktop/arch-install.desktop
+    #
+    mkdir -p /root/Desktop/
+    cp /usr/share/applications/arch-install.desktop /root/Desktop/arch-install.desktop
+    chmod +x /root/Desktop/arch-install.desktop
+}
+
+function gnomeconfig() {
+    mkdir -p /home/"$username"/.config/gtk-3.0/
+    echo "[Settings]" > /home/"$username"/.config/gtk-3.0/settings.ini
+    echo "gtk-theme-name = Adwaita" >> /home/"$username"/.config/gtk-3.0/settings.ini
+    echo "# next option is applicable only if selected theme supports it" >> /home/"$username"/.config/gtk-3.0/settings.ini
+    echo "gtk-application-prefer-dark-theme = true" >> /home/"$username"/.config/gtk-3.0/settings.ini
+    echo "# set font name and dimension" >> /home/"$username"/.config/gtk-3.0/settings.ini
+    echo "gtk-font-name = Sans 10" >> /home/"$username"/.config/gtk-3.0/settings.ini
+    
+    mkdir -p /home/"$username"/.local/share/applications/
+    echo "[Default Applications]" > /home/"$username"/.local/share/applications/mimeapps.list
+    echo "inode/directory=org.gnome.Nautilus.desktop" >> /home/"$username"/.local/share/applications/mimeapps.list
+    
+    mkdir -p /root/.config/gtk-3.0/
+    echo "[Settings]" > /root/.config/gtk-3.0/settings.ini
+    echo "gtk-theme-name = Adwaita" >> /root/.config/gtk-3.0/settings.ini
+    echo "# next option is applicable only if selected theme supports it" >> /root/.config/gtk-3.0/settings.ini
+    echo "gtk-application-prefer-dark-theme = true" >> /root/.config/gtk-3.0/settings.ini
+    echo "# set font name and dimension" >> /root/.config/gtk-3.0/settings.ini
+    echo "gtk-font-name = Sans 10" >> /root/.config/gtk-3.0/settings.ini
+    
+    mkdir -p /root/.local/share/applications/
+    echo "[Default Applications]" > /root/.local/share/applications/mimeapps.list
+    echo "inode/directory=org.gnome.Nautilus.desktop" >> /root/.local/share/applications/mimeapps.list
+}
+
+
+
+
+
+
+
+#
+
+if [ "$1" == "adduser" ]
+then
+    username=$2
+    userpass=$3
+    adduser
+    exit 0
+fi
+
+read -p "Wollen sie einen neuen Benutzer erstellen?: [y/N] " erstellen
+if [ "$erstellen" == "y" ]
+then
+    read -p "Wie soll der neue Benutzer heissen?: " username
+    read -p "Wie soll das Passwort heissen?: " userpass
+    adduser
+else
+    read -p "Wie heisst der normale Benutzer auf dem PC?: " username
+    #
+    read -p "Soll "$username" root-rechte gegeben werden?: [y/N] " root
+    if [ "$root" == "y" ]
+    then
+        echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    fi
+fi
+#
+if [ "$1" != "n" ]
+then
+    read -p "Ist das ein Raspberry PI ?: [y/N] " pi
+    read -p "Wollen sie eine Verbindung mit Ethernet aufbauen?: [y/N] " ethernet
+    if [ "$ethernet" == "y" ]
+    then
+        ethernet
+    else
+        echo "Ethernet wird nicht eingerichtet!"
+    fi
+    #
+    read -p "Wollen sie eine Verbindung mit wifi verbindung aufbauen?: [y/N] " wifi
+    if [ "$wifi" == "y" ]
+    then
+        wifi
+    else
+        echo "Wifi wird nicht eingerichtet!"
+    fi
+    #
+    pacman-key --init
+    pacman-key --populate archlinux
+    #
+    read -p "Soll murmur mitinstalliert werden?: [Y/n] " murmur
+    if [ "$murmur" != "n" ]
+    then
+        pacman -Sy murmur
+        systemctl enable murmur
+        read -p "Wie soll das Passwort vom murmur-server sein?: " murmurpass
+        murmurd -ini /etc/murmur.ini -supw $murmurpass
+    fi
+    #
+    read -p "Soll snapd mitinstalliert werden?: [Y/n] " snapd
+    if [ "$snapd" != "n" ]
+    then
+        pacman -Sy snapd
+        systemctl enable snapd.socket
+    fi
+    #
+    read -p "Soll apache mitinstalliert werden?: [Y/n] " apache
+    if [ "$apache" != "n" ]
+    then
+        pacman -Sy apache
+        systemctl enable httpd
+    fi
+    #
+    read -p "Sollen docker mitinstalliert werden?: [Y/n] " docker
+    if [ "$docker" != "n" ]
+    then
+        pacman -Sy docker
+        systemctl enable docker
+    fi
+    #
+    if [ "$pi" != "y" ]
+    then
+        #
+        read -p "Soll Nvidia mitinstalliert werden?: [Y/n] " nvidia
+        if [ "$nvidia" != "n" ]
+        then
+            pacman -Sy nvidia nvidia-libgl nvidia-settings lib32-nvidia-libgl
+            read -p "Soll nvidia-xconfig gestartet werden?: [y/N] " nvidiax
+            if [ "$nvidiax" == "y" ]
+            then
+                nvidia-xconfig
+            fi
+        fi
+        #
+    fi
+    #
+    if [ "$pi" == "y" ]
+    then
+        read -p "Soll der omxplayer mitinstalliert werden?: [Y/n] " omxplayer
+        if [ "$omxplayer" != "n" ]
+        then
+            pacman -Sy omxplayer
+        fi
+    fi
+fi
+#
+#if [ "$1" != "n" ]; then
+read -p "Soll ein Vollinstallation werden?: [Y/n] " vollinstallation
+if [ "$vollinstallation" != "n" ]
+then
+    check
+    if [ "$vollinstallation" != "debug" ]; then
+        vollinstallation
+    fi
+    checkend
+fi
+#fi
+#
+read -p "Soll yaourt mitinstalliert werden?: [Y/n] " yaourt
+if [ "$yaourt" != "n" ]
+then
+    if [ "$yaourt" != "debug" ]; then
+        cd /home/"$username"/
+        pwd
+        su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz"
+        pwd
+        su "$username" -c "tar -xvzf package-query.tar.gz"
+        pwd
+        cd package-query
+        pwd
+        su "$username" -c "makepkg -si"
+        pwd
+        cd ..
+        pwd
+        su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz"
+        pwd
+        su "$username" -c "tar -xvzf yaourt.tar.gz"
+        pwd
+        cd yaourt
+        pwd
+        su "$username" -c "makepkg -si"
+        pwd
+        cd ..
+        pwd
+        su "$username" -c "yaourt -Syu"
+        su "$username" -c "mkdir -p /home/"$username"/aur-pakete"
+        pwd
+    fi
+    #
+    read -p "Soll pamac-aur mitinstalliert werden?: [Y/n] " pamac
+    if [ "$pamac" != "n" ]
+    then
+        su "$username" -c "yaourt -S pamac-aur --export /home/"$username"/aur-pakete"
+    fi
+    #
+    read -p "Soll pacaur mitinstalliert werden?: [Y/n] " pacaur
+    if [ "$pacaur" != "n" ]
+    then
+        su "$username" -c "yaourt -S pacaur --export /home/"$username"/aur-pakete"
+    fi
+    #
+    read -p "Soll google-chrome mitinstalliert werden?: [Y/n] " chrome
+    if [ "$chrome" != "n" ]
+    then
+        su "$username" -c "yaourt -S google-chrome --export /home/"$username"/aur-pakete"
+    fi
+    #
+    read -p "Soll discord mitinstalliert werden?: [Y/n] " discord
+    if [ "$discord" != "n" ]
+    then
+        su "$username" -c "yaourt -S discord --export /home/"$username"/aur-pakete"
+    fi
+    #
+    read -p "Soll spotify mitinstalliert werden?: [Y/n] " spotify
+    if [ "$spotify" != "n" ]
+    then
+        su "$username" -c "yaourt -S spotify --export /home/"$username"/aur-pakete"
+    fi
+    #
+    read -p "Soll xboxdrv mitinstalliert werden?: [Y/n] " xboxdrv
+    if [ "$xboxdrv" != "n" ]
+    then
+        su "$username" -c "yaourt -S xboxdrv --export /home/"$username"/aur-pakete"
+    fi
+    #
+    read -p "Soll telegram mitinstalliert werden?: [Y/n] " telegram
+    if [ "$telegram" != "n" ]
+    then
+        su "$username" -c "yaourt -S telegram-desktop --export /home/"$username"/aur-pakete"
+    fi
+    #
+    read -p "Soll vibrancy-colors mitinstalliert werden?: [Y/n] " vibrancy
+    if [ "$vibrancy" != "n" ]
+    then
+        su "$username" -c "yaourt -S vibrancy-colors --export /home/"$username"/aur-pakete"
+    fi
+    #
+    read -p "Sollen firmwares mitinstalliert werden?: [Y/n] " firmwares
+    if [ "$firmwares" != "n" ]
+    then
+        su "$username" -c "yaourt -S wd719x-firmware aic94xx-firmware --export /home/"$username"/aur-pakete"
+        mkinitcpio -p linux
+    fi
+    #
+    read -p "Soll jp2a mitinstalliert werden?: [Y/n] " jp2a
+    if [ "$jp2a" != "n" ]
+    then
+        su "$username" -c "yaourt -S jp2a --export /home/"$username"/aur-pakete"
+    fi
+    #
+    read -p "Soll firefox-ublock-origin mitinstalliert werden?: [Y/n] " ublock
+    if [ "$ublock" != "n" ]
+    then
+        su "$username" -c "yaourt -S firefox-ublock-origin --export /home/"$username"/aur-pakete"
+    fi
+    read -p "Soll audio-recorder mitinstalliert werden?: [Y/n] " audio
+    if [ "$audio" != "n" ]
+    then
+        su "$username" -c "yaourt -S audio-recorder --export /home/"$username"/aur-pakete"
+    fi
+    
+    echo "Sollen sonst noch welche packete aus dem aur installiert werden?"
+    befehl=blablabla
+    while [ "$befehl" != "" ]
+    do
+        read -p "package: " befehl
+        if [ "$befehl" != "" ]; then
+            su "$username" -c "yaourt -S $befehl --export /home/"$username"/aur-pakete"
+        fi
+    done
+    
+fi
+echo "Packetliste2 Ende"
+echo "Beginne mit dem Konfigurieren des Systems :D"
+# set desktop
+echo "set desktops"
+#
+read -p "Welcher desktop soll verwendet werden? lxde, lxde-gtk3, gnome, gnome-flashback, mate, xfce4, kde, cinnamon oder lxqt : " rootstart
+
+if [ "$rootstart" == "gnome" ]
+then
+    pacman -Sy gnome gnome-extra gnuchess system-config-printer blueman gnome-power-manager gnome-screensaver
+    echo "exec gnome-session" > /etc/X11/xinit/xinitrc
+    read -p "Soll gnome classic benutzt werden? [y/N] " classic
+    if [ "$classic" == "y" ]
+    then
+        echo "export XDG_CURRENT_DESKTOP=GNOME-Classic:GNOME" > /etc/X11/xinit/xinitrc
+        echo "export GNOME_SHELL_SESSION_MODE=classic" >> /etc/X11/xinit/xinitrc
+        echo "exec gnome-session --session=gnome-classic" >> /etc/X11/xinit/xinitrc
+    fi
+    #
+    gnomeconfig
+    #
+elif [ "$rootstart" == "gnome-flashback" ]
+then
+    pacman -Sy gnome-flashback gnome gnome-extra gnuchess system-config-printer blueman gnome-power-manager gnome-screensaver
+    echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
+    echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
+    #
+    gnomeconfig
+    #
+elif [ "$rootstart" == "cinnamon" ]
+then
+    pacman -Sy cinnamon gnome gnome-extra system-config-printer blueman gnome-power-manager gnome-screensaver
+    echo "exec cinnamon-session" > /etc/X11/xinit/xinitrc
+elif [ "$rootstart" == "mate" ]
+then
+    pacman -Sy mate mate-extra system-config-printer blueman mate-power-manager gtk-engine-murrine
+    echo "exec mate-session" > /etc/X11/xinit/xinitrc
+elif [ "$rootstart" == "lxde" ]
+then
+    pacman -Sy lxde xfce4-power-manager
+    echo "exec startlxde" > /etc/X11/xinit/xinitrc
+elif [ "$rootstart" == "lxde-gtk3" ]
+then
+    pacman -Sy lxde-gtk3 xfce4-power-manager
+    echo "exec startlxde" > /etc/X11/xinit/xinitrc
+elif [ "$rootstart" == "lxqt" ]
+then
+    pacman -Sy lxqt lxqt-powermanagement oxygen-icons breeze-icons
+    echo "exec startlxqt" > /etc/X11/xinit/xinitrc
+elif [ "$rootstart" == "xfce4" ]
+then
+    pacman -Sy xfce4 xfce4-goodies human-icon-theme xfce4-power-manager xfce4-pulseaudio-plugin \
+    xfce4-sensors-plugin libxnvctrl xfce4-xkb-plugin arc-gtk-theme \
+    noto-fonts noto-fonts-emoji arc-icon-theme elementary-icon-theme \
+    gnome gnome-extra gnuchess system-config-printer blueman gnome-power-manager gnome-screensaver
+    echo "exec startxfce4" > /etc/X11/xinit/xinitrc
+    #
+    gnomeconfig
+    #
+elif [ "$rootstart" == "kde" ]
+then
+    pacman -Sy plasma kde-l10n-de kde-applications kdialog
+    echo "exec startkde" > /etc/X11/xinit/xinitrc
+elif [ "$rootstart" == "all" ]
+then
+    echo "exec startlxde" > /etc/X11/xinit/xinitrc
+else
+    # xfce4
+    echo "exec startxfce4" > /etc/X11/xinit/xinitrc
+fi
+
+#
+echo "Systemsprache und dienste werden erstellt!"
+
+mkdir -p /etc/X11/xorg.conf.d/
+# localectl set-x11-keymap de pc105 nodeadkeys
+echo "Section \"InputClass\"" > /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Identifier \"Keyboard0\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        MatchIsKeyboard \"yes\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Option \"XkbLayout\" \"de\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Option \"XkbModel\" \"pc105\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Option \"XkbVariant\" \"nodeadkeys\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "EndSection" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+
+#xset m 2/1 0
+echo "Section \"InputClass\"" > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Identifier \"Mouse0\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	MatchIsPointer \"yes\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "# set the following to 1 1 0 respectively to disable acceleration." >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Option \"AccelerationNumerator\" \"2\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Option \"AccelerationDenominator\" \"1\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Option \"AccelerationThreshold\" \"4\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "EndSection" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+
+# set system startup files
+echo "System startup files"
+if [ "$wifi" == "y" ]
+then
+    systemctl disable dhcpcd
+    systemctl enable wpa_supplicant@"$modul".service
+    systemctl enable dhcpcd@"$modul"
+else
+    if [ "${vollinstallation}" != "n" ]; then
+        systemctl disable dhcpcd
+        systemctl enable NetworkManager.service
+    fi
+fi
+
+read -p "Was soll den X-Server starten: [getty/xdm/lightdm] " start
+
+if [ "$start" == "getty" ]
+then
+    
+    if [ "${vollinstallation}" != "n" ]; then
+        echo "if [ \$(tty) = "/dev/tty1" ]; then" > /root/.bash_profile
+        echo "startx" >> /root/.bash_profile
+        echo "fi" >> /root/.bash_profile
+        #
+        echo "if [ \$(tty) = "/dev/tty1" ]; then" > /home/"$username"/.bash_profile
+        echo "startx" >> /home/"$username"/.bash_profile
+        echo "fi" >> /home/"$username"/.bash_profile
+        #
+    fi
+    
+    read -p "Welcher Nutzer soll automatisch gestartet werden?: ["$username"/root] " start
+    if [ "$start" == "root" ]
+    then
+        mkdir -p /etc/systemd/system/getty\@tty1.service.d
+        echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        systemctl enable getty@tty1
+    else
+        mkdir -p /etc/systemd/system/getty\@tty1.service.d
+        echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        echo "ExecStart=-/sbin/agetty --noclear -a "$username" %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        systemctl enable getty@tty1
+    fi
+    
+elif [ "$start" == "xdm" ]
+then
+    systemctl enable xdm
+elif [ "$start" == "lightdm" ]
+then
+    systemctl enable lightdm.service
+else
+    echo "Kein Start gewählt!!!"
+fi
+
+if [ "${vollinstallation}" != "n" ]; then
+    systemctl enable acpid
+    systemctl enable ntpd
+    systemctl enable avahi-daemon
+    systemctl enable org.cups.cupsd.service
+    systemctl enable sshd
+    systemctl enable cronie
+    systemctl enable systemd-timesyncd.service
+    echo "Bitte OpenVPN config in die /etc/openvpn/client/client.conf kopieren!!!"
+    if [ -f /lib/systemd/system/openvpn-client@client.service ]; then
+        echo "link vorhanden!"
+    else
+        ln /lib/systemd/system/openvpn-client@.service /lib/systemd/system/openvpn-client@client.service
+    fi
+    systemctl enable openvpn-client@client.service
+fi
+
+# set systemconfiguration
+echo "systemconfiguration"
+#
+echo "LANG=de_DE.UTF-8" > /etc/locale.conf
+echo "LC_COLLATE=C" >> /etc/locale.conf
+echo "LANGUAGE=de_DE" >> /etc/locale.conf
+#
+echo "KEYMAP=de-latin1" > /etc/vconsole.conf
+echo "FONT=lat9w-16" >> /etc/vconsole.conf
+#
+echo "de_DE.UTF-8 UTF-8" > /etc/locale.gen
+echo "de_DE ISO-8859-1" >> /etc/locale.gen
+echo "de_DE@euro ISO-8859-15" >> /etc/locale.gen
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+#
+locale-gen
+#
+rm /etc/localtime
+ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+
+
+
+# custom-bereich vollinstallation
+
+if [ "${vollinstallation}" != "n" ]; then
+    
+    # custom-installer
+    
+    pip install beautysh
+    
+    # vboxdrv
+    
+    #echo "vboxdrv" > /etc/modules-load.d/virtualbox-host-modules-arch.conf
+    #echo "vboxguest" >> /etc/modules-load.d/virtualbox-host-modules-arch.conf
+    #echo "vboxsf" >> /etc/modules-load.d/virtualbox-host-modules-arch.conf
+    
+    # x11vnc
+    
+    x11vnc -storepasswd /etc/x11vnc.pass
+    
+    systemctl enable x11vnc.service
+    
+fi
+
+
+
+# custom-bereich standart
+
+# nano
+
+echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
+
+# htop
+
+echo "fields=0 48 17 18 38 39 40 2 46 47 49 1
+sort_key=46
+sort_direction=-1
+hide_threads=0
+hide_kernel_threads=1
+hide_userland_threads=0
+shadow_other_users=0
+highlight_base_name=1
+highlight_megabytes=1
+highlight_threads=1
+tree_view=1
+header_margin=1
+detailed_cpu_time=1
+color_scheme=0
+delay=15
+left_meters=AllCPUs Memory Swap
+left_meter_modes=1 1 1
+right_meters=Tasks LoadAverage Uptime
+right_meter_modes=2 2 2 " > /root/.htoprc
+
+
+befehl=null
+echo "Wenn kein Befehl mehr ausgefuehrt werden muss Eingabetaste druecken!!!"
+while [ "$befehl" != "" ];
+do
+    read -p "Befehl : " befehl
+    $befehl
+done
+
+#
+#systemctl start ntpd
+#ntpd -gq
+#date
+#hwclock -w
+#
+
+if [ "$erstellen" == "y" ]; then
+    if [ "$2" == "iso" ]; then
+        links
+    fi
+    copyconfig
+    #last command
+fi
+userrechte
+
+echo "Fertig!!!"
+
+exit 0
+

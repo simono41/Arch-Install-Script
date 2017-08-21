@@ -25,7 +25,7 @@ function cron() {
     echo "0 18 * * * /usr/bin/snapshot make ROOT home opt var" > ${mountpoint}/var/spool/cron/root
     if [ "${update}" != "n" ]; then
         /usr/bin/curl -v -C - -f https://raw.githubusercontent.com/simono41/Simon-OS/master/snapshot.sh > ${mountpoint}/usr/bin/snapshot
-        chmod +x ${mountpoint}/usr/bin/snapshot
+        chmod 755 ${mountpoint}/usr/bin/snapshot
     fi
 }
 
@@ -260,7 +260,7 @@ function update() {
         echo "${of} nicht vorhanden!"
     fi
     /usr/bin/curl -v -C - -f ${if} > ${of}
-    chmod +x ${of}
+    chmod 755 ${of}
     [[ -n "${5}" ]] && of=${5}
     ${before} ${of} ${parameters}
 }

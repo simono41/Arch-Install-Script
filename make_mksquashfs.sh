@@ -146,7 +146,7 @@ function filesystem() {
         
         # custom-installer
         cp arch-graphical-install ${work_dir}/${arch}/airootfs/usr/bin/
-        chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install
+        chmod 755 ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install
         
         # installer-/usr/bin/
         cp arch-install ${work_dir}/${arch}/airootfs/usr/bin/
@@ -159,7 +159,7 @@ function filesystem() {
         # installer
         mkdir -p ${work_dir}/${arch}/airootfs/usr/share/applications/
         cp arch-install.desktop ${work_dir}/${arch}/airootfs/usr/share/applications/
-        chmod +x ${work_dir}/${arch}/airootfs/usr/share/applications/arch-install.desktop
+        chmod 755 ${work_dir}/${arch}/airootfs/usr/share/applications/arch-install.desktop
         
         # install-picture
         mkdir -p ${work_dir}/${arch}/airootfs/usr/share/pixmaps/
@@ -178,7 +178,7 @@ function filesystem() {
         
         # startup
         cp startup ${work_dir}/${arch}/airootfs/usr/bin/
-        chmod +x ${work_dir}/${arch}/airootfs/usr/bin/startup
+        chmod 755 ${work_dir}/${arch}/airootfs/usr/bin/startup
         
         cp startup.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
         
@@ -196,7 +196,7 @@ function filesystem() {
         
         # snapshot.sh
         cp snapshot.sh ${work_dir}/${arch}/airootfs/usr/bin/snapshot
-        chmod +x ${work_dir}/${arch}/airootfs/usr/bin/snapshot
+        chmod 755 ${work_dir}/${arch}/airootfs/usr/bin/snapshot
         
         # sudoers/wheel
         echo "root ALL=(ALL) ALL" > ${work_dir}/${arch}/airootfs/etc/sudoers

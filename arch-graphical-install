@@ -143,6 +143,8 @@ then
 else
     read -p "Wie heisst der normale Benutzer auf dem PC?: " username
     #
+    userrechte
+    #
     read -p "Soll "$username" root-rechte gegeben werden?: [y/N] " root
     if [ "$root" == "y" ]
     then

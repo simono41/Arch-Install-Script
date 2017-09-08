@@ -220,8 +220,8 @@ systemctl start startup.service
 systemctl enable dhcpcd.service
 #pacman -Syu
 #j
-mkinitcpio -P
-#mkinitcpio -p linux
+#mkinitcpio -P
+mkinitcpio -p linux
 #mkinitcpio -p linux49
 EOT
         fi

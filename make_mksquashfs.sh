@@ -181,6 +181,7 @@ function filesystem() {
         chmod 755 ${work_dir}/${arch}/airootfs/usr/bin/startup
         
         cp startup.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
+        chmod 644 ${work_dir}/${arch}/airootfs/etc/systemd/system/startup.service
         
         # x11vnc
         if [ -f "${work_dir}/${arch}/airootfs/etc/systemd/system/multi-user.target.wants/x11vnc.service" ]; then
@@ -219,7 +220,9 @@ systemctl start startup.service
 systemctl enable dhcpcd.service
 #pacman -Syu
 #j
-mkinitcpio -p linux
+mkinitcpio -P
+#mkinitcpio -p linux
+#mkinitcpio -p linux49
 EOT
         fi
         

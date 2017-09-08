@@ -325,7 +325,7 @@ then
     if [ "$firmwares" != "n" ]
     then
         su "$username" -c "yaourt -S wd719x-firmware aic94xx-firmware --export /home/"$username"/aur-pakete"
-        mkinitcpio -p linux
+        mkinitcpio -P
     fi
     #
     read -p "Soll jp2a mitinstalliert werden?: [Y/n] " jp2a

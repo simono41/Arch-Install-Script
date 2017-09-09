@@ -616,6 +616,7 @@ done
 #hwclock -w
 #
 
+copyconfig
 userrechte
 
 echo "Fertig!!!"

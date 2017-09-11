@@ -200,7 +200,7 @@ function filesystem() {
         chmod 755 ${work_dir}/${arch}/airootfs/usr/bin/snapshot
 
         # ip_forward
-        echo 1 > /proc/sys/net/ipv4/ip_forward
+        echo 1 > ${work_dir}/${arch}/airootfs/proc/sys/net/ipv4/ip_forward
         
         # sudoers/wheel
         echo "root ALL=(ALL) ALL" > ${work_dir}/${arch}/airootfs/etc/sudoers

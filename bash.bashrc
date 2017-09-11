@@ -60,7 +60,7 @@ echo -e "=======================================================================
 echo -e "\033[1;33m Systemzeit:      \033[0m" `date | awk '{print $4}'`
 echo -e "\033[1;33m Online seit:     \033[0m" `uptime | awk '{print $3}'` "Stunden"
 echo -e "\033[1;33m Speichernutzung: \033[0m" `cat /proc/meminfo|grep 'MemF'| awk '{print $2}'` "kB von" `cat /proc/meminfo|grep 'MemT'| awk '{print $2}'` "kB frei"
-echo -e "\033[1;33m CPU-Temp:        \033[0m" `cat /sys/class/thermal/thermal_zone0/temp| awk '{print $1/1000}'` "°C"
+#echo -e "\033[1;33m CPU-Temp:        \033[0m" `cat /sys/class/thermal/thermal_zone0/temp| awk '{print $1/1000}'` "°C"
 #echo -e "\033[1;33m Haupt-IP:        \033[0m" `hostname -i`
 echo -e "\033[1;33m IPs:             \033[0m" `ip addr | grep inet`
 echo -e "\033[1;33m Macs:            \033[0m" `ip link | grep ether`

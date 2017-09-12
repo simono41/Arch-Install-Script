@@ -111,7 +111,7 @@ function offlineinstallation {
     #echo "swap"
     #swap
     echo ""
-    echo "${name}"s-os > ${mountpoint}/etc/hostname
+    echo "${name}"s-OS > ${mountpoint}/etc/hostname
     echo ""
     cron
 }

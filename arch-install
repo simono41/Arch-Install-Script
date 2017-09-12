@@ -151,28 +151,28 @@ function btrfsfstab() {
     
     if [ "${raid}" != "n" ]; then
         
-#        anzahl=$(echo -e $device1 | wc -w)
-#        echo "Festplatten: $anzahl"
+        #        anzahl=$(echo -e $device1 | wc -w)
+        #        echo "Festplatten: $anzahl"
         
-#        i=0
-#        for wort in ${device1}
-#        do
-#            i=$(expr ${i} + 1)
-#        done
-#        anzahl=$i
+        #        i=0
+        #        for wort in ${device1}
+        #        do
+        #            i=$(expr ${i} + 1)
+        #        done
+        #        anzahl=$i
         
-#        case "$anzahl" in
-#            1) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),"
-#            ;;
-#            2) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),"
-#            ;;
-#            3) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $3}')),"
-#            ;;
-#            4) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $3}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $4}')),"
-#            ;;
-#            *) echo "Zu viele Festplatten Max.4 !!!"
-#            ;;
-#        esac
+        #        case "$anzahl" in
+        #            1) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),"
+        #            ;;
+        #            2) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),"
+        #            ;;
+        #            3) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $3}')),"
+        #            ;;
+        #            4) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $2}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $3}')),device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $4}')),"
+        #            ;;
+        #            *) echo "Zu viele Festplatten Max.4 !!!"
+        #            ;;
+        #        esac
         
         echo -e "UUID=${rootbind} / btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,${devices}subvol=__current/ROOT 0 0" >> ${mountpoint}/etc/fstab
         
@@ -369,9 +369,11 @@ function abfrage() {
         echo "ABGEBROCHEN"
         exit 1
     fi
-    read -p "Sollen noch wichtige Packete für die installation installiert werden? [Y/n] " packete
-    if [ "${packete}" != "n" ]; then
-        pacman -Syu base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk dialog bash-completion git iw wireless_tools wpa_supplicant
+    if [ "${update}" != "n" ]; then
+        read -p "Sollen noch wichtige Packete für die installation installiert werden? [Y/n] " packete
+        if [ "${packete}" != "n" ]; then
+            pacman -Syu base base-devel syslinux efibootmgr efitools grub intel-ucode os-prober btrfs-progs dosfstools arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk dialog bash-completion git iw wireless_tools wpa_supplicant
+        fi
     fi
 }
 
@@ -569,7 +571,7 @@ echo "Fertig!!!"
 read -p "Installation erfolgreich Abgeschlossen. Wollen sie den PC NEUSTARTEN?: [Y/n] " sicherheitsabfrage
 if [ "$sicherheitsabfrage" != "n" ]
 then
-    echo "starte neu"
-    reboot
+echo "starte neu"
+reboot
 fi
 exit 0

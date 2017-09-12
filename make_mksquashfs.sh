@@ -185,10 +185,10 @@ function filesystem() {
         
         # x11vnc
         if [ -f "${work_dir}/${arch}/airootfs/etc/systemd/system/multi-user.target.wants/x11vnc.service" ]; then
-          rm ${work_dir}/${arch}/airootfs/etc/systemd/system/multi-user.target.wants/x11vnc.service
+            rm ${work_dir}/${arch}/airootfs/etc/systemd/system/multi-user.target.wants/x11vnc.service
         fi
         if [ -f "${work_dir}/${arch}/airootfs/usr/lib/systemd/system/x11vnc.service" ]; then
-          rm ${work_dir}/${arch}/airootfs/usr/lib/systemd/system/x11vnc.service
+            rm ${work_dir}/${arch}/airootfs/usr/lib/systemd/system/x11vnc.service
         fi
         cp x11vnc.service ${work_dir}/${arch}/airootfs/lib/systemd/system/x11vnc.service
         
@@ -198,7 +198,7 @@ function filesystem() {
         # snapshot.sh
         cp snapshot.sh ${work_dir}/${arch}/airootfs/usr/bin/snapshot
         chmod 755 ${work_dir}/${arch}/airootfs/usr/bin/snapshot
-
+        
         # ip_forward
         echo 1 > ${work_dir}/${arch}/airootfs/proc/sys/net/ipv4/ip_forward
         

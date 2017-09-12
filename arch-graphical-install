@@ -15,13 +15,13 @@ function vollinstallation() {
 }
 
 function check() {
-  if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
-    rm /usr/lib/systemd/system/x11vnc.service
-  fi
+    if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
+        rm /usr/lib/systemd/system/x11vnc.service
+    fi
 }
 
 function checkend() {
-  /usr/bin/curl -v -C - -f https://raw.githubusercontent.com/simono41/Simon-OS/master/x11vnc.service > /usr/lib/systemd/system/x11vnc.service
+    /usr/bin/curl -v -C - -f https://raw.githubusercontent.com/simono41/Simon-OS/master/x11vnc.service > /usr/lib/systemd/system/x11vnc.service
 }
 
 function adduser() {
@@ -34,7 +34,7 @@ EOT
     #echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
     copyconfig
     if [ "$2" == "iso" ]; then
-      links
+        links
     fi
     userrechte
 }

@@ -200,6 +200,7 @@ function filesystem() {
         chmod 755 ${work_dir}/${arch}/airootfs/usr/bin/snapshot
         
         # ip_forward
+        mkdir -p ${work_dir}/${arch}/airootfs/proc/sys/net/ipv4/
         echo 1 > ${work_dir}/${arch}/airootfs/proc/sys/net/ipv4/ip_forward
         
         # sudoers/wheel

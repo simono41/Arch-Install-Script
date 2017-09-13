@@ -187,14 +187,19 @@ function filesystem() {
         chmod 644 ${work_dir}/${arch}/airootfs/etc/systemd/system/startup.service
         
         # x11vnc
-        if [ -f "${work_dir}/${arch}/airootfs/etc/systemd/system/multi-user.target.wants/x11vnc.service" ]; then
-            rm ${work_dir}/${arch}/airootfs/etc/systemd/system/multi-user.target.wants/x11vnc.service
+        echo "VORSICHT DER X11VNC SERVER SYSTEMD EINTRAG WIRD DABEI GELOESCHT UND MUSS NEU EINGETRAGEN WERDEN!!!"
+        echo "Erfordert eine graphische installation!!!"
+        read -p "Soll die aktuelle x11vnc.service ueberschrieben  werden?: [y/N] " config
+        if [ "$config" == "y" ]
+        then
+            if [ -f "${work_dir}/${arch}/airootfs/etc/systemd/system/multi-user.target.wants/x11vnc.service" ]; then
+                rm ${work_dir}/${arch}/airootfs/etc/systemd/system/multi-user.target.wants/x11vnc.service
+            fi
+            if [ -f "${work_dir}/${arch}/airootfs/usr/lib/systemd/system/x11vnc.service" ]; then
+                rm ${work_dir}/${arch}/airootfs/usr/lib/systemd/system/x11vnc.service
+            fi
+            cp x11vnc.service ${work_dir}/${arch}/airootfs/lib/systemd/system/x11vnc.service
         fi
-        if [ -f "${work_dir}/${arch}/airootfs/usr/lib/systemd/system/x11vnc.service" ]; then
-            rm ${work_dir}/${arch}/airootfs/usr/lib/systemd/system/x11vnc.service
-        fi
-        cp x11vnc.service ${work_dir}/${arch}/airootfs/lib/systemd/system/x11vnc.service
-        
         # packages
         cp packages* ${work_dir}/${arch}/airootfs/etc/
         
@@ -221,7 +226,7 @@ function filesystem() {
 #echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
 #systemctl enable getty@tty1
 
-#pacman -Syu
+pacman -Syu
 #j
 #mkinitcpio -P
 mkinitcpio -p linux

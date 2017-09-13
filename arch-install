@@ -83,7 +83,7 @@ function offlineinstallation {
     echo ""
     echo "MODULES=\"i915 radeon\"" > ${mountpoint}/etc/mkinitcpio.conf
     echo "HOOKS=\"base udev resume block filesystems keyboard btrfs\"" >> ${mountpoint}/etc/mkinitcpio.conf
-    echo "COMPRESSION=\"gzip\"" >> ${mountpoint}/etc/mkinitcpio.conf
+    echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo ""
     echo "blacklist floppy" | sudo tee ${mountpoint}/etc/modprobe.d/blacklist-floppy.conf

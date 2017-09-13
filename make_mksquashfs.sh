@@ -88,6 +88,9 @@ function filesystem() {
             then
                 arch-chroot ${work_dir}/${arch}/airootfs passwd root
             fi
+            systemctl enable startup.service
+            systemctl enable dhcpcd.service
+            
         fi
         
         ## doppelt bereich
@@ -218,10 +221,6 @@ function filesystem() {
 #echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
 #systemctl enable getty@tty1
 
-systemctl daemon-reload
-systemctl enable startup.service
-systemctl start startup.service
-systemctl enable dhcpcd.service
 #pacman -Syu
 #j
 #mkinitcpio -P

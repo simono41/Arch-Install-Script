@@ -531,7 +531,7 @@ EOT
             sleep 1
 
             echo "mit j bestätigen"
-            mkfs.btrfs -f -L cow_device ${device}3
+            mkfs.ext4 -L cow_device ${device}3
 
             sync
 

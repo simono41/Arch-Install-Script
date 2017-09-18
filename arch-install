@@ -138,6 +138,7 @@ function formatieren {
         subvolume #btrfs
 
     elif [ "${dateisystem}" == "ext4" ]; then
+        echo "mit j bestätigen"
         mkfs.ext4 -L p_arch ${device}2 #ext4
         mount ${device}2 ${mountpoint}
 

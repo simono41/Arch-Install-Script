@@ -681,15 +681,21 @@ if [ "${update}" != "n" ]; then
 fi
 echo "df!!!"
 df -h ${mountpoint}
-btrfs fi df ${mountpoint}
-echo "umount!!!"
-umount ${mountpoint}/home
-umount ${mountpoint}/opt
-umount ${mountpoint}/var/lib
-umount ${mountpoint}/var
-umount ${mountpoint}/boot
-umount /mnt/btrfs-root
-#umount -R /mnt
+if [ "${dateisystem}" == "btrfs" ]; then
+  btrfs fi df ${mountpoint}
+  echo "umount!!!"
+  umount ${mountpoint}/home
+  umount ${mountpoint}/opt
+  umount ${mountpoint}/var/lib
+  umount ${mountpoint}/var
+  umount ${mountpoint}/boot
+  umount /mnt/btrfs-root
+  #umount -R /mnt
+else
+  umount ${mountpoint}
+
+fi
+
 echo ""
 echo "Fertig!!!"
 read -p "Installation erfolgreich Abgeschlossen. Wollen sie den PC NEUSTARTEN?: [Y/n] " sicherheitsabfrage

@@ -158,6 +158,7 @@ function offlineinstallation {
         makebtrfsswapfile
       elif [ "${dateisystem}" == "ext4" ]; then
         makeswapfile
+      fi
     fi
 
     echo "${name}"s-OS > ${mountpoint}/etc/hostname

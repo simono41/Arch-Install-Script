@@ -5,6 +5,20 @@
 
 set -e
 
+swapname="$1"
+swapfile="$(losetup -j "$swapname" | /usr/bin/cut -d : -f 1)"
+
+if [ -z "$swapname" -o -z "$swapfile" ]
+then
+  echo "Keine swap"
+else
+  echo "entferne swap"
+	swapoff "$swapfile"
+	losetup -d "$swapfile"
+	rm "$swapname"
+fi
+
+
 swapsize="$1"
 swapname="$2"
 
@@ -20,11 +34,6 @@ EOF
 	exit 1
 fi
 
-if [ -e $swapname ]
-then
-	echo "error: File already exists. $swapname"
-	exit 1
-fi
 
 swapfile=$(losetup -f) #free loop device
 

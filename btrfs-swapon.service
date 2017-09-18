@@ -3,12 +3,8 @@ Description=btrfs-swapon
 After=multi-user.target
 
 [Service]
-User=root
-Type=oneshot
-Environment="SWAPFILE=/btrfs.wap"
-ReaminAfterExit=true
-ExecStart=/usr/bin/btrfs-swapon %swapfilespeicher% ${SWAPFILE}
-ExecStop=/usr/bin/btrfs-swapoff ${SWAPFILE}
+Type=simple
+ExecStart=/usr/bin/btrfs-swapon %swapfilespeicher% /btrfs.swap
 
 [Install]
 WantedBy=multi-user.target

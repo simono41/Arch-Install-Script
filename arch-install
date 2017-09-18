@@ -146,7 +146,7 @@ function formatieren {
     #root
     #swap
     echo "format"
-    mkfs.vfat -F 32 ${device}1
+    if [ "${Partition}" == "gpt" ]; then && mkfs.vfat -F 32 ${device}1
 
     if [ "${dateisystem}" == "btrfs" ]; then
         #mkfs.btrfs -f -L p_arch ${device}2
@@ -378,6 +378,7 @@ function abfrage() {
 
     if [ "${dateisystem}" == "btrfs" ]; then
         read -p "Soll ein raid gemacht werden?: [raid0/raid1/raid10/n] " raid
+        [[ -z "${raid}" ]] && raid=n
         if [ "${raid}" == "n" ]; then
             echo "Kein raid wird erzeugt!"
         else
@@ -385,7 +386,6 @@ function abfrage() {
             read -p "Bitte geben sie die Festplatten in eine Reihe an die zu einem Raid verbunden werden sollen!!!: " device1
         fi
     else
-        [[ -z "${raid}" ]] && raid=n
 
     fi
     read -p "Wollen sie eine swap-partition erstellen? : [y/N] " swap
@@ -412,6 +412,7 @@ function abfrage() {
 
         echo "Wenn keine eingabe wird die komplette Festplatte benutzt!!!"
         read -p "Wie groß soll die System-Partition sein? : " speicher
+        [[ -z "${speicher}" ]] && speicher="Ganze Festplatte"
 
     fi
 

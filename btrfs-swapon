@@ -5,23 +5,14 @@
 
 set -e
 
-swapname="$1"
-swapfile="$(losetup -j "$swapname" | /usr/bin/cut -d : -f 1)"
-
-if [ -z "$swapname" -o -z "$swapfile" ]
-then
-  echo "Keine swap"
-else
-  echo "entferne swap"
-	swapoff "$swapfile"
-	losetup -d "$swapfile"
-	rm "$swapname"
-fi
-
-
 swapsize="$1"
 swapname="$2"
 
+
+if [ -f /$swapname ]
+then
+  rm /$swapname
+fi
 
 if [ -z "$swapsize" -o -z "$swapname" ]
 then

@@ -329,6 +329,8 @@ function systemdboot() {
 
 function abfrage() {
     read -p "Wie heissen sie?: " name
+    [[ -z "${name}" ]] && name=arch-linux
+    
     # Partionierung
     # GPT oder MBR
     echo ""
@@ -342,21 +344,37 @@ function abfrage() {
     echo "Bitte die Eingaben klein schreiben :D !!!"
     echo ""
     read -p "Wie moechten sie ihre Festplatte partioniert haben: [gpt/MBR] " Partition
+    [[ -z "${Partition}" ]] && Partition=mbr
+    
     if [ "${Partition}" == "gpt" ]
     then
         read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/GRUB] : " boot
+        
     fi
+    [[ -z "${boot}" ]] && boot=grub
+    
     fdisk -l
     read -p "Geben sie eine Festplatte an: /dev/sda " device
-    read -p "Soll ein raid gemacht werden?: [raid0/raid1/raid10/n] " raid
-    if [ "${raid}" == "n" ]; then
-        echo "Kein raid wird erzeugt!"
-    else
-        fdisk -l
-        read -p "Bitte geben sie die Festplatten in eine Reihe an die zu einem Raid verbunden werden sollen!!!: " device1
-    fi
+    [[ -z "${device}" ]] && device=/dev/sda
+    
     read -p "Welches Passwort soll der Root erhalten?: root " pass
+    [[ -z "${pass}" ]] && pass=root
+    
     read -p "Welches Dateisystem soll benutzt werden? [BTRFS/ext4]" dateisystem
+    [[ -z "${dateisystem}" ]] && name=btrfs
+    
+    if [ "${dateisystem}" == "btrfs" ]; then
+        read -p "Soll ein raid gemacht werden?: [raid0/raid1/raid10/n] " raid
+        if [ "${raid}" == "n" ]; then
+            echo "Kein raid wird erzeugt!"
+        else
+            fdisk -l
+            read -p "Bitte geben sie die Festplatten in eine Reihe an die zu einem Raid verbunden werden sollen!!!: " device1
+        fi
+    else
+        [[ -z "${raid}" ]] && raid=n
+        
+    fi
     read -p "Wollen sie eine swap-partition erstellen? : [y/N] " swap
     if [ "${swap}" == "y" ]; then
         read -p "Wie groß soll die swap-partition sein? +8G : " swap-speicher
@@ -385,19 +403,12 @@ function abfrage() {
     fi
     
     read -p "Soll eine Offline-Installation durchgefuehrt werden? : [Y/n] " offline
-    #
-    [[ -z "${name}" ]] && name=arch-linux
-    [[ -z "${Partition}" ]] && Partition=mbr
-    [[ -z "${boot}" ]] && boot=grub
-    [[ -z "${device}" ]] && device=/dev/sda
-    [[ -z "${pass}" ]] && pass=root
     if [ "${offline}" != "n" ]
     then
         install="offline"
     else
         install="online"
     fi
-    [[ -z "${dateisystem}" ]] && name=btrfs
     # Berechnungen
     
     # Dateisystem

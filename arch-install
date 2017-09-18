@@ -40,13 +40,13 @@ function makebtrfsswapfile() {
     if [ "${update}" != "n" ]; then
         /usr/bin/curl -v -C - -f https://raw.githubusercontent.com/simono41/Simon-OS/master/btrfs-swapon > ${mountpoint}/usr/bin/btrfs-swapon
         /usr/bin/curl -v -C - -f https://raw.githubusercontent.com/sebastian-philipp/btrfs-swapon/master/btrfs-swapoff > ${mountpoint}/usr/bin/btrfs-swapoff
-        /usr/bin/curl -v -C - -f https://raw.githubusercontent.com/simono41/Simon-OS/master/btrfs-swapon.service > /root/btrfs-swapon.service
+        /usr/bin/curl -v -C - -f https://raw.githubusercontent.com/simono41/Simon-OS/master/btrfs-swapon.service > ${mountpoint}/root/btrfs-swapon.service
     fi
 
     chmod +x ${mountpoint}/usr/bin/btrfs-swapon
     chmod +x ${mountpoint}/usr/bin/btrfs-swapoff
 
-    sed "s|%swapfilespeicher%|${swapfilespeicher}|g;" /root/btrfs-swapon.service > /etc/systemd/system/btrfs-swapon.service
+    sed "s|%swapfilespeicher%|${swapfilespeicher}|g;" ${mountpoint}/root/btrfs-swapon.service > ${mountpoint}/etc/systemd/system/btrfs-swapon.service
 
     systemctl enable btrfs-swapon
 

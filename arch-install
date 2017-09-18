@@ -454,21 +454,43 @@ function abfrage() {
     echo "Installation: ${install}"
 
     if [ "${dateisystem}" == "btrfs" ]; then
-        echo "Boot-Partition = /dev/sda1"
-        bootpartitionnummer=1
-        echo "ROOT-Partition = /dev/sda2"
-        rootpartitionnummer=2
+        if [ "${Partition}" == "gpt" ]; then
+            echo "Boot-Partition = /dev/sda1"
+            bootpartitionnummer=1
+            echo "ROOT-Partition = /dev/sda2"
+            rootpartitionnummer=2
             if [ "${swap}" == "y" ]; then
                 echo "Swap-Partition = /dev/sda3"
                 swappartitionnummer=3
             fi
-    elif [ "${dateisystem}" == "ext4" ]; then
-        echo "ROOT-Partition = /dev/sda1"
-        rootpartitionnummer=1
+        fi
+        if [ "${Partition}" == "mbr" ]; then
+            echo "ROOT-Partition = /dev/sda1"
+            rootpartitionnummer=1
             if [ "${swap}" == "y" ]; then
                 echo "Swap-Partition = /dev/sda2"
                 swappartitionnummer=2
             fi
+        fi
+    elif [ "${dateisystem}" == "ext4" ]; then
+        if [ "${Partition}" == "gpt" ]; then
+            echo "Boot-Partition = /dev/sda1"
+            bootpartitionnummer=1
+            echo "ROOT-Partition = /dev/sda2"
+            rootpartitionnummer=2
+            if [ "${swap}" == "y" ]; then
+                echo "Swap-Partition = /dev/sda3"
+                swappartitionnummer=3
+            fi
+        fi
+        if [ "${Partition}" == "mbr" ]; then
+            echo "ROOT-Partition = /dev/sda1"
+            rootpartitionnummer=1
+            if [ "${swap}" == "y" ]; then
+                echo "Swap-Partition = /dev/sda2"
+                swappartitionnummer=2
+            fi
+        fi
     fi
 
     #

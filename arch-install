@@ -48,7 +48,7 @@ function makebtrfsswapfile() {
 
     sed "s|%swapfilespeicher%|${swapfilespeicher}|g;" ${mountpoint}/root/btrfs-swapon.service > ${mountpoint}/etc/systemd/system/btrfs-swapon.service
 
-    systemctl enable btrfs-swapon
+    arch-chroot ${mountpoint} systemctl enable btrfs-swapon
 
 }
 

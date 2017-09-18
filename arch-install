@@ -538,11 +538,16 @@ function abfrage() {
 if [ "${1}" != "n" ]
 then
     read -p "Soll im Internet geguckt werden ob es ein neues Install-Script gibt und dann ausgefuehrt werden?: [Y/n] " update
+if [ "${update}" == "debug" ]
+then
+    echo "Überspringe das herunterladen einen neuen Scriptes!!!"
+else
     if [ "${update}" != "n" ]
     then
         update https://raw.githubusercontent.com/simono41/Simon-OS/master/arch-install /root/arch-install.new n
         exit 0
     fi
+fi
 fi
 
 # debug = Installation überspringen zu arch-graphical-install und DEBEUG-MODUS

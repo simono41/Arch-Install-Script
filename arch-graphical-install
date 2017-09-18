@@ -33,12 +33,12 @@ EOT
     mkdir -p /home/"$username"/
     #echo ""$username" ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
     copyconfig
-    links
     userrechte
 }
 
 function copyconfig() {
     cp -avr /root/. /home/"$username"/
+    links
 }
 
 function userrechte() {
@@ -77,20 +77,28 @@ function ethernet() {
 function links() {
     #
     mkdir -p /home/"$username"/Schreibtisch/
-    cp /usr/share/applications/arch-install.desktop /home/"$username"/Schreibtisch/arch-install.desktop
-    chmod +x /home/"$username"/Schreibtisch/arch-install.desktop
+    if [ -f /usr/share/applications/arch-install.desktop]; then
+      cp /usr/share/applications/arch-install.desktop /home/"$username"/Schreibtisch/arch-install.desktop
+      chmod +x /home/"$username"/Schreibtisch/arch-install.desktop
+    fi
     #
     mkdir -p /root/Schreibtisch/
-    cp /usr/share/applications/arch-install.desktop /root/Schreibtisch/arch-install.desktop
-    chmod +x /root/Schreibtisch/arch-install.desktop
+    if [ -f /usr/share/applications/arch-install.desktop]; then
+      cp /usr/share/applications/arch-install.desktop /root/Schreibtisch/arch-install.desktop
+      chmod +x /root/Schreibtisch/arch-install.desktop
+    fi
     #
     mkdir -p /home/"$username"/Desktop/
-    cp /usr/share/applications/arch-install.desktop /home/"$username"/Desktop/arch-install.desktop
-    chmod +x /home/"$username"/Desktop/arch-install.desktop
+    if [ -f /usr/share/applications/arch-install.desktop]; then
+      cp /usr/share/applications/arch-install.desktop /home/"$username"/Desktop/arch-install.desktop
+      chmod +x /home/"$username"/Desktop/arch-install.desktop
+    fi
     #
     mkdir -p /root/Desktop/
-    cp /usr/share/applications/arch-install.desktop /root/Desktop/arch-install.desktop
-    chmod +x /root/Desktop/arch-install.desktop
+    if [ -f /usr/share/applications/arch-install.desktop]; then
+      cp /usr/share/applications/arch-install.desktop /root/Desktop/arch-install.desktop
+      chmod +x /root/Desktop/arch-install.desktop
+    fi
 }
 
 function gnomeconfig() {
@@ -615,7 +623,6 @@ done
 #
 
 copyconfig
-links
 userrechte
 
 echo "Fertig!!!"

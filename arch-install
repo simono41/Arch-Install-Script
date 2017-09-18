@@ -36,8 +36,10 @@ function makeswapfile() {
 
 function makebtrfsswapfile() {
 
-    /usr/bin/curl -v -C - -f https://github.com/sebastian-philipp/btrfs-swapon/raw/master/btrfs-swapon > ${mountpoint}/usr/bin/btrfs-swapon
-    /usr/bin/curl -v -C - -f https://github.com/sebastian-philipp/btrfs-swapon/raw/master/btrfs-swapoff > ${mountpoint}/usr/bin/btrfs-swapoff
+    if [ "${update}" != "n" ]; then
+        /usr/bin/curl -v -C - -f https://github.com/sebastian-philipp/btrfs-swapon/raw/master/btrfs-swapon > ${mountpoint}/usr/bin/btrfs-swapon
+        /usr/bin/curl -v -C - -f https://github.com/sebastian-philipp/btrfs-swapon/raw/master/btrfs-swapoff > ${mountpoint}/usr/bin/btrfs-swapoff
+    fi
 
     echo "[Service]
 Type=oneshot
@@ -151,7 +153,15 @@ function offlineinstallation {
     fi
 
     if [ "${swapfile}" == "y" ]; then
+      if [ "${dateisystem}" != "btrfs" ]; then
         echo "/swapfile none swap defaults 0 0" >> ${mountpoint}/etc/fstab
+      fi
+    fi
+
+    if [ "${swapfile}" == "y" ]; then
+      if [ "${dateisystem}" == "btrfs" ]; then
+        makebtrfsswapfile
+      fi
     fi
 
     echo "${name}"s-OS > ${mountpoint}/etc/hostname
@@ -184,7 +194,7 @@ function formatieren {
 
     if [ "${swapfile}" == "y" ]; then
       if [ "${dateisystem}" == "btrfs" ]; then
-          makebtrfsswapfile
+          #later
       elif [ "${dateisystem}" == "ext4" ]; then
           makeswapfile
       fi

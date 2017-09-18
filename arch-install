@@ -732,7 +732,9 @@ umount ${mountpoint}/home
 umount ${mountpoint}/opt
 umount ${mountpoint}/var/lib
 umount ${mountpoint}/var
-umount ${mountpoint}/boot
+if [ "${Partition}" == "gpt" ]; then
+    umount ${mountpoint}/boot
+fi
 umount /mnt/btrfs-root
 #umount -R /mnt
 else

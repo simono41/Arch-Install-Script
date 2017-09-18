@@ -29,7 +29,7 @@ function cron() {
 
 function makeswapfile() {
     #swapfile
-    fallocate -l 512M ${mountpoint}/swapfile
+    fallocate -l ${swapfilespeicher} ${mountpoint}/swapfile
     chmod 600 ${mountpoint}/swapfile
     mkswap ${mountpoint}/swapfile
 }
@@ -360,7 +360,7 @@ function abfrage() {
     read -p "Welches Passwort soll der Root erhalten?: root " pass
     [[ -z "${pass}" ]] && pass=root
 
-    read -p "Welches Dateisystem soll benutzt werden? [BTRFS/ext4]" dateisystem
+    read -p "Welches Dateisystem soll benutzt werden? [BTRFS/ext4] " dateisystem
     [[ -z "${dateisystem}" ]] && dateisystem=btrfs
 
     if [ "${dateisystem}" == "btrfs" ]; then
@@ -391,8 +391,8 @@ function abfrage() {
             read -p "Wollen sie eine swapfile erstellen? : [y/N] " swapfile
 
             if [ "${swapfile}" == "y" ]; then
-                read -p "Wie groß soll die swapfile sein? +8G : " swapfile-speicher
-                [[ -z "${swapfile-speicher}" ]] && swapfile-speicher="+8G"
+                read -p "Wie groß soll die swapfile sein? +8G : " swapfilespeicher
+                [[ -z "${swapfilespeicher}" ]] && swapfilespeicher="+8G"
 
             fi
         fi
@@ -433,7 +433,7 @@ function abfrage() {
         echo "Swap-partition ${swap-speicher}"
     fi
     if [ "${swapfile}" == "y" ]; then
-        echo "Swapfile ${swapfile-speicher}"
+        echo "Swapfile ${swapfilespeicher}"
     fi
     echo "Rootpasswort: ${pass}"
     echo "Architektur: $(uname -m)"

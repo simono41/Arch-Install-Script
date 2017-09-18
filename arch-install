@@ -32,6 +32,7 @@ function makeswapfile() {
     fallocate -l ${swapfilespeicher} ${mountpoint}/swapfile
     chmod 600 ${mountpoint}/swapfile
     mkswap ${mountpoint}/swapfile
+    echo "/swapfile none swap defaults 0 0" >> ${mountpoint}/etc/fstab
 }
 
 function makebtrfsswapfile() {
@@ -153,21 +154,10 @@ function offlineinstallation {
     fi
 
     if [ "${swapfile}" == "y" ]; then
-      if [ "${dateisystem}" != "btrfs" ]; then
-        echo "/swapfile none swap defaults 0 0" >> ${mountpoint}/etc/fstab
-      fi
-    fi
-
-    if [ "${swapfile}" == "y" ]; then
       if [ "${dateisystem}" == "btrfs" ]; then
         makebtrfsswapfile
-      fi
-    fi
-
-    if [ "${swapfile}" == "y" ]; then
-      if [ "${dateisystem}" == "ext4" ]; then
-          makeswapfile
-      fi
+      elif [ "${dateisystem}" == "ext4" ]; then
+        makeswapfile
     fi
 
     echo "${name}"s-OS > ${mountpoint}/etc/hostname

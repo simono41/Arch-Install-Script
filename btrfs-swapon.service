@@ -7,7 +7,7 @@ User=root
 Type=oneshot
 Environment="SWAPFILE=/btrfs.wap"
 ReaminAfterExit=true
-ExecStart=/usr/bin/btrfs-swapon ${swapfilespeicher} ${SWAPFILE}
+ExecStart=/usr/bin/btrfs-swapon %swapfilespeicher% ${SWAPFILE}
 ExecStop=/usr/bin/btrfs-swapoff ${SWAPFILE}
 
 [Install]

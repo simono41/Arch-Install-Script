@@ -38,16 +38,14 @@ function makeswapfile() {
 function makebtrfsswapfile() {
 
     if [ "${update}" != "n" ]; then
-        /usr/bin/curl -v -C - -f https://github.com/sebastian-philipp/btrfs-swapon/raw/master/btrfs-swapon > ${mountpoint}/usr/bin/btrfs-swapon
-        /usr/bin/curl -v -C - -f https://github.com/sebastian-philipp/btrfs-swapon/raw/master/btrfs-swapoff > ${mountpoint}/usr/bin/btrfs-swapoff
+        /usr/bin/curl -v -C - -f https://raw.githubusercontent.com/sebastian-philipp/btrfs-swapon/master/btrfs-swapon > ${mountpoint}/usr/bin/btrfs-swapon
+        /usr/bin/curl -v -C - -f https://raw.githubusercontent.com/sebastian-philipp/btrfs-swapon/master/btrfs-swapoff > ${mountpoint}/usr/bin/btrfs-swapoff
     fi
 
-    echo "[Service]
-Type=oneshot
-Environment="SWAPFILE=/btrfs.swap"
-RemainAfterExit=true
-ExecStart=/sbin/btrfs-swapon ${swapfilespeicher} ${SWAPFILE}
-ExecStop=/sbin/btrfs-swapoff ${SWAPFILE}" > /etc/systemd/system/btrfs-swapon.service
+    chmod +x ${mountpoint}/usr/bin/btrfs-swapon
+    chmod +x ${mountpoint}/usr/bin/btrfs-swapoff
+
+    sed "s|%swapfilespeicher%|${swapfilespeicher}|g;" btrfs-swapon.service > /etc/systemd/system/btrfs-swapon.service
 
     systemctl enable btrfs-swapon
 

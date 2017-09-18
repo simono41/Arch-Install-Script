@@ -34,6 +34,22 @@ function makeswapfile() {
     mkswap ${mountpoint}/swapfile
 }
 
+function makebtrfsswapfile() {
+
+    /usr/bin/curl -v -C - -f https://github.com/sebastian-philipp/btrfs-swapon/raw/master/btrfs-swapon > ${mountpoint}/usr/bin/btrfs-swapon
+    /usr/bin/curl -v -C - -f https://github.com/sebastian-philipp/btrfs-swapon/raw/master/btrfs-swapoff > ${mountpoint}/usr/bin/btrfs-swapoff
+
+    echo "[Service]
+Type=oneshot
+Environment="SWAPFILE=/btrfs.swap"
+RemainAfterExit=true
+ExecStart=/sbin/btrfs-swapon ${swapfilespeicher} ${SWAPFILE}
+ExecStop=/sbin/btrfs-swapoff ${SWAPFILE}" > /etc/systemd/system/btrfs-swapon.service
+
+    systemctl enable btrfs-swapon
+
+}
+
 function removeinstaller {
     echo ""
     if [ -f ${mountpoint}/usr/share/applications/arch-install.desktop ]
@@ -167,7 +183,11 @@ function formatieren {
     fi
 
     if [ "${swapfile}" == "y" ]; then
-        makeswapfile
+      if [ "${dateisystem}" == "btrfs" ]; then
+          makebtrfsswapfile
+      elif [ "${dateisystem}" == "ext4" ]; then
+          makeswapfile
+      fi
     fi
 }
 
@@ -399,17 +419,12 @@ function abfrage() {
         [[ -z "${speicher}" ]] && speicher="+20G"
 
     else
-        if [ "${dateisystem}" == "btrfs" ]; then
-            echo "BTRFS unterstützt noch keine swapfiles!!!"
+        read -p "Wollen sie eine swapfile erstellen? : [y/N] " swapfile
 
-        elif [ "${dateisystem}" == "ext4" ]; then
-            read -p "Wollen sie eine swapfile erstellen? : [y/N] " swapfile
+        if [ "${swapfile}" == "y" ]; then
+            read -p "Wie groß soll die swapfile sein? +8G : " swapfilespeicher
+            [[ -z "${swapfilespeicher}" ]] && swapfilespeicher="+8G"
 
-            if [ "${swapfile}" == "y" ]; then
-                read -p "Wie groß soll die swapfile sein? +8G : " swapfilespeicher
-                [[ -z "${swapfilespeicher}" ]] && swapfilespeicher="+8G"
-
-            fi
         fi
 
         echo "Wenn keine eingabe wird die komplette Festplatte benutzt!!!"

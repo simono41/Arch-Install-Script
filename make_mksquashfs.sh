@@ -186,6 +186,13 @@ function filesystem() {
         cp startup.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
         chmod 644 ${work_dir}/${arch}/airootfs/etc/systemd/system/startup.service
 
+        # btrfs-swapfile
+        cp btrfs-swapon.service ${work_dir}/${arch}/airootfs/etc/systemd/system/
+        cp btrfs-swapon ${work_dir}/${arch}/airootfs/usr/bin/
+        chmod 755 ${work_dir}/${arch}/airootfs/usr/bin/btrfs-swapon
+        cp btrfs-swapoff ${work_dir}/${arch}/airootfs/usr/bin/
+        chmod 755 ${work_dir}/${arch}/airootfs/usr/bin/btrfs-swapoff
+
         # x11vnc
         echo "VORSICHT DER X11VNC SERVER SYSTEMD EINTRAG WIRD DABEI GELOESCHT UND MUSS NEU EINGETRAGEN WERDEN!!!"
         echo "Erfordert eine graphische installation!!!"

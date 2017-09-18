@@ -14,7 +14,7 @@ function minimalinstallation() {
     do
         pacstrap -c -d -G -M ${mountpoint} $line
     done < /etc/packages_all.txt
-    
+
 }
 
 function cron() {
@@ -91,37 +91,37 @@ function offlineinstallation {
     echo ""
     echo "tmpfs /tmp tmpfs nodev,nosuid 0 0" >> ${mountpoint}/etc/fstab
     echo "tmpfs /dev/shm tmpfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab
-    
+
     rootbind=$(blkid -s UUID -o value ${device}2)
-    
+
     #genfstab -Up ${mountpoint} >> ${mountpoint}/etc/fstab
-    
+
     if [ "${dateisystem}" == "btrfs" ]; then
         btrfsfstab #btrfs
-        
+
         mkdir -p ${mountpoint}/run/btrfs-root
         echo "UUID=${rootbind} /run/btrfs-root/ btrfs nodev,nosuid,noexec 0 0" >> ${mountpoint}/etc/fstab #btrfs
-        
+
         #grep -v "/var/lib" < ${mountpoint}/etc/fstab > fstab.neu; mv fstab.neu ${mountpoint}/etc/fstab
-        
+
         echo "/run/btrfs-root/__current/ROOT/var/lib /var/lib none bind 0 0" >> ${mountpoint}/etc/fstab #btrfs
-        
+
         cron
-        
+
     elif [ "${dateisystem}" == "ext4" ]; then
         echo "UUID=${rootbind} / ext4 rw,defaults,noatime,nodiratime,discard,ssd 0 0" >> ${mountpoint}/etc/fstab
-        
+
     fi
-    
+
     if [ "${swap}" == "y" ]; then
         swappartition=$(blkid -s UUID -o value ${device}3)
         echo "UUID=${swappartition} none swap defaults 0 0" >> ${mountpoint}/etc/fstab
     fi
-    
+
     if [ "${swapfile}" == "y" ]; then
         echo "/swapfile none swap defaults 0 0" >> ${mountpoint}/etc/fstab
     fi
-    
+
     echo "${name}"s-OS > ${mountpoint}/etc/hostname
 }
 
@@ -131,22 +131,22 @@ function formatieren {
     #swap
     echo "format"
     mkfs.vfat -F 32 ${device}1
-    
+
     if [ "${dateisystem}" == "btrfs" ]; then
         #mkfs.btrfs -f -L p_arch ${device}2
         btrfsformat #btrfs
         subvolume #btrfs
-        
+
     elif [ "${dateisystem}" == "ext4" ]; then
         mkfs.ext4 -L p_arch ${device}2 #ext4
         mount ${device}2 ${mountpoint}
-        
+
     fi
-    
+
     if [ "${swap}" == "y" ]; then
         mkswap -L p_swap ${device}3
     fi
-    
+
     if [ "${swapfile}" == "y" ]; then
         makeswapfile
     fi
@@ -163,25 +163,25 @@ function btrfsformat() {
         mkfs.btrfs -m single ${device}2
     fi
     btrfs filesystem show
-    
+
 }
 
 function btrfsfstab() {
-    
+
     rootbind=$(blkid -s UUID -o value ${device}2)
-    
+
     #if [ "${raid}" != "n" ]; then
-    
+
     #        anzahl=$(echo -e $device1 | wc -w)
     #        echo "Festplatten: $anzahl"
-    
+
     #        i=0
     #        for wort in ${device1}
     #        do
     #            i=$(expr ${i} + 1)
     #        done
     #        anzahl=$i
-    
+
     #        case "$anzahl" in
     #            1) devices="device=UUID=$(blkid -s UUID -o value $(echo -e $device1 | awk '{print $1}')),"
     #            ;;
@@ -194,61 +194,61 @@ function btrfsfstab() {
     #            *) echo "Zu viele Festplatten Max.4 !!!"
     #            ;;
     #        esac
-    
+
     #echo -e "UUID=${rootbind} / btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,${devices}subvol=__current/ROOT 0 0" >> ${mountpoint}/etc/fstab
-    
+
     #echo -e "UUID=${rootbind} /home btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/home 0 0" >> ${mountpoint}/etc/fstab
     #echo -e "UUID=${rootbind} /opt btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/opt 0 0" >> ${mountpoint}/etc/fstab
     #echo -e "UUID=${rootbind} /var btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/var 0 0" >> ${mountpoint}/etc/fstab
-    
+
     #else
-    
+
     echo -e "UUID=${rootbind} / btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/ROOT 0 0" >> ${mountpoint}/etc/fstab
-    
+
     echo -e "UUID=${rootbind} /home btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/home 0 0" >> ${mountpoint}/etc/fstab
     echo -e "UUID=${rootbind} /opt btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/opt 0 0" >> ${mountpoint}/etc/fstab
     echo -e "UUID=${rootbind} /var btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/var 0 0" >> ${mountpoint}/etc/fstab
-    
+
     #fi
-    
+
     bootbind=$(blkid -s UUID -o value ${device}1)
-    
+
     echo -e "UUID=${bootbind} /boot vfat rw,relatime 0 2" >> ${mountpoint}/etc/fstab
-    
+
 }
 
 function btrfsmount() {
     #[[ -z "${device}" ]] && device=${2}
-    
+
     if [ "${1}" == "1" ]; then
         mkdir -p /mnt/btrfs-root
         mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo ${device}2 /mnt/btrfs-root
     elif [ "${1}" == "2" ]; then
         mkdir -p ${mountpoint}
         mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/ROOT ${device}2 ${mountpoint}
-        
+
         mkdir -p ${mountpoint}/home
         mkdir -p ${mountpoint}/opt
         mkdir -p ${mountpoint}/var/lib
         mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/home ${device}2 ${mountpoint}/home
         mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/opt ${device}2 ${mountpoint}/opt
         mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/var ${device}2 ${mountpoint}/var
-        
+
         mkdir -p ${mountpoint}/var/lib
         mount --bind /mnt/btrfs-root/__current/ROOT/var/lib ${mountpoint}/var/lib
-        
+
         # boot mount
         mkdir -p ${mountpoint}/boot
         mount -t vfat ${device}1 ${mountpoint}/boot
-        
+
     fi
 }
 
 function subvolume() {
-    
+
     # Mount
     btrfsmount 1
-    
+
     # Create
     mkdir -p /mnt/btrfs-root/__snapshot
     mkdir -p /mnt/btrfs-root/__current
@@ -256,12 +256,12 @@ function subvolume() {
     btrfs subvolume create /mnt/btrfs-root/__current/home
     btrfs subvolume create /mnt/btrfs-root/__current/opt
     btrfs subvolume create /mnt/btrfs-root/__current/var
-    
+
     btrfs subvolume list -p /mnt/btrfs-root
-    
+
     # Mount
     btrfsmount 2
-    
+
 }
 
 function update() {
@@ -285,52 +285,52 @@ function update() {
 function systemdboot() {
     tobootdevice=$(blkid -s PARTUUID -o value ${device}2)
     swappartitionpart=$(blkid -s PARTUUID -o value ${device}3)
-    
+
     if [ "${swap}" == "y" ]; then
         parameter="${parameter}resume=PARTUUID=${swappartitionpart}"
     fi
-    
+
     if [ "${dateisystem}" == "btrfs" ]; then
         parameter="${parameter}rootflags=subvol=__current/ROOT"
     fi
-    
+
     #rootsub=$(btrfs subvolume list /mnt | awk 'NR<0 && NR>2 {print $2}')
-    
+
     mkdir -p ${mountpoint}/boot/EFI/systemd/
     mkdir -p ${mountpoint}/boot/EFI/BOOT/
     cp ${mountpoint}/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${mountpoint}/boot/EFI/systemd/systemd-bootx64.efi
     cp ${mountpoint}/usr/lib/systemd/boot/efi/systemd-bootx64.efi ${mountpoint}/boot/EFI/BOOT/BOOTX64.EFI
-    
+
     mkdir -p ${mountpoint}/boot/loader/entries/
     echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi.conf
     echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
     echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
     echo "initrd   /initramfs-linux.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
     echo "options  root=PARTUUID=${tobootdevice} rw ${parameter}" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-    
+
     echo "title    "${name}"s-os" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
     echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
     echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
     echo "initrd   /initramfs-linux-fallback.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
     echo "options  root=PARTUUID=${tobootdevice} rw ${parameter}" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-    
+
     echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
     echo "timeout   1" >> ${mountpoint}/boot/loader/loader.conf
-    
+
     arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "Linux Boot Manager"
-    
+
     arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux efistub" -u "initrd=/initramfs-linux.img root=PARTUUID=${tobootdevice} rw ${parameter}"
-    
+
     arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=PARTUUID=${tobootdevice} rw ${parameter}"
-    
+
     #arch-chroot ${mountpoint} bootctl install
-    
+
 }
 
 function abfrage() {
     read -p "Wie heissen sie?: " name
     [[ -z "${name}" ]] && name=arch-linux
-    
+
     # Partionierung
     # GPT oder MBR
     echo ""
@@ -345,24 +345,24 @@ function abfrage() {
     echo ""
     read -p "Wie moechten sie ihre Festplatte partioniert haben: [gpt/MBR] " Partition
     [[ -z "${Partition}" ]] && Partition=mbr
-    
+
     if [ "${Partition}" == "gpt" ]
     then
         read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/GRUB] : " boot
-        
+
     fi
     [[ -z "${boot}" ]] && boot=grub
-    
+
     fdisk -l
     read -p "Geben sie eine Festplatte an: /dev/sda " device
     [[ -z "${device}" ]] && device=/dev/sda
-    
+
     read -p "Welches Passwort soll der Root erhalten?: root " pass
     [[ -z "${pass}" ]] && pass=root
-    
+
     read -p "Welches Dateisystem soll benutzt werden? [BTRFS/ext4]" dateisystem
-    [[ -z "${dateisystem}" ]] && name=btrfs
-    
+    [[ -z "${dateisystem}" ]] && dateisystem=btrfs
+
     if [ "${dateisystem}" == "btrfs" ]; then
         read -p "Soll ein raid gemacht werden?: [raid0/raid1/raid10/n] " raid
         if [ "${raid}" == "n" ]; then
@@ -373,7 +373,7 @@ function abfrage() {
         fi
     else
         [[ -z "${raid}" ]] && raid=n
-        
+
     fi
     read -p "Wollen sie eine swap-partition erstellen? : [y/N] " swap
     if [ "${swap}" == "y" ]; then
@@ -382,26 +382,26 @@ function abfrage() {
         echo "Bitte berechnen sie 512MB für die boot-partition und ${swap-speicher} für die swap-partition ein!!!"
         read -p "Wie groß soll die System-Partition sein? +20G : " speicher
         [[ -z "${speicher}" ]] && speicher="+20G"
-        
+
     else
         if [ "${dateisystem}" == "btrfs" ]; then
             echo "BTRFS unterstützt noch keine swapfiles!!!"
-            
+
         elif [ "${dateisystem}" == "ext4" ]; then
             read -p "Wollen sie eine swapfile erstellen? : [y/N] " swapfile
-            
+
             if [ "${swapfile}" == "y" ]; then
                 read -p "Wie groß soll die swapfile sein? +8G : " swapfile-speicher
                 [[ -z "${swapfile-speicher}" ]] && swapfile-speicher="+8G"
-                
+
             fi
         fi
-        
+
         echo "Wenn keine eingabe wird die komplette Festplatte benutzt!!!"
         read -p "Wie groß soll die System-Partition sein? : " speicher
-        
+
     fi
-    
+
     read -p "Soll eine Offline-Installation durchgefuehrt werden? : [Y/n] " offline
     if [ "${offline}" != "n" ]
     then
@@ -410,14 +410,14 @@ function abfrage() {
         install="online"
     fi
     # Berechnungen
-    
+
     # Dateisystem
     if [ "${dateisystem}" == "btrfs" ]; then
         mountpoint="/mnt/btrfs-current"
     elif [ "${dateisystem}" == "ext4" ]; then
         mountpoint="/mnt"
     fi
-    
+
     #
     echo "Name: ${name}"
     echo "Partionsart: ${Partition}"
@@ -505,7 +505,7 @@ then
     else
         echo "nicht gemountet"
     fi
-    
+
     #
     echo "Eine Säuberung erhört die chance der Installation auf dem System."
     echo "Es kann eine Zeit lang dauern!"
@@ -514,7 +514,7 @@ then
     if [ "${Partition}" == "gpt" ]
     then
         echo "Partioniere in GPT"
-        
+
         if [ "${swap}" == "y" ]; then
             echo "Erstelle zustzliche swap-partition"
 gdisk ${device} <<EOT
@@ -661,14 +661,14 @@ then
     echo "DEBEUG-MODUS"
     echo "Wenn kein befehl mehr ausgefuehrt werden muss einfach eingabetaste druecken"
     echo "Welcher befehl soll ausgefuert werden? "
-    
+
     befehl=blablabla
     while [ "$befehl" != "" ]
     do
         read -p "" befehl
         $befehl
     done
-    
+
 fi
 
 if [ "${update}" != "n" ]; then

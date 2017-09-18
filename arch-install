@@ -121,6 +121,14 @@ function offlineinstallation {
 
     fi
 
+    if [ "${Partition}" == "gpt" ]; then
+
+      bootbind=$(blkid -s UUID -o value ${device}1)
+
+      echo -e "UUID=${bootbind} /boot vfat rw,relatime 0 2" >> ${mountpoint}/etc/fstab
+
+    fi
+
     if [ "${swap}" == "y" ]; then
         swappartition=$(blkid -s UUID -o value ${device}3)
         echo "UUID=${swappartition} none swap defaults 0 0" >> ${mountpoint}/etc/fstab
@@ -219,10 +227,6 @@ function btrfsfstab() {
     echo -e "UUID=${rootbind} /var btrfs rw,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/var 0 0" >> ${mountpoint}/etc/fstab
 
     #fi
-
-    bootbind=$(blkid -s UUID -o value ${device}1)
-
-    echo -e "UUID=${bootbind} /boot vfat rw,relatime 0 2" >> ${mountpoint}/etc/fstab
 
 }
 
@@ -608,12 +612,6 @@ n
 
 
 
-+512M
-p
-n
-
-
-
 ${speicher}
 p
 n
@@ -629,12 +627,6 @@ EOT
 fdisk -W always ${device} <<EOT
 p
 o
-n
-
-
-
-+512M
-p
 n
 
 

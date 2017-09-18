@@ -193,9 +193,7 @@ function formatieren {
     fi
 
     if [ "${swapfile}" == "y" ]; then
-      if [ "${dateisystem}" == "btrfs" ]; then
-          #later
-      elif [ "${dateisystem}" == "ext4" ]; then
+      if [ "${dateisystem}" == "ext4" ]; then
           makeswapfile
       fi
     fi
@@ -432,8 +430,8 @@ function abfrage() {
         read -p "Wollen sie eine swapfile erstellen? : [y/N] " swapfile
 
         if [ "${swapfile}" == "y" ]; then
-            read -p "Wie groß soll die swapfile sein? +8G : " swapfilespeicher
-            [[ -z "${swapfilespeicher}" ]] && swapfilespeicher="+8G"
+            read -p "Wie groß soll die swapfile sein? 8G : " swapfilespeicher
+            [[ -z "${swapfilespeicher}" ]] && swapfilespeicher="8G"
 
         fi
 

@@ -254,7 +254,9 @@ function btrfsmount() {
 
         # boot mount
         mkdir -p ${mountpoint}/boot
-        mount -t vfat ${device}${bootpartitionnummer} ${mountpoint}/boot
+        if [ "${Partition}" == "gpt" ]; then
+            mount -t vfat ${device}${bootpartitionnummer} ${mountpoint}/boot
+        fi
 
     fi
 }

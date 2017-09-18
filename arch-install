@@ -27,12 +27,11 @@ function cron() {
     fi
 }
 
-function swapfile() {
-    #swap
+function makeswapfile() {
+    #swapfile
     fallocate -l 512M ${mountpoint}/swapfile
     chmod 600 ${mountpoint}/swapfile
     mkswap ${mountpoint}/swapfile
-    echo "/swapfile none swap defaults 0 0" >> ${mountpoint}/etc/fstab
 }
 
 function removeinstaller {
@@ -114,13 +113,16 @@ function offlineinstallation {
 
     fi
 
-    swappartition=$(blkid -s UUID -o value ${device}3)
-    echo "UUID=${swappartition} none swap defaults 0 0" >> ${mountpoint}/etc/fstab
-    #echo "swap"
-    #swap
-    echo ""
+    if [ "${swap}" == "y" ]; then
+      swappartition=$(blkid -s UUID -o value ${device}3)
+      echo "UUID=${swappartition} none swap defaults 0 0" >> ${mountpoint}/etc/fstab
+    fi
+
+    if [ "${swapfile}" == "y" ]; then
+      echo "/swapfile none swap defaults 0 0" >> ${mountpoint}/etc/fstab
+    fi
+
     echo "${name}"s-OS > ${mountpoint}/etc/hostname
-    echo ""
 }
 
 function formatieren {
@@ -140,8 +142,14 @@ function formatieren {
         mount ${device}2 ${mountpoint}
 
     fi
-    mkswap -L p_swap ${device}3
 
+    if [ "${swap}" == "y" ]; then
+      mkswap -L p_swap ${device}3
+    fi
+
+    if [ "${swapfile}" == "y" ]; then
+      makeswapfile
+    fi
 }
 
 function btrfsformat() {
@@ -344,17 +352,41 @@ function abfrage() {
         read -p "Bitte geben sie die Festplatten in eine Reihe an die zu einem Raid verbunden werden sollen!!!: " device1
     fi
     read -p "Welches Passwort soll der Root erhalten?: root " pass
-    echo "Bitte berechnen sie 512MB für die boot-partition und 8GB für die swap-partition ein!!!"
-    read -p "Wie groß soll die System-Partition sein? +20G : " speicher
-    read -p "Soll eine Offline-Installation durchgefuehrt werden? : [Y/n] " offline
     read -p "Welches Dateisystem soll benutzt werden? [BTRFS/ext4]" dateisystem
+    read -p "Wollen sie eine swap-partition erstellen? : [y/N] " swap
+    if [ "${swap}" == "y" ]; then
+      read -p "Wie groß soll die swap-partition sein? +8G : " swap-speicher
+      [[ -z "${swap-speicher}" ]] && swap-speicher="+8G"
+      echo "Bitte berechnen sie 512MB für die boot-partition und ${swap-speicher} für die swap-partition ein!!!"
+      read -p "Wie groß soll die System-Partition sein? +20G : " speicher
+      [[ -z "${speicher}" ]] && speicher="+20G"
+
+    else
+      if [ "${dateisystem}" == "btrfs" ]; then
+        echo "BTRFS unterstützt noch keine swapfiles!!!"
+
+      elif [ "${dateisystem}" == "ext4" ]; then
+        read -p "Wollen sie eine swapfile erstellen? : [y/N] " swapfile
+
+        if [ "${swapfile}" == "y" ]; then
+          read -p "Wie groß soll die swapfile sein? +8G : " swapfile-speicher
+          [[ -z "${swapfile-speicher}" ]] && swapfile-speicher="+8G"
+
+        fi
+      fi
+
+      echo "Wenn keine eingabe wird die komplette Festplatte benutzt!!!"
+      read -p "Wie groß soll die System-Partition sein? : " speicher
+
+    fi
+
+    read -p "Soll eine Offline-Installation durchgefuehrt werden? : [Y/n] " offline
     #
     [[ -z "${name}" ]] && name=arch-linux
     [[ -z "${Partition}" ]] && Partition=mbr
     [[ -z "${boot}" ]] && boot=grub
     [[ -z "${device}" ]] && device=/dev/sda
     [[ -z "${pass}" ]] && pass=root
-    [[ -z "${speicher}" ]] && speicher="+20G"
     if [ "${offline}" != "n" ]
     then
         install="offline"
@@ -382,6 +414,12 @@ function abfrage() {
     fi
     echo "Dateisystem: ${dateisystem}"
     echo "System-Partition ${speicher}"
+    if [ "${swap}" == "y" ]; then
+      echo "Swap-partition ${swap-speicher}"
+    fi
+    if [ "${swapfile}" == "y" ]; then
+      echo "Swapfile ${swapfile-speicher}"
+    fi
     echo "Rootpasswort: ${pass}"
     echo "Architektur: $(uname -m)"
     echo "Installation: ${install}"
@@ -481,7 +519,7 @@ p
 n
 
 
-+8G
+${swap-speicher}
 8200
 p
 w
@@ -531,7 +569,7 @@ n
 
 
 
-+8G
+${swap-speicher}
 p
 w
 y

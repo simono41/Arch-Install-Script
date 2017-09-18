@@ -164,6 +164,12 @@ function offlineinstallation {
       fi
     fi
 
+    if [ "${swapfile}" == "y" ]; then
+      if [ "${dateisystem}" == "ext4" ]; then
+          makeswapfile
+      fi
+    fi
+
     echo "${name}"s-OS > ${mountpoint}/etc/hostname
 }
 
@@ -192,11 +198,6 @@ function formatieren {
         mkswap -L p_swap ${device}${swappartitionnummer}
     fi
 
-    if [ "${swapfile}" == "y" ]; then
-      if [ "${dateisystem}" == "ext4" ]; then
-          makeswapfile
-      fi
-    fi
 }
 
 function btrfsformat() {

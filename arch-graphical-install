@@ -353,6 +353,11 @@ then
     then
         su "$username" -c "yaourt -S audio-recorder --export /home/"$username"/aur-pakete"
     fi
+    read -p "Soll conky-lua mitinstalliert werden?: [Y/n] " conky
+    if [ "$conky" != "n" ]
+    then
+        su "$username" -c "yaourt -S conky-lua --export /home/"$username"/aur-pakete"
+    fi
 
     echo "Sollen sonst noch welche packete aus dem aur installiert werden?"
     befehl=blablabla

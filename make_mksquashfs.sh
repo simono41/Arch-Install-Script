@@ -219,7 +219,7 @@ function filesystem() {
         echo 1 > ${work_dir}/${arch}/airootfs/proc/sys/net/ipv4/ip_forward
 
         # santana
-        mkdir -p work/x86_64/airootfs/usr/share/fonts/TTF/
+        mkdir -p ${work_dir}/${arch}/airootfs/usr/share/fonts/TTF/
         unzip santana.zip -d ${work_dir}/${arch}/airootfs/usr/share/fonts/TTF/
 
         # sudoers/wheel

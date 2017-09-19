@@ -276,6 +276,9 @@ function IMAGE() {
             echo "nicht gemountet"
         fi
 
+        echo "ALLE PACKETE WERDEN GELOESCHT!!!"
+        sleep 5
+
         mkdir -p ${work_dir}/iso/${install_dir}/${arch}/airootfs/
 
     arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT

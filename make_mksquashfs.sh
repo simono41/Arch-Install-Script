@@ -262,16 +262,16 @@ function IMAGE() {
     if [ "$image" != "n" ]
     then
 
-        if cat /proc/mounts | grep $(pwd)/${work_dir}/iso/${install_dir}/${arch}/airootfs/var/cache/pacman/pkg > /dev/null; then
+        if cat /proc/mounts | grep $(pwd)/${work_dir}/${arch}/airootfs/var/cache/pacman/pkg > /dev/null; then
             echo "gemountet"
-            umount $(pwd)/${work_dir}/iso/${install_dir}/${arch}/airootfs/var/cache/pacman/pkg
+            umount $(pwd)/${work_dir}/${arch}/airootfs/var/cache/pacman/pkg
         else
             echo "nicht gemountet"
         fi
 
-        if cat /proc/mounts | grep $(pwd)/${work_dir}/iso/${install_dir}/${arch}/airootfs > /dev/null; then
+        if cat /proc/mounts | grep $(pwd)/${work_dir}/${arch}/airootfs > /dev/null; then
             echo "gemountet"
-            umount $(pwd)/${work_dir}/iso/${install_dir}/${arch}/airootfs
+            umount $(pwd)/${work_dir}/${arch}/airootfs
         else
             echo "nicht gemountet"
         fi

@@ -78,25 +78,41 @@ function links() {
     #
     mkdir -p /home/"$username"/Schreibtisch/
     if [ -f "/usr/share/applications/arch-install.desktop" ]; then
-      ln -s /usr/share/applications/arch-install.desktop /home/"$username"/Schreibtisch/arch-install.desktop
+        if [ -f "/home/"$username"/Schreibtisch/arch-install.desktop" ]; then
+            echo "datei existiert bereits!"
+          else
+            ln -s /usr/share/applications/arch-install.desktop /home/"$username"/Schreibtisch/arch-install.desktop
+        fi
       #chmod +x /home/"$username"/Schreibtisch/arch-install.desktop
     fi
     #
     mkdir -p /root/Schreibtisch/
     if [ -f "/usr/share/applications/arch-install.desktop" ]; then
-      ln -s /usr/share/applications/arch-install.desktop /root/Schreibtisch/arch-install.desktop
+        if [ -f "/root/Schreibtisch/arch-install.desktop" ]; then
+            echo "datei existiert bereits!"
+          else
+            ln -s /usr/share/applications/arch-install.desktop /root/Schreibtisch/arch-install.desktop
+        fi
       #chmod +x /root/Schreibtisch/arch-install.desktop
     fi
     #
     mkdir -p /home/"$username"/Desktop/
     if [ -f "/usr/share/applications/arch-install.desktop" ]; then
-      ln -s /usr/share/applications/arch-install.desktop /home/"$username"/Desktop/arch-install.desktop
+        if [ -f "/home/"$username"/Desktop/arch-install.desktop" ]; then
+            echo "datei existiert bereits!"
+          else
+            ln -s /usr/share/applications/arch-install.desktop /home/"$username"/Desktop/arch-install.desktop
+        fi
       #chmod +x /home/"$username"/Desktop/arch-install.desktop
     fi
     #
     mkdir -p /root/Desktop/
     if [ -f "/usr/share/applications/arch-install.desktop" ]; then
-      ln -s /usr/share/applications/arch-install.desktop /root/Desktop/arch-install.desktop
+        if [ -f "/root/Desktop/arch-install.desktop" ]; then
+            echo "datei existiert bereits!"
+          else
+            ln -s /usr/share/applications/arch-install.desktop /root/Desktop/arch-install.desktop
+        fi
       #chmod +x /root/Desktop/arch-install.desktop
     fi
 }

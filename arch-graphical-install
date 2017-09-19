@@ -77,25 +77,25 @@ function ethernet() {
 function links() {
     #
     mkdir -p /home/"$username"/Schreibtisch/
-    if [ -f "/usr/share/applications/arch-install.desktop"]; then
+    if [ -f "/usr/share/applications/arch-install.desktop" ]; then
       ln -s /usr/share/applications/arch-install.desktop /home/"$username"/Schreibtisch/arch-install.desktop
       #chmod +x /home/"$username"/Schreibtisch/arch-install.desktop
     fi
     #
     mkdir -p /root/Schreibtisch/
-    if [ -f "/usr/share/applications/arch-install.desktop"]; then
+    if [ -f "/usr/share/applications/arch-install.desktop" ]; then
       ln -s /usr/share/applications/arch-install.desktop /root/Schreibtisch/arch-install.desktop
       #chmod +x /root/Schreibtisch/arch-install.desktop
     fi
     #
     mkdir -p /home/"$username"/Desktop/
-    if [ -f "/usr/share/applications/arch-install.desktop"]; then
+    if [ -f "/usr/share/applications/arch-install.desktop" ]; then
       ln -s /usr/share/applications/arch-install.desktop /home/"$username"/Desktop/arch-install.desktop
       #chmod +x /home/"$username"/Desktop/arch-install.desktop
     fi
     #
     mkdir -p /root/Desktop/
-    if [ -f "/usr/share/applications/arch-install.desktop"]; then
+    if [ -f "/usr/share/applications/arch-install.desktop" ]; then
       ln -s /usr/share/applications/arch-install.desktop /root/Desktop/arch-install.desktop
       #chmod +x /root/Desktop/arch-install.desktop
     fi

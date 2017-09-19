@@ -218,6 +218,9 @@ function filesystem() {
         mkdir -p ${work_dir}/${arch}/airootfs/proc/sys/net/ipv4/
         echo 1 > ${work_dir}/${arch}/airootfs/proc/sys/net/ipv4/ip_forward
 
+        # santana
+        unzip santana.zip -d ${work_dir}/${arch}/airootfs/usr/share/fonts/TTF/
+
         # sudoers/wheel
         echo "root ALL=(ALL) ALL" > ${work_dir}/${arch}/airootfs/etc/sudoers
         echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> ${work_dir}/${arch}/airootfs/etc/sudoers

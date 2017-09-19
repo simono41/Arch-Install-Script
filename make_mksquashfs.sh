@@ -269,6 +269,13 @@ function IMAGE() {
             echo "nicht gemountet"
         fi
 
+        if cat /proc/mounts | grep $(pwd)/${work_dir}/iso/${install_dir}/${arch}/airootfs > /dev/null; then
+            echo "gemountet"
+            umount $(pwd)/${work_dir}/iso/${install_dir}/${arch}/airootfs
+        else
+            echo "nicht gemountet"
+        fi
+
         mkdir -p ${work_dir}/iso/${install_dir}/${arch}/airootfs/
 
     arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT

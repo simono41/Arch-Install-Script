@@ -584,6 +584,11 @@ if [ "${vollinstallation}" != "n" ]; then
     # custom-installer
 
     pip install beautysh
+    pip install powerline-shell
+
+    git clone https://github.com/powerline/fonts.git /root/powerline-shell-fonts
+    chmod +x /root/powerline-shell-fonts/install.sh
+    /root/powerline-shell-fonts/install.sh
 
     # vboxdrv
 

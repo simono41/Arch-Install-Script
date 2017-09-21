@@ -222,6 +222,9 @@ function filesystem() {
         mkdir -p ${work_dir}/${arch}/airootfs/usr/share/fonts/TTF/
         unzip santana.zip -d ${work_dir}/${arch}/airootfs/usr/share/fonts/TTF/
 
+        # .Conky
+        unzip .Conky.zip -d /root/
+
         # sudoers/wheel
         echo "root ALL=(ALL) ALL" > ${work_dir}/${arch}/airootfs/etc/sudoers
         echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> ${work_dir}/${arch}/airootfs/etc/sudoers
@@ -404,7 +407,8 @@ function UEFI() {
             echo "Bereits Vorhanden!"
             sleep 1
         else
-            curl -o ${work_dir}/iso/EFI/shellx64_v2.efi https://raw.githubusercontent.com/tianocore/edk2/master/ShellBinPkg/UefiShell/X64/Shell.efi
+            cp Shell.efi ${work_dir}/iso/EFI/shellx64_v2.efi
+            #curl -o ${work_dir}/iso/EFI/shellx64_v2.efi https://raw.githubusercontent.com/tianocore/edk2/master/ShellBinPkg/UefiShell/X64/Shell.efi
         fi
         # EFI Shell 1.0 for non UEFI 2.3+
         if [ -f ${work_dir}/iso/EFI/shellx64_v1.efi ]
@@ -412,7 +416,8 @@ function UEFI() {
             echo "Bereits Vorhanden!"
             sleep 1
         else
-            curl -o ${work_dir}/iso/EFI/shellx64_v1.efi https://raw.githubusercontent.com/tianocore/edk2/master/EdkShellBinPkg/FullShell/X64/Shell_Full.efi
+            cp Shell_Full.efi ${work_dir}/iso/EFI/shellx64_v1.efi
+            #curl -o ${work_dir}/iso/EFI/shellx64_v1.efi https://raw.githubusercontent.com/tianocore/edk2/master/EdkShellBinPkg/FullShell/X64/Shell_Full.efi
         fi
 
         cp ${work_dir}/iso/EFI/shellx64_v2.efi ${work_dir}/efiboot/EFI/

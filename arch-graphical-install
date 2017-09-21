@@ -584,16 +584,31 @@ if [ "${vollinstallation}" != "n" ]; then
     # custom-installer
 
     #pip install beautysh
+    if [ -d /opt/beautysh ];then
+      rm -Rv /opt/beautysh
+    fi
     git clone https://github.com/bemeurer/beautysh /opt/beautysh
-    python /opt/beautysh/setup.py install
+    cd /opt/beautysh
+    python ./setup.py install
+    cd /
 
     #pip install powerline-shell
-    git clone https://github.com/lenrico/powerline-shell.git
-    /opt/powerline-shell/install.py
+    if [ -d /opt/powerline-shell ];then
+      rm -Rv /opt/powerline-shell
+    fi
+    git clone https://github.com/lenrico/powerline-shell.git /opt/powerline-shell
+    cd /opt/powerline-shell
+    ./install.py
+    cd /
 
     #pip install powerline-shell-fonts
+    if [ -d /opt/powerline-shell-fonts ];then
+      rm -Rv /opt/powerline-shell-fonts
+    fi
     git clone https://github.com/powerline/fonts.git /opt/powerline-shell-fonts
-    /opt/powerline-shell-fonts/install.sh
+    cd /opt/powerline-shell-fonts
+    ./install.sh
+    cd /
 
     # vboxdrv
 

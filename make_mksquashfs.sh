@@ -113,11 +113,6 @@ function filesystem() {
         # screenfetch
         #  echo "screenfetch" >> ${work_dir}/${arch}/airootfs/etc/bash.bashrc
 
-        # initalizise keys
-        arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
-        arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
-        arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
-
         # hooks
         cp install/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso
         cp hooks/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/archiso
@@ -234,6 +229,11 @@ function filesystem() {
         if [ "$update" != "n" ]
         then
     arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
+
+# initalizise keys
+pacman-key --init
+pacman-key --populate archlinux
+pacman-key --refresh-keys
 
 #mkdir -p /etc/systemd/system/getty\@tty1.service.d
 #echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf

@@ -598,7 +598,7 @@ if [ "${vollinstallation}" != "n" ]; then
     fi
     git clone https://github.com/lenrico/powerline-shell.git /opt/powerline-shell
     cd /opt/powerline-shell
-    ./install.py
+    python2 ./install.py
     cd /
 
     #pip install powerline-shell-fonts

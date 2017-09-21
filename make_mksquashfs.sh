@@ -219,7 +219,7 @@ function filesystem() {
         unzip santana.zip -d ${work_dir}/${arch}/airootfs/usr/share/fonts/TTF/
 
         # .Conky
-        unzip .Conky.zip -d /root/
+        unzip .Conky.zip -d ${work_dir}/${arch}/airootfs/root/
 
         # sudoers/wheel
         echo "root ALL=(ALL) ALL" > ${work_dir}/${arch}/airootfs/etc/sudoers

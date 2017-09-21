@@ -586,6 +586,7 @@ if [ "${vollinstallation}" != "n" ]; then
     #pip install beautysh
     if [ -d /opt/beautysh ];then
       #rm -Rv /opt/beautysh
+      echo "Bereits vorhanden!!!"
     else
       git clone https://github.com/bemeurer/beautysh /opt/beautysh
     fi
@@ -600,6 +601,7 @@ if [ "${vollinstallation}" != "n" ]; then
     #pip install powerline-shell
     if [ -d /opt/powerline-shell ];then
       #rm -Rv /opt/powerline-shell
+      echo "Bereits vorhanden!!!"
     else
       git clone https://github.com/lenrico/powerline-shell.git /opt/powerline-shell
     fi
@@ -614,6 +616,7 @@ if [ "${vollinstallation}" != "n" ]; then
     #pip install powerline-shell-fonts
     if [ -d /opt/powerline-shell-fonts ];then
       #rm -Rv /opt/powerline-shell-fonts
+      echo "Bereits vorhanden!!!"
     else
       git clone https://github.com/powerline/fonts.git /opt/powerline-shell-fonts
     fi

@@ -585,9 +585,10 @@ if [ "${vollinstallation}" != "n" ]; then
 
     #pip install beautysh
     if [ -d /opt/beautysh ];then
-      rm -Rv /opt/beautysh
+      #rm -Rv /opt/beautysh
+    else
+      git clone https://github.com/bemeurer/beautysh /opt/beautysh
     fi
-    git clone https://github.com/bemeurer/beautysh /opt/beautysh
     cd /opt/beautysh
     python ./setup.py install
     if [ -f /usr/bin/beautysh ];then
@@ -598,9 +599,10 @@ if [ "${vollinstallation}" != "n" ]; then
 
     #pip install powerline-shell
     if [ -d /opt/powerline-shell ];then
-      rm -Rv /opt/powerline-shell
+      #rm -Rv /opt/powerline-shell
+    else
+      git clone https://github.com/lenrico/powerline-shell.git /opt/powerline-shell
     fi
-    git clone https://github.com/lenrico/powerline-shell.git /opt/powerline-shell
     cd /opt/powerline-shell
     python2 ./install.py
     if [ -f /usr/bin/powerline-shell ];then
@@ -611,9 +613,10 @@ if [ "${vollinstallation}" != "n" ]; then
 
     #pip install powerline-shell-fonts
     if [ -d /opt/powerline-shell-fonts ];then
-      rm -Rv /opt/powerline-shell-fonts
+      #rm -Rv /opt/powerline-shell-fonts
+    else
+      git clone https://github.com/powerline/fonts.git /opt/powerline-shell-fonts
     fi
-    git clone https://github.com/powerline/fonts.git /opt/powerline-shell-fonts
     cd /opt/powerline-shell-fonts
     ./install.sh
     cd /

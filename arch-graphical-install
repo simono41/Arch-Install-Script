@@ -593,7 +593,7 @@ if [ "${vollinstallation}" != "n" ]; then
     if [ -f /usr/bin/beautysh ];then
       rm /usr/bin/beautysh
     fi
-    #ln -s /opt/beautysh/beautysh /usr/bin/beautysh
+    ln -s /opt/beautysh/beautysh /usr/bin/beautysh
     cd /
 
     #pip install powerline-shell

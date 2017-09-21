@@ -613,16 +613,16 @@ if [ "${vollinstallation}" != "n" ]; then
 #    ln -s /opt/powerline-shell/powerline-shell.py /usr/bin/powerline-shell
 #    cd /
 #
-    pip install powerline-shell-fonts
-#    if [ -d /opt/powerline-shell-fonts ];then
-#      #rm -Rv /opt/powerline-shell-fonts
-#      echo "Bereits vorhanden!!!"
-#    else
-#      git clone https://github.com/powerline/fonts.git /opt/powerline-shell-fonts
-#    fi
-#    cd /opt/powerline-shell-fonts
-#    ./install.sh
-#    cd /
+    if [ -d /opt/powerline-shell-fonts ];then
+      #rm -Rv /opt/powerline-shell-fonts
+      echo "Bereits vorhanden!!!"
+    else
+      git clone https://github.com/powerline/fonts.git /opt/powerline-shell-fonts
+    fi
+    cd /opt/powerline-shell-fonts
+    ./install.sh
+    cd /
+
     pip install youtube-dl
 
     # vboxdrv

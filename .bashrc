@@ -113,7 +113,7 @@ if ! shopt -oq posix; then
 fi
 
 function _update_ps1() {
-    PS1="$(python2 /opt/powerline-shell/powerline-shell.py $?)"
+    PS1="$(powerline-shell $?)"
 }
 
 if [ "$TERM" != "linux" ]; then

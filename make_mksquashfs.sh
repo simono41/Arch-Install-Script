@@ -76,8 +76,8 @@ function filesystem() {
                 rm -Rv ${work_dir}
             fi
             mkdir -p ${work_dir}/${arch}/airootfs
-            read -p "Sollen die Packete schonmal runtergeladen werden? [Y/n] " pacstrap1
-            if [ "$pacstrap1" != "n" ]
+            read -p "Sollen die Packete schonmal runtergeladen werden? [Y/n] " pacstrap
+            if [ "$pacstrap" != "n" ]
             then
                 offlinedownload
             fi
@@ -116,6 +116,7 @@ function filesystem() {
         # initalizise keys
         arch-chroot ${work_dir}/${arch}/airootfs pacman-key --init
         arch-chroot ${work_dir}/${arch}/airootfs pacman-key --populate archlinux
+        arch-chroot ${work_dir}/${arch}/airootfs pacman-key --refresh-keys
 
         # hooks
         cp install/archiso ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/archiso

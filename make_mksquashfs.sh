@@ -231,6 +231,8 @@ function filesystem() {
     arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
 
 # initalizise keys
+pacman -Sy archlinux-keyring && pacman -Su
+
 pacman-key --init
 pacman-key --populate archlinux
 pacman-key --refresh-keys
@@ -241,7 +243,7 @@ pacman-key --refresh-keys
 #echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
 #systemctl enable getty@tty1
 
-pacman -Syu
+#pacman -Syu
 #j
 #mkinitcpio -P
 mkinitcpio -p linux

@@ -220,6 +220,9 @@ function filesystem() {
         # .Conky
         unzip .Conky.zip -d ${work_dir}/${arch}/airootfs/root/
 
+        # .config
+        unzip .config.zip -d ${work_dir}/${arch}/airootfs/root/
+
         # sudoers/wheel
         echo "root ALL=(ALL) ALL" > ${work_dir}/${arch}/airootfs/etc/sudoers
         echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> ${work_dir}/${arch}/airootfs/etc/sudoers

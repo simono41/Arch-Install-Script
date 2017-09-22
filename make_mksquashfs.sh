@@ -88,7 +88,6 @@ function filesystem() {
             then
                 arch-chroot ${work_dir}/${arch}/airootfs passwd root
             fi
-            systemctl enable startup.service
             systemctl enable dhcpcd.service
 
         fi
@@ -242,6 +241,8 @@ pacman-key --refresh-keys
 #echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
 #echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
 #systemctl enable getty@tty1
+
+systemctl enable startup.service
 
 #pacman -Syu
 #j

@@ -65,7 +65,7 @@ function filesystem() {
         if [ "$scripte" != "n" ]
         then
             echo "Scripte werden heruntergeladen!"
-            pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk qemu
+            pacman -Sy arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs gdisk qemu zip unzip
         fi
 
         read -p "Sollen die base Packete neu aufgebaut werden? [Y/n] " pacstrap
@@ -126,7 +126,7 @@ function filesystem() {
         mkdir -p ${work_dir}/${arch}/airootfs/etc/modprobe.d/
         echo "options rtl8723be ant_sel=1 fwlps=N" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/rtl8723be.conf
 
-        echo "blacklist floppy" | sudo tee ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist-floppy.conf
+        echo "blacklist floppy" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist-floppy.conf
 
         # iso_name
         echo ${iso_name} > ${work_dir}/${arch}/airootfs/etc/hostname
@@ -233,11 +233,11 @@ function filesystem() {
     arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
 
 # initalizise keys
-pacman -Sy archlinux-keyring && pacman -Su
-
 pacman-key --init
 pacman-key --populate archlinux
-pacman-key --refresh-keys
+#pacman-key --refresh-keys
+
+#pacman -Sy archlinux-keyring && pacman -Su
 
 #mkdir -p /etc/systemd/system/getty\@tty1.service.d
 #echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf

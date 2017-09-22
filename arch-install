@@ -109,7 +109,7 @@ function offlineinstallation {
     echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo ""
-    echo "blacklist floppy" | sudo tee ${mountpoint}/etc/modprobe.d/blacklist-floppy.conf
+    echo "blacklist floppy" > ${mountpoint}/etc/modprobe.d/blacklist-floppy.conf
     echo ""
     #cp /etc/X11/xinit/xinitrc ${mountpoint}/etc/X11/xinit/xinitrc
     echo "exec startxfce4" > ${mountpoint}/etc/X11/xinit/xinitrc

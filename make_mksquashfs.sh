@@ -230,7 +230,7 @@ function filesystem() {
         read -p "Soll das System aktualisiert werden? [Y/n] " update
         if [ "$update" != "n" ]
         then
-    arch-chroot ${work_dir}/${arch}/airootfs /bin/bash pacman -Sy archlinux-keyring && pacman -Su
+    arch-chroot ${work_dir}/${arch}/airootfs pacman -Sy archlinux-keyring && pacman -Su
 
     arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
 

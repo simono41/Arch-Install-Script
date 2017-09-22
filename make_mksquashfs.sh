@@ -233,11 +233,11 @@ function filesystem() {
     arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
 
 # initalizise keys
-pacman-key --init
-pacman-key --populate archlinux
+#pacman-key --init
+#pacman-key --populate archlinux
 #pacman-key --refresh-keys
 
-#pacman -Sy archlinux-keyring && pacman -Su
+pacman -Sy archlinux-keyring && pacman -Su
 
 #mkdir -p /etc/systemd/system/getty\@tty1.service.d
 #echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf

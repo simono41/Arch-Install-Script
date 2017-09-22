@@ -623,7 +623,7 @@ if [ "${vollinstallation}" != "n" ]; then
     ./install.sh
     cd /
 
-    pip install youtube-dl
+#    pip install youtube-dl
 
     # vboxdrv
 

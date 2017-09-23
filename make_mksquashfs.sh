@@ -293,9 +293,9 @@ function IMAGE() {
         mkdir -p ${work_dir}/iso/${install_dir}/${arch}/airootfs/
 
     arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
-    pacman -Scc
-j
-j
+#    pacman -Scc
+#j
+#j
     pacman -Q > /pkglist.txt
 EOT
 

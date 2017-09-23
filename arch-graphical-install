@@ -670,6 +670,8 @@ right_meters=Tasks LoadAverage Uptime
 right_meter_modes=2 2 2 " > /root/.htoprc
 
 
+echo "Bei bedarf pacman -Sc oder -Scc eingeben um [nicht mehr benötigte]/[alle] unnötige packete zu entfernen!!!"
+
 befehl=null
 echo "Wenn kein Befehl mehr ausgefuehrt werden muss Eingabetaste druecken!!!"
 while [ "$befehl" != "" ];

@@ -287,7 +287,7 @@ function IMAGE() {
             echo "nicht gemountet"
         fi
 
-        echo "ALLE PACKETE WERDEN GELOESCHT!!!"
+#        echo "ALLE PACKETE WERDEN GELOESCHT!!!"
         sleep 5
 
         mkdir -p ${work_dir}/iso/${install_dir}/${arch}/airootfs/

@@ -12,4 +12,4 @@ wine-mono links gnome-system-monitor aircrack-ng hydra 0ad assaultcube megaglest
 pigz rsync networkmanager-openvpn nmap macchanger gnome-mplayer smplayer gtk-engine-murrine xfce4 xfce4-goodies human-icon-theme xfce4-power-manager xfce4-pulseaudio-plugin 
 xfce4-sensors-plugin libxnvctrl xfce4-xkb-plugin arc-gtk-theme noto-fonts noto-fonts-emoji arc-icon-theme elementary-icon-theme gnome gnome-extra gnuchess system-config-printer 
 blueman gnome-power-manager gnome-screensaver inxi lzop mtools opencl-driver gparted rfkill lightdm lightdm-gtk-greeter chromium pepper-flash dsniff tcpdump bmon iptraf-ng 
-ettercap-gtk youtube-dl vsftpd screen
+ettercap-gtk youtube-dl vsftpd screen tigervnc

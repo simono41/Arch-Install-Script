@@ -235,24 +235,11 @@ function filesystem() {
 # initalizise keys
 pacman-key --init
 pacman-key --populate archlinux
-#pacman-key --refresh-keys
-
-pacman -Sy archlinux-keyring
-pacman -Su
-
-#mkdir -p /etc/systemd/system/getty\@tty1.service.d
-#echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
-#echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
-#echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
-#systemctl enable getty@tty1
+pacman-key --refresh-keys
 
 systemctl enable startup.service
 
-#pacman -Syu
-#j
-#mkinitcpio -P
 mkinitcpio -p linux
-#mkinitcpio -p linux49
 EOT
         fi
 

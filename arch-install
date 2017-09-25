@@ -326,11 +326,11 @@ function systemdboot() {
     parameter=""
 
     if [ "${swap}" == "y" ]; then
-        parameter="${parameter}resume=PARTUUID=${swappartitionpart}"
+        parameter="${parameter}resume=PARTUUID=${swappartitionpart} "
     fi
 
     if [ "${dateisystem}" == "btrfs" ]; then
-        parameter="${parameter}rootflags=subvol=__current/ROOT"
+        parameter="${parameter}rootflags=subvol=__current/ROOT "
     fi
 
     #rootsub=$(btrfs subvolume list /mnt | awk 'NR<0 && NR>2 {print $2}')

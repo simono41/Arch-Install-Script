@@ -254,10 +254,10 @@ function btrfsfstab() {
 function btrfsmount() {
     #[[ -z "${device}" ]] && device=${2}
 
-    if [ "${1}" == "1" ]; then
+    if [ "${1}" == "1" ] || [ "${1}" == "" ]; then
         mkdir -p /mnt/btrfs-root
         mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo ${device}${rootpartitionnummer} /mnt/btrfs-root
-    elif [ "${1}" == "2" ]; then
+    elif [ "${1}" == "2" ] || [ "${1}" == "" ]; then
         mkdir -p ${mountpoint}
         mount -o defaults,noatime,nodiratime,discard,ssd,compress=lzo,subvol=__current/ROOT ${device}${rootpartitionnummer} ${mountpoint}
 
@@ -321,6 +321,9 @@ function update() {
 function systemdboot() {
     tobootdevice=$(blkid -s PARTUUID -o value ${device}${bootpartitionnummer})
     swappartitionpart=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
+    
+    # zurücksetzen der parameter
+    parameter=""
 
     if [ "${swap}" == "y" ]; then
         parameter="${parameter}resume=PARTUUID=${swappartitionpart}"
@@ -357,7 +360,8 @@ function systemdboot() {
 
     arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux efistub" -u "initrd=/initramfs-linux.img root=PARTUUID=${tobootdevice} rw ${parameter} ipv6.disable=1"
 
-    arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=PARTUUID=${tobootdevice} rw ${parameter} ipv6.disable=1"
+    # überschreibt die efistub
+    #arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=PARTUUID=${tobootdevice} rw ${parameter} ipv6.disable=1"
 
     #arch-chroot ${mountpoint} bootctl install
 

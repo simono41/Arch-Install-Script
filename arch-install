@@ -319,7 +319,7 @@ function update() {
 }
 
 function systemdboot() {
-    tobootdevice=$(blkid -s PARTUUID -o value ${device}${bootpartitionnummer})
+    tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
     swappartitionpart=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
     
     # zurücksetzen der parameter

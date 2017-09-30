@@ -374,6 +374,11 @@ then
     then
         su "$username" -c "yaourt -S conky-lua --export /home/"$username"/aur-pakete"
     fi
+    read -p "Soll moonlight mitinstalliert werden?: [Y/n] " moonlight
+    if [ "$moonlight" != "n" ]
+    then
+        su "$username" -c "yaourt -S moonlight-embedded --export /home/"$username"/aur-p$
+    fi
 
     echo "Sollen sonst noch welche packete aus dem aur installiert werden?"
     befehl=blablabla

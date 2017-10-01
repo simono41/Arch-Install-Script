@@ -14,6 +14,14 @@ function vollinstallation() {
     pacman -Syu $(cat /root/packages_all1.txt)
 }
 
+function yaourtinstall() {
+    read -p "Soll $1 mitinstalliert werden?: [Y/n] " install
+    if [ "$install" != "n" ]
+    then
+        su "$username" -c "yaourt -S $1 --export /home/"$username"/aur-pakete"
+    fi
+}
+
 function check() {
     if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
         rm /usr/lib/systemd/system/x11vnc.service
@@ -298,53 +306,21 @@ then
         pwd
     fi
     #
-    read -p "Soll pamac-aur mitinstalliert werden?: [Y/n] " pamac
-    if [ "$pamac" != "n" ]
-    then
-        su "$username" -c "yaourt -S pamac-aur --export /home/"$username"/aur-pakete"
-    fi
+	yaourtinstall pamac-aur
     #
-    read -p "Soll pacaur mitinstalliert werden?: [Y/n] " pacaur
-    if [ "$pacaur" != "n" ]
-    then
-        su "$username" -c "yaourt -S pacaur --export /home/"$username"/aur-pakete"
-    fi
+	yaourtinstall pacaur
     #
-    read -p "Soll google-chrome mitinstalliert werden?: [Y/n] " chrome
-    if [ "$chrome" != "n" ]
-    then
-        su "$username" -c "yaourt -S google-chrome --export /home/"$username"/aur-pakete"
-    fi
+	yaourtinstall google-chrome
     #
-    read -p "Soll discord mitinstalliert werden?: [Y/n] " discord
-    if [ "$discord" != "n" ]
-    then
-        su "$username" -c "yaourt -S discord --export /home/"$username"/aur-pakete"
-    fi
+	yaourtinstall discord
     #
-    read -p "Soll spotify mitinstalliert werden?: [Y/n] " spotify
-    if [ "$spotify" != "n" ]
-    then
-        su "$username" -c "yaourt -S spotify --export /home/"$username"/aur-pakete"
-    fi
+	yaourtinstall spotify
     #
-    read -p "Soll xboxdrv mitinstalliert werden?: [Y/n] " xboxdrv
-    if [ "$xboxdrv" != "n" ]
-    then
-        su "$username" -c "yaourt -S xboxdrv --export /home/"$username"/aur-pakete"
-    fi
+	yaourtinstall xboxdrv
     #
-    read -p "Soll telegram mitinstalliert werden?: [Y/n] " telegram
-    if [ "$telegram" != "n" ]
-    then
-        su "$username" -c "yaourt -S telegram-desktop --export /home/"$username"/aur-pakete"
-    fi
+	yaourtinstall telegram-desktop
     #
-    read -p "Soll vibrancy-colors mitinstalliert werden?: [Y/n] " vibrancy
-    if [ "$vibrancy" != "n" ]
-    then
-        su "$username" -c "yaourt -S vibrancy-colors --export /home/"$username"/aur-pakete"
-    fi
+	yaourtinstall vibrancy-colors
     #
     read -p "Sollen firmwares mitinstalliert werden?: [Y/n] " firmwares
     if [ "$firmwares" != "n" ]
@@ -353,32 +329,15 @@ then
         mkinitcpio -p linux
     fi
     #
-    read -p "Soll jp2a mitinstalliert werden?: [Y/n] " jp2a
-    if [ "$jp2a" != "n" ]
-    then
-        su "$username" -c "yaourt -S jp2a --export /home/"$username"/aur-pakete"
-    fi
+    yaourtinstall jp2a
     #
-    read -p "Soll firefox-ublock-origin mitinstalliert werden?: [Y/n] " ublock
-    if [ "$ublock" != "n" ]
-    then
-        su "$username" -c "yaourt -S firefox-ublock-origin --export /home/"$username"/aur-pakete"
-    fi
-    read -p "Soll audio-recorder mitinstalliert werden?: [Y/n] " audio
-    if [ "$audio" != "n" ]
-    then
-        su "$username" -c "yaourt -S audio-recorder --export /home/"$username"/aur-pakete"
-    fi
-    read -p "Soll conky-lua mitinstalliert werden?: [Y/n] " conky
-    if [ "$conky" != "n" ]
-    then
-        su "$username" -c "yaourt -S conky-lua --export /home/"$username"/aur-pakete"
-    fi
-    read -p "Soll moonlight mitinstalliert werden?: [Y/n] " moonlight
-    if [ "$moonlight" != "n" ]
-    then
-        su "$username" -c "yaourt -S moonlight-embedded --export /home/"$username"/aur-p$
-    fi
+	yaourtinstall firefox-ublock-origin
+	#
+	yaourtinstall audio-recorder
+	#
+    yaourtinstall conky-lua
+	#
+	yaourtinstall moonlight-embedded
 
     echo "Sollen sonst noch welche packete aus dem aur installiert werden?"
     befehl=blablabla

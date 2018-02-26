@@ -10,15 +10,11 @@ version="$1"
 
 cd /root/
 if [ -d "/root/${repo}/" ]; then
-  echo "Existiert bereits!!!"
-else
-  git clone http://${server}/${user}/${repo}.git
+    echo "Existiert bereits!!!"
+    rm -Rv ${repo}
 fi
+git clone http://${server}/${user}/${repo}.git
 cd /root/${repo}/
-git pull
-if [ -d "out/" ]; then
-  rm -Rv out/
-fi
 ./make_mksquashfs-auto.sh ${version}
 scp out/* ${server}:/var/www/html/
 

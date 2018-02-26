@@ -30,20 +30,14 @@ function gitclone() {
     cd /root/
     if [ -d "${repo}" ]; then
         echo "${repo} existiert bereits!!!"
-        cd ${repo}
-        git pull
-        cd ..
-    else
-        git clone ${WEBADDRESS}
+        rm -Rv ${repo}
     fi
+    git clone ${WEBADDRESS}
     if [ -d "${repo1}" ]; then
         echo "${repo1} existiert bereits!!!"
-        cd ${repo1}
-        git pull
-        cd ..
-    else
-        git clone ${WEBADDRESS1}
+        rm -Rv ${repo1}
     fi
+    git clone ${WEBADDRESS1}
     cd /
 }
 

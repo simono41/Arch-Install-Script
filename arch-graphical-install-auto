@@ -316,6 +316,10 @@ EOT
             pwd
         fi
         yaourtinstall pamac-aur
+        yaourtinstall conky-lua-nv
+        yaourtinstall vibrancy-colors
+        yaourtinstall spotify
+
     fi
 fi
 
@@ -527,6 +531,8 @@ if [ "${vollinstallation}" != "n" ]; then
     mkdir -p /usr/share/backgrounds/xfce/
     cp /root/${repo}/background.jpg /usr/share/backgrounds/xfce/
     chmod 644 /usr/share/backgrounds/xfce/background.jpg
+    cp /root/${repo}/wallpaper.jpg /usr/share/backgrounds/xfce/
+    chmod 644 /usr/share/backgrounds/xfce/wallpaper.jpg
 
     # bash.bashrc
     sed "s|%OS_NAME%|${repo}|g;" /root/${repo}/bash.bashrc > /etc/bash.bashrc
@@ -561,6 +567,7 @@ if [ "${vollinstallation}" != "n" ]; then
     echo 1 > /proc/sys/net/ipv4/ip_forward
 
     # .config
+    tar -vxJf /root/${repo}/.Conky.tar.xz -C /root/
     tar -vxJf /root/${repo}/.config.tar.xz -C /root/
     gnomeconfig
 

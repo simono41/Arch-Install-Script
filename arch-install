@@ -4,7 +4,7 @@ set -ex
 
 echo "Version : Fr 22. Dez 00:00:41 CET 2017"
 
-WEBADDRESS="http://137.74.140.105/simono41/SpectreOS.git"
+WEBADDRESS="https://github.com/simono41/SpectreOS.git"
 repo="SpectreOS"
 user="user1"
 version="%VERSION%"

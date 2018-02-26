@@ -13,8 +13,8 @@ echo "Als root Angemeldet"
 VERSION_ID=$(cat /etc/os-release | grep "ID")
 RCLOCAL='/etc/rc.local'
 SYSCTL='/etc/sysctl.conf'
-WEBADDRESS="http://137.74.140.105/simono41/SpectreOS.git"
-WEBADDRESS1="http://137.74.140.105/simono41/shell-scripte.git"
+WEBADDRESS="https://github.com/simono41/SpectreOS.git"
+WEBADDRESS1="https://github.com/simono41/shell-scripte.git"
 SUDOERS="/etc/sudoers"
 repo="SpectreOS"
 repo1="shell-scripte"

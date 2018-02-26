@@ -1,0 +1,676 @@
+#!/bin/bash
+#
+set -ex
+
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root" 1>&2
+    sudo $0
+    exit 0
+fi
+echo "Als root Angemeldet"
+#
+
+VERSION_ID=$(cat /etc/os-release | grep "ID")
+RCLOCAL='/etc/rc.local'
+SYSCTL='/etc/sysctl.conf'
+WEBADDRESS="http://137.74.140.105/simono41/SpectreOS.git"
+WEBADDRESS1="http://137.74.140.105/simono41/shell-scripte.git"
+SUDOERS="/etc/sudoers"
+repo="SpectreOS"
+repo1="shell-scripte"
+version="$1"
+username="$2"
+userpass="$3"
+
+[[ -z "${version}" ]] && version="voll"
+[[ -z "${username}" ]] && username="user1"
+[[ -z "${userpass}" ]] && userpass="user1"
+
+function gitclone() {
+    cd /root/
+    if [ -d "${repo}" ]; then
+        echo "${repo} existiert bereits!!!"
+        cd ${repo}
+        git pull
+        cd ..
+    else
+        git clone ${WEBADDRESS}
+    fi
+    if [ -d "${repo1}" ]; then
+        echo "${repo1} existiert bereits!!!"
+        cd ${repo1}
+        git pull
+        cd ..
+    else
+        git clone ${WEBADDRESS1}
+    fi
+    cd /
+}
+
+function yaourtinstall() {
+    su "$username" -c "yaourt -S $1 --needed --noconfirm"
+}
+
+function standartinstallation() {
+    pacman -Syu $(cat /root/${repo}/packages_${version}.txt) --needed --noconfirm
+}
+
+function ldconfigcache() {
+    rm /etc/ld.so.cache
+    ldconfig
+}
+
+function check() {
+    if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
+        rm /usr/lib/systemd/system/x11vnc.service
+    fi
+    if [ -f /etc/systemd/system/x11vnc.service ]; then
+        rm /etc/systemd/system/x11vnc.service
+    fi
+}
+
+function checkend() {
+    cp /root/${repo}/x11vnc.service /etc/systemd/system/x11vnc.service
+    chmod 644 /etc/systemd/system/x11vnc.service
+    systemctl enable x11vnc.service
+
+}
+
+function adduser() {
+    useradd -m -g users -G wheel,audio,video,sys,optical -s /bin/bash $username
+    passwd ${username} <<EOT
+${userpass}
+${userpass}
+EOT
+    mkdir -p /home/"$username"/
+    userrechte
+}
+
+function copyconfig() {
+    cp -aRv /root/. /home/"$username"/
+    #links
+    links
+    userrechte
+}
+
+function userrechte() {
+    #user
+    chown -cR -v "$username":users /home/"$username"
+    chmod 750 -Rv /home/"$username"
+    #ssh
+    chmod 755 /home/"$username"/
+    if [ -d /home/"$username"/.ssh ]; then
+        chmod 700 /home/"$username"/.ssh
+    fi
+    if [ -f /home/"$username"/.ssh/id_rsa ]; then
+        chmod 600 /home/"$username"/.ssh/id_rsa
+    fi
+    if [ -f /home/"$username"/.ssh/authorized_keys ]; then
+        chmod 600 /home/"$username"/.ssh/authorized_keys
+    fi
+
+    #root
+    chmod 750 -Rv /root
+    #ssh-root
+    chmod 755 /root/
+    if [ -d /root/.ssh ]; then
+        chmod 700 /root/.ssh
+    fi
+    if [ -f /root/.ssh/id_rsa ]; then
+        chmod 600 /root/.ssh/id_rsa
+    fi
+    if [ -f /root/.ssh/authorized_key ]; then
+        chmod 600 /root/.ssh/authorized_keys
+    fi
+
+}
+
+function links() {
+    #
+    mkdir -p /home/"$username"/Schreibtisch/
+    if [ -f "/usr/share/applications/arch-install.desktop" ]; then
+        if [ -f "/home/"$username"/Schreibtisch/arch-install.desktop" ]; then
+            echo "datei existiert bereits!"
+        else
+            ln -s /usr/share/applications/arch-install.desktop /home/"$username"/Schreibtisch/arch-install.desktop
+        fi
+        #chmod +x /home/"$username"/Schreibtisch/arch-install.desktop
+    fi
+    #
+    mkdir -p /root/Schreibtisch/
+    if [ -f "/usr/share/applications/arch-install.desktop" ]; then
+        if [ -f "/root/Schreibtisch/arch-install.desktop" ]; then
+            echo "datei existiert bereits!"
+        else
+            ln -s /usr/share/applications/arch-install.desktop /root/Schreibtisch/arch-install.desktop
+        fi
+        #chmod +x /root/Schreibtisch/arch-install.desktop
+    fi
+    #
+    mkdir -p /home/"$username"/Desktop/
+    if [ -f "/usr/share/applications/arch-install.desktop" ]; then
+        if [ -f "/home/"$username"/Desktop/arch-install.desktop" ]; then
+            echo "datei existiert bereits!"
+        else
+            ln -s /usr/share/applications/arch-install.desktop /home/"$username"/Desktop/arch-install.desktop
+        fi
+        #chmod +x /home/"$username"/Desktop/arch-install.desktop
+    fi
+    #
+    mkdir -p /root/Desktop/
+    if [ -f "/usr/share/applications/arch-install.desktop" ]; then
+        if [ -f "/root/Desktop/arch-install.desktop" ]; then
+            echo "datei existiert bereits!"
+        else
+            ln -s /usr/share/applications/arch-install.desktop /root/Desktop/arch-install.desktop
+        fi
+        #chmod +x /root/Desktop/arch-install.desktop
+    fi
+}
+
+function gnomeconfig() {
+    mkdir -p /home/"$username"/.config/gtk-3.0/
+    echo "[Settings]" > /home/"$username"/.config/gtk-3.0/settings.ini
+    echo "gtk-theme-name = Adwaita" >> /home/"$username"/.config/gtk-3.0/settings.ini
+    echo "# next option is applicable only if selected theme supports it" >> /home/"$username"/.config/gtk-3.0/settings.ini
+    echo "gtk-application-prefer-dark-theme = true" >> /home/"$username"/.config/gtk-3.0/settings.ini
+    echo "# set font name and dimension" >> /home/"$username"/.config/gtk-3.0/settings.ini
+    echo "gtk-font-name = Sans 10" >> /home/"$username"/.config/gtk-3.0/settings.ini
+
+    mkdir -p /home/"$username"/.local/share/applications/
+    echo "[Default Applications]" > /home/"$username"/.local/share/applications/mimeapps.list
+    echo "inode/directory=org.gnome.Nautilus.desktop" >> /home/"$username"/.local/share/applications/mimeapps.list
+
+    mkdir -p /root/.config/gtk-3.0/
+    echo "[Settings]" > /root/.config/gtk-3.0/settings.ini
+    echo "gtk-theme-name = Adwaita" >> /root/.config/gtk-3.0/settings.ini
+    echo "# next option is applicable only if selected theme supports it" >> /root/.config/gtk-3.0/settings.ini
+    echo "gtk-application-prefer-dark-theme = true" >> /root/.config/gtk-3.0/settings.ini
+    echo "# set font name and dimension" >> /root/.config/gtk-3.0/settings.ini
+    echo "gtk-font-name = Sans 10" >> /root/.config/gtk-3.0/settings.ini
+
+    mkdir -p /root/.local/share/applications/
+    echo "[Default Applications]" > /root/.local/share/applications/mimeapps.list
+    echo "inode/directory=org.gnome.Nautilus.desktop" >> /root/.local/share/applications/mimeapps.list
+
+    gsettings set org.gnome.desktop.media-handling automount 'false'
+    gsettings set org.gnome.desktop.media-handling automount-open 'false'
+}
+
+
+
+
+
+
+
+#
+
+if [ "$1" == "adduser" ]
+then
+    username=$2
+    userpass=$3
+    adduser
+    exit 0
+fi
+
+if cat /etc/passwd | grep ${username} > /dev/null; then
+    echo "${username} existiert bereits!!!"
+else
+    adduser
+fi
+
+if [ "$erstellen" == "exit" ]
+then
+    exit 0
+fi
+
+# sudoers/wheel
+
+echo "Lege $SUDOERS neu an!!!"
+
+echo "root ALL=(ALL) NOPASSWD: ALL" > $SUDOERS
+
+echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> $SUDOERS
+
+gitclone
+
+# Your commands
+
+# modprobe.d
+mkdir -p /etc/modprobe.d/
+echo "blacklist floppy" > /etc/modprobe.d/blacklist-floppy.conf
+
+# startup
+cp /root/${repo}/startup /usr/bin/
+chmod 755 /usr/bin/startup
+cp /root/${repo}/startup.service /etc/systemd/system/
+chmod 644 /etc/systemd/system/startup.service
+systemctl enable startup.service
+
+# pacman-config
+if [ "${version}" == "libre" ]; then
+    cp /root/${repo}/pacman.conf_libre /etc/pacman.conf
+else
+    cp /root/${repo}/pacman.conf /etc/pacman.conf
+fi
+
+# new-config
+if [ -d /home/"$username"/.config ]; then
+    rm -Rv /home/"$username"/.config
+fi
+
+if [ -d /root/.config ]; then
+    rm -Rv /root/.config
+fi
+
+# mirrorlist
+cp /root/${repo}/mirrorlist_libre /etc/pacman.d/mirrorlist_libre
+cp /root/${repo}/mirrorlist /etc/pacman.d/mirrorlist
+
+if [ -f /var/lib/pacman/db.lck ];then
+    rm /var/lib/pacman/db.lck
+fi
+
+if [ "$vollinstallation" != "n" ]
+then
+    check
+    if [ "$vollinstallation" != "debug" ]; then
+        standartinstallation
+    fi
+    checkend
+fi
+
+if [ "${version}" != "libre" ]; then
+    if [ "$yaourt" != "n" ]
+    then
+        if [ "$yaourt" != "debug" ]; then
+            cd /home/"$username"/
+            pwd
+            su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz"
+            pwd
+            su "$username" -c "tar -xvzf package-query.tar.gz"
+            pwd
+            cd package-query
+            pwd
+            su "$username" -c "makepkg -si" <<EOT
+
+
+EOT
+            pwd
+            cd ..
+            pwd
+            su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz"
+            pwd
+            su "$username" -c "tar -xvzf yaourt.tar.gz"
+            pwd
+            cd yaourt
+            pwd
+            su "$username" -c "makepkg -si" <<EOT
+
+
+EOT
+            pwd
+            cd ..
+            pwd
+            su "$username" -c "mkdir -p /home/"$username"/aur-pakete"
+            pwd
+        fi
+        yaourtinstall pamac-aur
+    fi
+fi
+
+
+echo "Packetliste2 Ende"
+echo "Beginne mit dem Konfigurieren des Systems :D"
+# set desktop
+echo "set desktop"
+#
+cp /root/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
+#
+echo "Systemsprache und dienste werden erstellt!"
+
+mkdir -p /etc/X11/xorg.conf.d/
+# localectl set-x11-keymap de pc105 nodeadkeys
+echo "Section \"InputClass\"" > /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Identifier \"Keyboard0\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        MatchIsKeyboard \"yes\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Option \"XkbLayout\" \"de\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Option \"XkbModel\" \"pc105\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "        Option \"XkbVariant\" \"nodeadkeys\"" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+echo "EndSection" >> /etc/X11/xorg.conf.d/20-keyboard.conf
+
+#xset m 2/1 0
+echo "Section \"InputClass\"" > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "  Identifier \"Mouse0\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	MatchIsPointer \"yes\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "# set the following to 1 1 0 respectively to disable acceleration." >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Option \"AccelerationNumerator\" \"2\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Option \"AccelerationDenominator\" \"1\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "	Option \"AccelerationThreshold\" \"4\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+echo "EndSection" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+
+# set system startup files
+echo "System startup files"
+
+start=getty
+
+if [ "$start" == "getty" ]
+then
+
+    echo "if [ \$(tty) = "/dev/tty1" ]; then" > /root/.bash_profile
+    echo "startx" >> /root/.bash_profile
+    echo "fi" >> /root/.bash_profile
+    #
+    echo "if [ \$(tty) = "/dev/tty1" ]; then" > /home/"$username"/.bash_profile
+    echo "startx" >> /home/"$username"/.bash_profile
+    echo "fi" >> /home/"$username"/.bash_profile
+    #
+
+    start=${username}
+    if [ "$start" == "root" ]
+    then
+        mkdir -p /etc/systemd/system/getty\@tty1.service.d
+        echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        echo "ExecStart=-/sbin/agetty --noclear -a root %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        systemctl enable getty@tty1
+    else
+        mkdir -p /etc/systemd/system/getty\@tty1.service.d
+        echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        echo "ExecStart=-/sbin/agetty --noclear -a "$username" %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        systemctl enable getty@tty1
+    fi
+
+elif [ "$start" == "xdm" ]
+then
+    systemctl enable xdm
+elif [ "$start" == "lightdm" ]
+then
+    systemctl enable lightdm.service
+elif [ "$start" == "exit" ]
+then
+    exit 0
+else
+    echo "Kein Start gewählt!!!"
+fi
+
+if [ "${vollinstallation}" != "n" ]; then
+    systemctl enable acpid
+    systemctl enable ntpd
+    systemctl enable avahi-daemon
+    systemctl enable org.cups.cupsd.service
+    systemctl enable sshd
+    systemctl enable cronie
+    systemctl enable systemd-timesyncd.service
+    echo "Bitte OpenVPN config in die /etc/openvpn/client/client.conf kopieren!!!"
+    if [ -f /lib/systemd/system/openvpn-client@client.service ]; then
+        echo "link vorhanden!"
+    else
+        ln /lib/systemd/system/openvpn-client@.service /lib/systemd/system/openvpn-client@client.service
+    fi
+    #Bei ausdokumentierung wird eine/die VPN automatisch aus der /etc/openvpn/client/client.conf gestartet!!!
+    #systemctl enable openvpn-client@client.service
+    systemctl enable fail2ban
+    systemctl disable dhcpcd
+    systemctl enable NetworkManager.service
+fi
+
+# set systemconfiguration
+echo "systemconfiguration"
+#
+echo "LANG=de_DE.UTF-8" > /etc/locale.conf
+echo "LC_COLLATE=C" >> /etc/locale.conf
+echo "LANGUAGE=de_DE" >> /etc/locale.conf
+#
+echo "KEYMAP=de-latin1" > /etc/vconsole.conf
+echo "FONT=lat9w-16" >> /etc/vconsole.conf
+#
+echo "de_DE.UTF-8 UTF-8" > /etc/locale.gen
+echo "de_DE ISO-8859-1" >> /etc/locale.gen
+echo "de_DE@euro ISO-8859-15" >> /etc/locale.gen
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+#
+locale-gen
+#
+rm /etc/localtime
+ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+
+
+
+# custom-bereich vollinstallation
+
+if [ "${vollinstallation}" != "n" ]; then
+
+    # custom-installer
+
+    # pip install beautysh
+    if [ -d /opt/beautysh ];then
+        echo "Bereits vorhanden!!!"
+    else
+        git clone https://github.com/bemeurer/beautysh /opt/beautysh
+    fi
+    cd /opt/beautysh
+    python ./setup.py install
+    if [ -f /usr/bin/beautysh ]; then
+        echo "Bereits vorhanden!!!"
+    else
+        ln -s /opt/beautysh/beautysh/beautysh.py /usr/bin/beautysh
+    fi
+    chmod +x /usr/bin/beautysh
+    cd /
+
+    pip install powerline-shell
+
+    # powerline-shell-fonts
+    if [ -d /opt/powerline-shell-fonts ];then
+        echo "Bereits vorhanden!!!"
+    else
+        git clone https://github.com/powerline/fonts.git /opt/powerline-shell-fonts
+    fi
+    cd /opt/powerline-shell-fonts
+    ./install.sh
+    cd /
+
+    # uncrustify
+    if [ -d /opt/uncrustify ];then
+        echo "Bereits vorhanden!!!"
+    else
+        git clone https://github.com/uncrustify/uncrustify.git /opt/uncrustify
+    fi
+    cd /opt/uncrustify
+    mkdir -p build
+    cd build
+    cmake ..
+    cmake --build .
+    if [ -f /usr/bin/uncrustify ]; then
+        echo "Bereits vorhanden!!!"
+    else
+        ln -s /opt/uncrustify/build/uncrustify /usr/bin/uncrustify
+    fi
+    chmod +x /usr/bin/uncrustify
+    cd /
+
+    # iso_name
+    if [ "${version}" == "libre" ]; then
+        echo "${repo}-libre" > /etc/hostname
+    else
+        echo ${repo} > /etc/hostname
+    fi
+
+    # uefi-boot
+    cp /root/${repo1}/uefi-boot.sh /usr/bin/uefi-boot
+    chmod 755 /usr/bin/uefi-boot
+
+    # write-partitions manager
+    cp /root/${repo}/write_cowspace /usr/bin/write_cowspace
+    chmod 755 /usr/bin/write_cowspace
+
+    # installer-/usr/bin/
+    if [ "${version}" == "libre" ]; then
+        sed "s|%VERSION%|-libre|g;" /root/${repo}/arch-install > /usr/bin/arch-install
+    else
+        sed "s|%VERSION%||g;" /root/${repo}/arch-install > /usr/bin/arch-install
+    fi
+    chmod 755 /usr/bin/arch-install
+
+    # installer
+    mkdir -p /usr/share/applications/
+    cp /root/${repo}/arch-install.desktop /usr/share/applications/
+    chmod 755 /usr/share/applications/arch-install.desktop
+
+    # install-picture
+    mkdir -p /usr/share/pixmaps/
+    cp /root/${repo}/install.png /usr/share/pixmaps/
+
+    # background
+    mkdir -p /usr/share/backgrounds/xfce/
+    cp /root/${repo}/background.jpg /usr/share/backgrounds/xfce/
+    chmod 644 /usr/share/backgrounds/xfce/background.jpg
+
+    # bash.bashrc
+    sed "s|%OS_NAME%|${repo}|g;" /root/${repo}/bash.bashrc > /etc/bash.bashrc
+    cp /root/${repo}/.bashrc /root/
+
+    # btrfs-swapfile
+    cp /root/${repo}/btrfs-swapon.service /etc/systemd/system/
+    cp /root/${repo}/btrfs-swapon /usr/bin/
+    chmod 755 /usr/bin/btrfs-swapon
+    cp /root/${repo}/btrfs-swapoff /usr/bin/
+    chmod 755 /usr/bin/btrfs-swapoff
+
+    # compress-script
+    cp /root/${repo}/compress.sh /usr/bin/compress
+    chmod 755 /usr/bin/compress
+
+    # ssh
+    cp /root/${repo}/sshd_config /etc/ssh/sshd_config
+
+    # .Xmodmap
+    cp /root/${repo}/.Xmodmap /root/
+
+    # packages
+    cp /root/${repo}/packages* /etc/
+
+    # snapshot.sh
+    cp /root/${repo}/snapshot.sh /usr/bin/snapshot
+    chmod 755 /usr/bin/snapshot
+
+    # ip_forward
+    mkdir -p /proc/sys/net/ipv4/
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+
+    # .config
+    tar -vxJf /root/${repo}/.config.tar.xz -C /root/
+    gnomeconfig
+
+    # .xscreensaver
+    cp /root/${repo}/.xscreensaver /root/
+
+    # hosts
+    cp /root/${repo}/hosts /etc/
+
+    # santana
+    mkdir -p /usr/share/fonts/TTF/
+    tar -vxJf /root/${repo}/santana.tar.xz -C /usr/share/fonts/TTF/
+
+    # update-script
+    cp /root/${repo}/update.sh /usr/bin/update-script
+    chmod 755 /usr/bin/update-script
+
+    # Verzeichnise
+    mkdir -p /root/Downloads
+    mkdir -p /root/Dokumente
+    mkdir -p /root/Bilder
+    mkdir -p /root/Musik
+    mkdir -p /root/Videos
+
+    # adduser.sh
+    cp /root/${repo}/adduser.sh /usr/bin/adduser
+    chmod 755 /usr/bin/adduser
+
+fi
+
+
+
+# custom-bereich standart
+
+# nano
+
+echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
+
+# htop
+
+echo "fields=0 48 17 18 38 39 40 2 46 47 49 1
+sort_key=46
+sort_direction=-1
+hide_threads=0
+hide_kernel_threads=1
+hide_userland_threads=0
+shadow_other_users=0
+highlight_base_name=1
+highlight_megabytes=1
+highlight_threads=1
+tree_view=1
+header_margin=1
+detailed_cpu_time=1
+color_scheme=0
+delay=15
+left_meters=AllCPUs Memory Swap
+left_meter_modes=1 1 1
+right_meters=Tasks LoadAverage Uptime
+right_meter_modes=2 2 2 " > /root/.htoprc
+
+# ssh
+
+mkdir -p /root/.ssh
+echo "ServerAliveInterval 120" > ~/.ssh/config
+echo "ServerAliveCountMax 15" >> ~/.ssh/config
+
+# Install rc.local
+echo "[Unit]
+Description=/etc/rc.local compatibility
+
+[Service]
+Type=oneshot
+ExecStart=/etc/rc.local
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target" > /etc/systemd/system/rc-local.service
+touch /etc/rc.local
+chmod +x /etc/rc.local
+systemctl enable rc-local.service
+if ! grep '#!' $RCLOCAL; then
+    echo "#!/bin/bash" > $RCLOCAL
+fi
+
+
+
+
+echo "Bei bedarf pacman -Sc oder -Scc eingeben um [nicht mehr benötigte]/[alle] unnötige packete zu entfernen!!!"
+
+#
+#systemctl start ntpd
+#ntpd -gq
+#date
+#hwclock -w
+#
+
+#rm -Rv /root/${repo} /root/${repo1}
+
+pacman -Syu --needed --noconfirm
+
+copyconfig
+
+ldconfigcache
+
+if [ "${version}" == "libre" ]; then
+    mkinitcpio -p linux-libre
+else
+    mkinitcpio -p linux
+fi
+
+echo "Fertig!!!"
+
+exit 0

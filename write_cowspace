@@ -1,0 +1,77 @@
+#!/bin/bash
+
+set -ex
+
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root" 1>&2
+    exit 1
+fi
+# Satz="Hallo du schöne Welt"
+# echo "${Satz:0:5} ${Satz:16}"
+
+#system=$(blkid -L SIMON_OS)
+#echo $system
+
+#/dev/sdd
+#system1=$(echo "${system:0:8}")
+#echo $system1
+
+fdisk -l
+
+function secureumount() {
+    #statements
+    #
+    if cat /proc/mounts | grep ${device}1 > /dev/null; then
+        echo "gemountet"
+        umount ${device}1
+    else
+        echo "nicht gemountet"
+    fi
+    #
+    if cat /proc/mounts | grep ${device}2 > /dev/null; then
+        echo "gemountet"
+        umount ${device}2
+    else
+        echo "nicht gemountet"
+    fi
+    #
+    if cat /proc/mounts | grep ${device}3 > /dev/null; then
+        echo "gemountet"
+        umount ${device}3
+    else
+        echo "nicht gemountet"
+    fi
+    #
+}
+
+read -p "Soll das Image jetzt eine Partition zum Offline-Schreiben erhalten? [Y/n] " partition
+if [ "$partition" != "n" ]
+then
+    if [ "$device" == "" ]
+    then
+        fdisk -l
+        read -p "Wo das Image jetzt geschrieben werden? /dev/sda " device
+        [[ -z "${device}" ]] && device=/dev/sda
+    fi
+
+    secureumount
+
+    fdisk -W always ${device} <<EOT
+p
+n
+
+
+
+
+p
+w
+y
+EOT
+
+    sleep 1
+
+    echo "mit j bestätigen"
+    mkfs.btrfs -f -L cow_device ${device}3
+
+    sync
+

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -ex
+
+if [[ "--help" == "${1}" ]]; then
+echo "bash ./sgit user.email commit"
+fi
+
+if [[ -z "${2}" ]]; then
+echo "Bitte email und commit angeben!!!"
+exit 1
+fi
+
+push="${3}"
+[[ -z "${push}" ]] && push="origin"
+
+git config --global core.editor "nano"
+git config --global user.email "${1}"
+git config --global user.name "${1}"
+git config --global push.default simple
+git status
+git add --all
+git commit --all -m "${2}"
+git pull
+git show
+git push "${push}"
+git status

@@ -1,0 +1,10 @@
+[Unit]
+Description=btrfs-swapon
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/btrfs-swapon %swapfilespeicher% /btrfs.swap
+
+[Install]
+WantedBy=multi-user.target

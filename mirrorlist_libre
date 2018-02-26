@@ -1,0 +1,54 @@
+# Parabola GNU/Linux-libre - Last Updated: Wed Dec 20 02:59:35 GMT 2017
+
+# Location: London, UK
+# Responsible: Parabola Project
+# Note: Not really a mirror, automatically redirects you to an Arch
+#       mirror when possible. Works best specifying it a few times in a
+#       row (404s workaround).
+# Server = http://redirector.parabola.nu/$repo/os/$arch
+#Server = https://redirector.parabola.nu/$repo/os/$arch
+
+# Location: Reykjavík, Iceland
+# Responsible: Parabola Project
+# Note: Not really a mirror, automatically redirects you to a Parabola
+#       mirror that has the file you are looking for.
+# Server = http://repomirror.parabola.nu/$repo/os/$arch
+#Server = https://repomirror.parabola.nu/$repo/os/$arch
+
+# Location: Falkenstein, Germany
+# Server = http://mirror.grapentin.org/parabola/$repo/os/$arch
+Server = https://mirror.grapentin.org/parabola/$repo/os/$arch
+
+# Location: Volendam, Netherlands
+Server = https://jeweet.net/repo/parabola/$repo/os/$arch
+
+# Location: Amsterdam, Netherlands
+# Note: Not really a mirror, but a high-speed 10GiB cache for
+#       mirror.yandex.ru/mirrors/parabola
+# Server = http://parabola.isacdaavid.info:8080/$repo/os/$arch
+Server = https://parabola.isacdaavid.info:8081/$repo/os/$arch
+
+# Location: Moscow, Russian Federation
+# Server = http://mirror.yandex.ru/mirrors/parabola/$repo/os/$arch
+Server = https://mirror.yandex.ru/mirrors/parabola/$repo/os/$arch
+
+# Location: Ho Chi Minh City, Vietnam
+# Server = http://mirror.freedif.org/Parabola/$repo/os/$arch
+Server = https://mirror.freedif.org/Parabola/$repo/os/$arch
+
+# Location: Los Angeles, CA, USA
+# Note: Also visit http://alfplayer.com/ for its SNAPSHOTS ARCHIVE
+Server = http://alfplayer.com/parabola/$repo/os/$arch
+
+# Location: Boston, MA, USA
+Server = http://mirror.fsf.org/parabola/$repo/os/$arch
+
+# Location: Austin, TX, USA
+# Server = http://parabola.serverpit.com/
+Server = https://parabola.serverpit.com/
+
+# Location: Reykjavík, Iceland
+# Responsible: Parabola Project
+# Note: Currently pointing to repomirror.parabola.nu
+# Server = http://repo.parabola.nu/$repo/os/$arch
+Server = https://repo.parabola.nu/$repo/os/$arch

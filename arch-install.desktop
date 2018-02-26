@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Icon=/usr/share/pixmaps/install.png
+Name[de]=Betriebssystem installieren
+Name[en]=Install the operating system
+Exec=sudo /usr/bin/arch-install
+Terminal=true
+Categories=ConsoleOnly;System;
+StartupNotify=false
+Comment=
+Path=

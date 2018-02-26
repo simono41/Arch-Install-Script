@@ -1,0 +1,69 @@
+#!/bin/bash
+
+echo "Start!!!"
+
+date >> /startup.txt
+
+if [ -f /usr/bin/run ]
+then
+    chmod +x /usr/bin/run
+    /usr/bin/run
+    rm /usr/bin/run
+fi
+
+# Disable IPv6
+#echo 0 > /proc/sys/net/ipv6/conf/wlan0/accept_ra
+#echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
+
+# tunneling
+#echo 1 > /proc/sys/net/ipv4/ip_forward
+
+if cat /proc/cmdline | grep "nvidia=y"; then
+
+  echo ":: nvidia driver loaded"
+
+  mkdir -p -m 755 /etc/X11/xorg.conf.d/
+
+  echo "Section \"Device\"" > /etc/X11/xorg.conf
+  echo "    Identifier     \"Device0\"" >> /etc/X11/xorg.conf
+  echo "    Driver         \"nvidia\"" >> /etc/X11/xorg.conf
+  echo "    VendorName     \"NVIDIA Corporation\"" >> /etc/X11/xorg.conf
+  echo "EndSection" >> /etc/X11/xorg.conf
+
+fi
+
+echo ":: set graphical-desktop!"
+mkdir -p -m 755 "/etc/X11/xinit"
+if cat /proc/cmdline | grep "desktop=gnome"; then
+  echo "exec gnome-session" > /etc/X11/xinit/xinitrc
+
+elif cat /proc/cmdline | grep "desktop=gnomeflash"; then
+  echo "export XDG_CURRENT_DESKTOP=GNOME-Flashback:GNOME" > /etc/X11/xinit/xinitrc
+  echo "exec gnome-session --session=gnome-flashback-metacity" >> /etc/X11/xinit/xinitrc
+
+elif cat /proc/cmdline | grep "desktop=gnomeclassic"; then
+  echo "export XDG_CURRENT_DESKTOP=GNOME-Classic:GNOME" > /etc/X11/xinit/xinitrc
+  echo "export GNOME_SHELL_SESSION_MODE=classic" >> /etc/X11/xinit/xinitrc
+  echo "exec gnome-session --session=gnome-classic" >> /etc/X11/xinit/xinitrc
+
+elif cat /proc/cmdline | grep "desktop=cinnamon"; then
+  echo "exec cinnamon-session" > /etc/X11/xinit/xinitrc
+
+elif cat /proc/cmdline | grep "desktop=mate"; then
+  echo "exec mate-session" > /etc/X11/xinit/xinitrc
+
+elif cat /proc/cmdline | grep "desktop=lxde"; then
+  echo "exec startlxde" > /etc/X11/xinit/xinitrc
+
+elif cat /proc/cmdline | grep "desktop=lxqt"; then
+  echo "exec startlxqt" > /etc/X11/xinit/xinitrc
+
+elif cat /proc/cmdline | grep "desktop=xfce4"; then
+  echo "exec startxfce4" > /etc/X11/xinit/xinitrc
+
+elif cat /proc/cmdline | grep "desktop=kde"; then
+  echo "exec startkde" > /etc/X11/xinit/xinitrc
+
+else
+  echo ":: default graphical-desktop"
+fi

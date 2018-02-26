@@ -566,8 +566,11 @@ if [ "${vollinstallation}" != "n" ]; then
     mkdir -p /proc/sys/net/ipv4/
     echo 1 > /proc/sys/net/ipv4/ip_forward
 
+    # .Conky
+    tar -vxJf /root/${repo}/.Conky.tar.xz -C /opt/
+    chmod 755 -Rv /opt/.Conky/
+
     # .config
-    tar -vxJf /root/${repo}/.Conky.tar.xz -C /root/
     tar -vxJf /root/${repo}/.config.tar.xz -C /root/
     gnomeconfig
 

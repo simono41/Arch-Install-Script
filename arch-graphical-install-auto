@@ -533,10 +533,8 @@ if [ "${vollinstallation}" != "n" ]; then
 
     # background
     mkdir -p /usr/share/backgrounds/xfce/
-    cp /root/${repo}/background.jpg /usr/share/backgrounds/xfce/
-    chmod 644 /usr/share/backgrounds/xfce/background.jpg
-    cp /root/${repo}/wallpaper.jpg /usr/share/backgrounds/xfce/
-    chmod 644 /usr/share/backgrounds/xfce/wallpaper.jpg
+    cp /root/${repo}/*.jpg /usr/share/backgrounds/xfce/
+    chmod 644 /usr/share/backgrounds/xfce/*
 
     # bash.bashrc
     sed "s|%OS_NAME%|${repo}|g;" /root/${repo}/bash.bashrc > /etc/bash.bashrc

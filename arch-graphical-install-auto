@@ -322,6 +322,8 @@ EOT
         yaourtinstall firefox-ublock-origin
         yaourtinstall firefox-umatrix
         yaourtinstall zramswap
+        systemctl enable zramswap.service
+
     fi
 fi
 
@@ -571,6 +573,7 @@ if [ "${vollinstallation}" != "n" ]; then
     # .Conky
     tar -vxJf /root/${repo}/.Conky.tar.xz -C /opt/
     chmod 755 -Rv /opt/.Conky/
+    touch /root/notes.txt
 
     # .config
     tar -vxJf /root/${repo}/.config.tar.xz -C /root/

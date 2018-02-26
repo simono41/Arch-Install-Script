@@ -85,9 +85,9 @@ function filesystem() {
                         sleep 5
                         rm -Rv ${work_dir}
                     fi
+                    mkdir -p ${work_dir}/${arch}/airootfs
+                    minimalinstallation
                 fi
-                mkdir -p ${work_dir}/${arch}/airootfs
-                minimalinstallation
             fi
 
         fi

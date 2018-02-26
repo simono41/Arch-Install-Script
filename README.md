@@ -1,6 +1,6 @@
 # DOWNLOAD-LINK
 
-URL : http://137.74.140.105:81/
+URL : https://c.1und1.de/@546352221680304673/RNoFs7J8Rxqvse4P_XNESg
 
 # Spectre-OS
 
@@ -15,7 +15,7 @@ Der wichtigste Teil eines Betriebssystems ist der Kernel. Der Kernel ist das Pro
 # WICHTIG BEFEHLE
 
 ZUGANGSDATEN : root = root
-               user = user
+               user1 = user1
                
 Installieren auf Festplatte: "arch-install" in einem Terminal eingeben
 
@@ -51,7 +51,7 @@ qemu-system-x86_64 -enable-kvm -cdrom out/arch-*.iso -boot d -m 8092
 
 oder
 
-sudo qemu-system-x86_64 -enable-kvm -cdrom out/arch-spectre-os-17.08.10-x86_64.iso -hdb /dev/sdd -boot d -m 2048M
+sudo qemu-system-x86_64 -enable-kvm -cdrom out/arch-*.iso -hdb /dev/sdd -boot d -m 2048M
 
 qemu-system-x86_64 -enable-kvm -hdb /dev/sdd -m 8092
 
@@ -65,19 +65,11 @@ qemu-system-x86_64 -enable-kvm -hda arch.img -m 8092
 
 # Zugriff über VNC 5901
 
-sudo qemu-system-x86_64 -enable-kvm -cdrom out/arch-spectre-os-17.11.02-x86_64.iso -hda arch.img -boot d -m 4G -vnc :1
-
-# Für eine Costum-Image für Arch-Linux
-
-wget https://raw.githubusercontent.com/simono41/Simon-OS/master/make_mksquashfs.sh
-
-chmod +x make_mksquashfs.sh
-
-./make_mksquashfs.sh
+sudo qemu-system-x86_64 -enable-kvm -cdrom out/arch-*.iso -hda arch.img -boot d -m 4G -vnc :1
 
 # rsync
 
-rsync -P -e ssh arch-simon-os-17.05.06-x86_64.iso masters4k@frs.sourceforge.net:/home/frs/project/simon-os/
+rsync -P -e ssh out/arch-*.iso masters4k@frs.sourceforge.net:/home/frs/project/SpectreOS/
 
 # Für eine SSH-VPN verbindung
 

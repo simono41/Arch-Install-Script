@@ -319,7 +319,9 @@ EOT
         yaourtinstall conky-lua-nv
         yaourtinstall vibrancy-colors
         yaourtinstall spotify
-
+        yaourtinstall firefox-ublock-origin
+        yaourtinstall firefox-umatrix
+        yaourtinstall zramswap
     fi
 fi
 

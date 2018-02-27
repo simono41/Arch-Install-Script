@@ -27,7 +27,7 @@ userpass="$3"
 [[ -z "${userpass}" ]] && userpass="user1"
 
 function gitclone() {
-    cd /root/
+    cd /opt/
     if [ -d "${repo}" ]; then
         echo "${repo} existiert bereits!!!"
         rm -Rv ${repo}
@@ -235,17 +235,17 @@ mkdir -p /etc/modprobe.d/
 echo "blacklist floppy" > /etc/modprobe.d/blacklist-floppy.conf
 
 # startup
-cp /root/${repo}/startup /usr/bin/
+cp /opt/${repo}/startup /usr/bin/
 chmod 755 /usr/bin/startup
-cp /root/${repo}/startup.service /etc/systemd/system/
+cp /opt/${repo}/startup.service /etc/systemd/system/
 chmod 644 /etc/systemd/system/startup.service
 systemctl enable startup.service
 
 # pacman-config
 if [ "${version}" == "libre" ]; then
-    cp /root/${repo}/pacman.conf_libre /etc/pacman.conf
+    cp /opt/${repo}/pacman.conf_libre /etc/pacman.conf
 else
-    cp /root/${repo}/pacman.conf /etc/pacman.conf
+    cp /opt/${repo}/pacman.conf /etc/pacman.conf
 fi
 
 # new-config
@@ -258,8 +258,8 @@ if [ -d /root/.config ]; then
 fi
 
 # mirrorlist
-cp /root/${repo}/mirrorlist_libre /etc/pacman.d/mirrorlist_libre
-cp /root/${repo}/mirrorlist /etc/pacman.d/mirrorlist
+cp /opt/${repo}/mirrorlist_libre /etc/pacman.d/mirrorlist_libre
+cp /opt/${repo}/mirrorlist /etc/pacman.d/mirrorlist
 
 if [ -f /var/lib/pacman/db.lck ];then
     rm /var/lib/pacman/db.lck
@@ -327,7 +327,7 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 # set desktop
 echo "set desktop"
 #
-cp /root/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
+cp /opt/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
 #
 echo "Systemsprache und dienste werden erstellt!"
 
@@ -501,11 +501,11 @@ if [ "${vollinstallation}" != "n" ]; then
     fi
 
     # uefi-boot
-    cp /root/${repo1}/uefi-boot.sh /usr/bin/uefi-boot
+    cp /opt/${repo1}/uefi-boot.sh /usr/bin/uefi-boot
     chmod 755 /usr/bin/uefi-boot
 
     # write-partitions manager
-    cp /root/${repo}/write_cowspace /usr/bin/write_cowspace
+    cp /opt/${repo}/write_cowspace /usr/bin/write_cowspace
     chmod 755 /usr/bin/write_cowspace
 
     # installer-/usr/bin/
@@ -518,44 +518,44 @@ if [ "${vollinstallation}" != "n" ]; then
 
     # installer
     mkdir -p /usr/share/applications/
-    cp /root/${repo}/arch-install.desktop /usr/share/applications/
+    cp /opt/${repo}/arch-install.desktop /usr/share/applications/
     chmod 755 /usr/share/applications/arch-install.desktop
 
     # install-picture
     mkdir -p /usr/share/pixmaps/
-    cp /root/${repo}/install.png /usr/share/pixmaps/
+    cp /opt/${repo}/install.png /usr/share/pixmaps/
 
     # background
     mkdir -p /usr/share/backgrounds/xfce/
-    cp /root/${repo}/*.jpg /usr/share/backgrounds/xfce/
+    cp /opt/${repo}/*.jpg /usr/share/backgrounds/xfce/
     chmod 755 -Rv /usr/share/backgrounds/xfce/
 
     # bash.bashrc
-    sed "s|%OS_NAME%|${repo}|g;" /root/${repo}/bash.bashrc > /etc/bash.bashrc
-    cp /root/${repo}/.bashrc /root/
+    sed "s|%OS_NAME%|${repo}|g;" /opt/${repo}/bash.bashrc > /etc/bash.bashrc
+    cp /opt/${repo}/.bashrc /root/
 
     # btrfs-swapfile
-    cp /root/${repo}/btrfs-swapon.service /etc/systemd/system/
-    cp /root/${repo}/btrfs-swapon /usr/bin/
+    cp /opt/${repo}/btrfs-swapon.service /etc/systemd/system/
+    cp /opt/${repo}/btrfs-swapon /usr/bin/
     chmod 755 /usr/bin/btrfs-swapon
-    cp /root/${repo}/btrfs-swapoff /usr/bin/
+    cp /opt/${repo}/btrfs-swapoff /usr/bin/
     chmod 755 /usr/bin/btrfs-swapoff
 
     # compress-script
-    cp /root/${repo}/compress.sh /usr/bin/compress
+    cp /opt/${repo}/compress.sh /usr/bin/compress
     chmod 755 /usr/bin/compress
 
     # ssh
-    cp /root/${repo}/sshd_config /etc/ssh/sshd_config
+    cp /opt/${repo}/sshd_config /etc/ssh/sshd_config
 
     # .Xmodmap
-    cp /root/${repo}/.Xmodmap /root/
+    cp /opt/${repo}/.Xmodmap /root/
 
     # packages
-    cp /root/${repo}/packages* /etc/
+    cp /opt/${repo}/packages* /etc/
 
     # snapshot.sh
-    cp /root/${repo}/snapshot.sh /usr/bin/snapshot
+    cp /opt/${repo}/snapshot.sh /usr/bin/snapshot
     chmod 755 /usr/bin/snapshot
 
     # ip_forward
@@ -563,26 +563,26 @@ if [ "${vollinstallation}" != "n" ]; then
     echo 1 > /proc/sys/net/ipv4/ip_forward
 
     # .Conky
-    tar -vxJf /root/${repo}/.Conky.tar.xz -C /opt/
+    tar -vxJf /opt/${repo}/.Conky.tar.xz -C /opt/
     chmod 755 -Rv /opt/.Conky/
     touch /root/notes.txt
 
     # .config
-    tar -vxJf /root/${repo}/.config.tar.xz -C /root/
+    tar -vxJf /opt/${repo}/.config.tar.xz -C /root/
     gnomeconfig
 
     # .xscreensaver
-    cp /root/${repo}/.xscreensaver /root/
+    cp /opt/${repo}/.xscreensaver /root/
 
     # hosts
-    cp /root/${repo}/hosts /etc/
+    cp /opt/${repo}/hosts /etc/
 
     # santana
     mkdir -p /usr/share/fonts/TTF/
-    tar -vxJf /root/${repo}/santana.tar.xz -C /usr/share/fonts/TTF/
+    tar -vxJf /opt/${repo}/santana.tar.xz -C /usr/share/fonts/TTF/
 
     # update-script
-    cp /root/${repo}/update.sh /usr/bin/update-script
+    cp /opt/${repo}/update.sh /usr/bin/update-script
     chmod 755 /usr/bin/update-script
 
     # Verzeichnise
@@ -593,7 +593,7 @@ if [ "${vollinstallation}" != "n" ]; then
     mkdir -p /root/Videos
 
     # adduser.sh
-    cp /root/${repo}/adduser.sh /usr/bin/adduser
+    cp /opt/${repo}/adduser.sh /usr/bin/adduser
     chmod 755 /usr/bin/adduser
 
 fi

@@ -2,7 +2,7 @@
 #
 set -ex
 
-echo "Version : Fr 22. Dez 00:00:41 CET 2017"
+echo "Version : DI 27. Feb 22:52:41 CET 2017"
 
 WEBADDRESS="https://github.com/simono41/SpectreOS.git"
 repo="SpectreOS"
@@ -30,12 +30,12 @@ function minimalinstallation() {
     while read line
     do
         pacstrap -c -d -G -M ${mountpoint} $line
-    done < /root/${repo}/base.txt
+    done < /opt/${repo}/base.txt
 
 }
 
 function gitclone() {
-    cd /root/
+    cd /opt/
     if [ -d "${repo}" ]; then
         echo "${repo} existiert bereits!!!"
         rm -Rv ${repo}
@@ -117,8 +117,8 @@ function usbkeyinstallation() {
 
 function usbsecret() {
 
-    cp /root/${repo}/install/usbsecret  ${mountpoint}/usr/lib/initcpio/install/usbsecret
-    cp /root/${repo}/hooks/usbsecret  ${mountpoint}/root/usbsecret
+    cp /opt/${repo}/install/usbsecret  ${mountpoint}/usr/lib/initcpio/install/usbsecret
+    cp /opt/${repo}/hooks/usbsecret  ${mountpoint}/root/usbsecret
 
     # hooks
     #cp install/usbsecret ${mountpoint}/usr/lib/initcpio/install/usbsecret
@@ -133,7 +133,7 @@ function cron() {
     mkdir -p ${mountpoint}/var/spool/cron/
     echo "0 18 * * * /usr/bin/snapshot make ROOT home opt var/cache/pacman/pkg ${mountsnaps}" > ${mountpoint}/var/spool/cron/root
     if [ "${update}" != "n" ]; then
-        cp /root/${repo}/snapshot.sh ${mountpoint}/usr/bin/snapshot
+        cp /opt/${repo}/snapshot.sh ${mountpoint}/usr/bin/snapshot
         chmod 755 ${mountpoint}/usr/bin/snapshot
     fi
 }
@@ -148,9 +148,9 @@ function makeswapfile() {
 
 function makebtrfsswapfile() {
 
-    /root/${repo}/btrfs-swapon ${mountpoint}/usr/bin/btrfs-swapon
-    /root/${repo}/btrfs-swapoff ${mountpoint}/usr/bin/btrfs-swapoff
-    /root/${repo}/btrfs-swapon.service ${mountpoint}/root/btrfs-swapon.service
+    /opt/${repo}/btrfs-swapon ${mountpoint}/usr/bin/btrfs-swapon
+    /opt/${repo}/btrfs-swapoff ${mountpoint}/usr/bin/btrfs-swapoff
+    /opt/${repo}/btrfs-swapon.service ${mountpoint}/root/btrfs-swapon.service
 
     chmod +x ${mountpoint}/usr/bin/btrfs-swapon
     chmod +x ${mountpoint}/usr/bin/btrfs-swapoff
@@ -895,7 +895,7 @@ then
                 else
                     echo "Git is not installet"
                 fi
-                /root/${repo}/arch-install n ${version}
+                /opt/${repo}/arch-install n ${version}
                 exit 0
             fi
         fi
@@ -986,7 +986,7 @@ if [ "${update}" != "n" ] && [ "${offline}" == "n" ]; then
     read -p "Soll die erweiterte Installation durchgeführt werden? [Y/n] " graphical
     if [ "$graphical" != "n" ]
     then
-        cp /root/${repo}/arch-graphical-install-auto ${mountpoint}/root/arch-graphical-install-auto
+        cp /opt/${repo}/arch-graphical-install-auto ${mountpoint}/root/arch-graphical-install-auto
         if [ "${version}" == "-libre" ]; then
             arch-chroot ${mountpoint} /root/arch-graphical-install-auto libre
         else

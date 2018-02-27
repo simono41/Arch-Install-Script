@@ -69,9 +69,7 @@ echo -e "\033[1;33m Macs:            \033[0m" `ip link | grep ether`
 echo -e "\033[1;33m Hostname:        \033[0m" `hostname`
 echo -e "\033[1;33m Benutzer:        \033[0m" `whoami`
 echo -e "\033[1;33m Grafikkarte:     \033[0m" `lspci | grep -e VGA -e 3D -m 1`
-if sudo ping -c1 google.de 1>/dev/null 2>&1; then
-echo -e "\033[1;33m Öffentliche IP:  \033[0m" `wget -qO- ipv4.icanhazip.com`
-fi
+echo -e "\033[1;33m Öffentliche IP:  \033[0m" `wget -qO- ipv4.icanhazip.com || echo "Gescheitert"`
 echo -e "=============================================================================================="
 echo -e "User     Anschluß     Seit              von"
 /usr/bin/who

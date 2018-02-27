@@ -882,7 +882,7 @@ function abfrage() {
 
 if [ "${1}" != "n" ]
 then
-    if sudo ping -c1 google.de 1>/dev/null 2>&1; then
+    if wget -qO- ipv4.icanhazip.com 1>/dev/null 2>&1; then
         read -p "Soll im Internet geguckt werden ob es ein neues Install-Script gibt und dann ausgefuehrt werden?: [Y/n] " update
         if [ "${update}" == "debug" ]
         then

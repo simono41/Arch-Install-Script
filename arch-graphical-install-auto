@@ -46,7 +46,7 @@ function yaourtinstall() {
 }
 
 function standartinstallation() {
-    pacman -Syu $(cat /root/${repo}/packages_${version}.txt) --needed --noconfirm
+    pacman -Syu $(cat /opt/${repo}/packages_${version}.txt) --needed --noconfirm
 }
 
 function ldconfigcache() {
@@ -64,7 +64,7 @@ function check() {
 }
 
 function checkend() {
-    cp /root/${repo}/x11vnc.service /etc/systemd/system/x11vnc.service
+    cp /opt/${repo}/x11vnc.service /etc/systemd/system/x11vnc.service
     chmod 644 /etc/systemd/system/x11vnc.service
     systemctl enable x11vnc.service
 
@@ -510,9 +510,9 @@ if [ "${vollinstallation}" != "n" ]; then
 
     # installer-/usr/bin/
     if [ "${version}" == "libre" ]; then
-        sed "s|%VERSION%|-libre|g;" /root/${repo}/arch-install > /usr/bin/arch-install
+        sed "s|%VERSION%|-libre|g;" /opt/${repo}/arch-install > /usr/bin/arch-install
     else
-        sed "s|%VERSION%||g;" /root/${repo}/arch-install > /usr/bin/arch-install
+        sed "s|%VERSION%||g;" /opt/${repo}/arch-install > /usr/bin/arch-install
     fi
     chmod 755 /usr/bin/arch-install
 
@@ -663,8 +663,6 @@ echo "Bei bedarf pacman -Sc oder -Scc eingeben um [nicht mehr benötigte]/[alle]
 #date
 #hwclock -w
 #
-
-#rm -Rv /root/${repo} /root/${repo1}
 
 pacman -Syu --needed --noconfirm
 

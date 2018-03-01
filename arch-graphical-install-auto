@@ -315,6 +315,8 @@ EOT
         yaourtinstall firefox-ublock-origin
         yaourtinstall zramswap
         systemctl enable zramswap.service
+        yaourtinstall google-chrome
+        yaourtinstall spotify
 
     fi
 fi

@@ -36,6 +36,7 @@ file-roller
 filezilla
 firefox
 firefox-i18n-de
+freeciv
 gdisk
 git
 gnome
@@ -68,6 +69,7 @@ libva-vdpau-driver
 libvdpau-va-gl
 links
 mesa-vdpau
+minetest
 mkinitcpio-nfs-utils
 mplayer
 mumble
@@ -105,6 +107,7 @@ system-config-printer
 tar
 tcpdump
 teamspeak3
+teeworlds
 telegram-desktop
 thunderbird
 thunderbird-i18n-de

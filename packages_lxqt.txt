@@ -36,6 +36,7 @@ file-roller
 filezilla
 firefox
 firefox-i18n-de
+freeciv
 gdisk
 git
 gnuchess
@@ -65,6 +66,7 @@ links
 lxqt
 lxqt-powermanagement
 mesa-vdpau
+minetest
 mkinitcpio-nfs-utils
 mplayer
 mumble
@@ -103,6 +105,7 @@ system-config-printer
 tar
 tcpdump
 teamspeak3
+teeworlds
 telegram-desktop
 thunderbird
 thunderbird-i18n-de

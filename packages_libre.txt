@@ -25,6 +25,7 @@ exfat-utils
 fail2ban
 ffmpeg
 filezilla
+freeciv
 gdisk
 git
 gnome
@@ -56,6 +57,7 @@ libva-vdpau-driver
 libvdpau-va-gl
 links
 mesa-vdpau
+minetest
 mkinitcpio-nfs-utils
 mplayer
 mugshot
@@ -84,6 +86,7 @@ squashfs-tools
 syslinux
 system-config-printer
 tar
+teeworlds
 telegram-desktop
 tigervnc
 transmission-gtk

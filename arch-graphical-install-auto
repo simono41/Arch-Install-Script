@@ -312,10 +312,6 @@ EOT
         yaourtinstall pamac-aur
         yaourtinstall conky-lua-nv
         yaourtinstall vibrancy-colors
-        yaourtinstall firefox-ublock-origin
-        yaourtinstall google-chrome
-        yaourtinstall spotify
-        yaourtinstall mugshot
 
     fi
 fi

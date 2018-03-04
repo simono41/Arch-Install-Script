@@ -182,6 +182,7 @@ widelands
 wine
 wine-mono
 wine_gecko
+winetricks
 wireless_tools
 wireshark-gtk
 wpa_supplicant

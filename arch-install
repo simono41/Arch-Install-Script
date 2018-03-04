@@ -26,12 +26,7 @@ fi
 echo "Als root Angemeldet"
 
 function minimalinstallation() {
-    #Mehrzeiler
-    while read line
-    do
-        pacstrap -c -d -G -M ${mountpoint} $line
-    done < /opt/${repo}/base.txt
-
+    pacstrap -c -d -G -M ${mountpoint} $(cat /opt/${repo}/packages_voll.txt)
 }
 
 function gitclone() {
@@ -69,12 +64,18 @@ function secureumount() {
             umount ${mountpoint}
         fi
     fi
+
     if fdisk -l | grep /dev/mapper/luks0 > /dev/null; then
-        cryptsetup remove /dev/mapper/luks0
+        read -p "Soll /dev/mapper/luks0 entfernt werden? [Y/n] : " cryptremove
+        if [ "${cryptremove}" != "n" ]; then
+            cryptsetup remove /dev/mapper/luks0
+        fi
     fi
+
     if cat /proc/mounts | grep ${device}1 > /dev/null; then
         umount ${device}1
     fi
+
     if cat /proc/mounts | grep ${usbkeydevice} > /dev/null; then
         umount ${usbkeydevice}
     fi

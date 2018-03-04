@@ -315,6 +315,7 @@ EOT
         yaourtinstall firefox-ublock-origin
         yaourtinstall google-chrome
         yaourtinstall spotify
+        yaourtinstall mugshot
 
     fi
 fi

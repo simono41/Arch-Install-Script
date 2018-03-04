@@ -230,13 +230,19 @@ function installation {
     #installation
     if [ "${offline}" != "n" ]
     then
-        if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]
-        then
+        if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]; then
             echo "Es ist kein copytoram System."
             unsquashfs -f -d ${mountpoint} /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
-        else
+        elif [ -f /run/archiso/copytoram/airootfs.sfs ]; then
             echo "Es ist ein copytoram System."
             unsquashfs -f -d ${mountpoint} /run/archiso/copytoram/airootfs.sfs
+        else
+            read -p "Wo ist die airootfs.sfs? Bitte den kompletten Pfad angeben oder die onlineinstallation wählen? [/airootfs.sfs/online] : " installationfehler
+            if [ "${installationfehler}" == "online" ]; then
+                minimalinstallation
+            else
+                unsquashfs -f -d ${mountpoint} ${installationfehler}
+            fi
         fi
     else
         minimalinstallation
@@ -997,7 +1003,7 @@ else
     arch-chroot ${mountpoint} systemctl disable x11vnc.service
 fi
 
-if [ "${update}" != "n" ] && [ "${offline}" == "n" ]; then
+if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ "${installationfehler}" == "online" ]; then
     read -p "Soll die erweiterte Installation durchgeführt werden? [Y/n] " graphical
     if [ "$graphical" != "n" ]
     then

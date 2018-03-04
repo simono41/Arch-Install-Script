@@ -69,8 +69,14 @@ function secureumount() {
             umount ${mountpoint}
         fi
     fi
-    if cat /proc/mounts | grep /dev/mapper/luks0 > /dev/null; then
+    if fdisk -l | grep /dev/mapper/luks0 > /dev/null; then
         cryptsetup remove /dev/mapper/luks0
+    fi
+    if cat /proc/mounts | grep ${device}1 > /dev/null; then
+        umount ${device}1
+    fi
+    if cat /proc/mounts | grep ${usbkeydevice} > /dev/null; then
+        umount ${usbkeydevice}
     fi
 
 }
@@ -110,7 +116,7 @@ function partionierenohneswap() {
 }
 
 function usbkeyinstallation() {
-    mkdir /mnt/usb-stick
+    mkdir -p /mnt/usb-stick
     mount ${usbkeydevice} /mnt/usb-stick
     dd if=/dev/urandom of=/mnt/usb-stick/archkey bs=512 count=4
     cryptsetup luksAddKey ${device}${rootpartitionnummer} /mnt/usb-stick/archkey

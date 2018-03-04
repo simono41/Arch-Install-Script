@@ -94,7 +94,7 @@ function filesystem() {
 
         # module and hooks
         if [ "${version}" == "libre" ]; then
-            echo "MODULES=\"i915 radeon nouveau\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+            echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
         else
             echo "MODULES=\"nvidia nvidia_modeset nvidia_uvm nvidia_drm i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
         fi

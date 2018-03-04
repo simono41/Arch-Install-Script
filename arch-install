@@ -68,6 +68,9 @@ function secureumount() {
             umount ${mountpoint}/boot
             umount ${mountpoint}
         fi
+        if cat /proc/mounts | grep /dev/mapper/luks0 > /dev/null; then
+            cryptsetup remove /dev/mapper/luks0
+        fi
     fi
 
 

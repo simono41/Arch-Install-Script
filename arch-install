@@ -68,11 +68,10 @@ function secureumount() {
             umount ${mountpoint}/boot
             umount ${mountpoint}
         fi
-        if cat /proc/mounts | grep /dev/mapper/luks0 > /dev/null; then
-            cryptsetup remove /dev/mapper/luks0
-        fi
     fi
-
+    if cat /proc/mounts | grep /dev/mapper/luks0 > /dev/null; then
+        cryptsetup remove /dev/mapper/luks0
+    fi
 
 }
 
@@ -987,6 +986,9 @@ fi
 if [ "${x11vnc}" == "y" ]; then
     echo "Bitte geben sie ein Passwort für das VNC-Protokoll ein!"
     arch-chroot ${mountpoint} x11vnc -storepasswd /etc/x11vnc.pass
+    arch-chroot ${mountpoint} systemctl enable x11vnc.service
+else
+    arch-chroot ${mountpoint} systemctl disable x11vnc.service
 fi
 
 if [ "${update}" != "n" ] && [ "${offline}" == "n" ]; then

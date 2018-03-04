@@ -126,8 +126,8 @@ function usbkeyinstallation() {
 
 function usbsecret() {
 
-    cp /opt/${repo}/install/usbsecret  ${mountpoint}/usr/lib/initcpio/install/usbsecret
-    cp /opt/${repo}/hooks/usbsecret  ${mountpoint}/root/usbsecret
+    cp /opt/${repo}/install/usbsecret ${mountpoint}/usr/lib/initcpio/install/usbsecret
+    cp /opt/${repo}/hooks/usbsecret ${mountpoint}/root/usbsecret
 
     # hooks
     #cp install/usbsecret ${mountpoint}/usr/lib/initcpio/install/usbsecret

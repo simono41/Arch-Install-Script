@@ -135,6 +135,9 @@ EOT
             echo "airootfs.sfs nicht vorhanden!"
         fi
 
+        echo "System wird Komprimiert!!!"
+        sleep 5
+
         mksquashfs ${work_dir}/${arch}/airootfs ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs -comp xz -b 262144
 
         sha512sum ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs > airootfs.sha512

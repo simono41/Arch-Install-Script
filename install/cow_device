@@ -17,6 +17,7 @@ build()
     add_binary blockdev
     add_binary fdisk
     add_binary sfdisk
+    add_binary sgdisk
     add_binary hexdump
     add_binary losetup
     add_binary mkswap
@@ -29,6 +30,7 @@ build()
     add_binary fsck.ext4
     add_binary lsattr
     add_binary mkfs.ext4
+    add_binary mkfs.btrfs
     add_binary tune2fs
 
     # xfsprogs

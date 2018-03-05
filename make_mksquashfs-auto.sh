@@ -108,6 +108,9 @@ function filesystem() {
 
         cp -v script/archiso* ${work_dir}/${arch}/airootfs/usr/lib/initcpio/
 
+        cp -v install/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/
+        cp -v hooks/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/
+
     fi
 
 
@@ -119,6 +122,9 @@ function IMAGE() {
 
     if [ "$image" != "n" ]
     then
+
+        echo "System wird gereinigt und komprimiert!!!"
+        sleep 5
 
         mkdir -p ${work_dir}/iso/${install_dir}/${arch}/airootfs/
 
@@ -138,9 +144,6 @@ EOT
         else
             echo "airootfs.sfs nicht vorhanden!"
         fi
-
-        echo "System wird Komprimiert!!!"
-        sleep 5
 
         mksquashfs ${work_dir}/${arch}/airootfs ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs -comp xz -b 262144
 

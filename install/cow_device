@@ -1,0 +1,112 @@
+#!/bin/bash
+
+build()
+{
+    add_all_modules /
+    # syslinux
+    add_binary extlinux
+    #add_file /usr/lib/syslinux/bios/gptmbr.bin
+    #add_file /etc/udev/rules.d/69-save-hdd-live.rules
+    #add_file "/usr/lib/udev/rules.d/10-dm.rules"
+    #add_file "/usr/lib/udev/rules.d/13-dm-disk.rules"
+    #add_file "/usr/lib/udev/rules.d/95-dm-notify.rules"
+    #add_file "/usr/lib/initcpio/udev/11-dm-initramfs.rules" "/usr/lib/udev/rules.d/11-dm-initramfs.rules"
+
+    # util-linux
+    add_binary findmnt
+    add_binary blockdev
+    add_binary fdisk
+    add_binary sfdisk
+    add_binary hexdump
+    add_binary losetup
+    add_binary mkswap
+    add_binary umount
+    add_binary wipefs
+
+    # e2fsprogs
+    add_binary badblocks
+    add_binary chattr
+    add_binary fsck.ext4
+    add_binary lsattr
+    add_binary mkfs.ext4
+    add_binary tune2fs
+
+    # xfsprogs
+    add_binary mkfs.xfs
+    add_binary xfs_repair
+
+    # cryptsetup
+    add_binary cryptsetup
+
+    # device-mapper
+    add_binary dmsetup
+
+    # gptfdisk
+    add_binary gdisk
+
+    # rsync
+    add_binary rsync
+
+    # coreutils
+    add_binary cat
+    add_binary cp
+    add_binary dd
+    add_binary mv
+    add_binary rm
+    add_binary sync
+    add_binary md5sum
+    add_binary sha1sum
+    add_binary date
+
+    # bash
+    add_binary bash
+
+    # findutils
+    add_binary find
+    add_binary xargs
+
+    # procps-ng
+    add_binary free
+    add_binary ps
+    add_binary slabtop
+    add_binary top
+    add_binary vmstat
+
+    # smartmontools
+    add_binary smartctl
+    #add_file /usr/share/smartmontools/drivedb.h
+
+    # hdparm
+    add_binary hdparm
+
+    # ncurses
+    #add_file /usr/share/terminfo/l/linux
+
+    # nano
+    add_binary nano
+
+    # iproute2
+    add_binary ip
+
+    # iw
+    add_binary iw
+
+    # grep
+    add_binary grep
+
+    # blkid
+    add_binary blkid
+
+    # runscript
+    add_runscript
+
+}
+
+help ()
+{
+cat <<HELPEOF
+  Rescue hook!
+HELPEOF
+}
+
+# vim: set ft=sh ts=4 sw=4 et:

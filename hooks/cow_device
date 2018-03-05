@@ -1,0 +1,19 @@
+run_hook ()
+{
+    # Format and run immediately cow_device
+
+    if [[ "${format}" == "y" ]]; then
+        sfdisk -l
+
+        read -p "Welches Laufwerk soll eine cow_device erhalten? /dev/sda : " formatdevice
+        [[ -z "${formatdevice}" ]] && formatdevice=/dev/sda
+
+        sfdisk -a 2048 -n 3:: -c 3:"cow_device" -t 3:8300 ${formatdevice}
+        mkfs.btrfs -f -L cow_device ${formatdevice}3
+
+        launch_interactive_shell
+    fi
+
+}
+
+# vim: set ft=sh ts=4 sw=4 et:

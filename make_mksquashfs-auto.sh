@@ -227,7 +227,7 @@ function UEFI() {
             echo "efiboot.img nicht vorhanden!"
         fi
 
-        truncate -s 128M ${work_dir}/iso/EFI/archiso/efiboot.img
+        truncate -s 256M ${work_dir}/iso/EFI/archiso/efiboot.img
         mkfs.vfat -n ${iso_label}_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
 
         mkdir -p ${work_dir}/efiboot

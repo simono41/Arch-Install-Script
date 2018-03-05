@@ -14,7 +14,7 @@ if [ "${version}" == "%VERSION%" ]; then
 fi
 
 if [ "$2" == "libre" ]; then
-    echo "Libre-Modus Aktiviert!!!"
+    echo "Libre mode Enabled!!!"
     version="-libre"
 fi
 
@@ -23,7 +23,7 @@ if [[ $EUID -ne 0 ]]; then
     sudo $0 2>&1 | tee /home/user1/install.log
     exit 0
 fi
-echo "Als root Angemeldet"
+echo "Logged in as root"
 
 function minimalinstallation() {
     pacstrap -c -d -G -M ${mountpoint} $(cat /opt/${repo}/packages_voll.txt)
@@ -32,7 +32,7 @@ function minimalinstallation() {
 function gitclone() {
     cd /opt/
     if [ -d "${repo}" ]; then
-        echo "${repo} existiert bereits!!!"
+        echo "${repo} already exists!!!"
         rm -Rv ${repo}
     fi
     git clone ${WEBADDRESS}
@@ -66,7 +66,7 @@ function secureumount() {
     fi
 
     if fdisk -l | grep /dev/mapper/luks0 > /dev/null; then
-        read -p "Soll /dev/mapper/luks0 entfernt werden? [Y/n] : " cryptremove
+        read -p "Should /dev/mapper/luks0 be removed? [Y/n] : " cryptremove
         if [ "${cryptremove}" != "n" ]; then
             cryptsetup remove /dev/mapper/luks0
         fi
@@ -91,7 +91,7 @@ function partionierenmitswap() {
     sgdisk -a 2048 -n 4:: -c 4:"Linux filesystem" -t 4:8300 ${device}
 
     if [ "${verschluesselung}" == "y" ]; then
-        echo "Bitte groß YES schreiben"
+        echo "Please write big YES"
         cryptsetup -c aes-xts-plain64 -y -s 512 luksFormat ${device}${rootpartitionnummer}
         cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
         deviceluks="/dev/mapper/luks0"
@@ -107,7 +107,7 @@ function partionierenohneswap() {
     sgdisk -a 2048 -n 3:: -c 3:"Linux filesystem" -t 3:8300 ${device}
 
     if [ "${verschluesselung}" == "y" ]; then
-        echo "Bitte groß YES schreiben"
+        echo "Please write big YES"
         cryptsetup -c aes-xts-plain64 -y -s 512 luksFormat ${device}${rootpartitionnummer}
         cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
         deviceluks="/dev/mapper/luks0"
@@ -202,7 +202,7 @@ function removeinstaller {
 function installation {
 
     #boot
-    echo "formatieren"
+    echo "format"
     mkfs.vfat -F 32 ${device}${efipartitionnummer}
 
     #root
@@ -212,7 +212,7 @@ function installation {
         subvolume #btrfs
 
     elif [ "${dateisystem}" == "ext4" ]; then
-        echo "mit j bestätigen"
+        echo "confirm with j"
         if [ "${verschluesselung}" == "y" ]; then
             mkfs.ext4 -L p_arch ${deviceluks} #ext4
             mount ${deviceluks} ${mountpoint}
@@ -232,13 +232,13 @@ function installation {
     if [ "${offline}" != "n" ]
     then
         if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]; then
-            echo "Es ist kein copytoram System."
+            echo "It is not a copytoram system."
             unsquashfs -f -d ${mountpoint} /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
         elif [ -f /run/archiso/copytoram/airootfs.sfs ]; then
-            echo "Es ist ein copytoram System."
+            echo "It is a copytoram system."
             unsquashfs -f -d ${mountpoint} /run/archiso/copytoram/airootfs.sfs
         else
-            read -p "Wo ist die airootfs.sfs? Bitte den kompletten Pfad angeben oder die onlineinstallation wählen? [/airootfs.sfs/online] : " installationfehler
+            read -p "Where is the airootfs.sfs? Please specify the complete path or choose the online installation? [/airootfs.sfs/online] : " installationfehler
             if [ "${installationfehler}" == "online" ]; then
                 minimalinstallation
             else
@@ -259,7 +259,7 @@ function installation {
     fi
     parameter="${parameter}block filesystems keyboard "
     if [ "${verschluesselung}" == "y" ]; then
-        echo "btrfs-hook wird übersprungen!"
+        echo "btrfs-hook is skipped!"
     else
         if [ "${dateisystem}" == "btrfs" ]; then
             parameter="${parameter}btrfs "
@@ -620,7 +620,7 @@ function systemdboot() {
 
     if [ "${booteintraege}" != "n" ]; then
 
-        echo "Zusätzliche Booteinträge werden erstellt!!!"
+        echo "Additional boot entries are created !!!"
 
         arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "Linux Boot Manager"
 
@@ -640,85 +640,85 @@ function abfrage() {
     # Lade Deutsches Tastaturlayout
     loadkeys de
 
-    read -p "Wie heissen sie?: " name
+    read -p "What's your name?: " name
     [[ -z "${name}" ]] && name=arch-linux
 
     # Partionierung
     # UEFI oder Legacy-BIOS
     echo ""
     echo "UEFI = Unified Extensible Firmware Interface"
-    echo "Empfohlen fuer Neuere PCs"
-    echo "WICHTIG DAFUER MUESSEN SIE IM BOOTMENUE DEN UEFI USB_STICK AUSGEWAEHLT HABEN SONST KANN KEIN UEFI BOOTEINTRAG ERSTELLT WERDEN!!!"
+    echo "Recommended for newer PCs"
+    echo "IMPORTANT FOR THIS MUST BE SELECTED IN THE BOAT MENU THE UEFI USB STICK OTHERWISE CAN NOT BE CREATED A UEFI BOAT ENTRY !!!"
     echo ""
     echo "BIOS = basic input/output system"
-    echo "Empfohlen fuer Alte PCs und portable USB-Sticks"
+    echo "Recommended for old PCs and portable USB sticks "
     echo ""
-    echo "Bitte die Eingaben klein schreiben :D !!!"
-    echo "Für jedes ja must du ein y machen und für jedes nein ein n ok !!!"
+    echo "Please write down the entries: D !!!"
+    echo "For each yes you have to make a y and for every no an n, unless it is interpreted differently!!!"
     echo ""
     if mount | grep efi > /dev/null; then
-        echo "System unterstützt UEFI"
-        read -p "Wie moechten sie ihre Festplatte partioniert haben: [UEFI/bios] " Partition
+        echo "System supports UEFI"
+        read -p "How would you like to have your hard drive partitioned?: [UEFI/bios] " Partition
         [[ -z "${Partition}" ]] && Partition=uefi
     else
-        echo "System unterstützt kein UEFI"
-        read -p "Wie moechten sie ihre Festplatte partioniert haben: [uefi/BIOS] " Partition
+        echo "System supports not UEFI"
+        read -p "How would you like to have your hard drive partitioned?: [uefi/BIOS] " Partition
         [[ -z "${Partition}" ]] && Partition=bios
     fi
 
     if [ "${Partition}" == "uefi" ]
     then
-        read -p "Soll mit systemd gebootet werden oder mit grub? [systemd/GRUB] : " boot
+        read -p "Should be booted with systemd or with grub? [systemd/GRUB] : " boot
         if [ "${boot}" == "systemd" ]; then
-            read -p "Sollen noch zusätzliche Booteinträge erstelt werden? [Y/n] : " booteintraege
+            read -p "Should additional boot entries be created? [Y/n] : " booteintraege
         fi
 
     fi
     [[ -z "${boot}" ]] && boot=grub
 
     fdisk -l
-    read -p "Geben sie eine Festplatte an: /dev/sda " device
+    read -p "Specify a hard disk: /dev/sda " device
     [[ -z "${device}" ]] && device=/dev/sda
     if [ "${device}" == "/dev/nvme0n1" ]; then
         m2ssddevice=y
     fi
 
-    #read -p "Welches Passwort soll der Root erhalten?: root " pass
+    #read -p "Which password should the root receive ?: root " pass
     #[[ -z "${pass}" ]] && pass=root
 
-    read -p "Welches Dateisystem soll benutzt werden? [BTRFS/ext4] " dateisystem
+    read -p "Which file system should be used? [BTRFS/ext4] " dateisystem
     [[ -z "${dateisystem}" ]] && dateisystem=btrfs
 
     if [ "${dateisystem}" == "btrfs" ]; then
-        read -p "Soll ein raid gemacht werden?: [raid0/raid1/raid10/n] " raid
+        read -p "Should a raid be made ?: [raid0/raid1/raid10/n] " raid
         [[ -z "${raid}" ]] && raid=n
         if [ "${raid}" == "n" ]; then
-            echo "Kein raid wird erzeugt!"
+            echo "No raid is generated!"
         else
             fdisk -l
-            read -p "Bitte geben sie die Festplatten in eine Reihe an die zu einem Raid verbunden werden sollen!!!: " device1
+            read -p "Please enter the disks in a row to be connected to a raid !!!: " device1
         fi
-        echo "Standartmässige Snapshots / /home /opt /var/cache/pacman/pkg"
-        echo "Die Verzeichnisse dürfen sich nicht überlappen sonst kann es zu problemen mit dem unmounten kommen!!!"
-        read -p "Sollen mehr Snapshots erstellt werden?: " mountsnaps
+        echo "Standard snapshots / /home /opt /var/cache/pacman/pkg"
+        echo "The directories may not overlap otherwise there may be problems with the unmount !!!"
+        read -p "Should more snapshots be created ?: " mountsnaps
     fi
 
-    read -p "Wollen sie eine swap-partition erstellen? : [Y/n] " swap
-    read -p "Wollen sie eine swapfile erstellen? : [y/N] " swapfile
+    read -p "Do you want to create a swap partition? : [Y/n] " swap
+    read -p "Do you want to create a swapfile? : [y/N] " swapfile
 
-    #echo "Diese einstellung kann man mit: "
-    #echo "systemctl enable openvpn-client@client.service aktivieren und mit"
-    #echo "systemctl disable openvpn-client@client.service deaktivieren"
-    #echo "Die Bandbreite wird dadurch reduziert aber die Sicherheit deutlich erhöht"
-    #read -p "Soll die Verbindung mit einer VPN verschlüsselt werden? : [Y/n] " openvpn
+    #echo "This attitude can be seen with: "
+    #echo "systemctl enable openvpn-client@client.service activate and with"
+    #echo "systemctl disable openvpn-client@client.service deactivate"
+    #echo "The bandwidth is thereby reduced but the security significantly increased"
+    #read -p "Should the connection with a VPN be encrypted? : [Y/n] " openvpn
 
     if [ "${update}" != "n" ]; then
 
-        echo "WARNUNG das System wird nicht verschlüsselt!!!"
-        echo "WARNUNG ohne den USB-Stick startet das System nicht mehr!!!"
-        read -p "Soll ein USB-Stick als Schlüssel für das System installiert werden? : [y/N] " usbsecret
+        echo "WARNING the system is not encrypted !!!"
+        echo "WARNING The system will not start without the USB stick !!!"
+        read -p "Should a USB stick be installed as the key for the system? : [y/N] " usbsecret
         if [ "${usbsecret}" == "y" ]; then
-            read -p "Welcher USB-Stick soll ausgewählt werden für die USB-secret Schlüssel?: /dev/sdb1 " usbsecretdevice
+            read -p "Which USB stick should be selected for the USB-secret key ?: /dev/sdb1 " usbsecretdevice
             [[ -z "${usbsecretdevice}" ]] && device=/dev/sdb1
             usbsecretdeviceuuid=$(blkid -s PARTUUID -o value ${usbsecretdevice})
             [[ -z "${usbsecretdeviceuuid}" ]] && mkfs.ext4 ${usbsecretdevice}
@@ -726,12 +726,12 @@ function abfrage() {
     fi
 
     if [ "${raid}" == "n" ]; then
-        read -p "Soll die Festplatte verschlüsselt werden? : [y/N] " verschluesselung
+        read -p "Should the hard disk be encrypted? : [y/N] " verschluesselung
         if [ "${verschluesselung}" == "y" ]; then
             modprobe dm-crypt
-            read -p "Soll noch zusätzlich ein USB-Stick zum entschlüsseln erstellt werden? : [y/N] " usbkey
+            read -p "Should an additional USB stick be created for decryption? : [y/N] " usbkey
             if [ "${usbkey}" == "y" ]; then
-                read -p "Welcher USB-Stick soll gewählt werden?: /dev/sdb1 " usbkeydevice
+                read -p "Which USB stick should be selected ?: /dev/sdb1 " usbkeydevice
                 [[ -z "${usbkeydevice}" ]] && usbkeydevice=/dev/sdb1
                 usbkeydateisystem=$(blkid -s TYPE -o value ${usbkeydevice})
                 usbkeyuuid=$(blkid -s UUID -o value ${usbkeydevice})
@@ -742,7 +742,7 @@ function abfrage() {
     # berechnungen
 
     if [ "${update}" != "n" ]; then
-        read -p "Soll eine Offline-Installation durchgefuehrt werden? : [Y/n] " offline
+        read -p "Should an offline installation be carried out? : [Y/n] " offline
         if [ "${offline}" != "n" ]
         then
             install="offline"
@@ -754,8 +754,8 @@ function abfrage() {
     fi
 
     if [ "${offline}" != "n" ]; then
-        read -p "Wollen sie das VNC-Protokoll aktiviert haben? : [y/N] " x11vnc
-        echo "Dieses Passwort gilt nur für die aktuelle Sitzung!!!"
+        read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc
+        echo "This password is only valid for the current session !!!"
         if [ "${x11vnc}" == "y" ]; then
             x11vnc -storepasswd /etc/x11vnc.pass
             systemctl restart x11vnc.service
@@ -772,15 +772,15 @@ function abfrage() {
     fi
 
     #
-    echo "Name: ${name}"
-    echo "Partionsart: ${Partition}"
+    echo "Surname: ${name}"
+    echo "partition type: ${Partition}"
     echo "Bootloader: ${boot}"
-    echo "Laufwerk: ${device}"
+    echo "Drive: ${device}"
     if [ "${raid}" != "n" ]; then
         echo "Raid: ${raid}"
-        echo "Festplatten: ${device1}"
+        echo "Hard Drives: ${device1}"
     fi
-    echo "Dateisystem: ${dateisystem}"
+    echo "File system: ${dateisystem}"
     #echo "System-Partition ${speicher}"
     #if [ "${swap}" != "n" ]; then
     #    echo "Swap-partition ${swapspeicher}"
@@ -806,10 +806,10 @@ function abfrage() {
         echo "USB-Label: ${usbsecretdevice}"
     fi
     if [ "${verschluesselung}" == "y" ]; then
-        echo "Fesptplatte mit Luks 512KB verschlüsselung: aktiv"
+        echo "Fesptplatte with Luks 512KB encryption: aktiv"
         if [ "${usbkey}" == "y" ]; then
-            echo "${usbkeydevice} wird als key für das entschlüsseln benutzt: "
-            echo "Dateisystem: ${usbkeydateisystem}"
+            echo "${usbkeydevice} is used as key for decrypting: "
+            echo "File system: ${usbkeydateisystem}"
         fi
     fi
 
@@ -870,22 +870,22 @@ function abfrage() {
 
 
     #
-    read -p "Sind alle Angaben Richtig?: [y/N] " sicherheitsabfrage
+    read -p "Are all the details correct ?: [y/N] " sicherheitsabfrage
     if [ "$sicherheitsabfrage" != "y" ]
     then
         echo "ABGEBROCHEN"
         exit 1
     fi
     #    if [ "${update}" != "n" ]; then
-    #        echo "Nur für reine arch-linux systeme benötigend!!!"
-    #        read -p "Sollen noch wichtige Packete für die installation installiert werden? [y/N] " packete
+    #        echo "Only needed for pure arch-linux systems !!!"
+    #        read -p "Are you still installing important packages for the installation? [y/N] " packete
     #        if [ "${packete}" == "y" ]; then
     #            pacman -Syu base base-devel syslinux efibootmgr efitools grub os-prober btrfs-progs \
         #                dosfstools arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs \
         #                gdisk dialog bash-completion git iw wireless_tools wpa_supplicant openvpn
     #        fi
     #    fi
-    echo "Betriebssystem wird installiert!!!"
+    echo "Operating system is installed !!!"
     sleep 5
 
 
@@ -902,30 +902,30 @@ function abfrage() {
 if [ "${1}" != "n" ]
 then
     if wget -qO- ipv4.icanhazip.com 1>/dev/null 2>&1; then
-        read -p "Soll im Internet geguckt werden ob es ein neues Install-Script gibt und dann ausgefuehrt werden?: [Y/n] " update
+        read -p "Should I look at the internet for a new install script and then run it ?: [Y/n] " update
         if [ "${update}" == "debug" ]
         then
-            echo "Überspringe das herunterladen einen neuen Scriptes!!!"
+            echo "Skip the download a new script !!!"
         else
             if [ "${update}" != "n" ]
             then
                 if [ -f /usr/bin/git ]; then
                     gitclone
                 else
-                    echo "Git is not installet"
+                    echo "Git is not installed"
                 fi
                 /opt/${repo}/arch-install n ${version}
                 exit 0
             fi
         fi
     else
-        echo "Keine Internetverbindung erkannt!"
+        echo "No internet connection detected!"
         update=n
     fi
 fi
 
 if [ "${update}" != "n" ]; then
-    echo "Online-Modus aktiviert!"
+    echo "Online-Modus activated!"
     #vpntunnel
 fi
 # debug = Installation ueberspringen zu arch-graphical-install und DEBEUG-MODUS
@@ -936,8 +936,8 @@ secureumount
 if [ "${name}" == "debug" ]
 then
     echo "DEBEUG-MODUS"
-    echo "Wenn kein befehl mehr ausgefuehrt werden muss einfach eingabetaste druecken"
-    echo "Welcher befehl soll ausgefuert werden? "
+    echo "If no more commands are required, simply press enter"
+    echo "Which command should be executed? "
 
     befehl=blablabla
     while [ "$befehl" != "" ]
@@ -949,16 +949,16 @@ then
 fi
 
 #
-echo "Eine Säuberung erhört die chance der Installation auf dem System."
-echo "Es kann eine Zeit lang dauern!"
+echo "A purge stops the chance of installing on the system."
+echo "It may take a while!"
 dd if=/dev/zero of=${device} bs=64M count=10 status=progress
 #
 if [ "${Partition}" == "uefi" ]
 then
-    echo "Partioniere mit UEFI"
+    echo "Partitions with UEFI"
 
     if [ "${swap}" != "n" ]; then
-        echo "Erstelle zustzliche swap-partition"
+        echo "Create additional swap partition"
         partionierenmitswap
     else
         partionierenohneswap
@@ -975,11 +975,11 @@ then
         systemdboot
     fi
     #removeinstaller
-    echo "Fertig"
+    echo "Finished"
 elif [ "${Partition}" == "bios" ]; then
-    echo "Partioniere mit bios"
+    echo "Partitions with MBR"
     if [ "${swap}" != "n" ]; then
-        echo "Erstelle zustzliche swap-partition"
+        echo "Create additional swap partition"
         partionierenmitswap
     else
         partionierenohneswap
@@ -990,14 +990,14 @@ elif [ "${Partition}" == "bios" ]; then
     arch-chroot ${mountpoint} grub-install --target=i386-pc --recheck ${device}
     arch-chroot ${mountpoint} grub-mkconfig -o /boot/grub/grub.cfg
     #removeinstaller
-    echo "Fertig"
+    echo "Finished"
 else
-    echo "Eingabe Ungueltig"
+    echo "Entry Invalid"
     exit 1
 fi
 
 if [ "${x11vnc}" == "y" ]; then
-    echo "Bitte geben sie ein Passwort für das VNC-Protokoll ein!"
+    echo "Please enter a password for the VNC protocol!"
     arch-chroot ${mountpoint} x11vnc -storepasswd /etc/x11vnc.pass
     arch-chroot ${mountpoint} systemctl enable x11vnc.service
 else
@@ -1005,7 +1005,7 @@ else
 fi
 
 if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ "${installationfehler}" == "online" ]; then
-    read -p "Soll die erweiterte Installation durchgeführt werden? [Y/n] " graphical
+    read -p "Should the extended installation be carried out? [Y/n] " graphical
     if [ "$graphical" != "n" ]
     then
         cp /opt/${repo}/arch-graphical-install-auto ${mountpoint}/root/arch-graphical-install-auto
@@ -1027,10 +1027,10 @@ sleep 5
 secureumount
 echo ""
 echo "Fertig!!!"
-read -p "Installation erfolgreich Abgeschlossen. Wollen sie den PC NEUSTARTEN?: [Y/n] " sicherheitsabfrage
+read -p "allation completed successfully. Do you want to RESTART the PC ?: [Y/n] " sicherheitsabfrage
 if [ "$sicherheitsabfrage" != "n" ]
 then
-    echo "starte neu"
+    echo "restart now"
     reboot
 fi
 exit 0

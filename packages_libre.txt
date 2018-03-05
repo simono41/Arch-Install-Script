@@ -34,7 +34,9 @@ gnome-power-manager
 gnome-screensaver
 gnuchess
 grub
+gsmartcontrol
 gtk-engine-murrine
+hdparm
 hplip
 htop
 hunspell-de

@@ -46,7 +46,9 @@ gnome-screensaver
 gnuchess
 gparted
 grub
+gsmartcontrol
 gtk-engine-murrine
+hdparm
 htop
 hunspell-de
 hydra

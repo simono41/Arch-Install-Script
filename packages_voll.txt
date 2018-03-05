@@ -60,8 +60,10 @@ gnome-screensaver
 gnuchess
 gparted
 grub
+gsmartcontrol
 gtk-engine-murrine
 hashcat
+hdparm
 hedgewars
 hexchat
 hplip

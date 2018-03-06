@@ -8,6 +8,7 @@ dialog
 dosfstools
 efibootmgr
 efitools
+fish
 gdisk
 git
 grub

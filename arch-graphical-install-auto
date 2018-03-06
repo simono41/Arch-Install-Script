@@ -257,11 +257,6 @@ if [ -d /root/.config ]; then
     rm -Rv /root/.config
 fi
 
-# shell-fish
-
-chsh -s /usr/bin/fish root
-chsh -s /usr/bin/fish ${username}
-
 # mirrorlist
 cp /opt/${repo}/mirrorlist_libre /etc/pacman.d/mirrorlist_libre
 cp /opt/${repo}/mirrorlist /etc/pacman.d/mirrorlist
@@ -535,6 +530,7 @@ if [ "${vollinstallation}" != "n" ]; then
     cp /opt/${repo}/.bashrc /root/
 
     # config.fish
+    mkdir -p /root/.config/fish/
     cp /opt/${repo}/config.fish /root/.config/fish/config.fish
 
     # btrfs-swapfile
@@ -598,6 +594,11 @@ if [ "${vollinstallation}" != "n" ]; then
     # adduser.sh
     cp /opt/${repo}/adduser.sh /usr/bin/adduser
     chmod 755 /usr/bin/adduser
+
+    # shell-fish
+
+    chsh -s /usr/bin/fish root
+    chsh -s /usr/bin/fish ${username}
 
 fi
 

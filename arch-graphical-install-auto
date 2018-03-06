@@ -257,6 +257,11 @@ if [ -d /root/.config ]; then
     rm -Rv /root/.config
 fi
 
+# shell-fish
+
+chsh -s /usr/bin/fish root
+chsh -s /usr/bin/fish ${username}
+
 # mirrorlist
 cp /opt/${repo}/mirrorlist_libre /etc/pacman.d/mirrorlist_libre
 cp /opt/${repo}/mirrorlist /etc/pacman.d/mirrorlist
@@ -528,6 +533,9 @@ if [ "${vollinstallation}" != "n" ]; then
     # bash.bashrc
     sed "s|%OS_NAME%|${repo}|g;" /opt/${repo}/bash.bashrc > /etc/bash.bashrc
     cp /opt/${repo}/.bashrc /root/
+
+    # config.fish
+    cp /opt/${repo}/config.fish /root/.config/fish/config.fish
 
     # btrfs-swapfile
     cp /opt/${repo}/btrfs-swapon.service /etc/systemd/system/

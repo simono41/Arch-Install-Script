@@ -25,6 +25,7 @@ exfat-utils
 fail2ban
 ffmpeg
 filezilla
+fish
 freeciv
 gdisk
 git

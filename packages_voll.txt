@@ -48,6 +48,7 @@ file-roller
 filezilla
 firefox
 firefox-i18n-de
+fish
 freeciv
 gdisk
 gimp

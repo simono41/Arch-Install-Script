@@ -311,7 +311,6 @@ EOT
         fi
         yaourtinstall pamac-aur
         yaourtinstall conky-lua-nv
-        yaourtinstall vibrancy-colors
 
     fi
 fi
@@ -596,9 +595,11 @@ if [ "${vollinstallation}" != "n" ]; then
     chmod 755 /usr/bin/adduser
 
     # shell-fish
-
     chsh -s /usr/bin/fish root
     chsh -s /usr/bin/fish ${username}
+
+    # Vibrancy Colors
+    tar -vxJf /opt/${repo}/vibrancy-colors.tar.xz -C /usr/share/icons/
 
 fi
 

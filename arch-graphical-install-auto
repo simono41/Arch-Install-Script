@@ -27,19 +27,19 @@ userpass="$3"
 [[ -z "${userpass}" ]] && userpass="user1"
 
 function gitclone() {
-    if [ -d "${repo}" ]; then
+    if [ -d "/opt/${repo}" ]; then
         echo "${repo} existiert bereits!!!"
         cd /opt/${repo}
         git pull
     else
-        git clone ${WEBADDRESS}
+        git clone ${WEBADDRESS} /opt/${repo}
     fi
-    if [ -d "${repo1}" ]; then
+    if [ -d "/opt/${repo1}" ]; then
         echo "${repo1} existiert bereits!!!"
         cd /opt/${repo1}
         git pull
     else
-        git clone ${WEBADDRESS1}
+        git clone ${WEBADDRESS1} /opt/${repo1}
     fi
     cd /
 }

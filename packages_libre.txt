@@ -86,6 +86,7 @@ python
 python-pip
 python2-pip
 qemu
+rsync
 squashfs-tools
 syslinux
 system-config-printer

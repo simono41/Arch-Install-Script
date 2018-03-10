@@ -600,6 +600,7 @@ if [ "${vollinstallation}" != "n" ]; then
 
     # Vibrancy Colors
     tar -vxJf /opt/${repo}/vibrancy-colors.tar.xz -C /usr/share/icons/
+    gtk-update-icon-cache /usr/share/icons/Vibrancy-Colors-Dark/
 
 fi
 

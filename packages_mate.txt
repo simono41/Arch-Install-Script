@@ -66,6 +66,7 @@ libva-mesa-driver
 libva-vdpau-driver
 libvdpau-va-gl
 links
+lua51
 mate
 mate-extra
 mate-power-manager
@@ -113,6 +114,7 @@ telegram-desktop
 thunderbird
 thunderbird-i18n-de
 tigervnc
+tolua++
 transmission-gtk
 ttf-dejavu
 ttf-liberation

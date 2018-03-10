@@ -69,6 +69,7 @@ libva-mesa-driver
 libva-vdpau-driver
 libvdpau-va-gl
 links
+lua51
 mesa-vdpau
 minetest
 mkinitcpio-nfs-utils
@@ -115,6 +116,7 @@ telepathy-morse
 thunderbird
 thunderbird-i18n-de
 tigervnc
+tolua++
 transmission-gtk
 ttf-dejavu
 ttf-liberation

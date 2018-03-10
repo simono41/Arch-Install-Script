@@ -27,17 +27,20 @@ userpass="$3"
 [[ -z "${userpass}" ]] && userpass="user1"
 
 function gitclone() {
-    cd /opt/
     if [ -d "${repo}" ]; then
         echo "${repo} existiert bereits!!!"
-        rm -Rv ${repo}
+        cd /opt/${repo}
+        git pull
+    else
+        git clone ${WEBADDRESS}
     fi
-    git clone ${WEBADDRESS}
     if [ -d "${repo1}" ]; then
         echo "${repo1} existiert bereits!!!"
-        rm -Rv ${repo1}
+        cd /opt/${repo1}
+        git pull
+    else
+        git clone ${WEBADDRESS1}
     fi
-    git clone ${WEBADDRESS1}
     cd /
 }
 
@@ -310,7 +313,6 @@ EOT
             pwd
         fi
         yaourtinstall pamac-aur
-        yaourtinstall conky-lua-nv
 
     fi
 fi
@@ -443,6 +445,8 @@ if [ "${vollinstallation}" != "n" ]; then
     # pip install beautysh
     if [ -d /opt/beautysh ];then
         echo "Bereits vorhanden!!!"
+        cd /opt/beautysh
+        git pull
     else
         git clone https://github.com/bemeurer/beautysh /opt/beautysh
     fi
@@ -461,6 +465,8 @@ if [ "${vollinstallation}" != "n" ]; then
     # powerline-shell-fonts
     if [ -d /opt/powerline-shell-fonts ];then
         echo "Bereits vorhanden!!!"
+        cd /opt/powerline-shell-fonts
+        git pull
     else
         git clone https://github.com/powerline/fonts.git /opt/powerline-shell-fonts
     fi
@@ -471,6 +477,8 @@ if [ "${vollinstallation}" != "n" ]; then
     # uncrustify
     if [ -d /opt/uncrustify ];then
         echo "Bereits vorhanden!!!"
+        cd /opt/uncrustify
+        git pull
     else
         git clone https://github.com/uncrustify/uncrustify.git /opt/uncrustify
     fi
@@ -485,6 +493,29 @@ if [ "${vollinstallation}" != "n" ]; then
         ln -s /opt/uncrustify/build/uncrustify /usr/bin/uncrustify
     fi
     chmod +x /usr/bin/uncrustify
+    cd /
+
+    # conky
+    if [ -d /opt/conky ];then
+        echo "Bereits vorhanden!!!"
+        cd /opt/conky
+        git pull
+    else
+        git clone https://github.com/brndnmtthws/conky.git /opt/conky
+    fi
+    cd /opt/conky
+    cp cmake/ConkyBuildOptions.cmake .
+
+    sed "s|option(BUILD_LUA_CAIRO \"Build cairo bindings for Lua\" false)|option(BUILD_LUA_CAIRO \"Build cairo bindings for Lua\" true)|g;
+    s|option(BUILD_LUA_IMLIB2 \"Build Imlib2 bindings for Lua\" false)|option(BUILD_LUA_IMLIB2 \"Build Imlib2 bindings for Lua\" true)|g;
+    s|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" false)|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" true)|g" ConkyBuildOptions.cmake > cmake/ConkyBuildOptions.cmake
+
+    mkdir -p build
+    cd build
+    cmake ..
+    make
+    make install
+
     cd /
 
     # iso_name

@@ -60,6 +60,7 @@ libva-mesa-driver
 libva-vdpau-driver
 libvdpau-va-gl
 links
+lua51
 mesa-vdpau
 minetest
 mkinitcpio-nfs-utils
@@ -94,6 +95,7 @@ tar
 teeworlds
 telegram-desktop
 tigervnc
+tolua++
 transmission-gtk
 vlc
 wget

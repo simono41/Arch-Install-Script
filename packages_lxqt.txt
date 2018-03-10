@@ -67,6 +67,7 @@ libva-mesa-driver
 libva-vdpau-driver
 libvdpau-va-gl
 links
+lua51
 lxqt
 lxqt-powermanagement
 mesa-vdpau
@@ -114,6 +115,7 @@ telegram-desktop
 thunderbird
 thunderbird-i18n-de
 tigervnc
+tolua++
 transmission-gtk
 ttf-dejavu
 ttf-liberation

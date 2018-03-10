@@ -30,6 +30,7 @@ freeciv
 gdisk
 git
 gnome
+gnome-calculator
 gnome-extra
 gnome-power-manager
 gnome-screensaver

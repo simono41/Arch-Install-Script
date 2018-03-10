@@ -41,6 +41,7 @@ freeciv
 gdisk
 git
 gnome
+gnome-calculator
 gnome-extra
 gnome-flashback
 gnome-power-manager

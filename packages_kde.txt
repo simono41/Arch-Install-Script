@@ -39,6 +39,7 @@ fish
 freeciv
 gdisk
 git
+gnome-calculator
 gnuchess
 gparted
 grub

@@ -11,7 +11,6 @@ fi
 iso_name=spectre_os
 iso_label="SPECTRE_OS"
 iso_version=$(date +%Y.%m.%d)
-work_dir=work
 out_dir=out
 install_dir=arch
 version="$1"
@@ -23,6 +22,7 @@ parameter4="$5"
 arch=$(uname -m)
 
 [[ -z "${version}" ]] && version="voll"
+work_dir="${version}"
 
 if [ "${version}" == "libre" ]; then
     linuxparameter="-libre"

@@ -5,3 +5,12 @@ ArchLinuxARM-rpi-3-latest.tar.gz
 airootfs.sha512
 test
 arch.img
+/cinnamon/
+/gnome/
+/kde/
+/libre/
+/lxde/
+/lxqt/
+/mate/
+/voll/
+/xfce4/

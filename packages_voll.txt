@@ -152,7 +152,6 @@ os-prober
 oxygen-icons
 pavucontrol
 pcsx2
-pcsxr
 physfs
 pixz
 plasma

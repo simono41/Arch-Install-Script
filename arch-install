@@ -30,13 +30,14 @@ function minimalinstallation() {
 }
 
 function gitclone() {
-    cd /opt/
-    if [ -d "${repo}" ]; then
+    if [ -d "/opt/${repo}" ]; then
         echo "${repo} already exists!!!"
-        rm -Rv ${repo}
+        cd /opt/${repo}
+        git pull
+    else
+        git clone ${WEBADDRESS} /opt/${repo}
     fi
-    git clone ${WEBADDRESS}
-    cd /
+cd /
 }
 
 function secureumount() {

@@ -18,12 +18,13 @@ fi
 echo "Als root Angemeldet"
 
 function gitclone() {
-    cd /root/
-    if [ -d "${repo}" ]; then
+    if [ -d "/opt/${repo}" ]; then
         echo "${repo} existiert bereits!!!"
-        rm -Rv ${repo}
+        cd /opt/${repo}
+        git pull
+    else
+        git clone ${WEBADDRESS} /opt/${repo}
     fi
-    git clone ${WEBADDRESS}
     cd /
 }
 

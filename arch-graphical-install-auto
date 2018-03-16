@@ -95,7 +95,6 @@ function userrechte() {
     chown -cR -v "$username":users /home/"$username"
     chmod 750 -Rv /home/"$username"
     #ssh
-    chmod 755 /home/"$username"/
     if [ -d /home/"$username"/.ssh ]; then
         chmod 700 /home/"$username"/.ssh
     fi
@@ -109,7 +108,6 @@ function userrechte() {
     #root
     chmod 750 -Rv /root
     #ssh-root
-    chmod 755 /root/
     if [ -d /root/.ssh ]; then
         chmod 700 /root/.ssh
     fi

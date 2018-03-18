@@ -101,6 +101,7 @@ python
 python-pip
 python2-pip
 qemu
+refind-efi
 rsync
 screen
 squashfs-tools

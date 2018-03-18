@@ -29,6 +29,7 @@ dsniff
 efibootmgr
 efitools
 exfat-utils
+expac
 fail2ban
 ffmpeg
 file-roller

@@ -44,8 +44,60 @@ function gitclone() {
     cd /
 }
 
+
+function yaourtmanagerinstall() {
+            cd /home/"$username"/
+            pwd
+            su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz"
+            pwd
+            su "$username" -c "tar -xvzf package-query.tar.gz"
+            pwd
+            cd package-query
+            pwd
+            su "$username" -c "makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed" <<EOT
+            pwd
+            cd ..
+            pwd
+            su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz"
+            pwd
+            su "$username" -c "tar -xvzf yaourt.tar.gz"
+            pwd
+            cd yaourt
+            pwd
+            su "$username" -c "makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed"
+            pwd
+            cd /
+
+}
+
+function pacaurmanagerinstall() {
+
+            cd /home/"$username"/
+            pwd
+            su "$username" -c "git clone https://aur.archlinux.org/cower.git"
+            pwd
+            cd cower
+            pwd
+            su "$username" -c "makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed"
+            pwd
+            cd ..
+            pwd
+            su "$username" -c "git clone https://aur.archlinux.org/pacaur.git"
+            pwd
+            cd pacaur
+            pwd
+            su "$username" -c "makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed"
+            pwd
+            cd /
+
+}
+
 function yaourtinstall() {
     su "$username" -c "yaourt -S $1 --needed --noconfirm"
+}
+
+function pacaurinstall() {
+    su "$username" -c "pacaur -S $1 --needed --noconfirm"
 }
 
 function standartinstallation() {
@@ -276,43 +328,9 @@ then
 fi
 
 if [ "${version}" != "libre" ]; then
-    if [ "$yaourt" != "n" ]
-    then
-        if [ "$yaourt" != "debug" ]; then
-            cd /home/"$username"/
-            pwd
-            su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz"
-            pwd
-            su "$username" -c "tar -xvzf package-query.tar.gz"
-            pwd
-            cd package-query
-            pwd
-            su "$username" -c "makepkg -si" <<EOT
-
-
-EOT
-            pwd
-            cd ..
-            pwd
-            su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz"
-            pwd
-            su "$username" -c "tar -xvzf yaourt.tar.gz"
-            pwd
-            cd yaourt
-            pwd
-            su "$username" -c "makepkg -si" <<EOT
-
-
-EOT
-            pwd
-            cd ..
-            pwd
-            su "$username" -c "mkdir -p /home/"$username"/aur-pakete"
-            pwd
-        fi
-        yaourtinstall pamac-aur
-
-    fi
+  #yaourtmanagerinstall
+  pacaurmanagerinstall
+  yaourtinstall pamac-aur
 fi
 
 

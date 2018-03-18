@@ -45,6 +45,7 @@ efibootmgr
 efitools
 elementary-icon-theme
 exfat-utils
+expac
 fail2ban
 ffmpeg
 file-roller

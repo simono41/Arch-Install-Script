@@ -112,7 +112,7 @@ function yaourtinstall() {
 }
 
 function pacaurinstall() {
-    su "$username" -c "pacaur -S $1 --needed --noconfirm"
+    su "$username" -c "pacaur -S $1 --needed --noconfirm --noedit"
 }
 
 function standartinstallation() {

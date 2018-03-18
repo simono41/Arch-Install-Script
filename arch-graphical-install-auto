@@ -126,7 +126,7 @@ function checkend() {
 
 }
 
-function adduser() {
+function addusers() {
     useradd -m -g users -G wheel,audio,video,sys,optical -s /bin/bash $username
     passwd ${username} <<EOT
 ${userpass}
@@ -257,14 +257,14 @@ if [ "$1" == "adduser" ]
 then
     username=$2
     userpass=$3
-    adduser
+    addusers
     exit 0
 fi
 
 if cat /etc/passwd | grep ${username} > /dev/null; then
-    echo "${username} existiert bereits!!!"
+  echo "${username} existiert bereits!!!"
 else
-    adduser
+  addusers
 fi
 
 if [ "$erstellen" == "exit" ]
@@ -641,9 +641,9 @@ if [ "${vollinstallation}" != "n" ]; then
     mkdir -p /root/Musik
     mkdir -p /root/Videos
 
-    # adduser.sh
-    cp /opt/${repo}/adduser.sh /usr/bin/adduser
-    chmod 755 /usr/bin/adduser
+    # addusers.sh
+    cp /opt/${repo}/addusers.sh /usr/bin/addusers
+    chmod 755 /usr/bin/addusers
 
     # shell-fish
     chsh -s /usr/bin/fish root

@@ -9,7 +9,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 echo "Als root Angemeldet"
 #
-function adduser() {
+function addusers() {
     useradd -m -g users -G wheel,audio,video,sys,optical -s /bin/bash $username
     passwd ${username} <<EOT
 ${userpass}
@@ -59,7 +59,7 @@ function userrechte() {
 
 username="$1"
 userpass="$2"
-adduser
+addusers
 copyconfig
 
 echo "Fertig!!!"

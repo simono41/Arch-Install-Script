@@ -75,7 +75,14 @@ function pacaurmanagerinstall() {
 
     cd /home/"$username"/
     pwd
-    su "$username" -c "git clone https://aur.archlinux.org/cower.git"
+    if [ -d /home/"$username"/cower ];then
+        echo "Bereits vorhanden!!!"
+        cd /home/"$username"/cower
+        su "$username" -c "git pull"
+        cd ..
+    else
+        su "$username" -c "git clone https://aur.archlinux.org/cower.git"
+    fi
     pwd
     cd cower
     pwd
@@ -83,7 +90,14 @@ function pacaurmanagerinstall() {
     pwd
     cd ..
     pwd
-    su "$username" -c "git clone https://aur.archlinux.org/pacaur.git"
+    if [ -d /home/"$username"/pacaur ];then
+        echo "Bereits vorhanden!!!"
+        cd /home/"$username"/pacaur
+        su "$username" -c "git pull"
+        cd ..
+    else
+        su "$username" -c "git clone https://aur.archlinux.org/pacaur.git"
+    fi
     pwd
     cd pacaur
     pwd

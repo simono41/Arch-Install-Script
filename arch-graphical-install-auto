@@ -46,6 +46,7 @@ function gitclone() {
 
 
 function yaourtmanagerinstall() {
+
             cd /home/"$username"/
             pwd
             su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz"
@@ -330,7 +331,7 @@ fi
 if [ "${version}" != "libre" ]; then
   #yaourtmanagerinstall
   pacaurmanagerinstall
-  yaourtinstall pamac-aur
+  pacaurinstall pamac-aur
 fi
 
 

@@ -47,15 +47,15 @@ function gitclone() {
 
 function yaourtmanagerinstall() {
 
-            cd /home/"$username"/
-            pwd
-            su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz"
-            pwd
-            su "$username" -c "tar -xvzf package-query.tar.gz"
-            pwd
-            cd package-query
-            pwd
-            su "$username" -c "makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed" <<EOT
+    cd /home/"$username"/
+    pwd
+    su "$username" -c "curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz"
+    pwd
+    su "$username" -c "tar -xvzf package-query.tar.gz"
+    pwd
+    cd package-query
+    pwd
+    su "$username" -c "makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed" <<EOT
             pwd
             cd ..
             pwd
@@ -262,9 +262,9 @@ then
 fi
 
 if cat /etc/passwd | grep ${username} > /dev/null; then
-  echo "${username} existiert bereits!!!"
+    echo "${username} existiert bereits!!!"
 else
-  addusers
+    addusers
 fi
 
 if [ "$erstellen" == "exit" ]
@@ -329,9 +329,9 @@ then
 fi
 
 if [ "${version}" != "libre" ]; then
-  #yaourtmanagerinstall
-  pacaurmanagerinstall
-  pacaurinstall pamac-aur
+    #yaourtmanagerinstall
+    pacaurmanagerinstall
+    pacaurinstall pamac-aur
 fi
 
 
@@ -528,7 +528,7 @@ if [ "${vollinstallation}" != "n" ]; then
     s|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" false)|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" true)|g" ConkyBuildOptions.cmake > cmake/ConkyBuildOptions.cmake
 
     if [ -d build ];then
-      rm -Rv build
+        rm -Rv build
     fi
     mkdir -p build
     cd build

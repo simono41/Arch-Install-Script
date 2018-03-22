@@ -911,10 +911,12 @@ then
             if [ "${update}" != "n" ]
             then
                 if [ -f /usr/bin/git ]; then
-                    gitclone
+                    echo "Git is installed"
                 else
                     echo "Git is not installed"
+                    pacman -Sy git --needed --noconfirm
                 fi
+                gitclone
                 /opt/${repo}/arch-install n ${version}
                 exit 0
             fi

@@ -42,3 +42,4 @@ x-scheme-handler/mailto=thunderbird.desktop
 message/rfc822=thunderbird.desktop
 x-scheme-handler/discord-402572971681644545=discord-402572971681644545.desktop
 image/png=eog.desktop
+inode/directory=org.gnome.Nautilus.desktop

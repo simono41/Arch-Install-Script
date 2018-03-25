@@ -648,7 +648,7 @@ if [ "${vollinstallation}" != "n" ]; then
     gtk-update-icon-cache /usr/share/icons/Vibrancy-Colors-Dark/
 
     # XDG standard
-    cp mimeapps.list /etc/xdg/mimeapps.list
+    cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
 
 fi
 

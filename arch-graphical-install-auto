@@ -231,18 +231,6 @@ function links() {
 }
 
 function gnomeconfig() {
-    mkdir -p /home/"$username"/.config/gtk-3.0/
-    echo "[Settings]" > /home/"$username"/.config/gtk-3.0/settings.ini
-    echo "gtk-theme-name = Adwaita" >> /home/"$username"/.config/gtk-3.0/settings.ini
-    echo "# next option is applicable only if selected theme supports it" >> /home/"$username"/.config/gtk-3.0/settings.ini
-    echo "gtk-application-prefer-dark-theme = true" >> /home/"$username"/.config/gtk-3.0/settings.ini
-    echo "# set font name and dimension" >> /home/"$username"/.config/gtk-3.0/settings.ini
-    echo "gtk-font-name = Sans 10" >> /home/"$username"/.config/gtk-3.0/settings.ini
-
-    mkdir -p /home/"$username"/.local/share/applications/
-    echo "[Default Applications]" > /home/"$username"/.local/share/applications/mimeapps.list
-    echo "inode/directory=org.gnome.Nautilus.desktop" >> /home/"$username"/.local/share/applications/mimeapps.list
-
     mkdir -p /root/.config/gtk-3.0/
     echo "[Settings]" > /root/.config/gtk-3.0/settings.ini
     echo "gtk-theme-name = Adwaita" >> /root/.config/gtk-3.0/settings.ini
@@ -250,10 +238,6 @@ function gnomeconfig() {
     echo "gtk-application-prefer-dark-theme = true" >> /root/.config/gtk-3.0/settings.ini
     echo "# set font name and dimension" >> /root/.config/gtk-3.0/settings.ini
     echo "gtk-font-name = Sans 10" >> /root/.config/gtk-3.0/settings.ini
-
-    mkdir -p /root/.local/share/applications/
-    echo "[Default Applications]" > /root/.local/share/applications/mimeapps.list
-    echo "inode/directory=org.gnome.Nautilus.desktop" >> /root/.local/share/applications/mimeapps.list
 
     gsettings set org.gnome.desktop.media-handling automount 'false'
     gsettings set org.gnome.desktop.media-handling automount-open 'false'
@@ -662,6 +646,9 @@ if [ "${vollinstallation}" != "n" ]; then
     # Vibrancy Colors
     tar -vxJf /opt/${repo}/vibrancy-colors.tar.xz -C /usr/share/icons/
     gtk-update-icon-cache /usr/share/icons/Vibrancy-Colors-Dark/
+
+    # XDG standard
+    cp mimeapps.list /etc/xdg/mimeapps.list
 
 fi
 

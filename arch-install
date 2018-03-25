@@ -914,7 +914,7 @@ then
                     echo "Git is installed"
                 else
                     echo "Git is not installed"
-                    pacman -Sy git --needed --noconfirm
+                    pacman -Syu git --needed --noconfirm
                 fi
                 gitclone
                 /opt/${repo}/arch-install n ${version}

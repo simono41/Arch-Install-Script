@@ -15,7 +15,7 @@ fi
 
 if [ "$2" == "libre" ]; then
     echo "Libre mode Enabled!!!"
-    version="-libre"
+    version="libre"
 fi
 
 if [[ $EUID -ne 0 ]]; then
@@ -339,7 +339,7 @@ function installation {
     fi
 
     #hostname
-    echo "${repo}${version}" > ${mountpoint}/etc/hostname
+    echo "${repo}-${version}" > ${mountpoint}/etc/hostname
 
     if [ "${usbsecret}" == "y" ]; then
         usbsecret
@@ -968,7 +968,7 @@ then
     fi
     echo "installation"
     installation
-    arch-chroot ${mountpoint} mkinitcpio -p linux${version}
+    arch-chroot ${mountpoint} mkinitcpio -p linux-${version}
     echo ""
     if [ "${boot}" == "grub" ]
     then
@@ -1012,7 +1012,7 @@ if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ "${installationfehler}
     if [ "$graphical" != "n" ]
     then
         cp /opt/${repo}/arch-graphical-install-auto ${mountpoint}/root/arch-graphical-install-auto
-        if [ "${version}" == "-libre" ]; then
+        if [ "${version}" == "libre" ]; then
             arch-chroot ${mountpoint} /root/arch-graphical-install-auto libre
         else
             arch-chroot ${mountpoint} /root/arch-graphical-install-auto voll

@@ -94,6 +94,7 @@ opencl-nvidia
 openssh
 openvpn
 os-prober
+p7zip
 pavucontrol
 pixz
 ppp

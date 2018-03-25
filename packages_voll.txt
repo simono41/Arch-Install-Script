@@ -151,6 +151,7 @@ openttd
 openvpn
 os-prober
 oxygen-icons
+p7zip
 pavucontrol
 pcsx2
 physfs

@@ -93,6 +93,7 @@ openssh
 openvpn
 os-prober
 oxygen-icons
+p7zip
 pavucontrol
 pixz
 ppp

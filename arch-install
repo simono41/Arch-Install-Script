@@ -9,10 +9,6 @@ repo="SpectreOS"
 user="user1"
 version="%VERSION%"
 
-if [ "${version}" == "%VERSION%" ]; then
-    version=""
-fi
-
 if [ "$2" == "libre" ]; then
     echo "Libre mode Enabled!!!"
     version="libre"

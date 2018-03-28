@@ -79,6 +79,7 @@ ntp
 openssh
 openvpn
 os-prober
+p7zip
 pavucontrol
 pixz
 ppp

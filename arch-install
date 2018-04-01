@@ -959,20 +959,24 @@ fi
 #
 echo "A purge stops the chance of installing on the system."
 echo "It may take a while!"
-dd if=/dev/zero of=${device} bs=64M count=10 status=progress
+if [ "${name}" != "noinstall" ]; then
+  dd if=/dev/zero of=${device} bs=64M count=10 status=progress
+fi
 #
 if [ "${Partition}" == "uefi" ]
 then
     echo "Partitions with UEFI"
 
-    if [ "${swap}" != "n" ]; then
-        echo "Create additional swap partition"
-        partionierenmitswap
-    else
-        partionierenohneswap
+    if [ "${name}" != "noinstall" ]; then
+      if [ "${swap}" != "n" ]; then
+          echo "Create additional swap partition"
+          partionierenmitswap
+      else
+          partionierenohneswap
+      fi
     fi
 
-    if [ "${name}" == "noinstall" ]; then
+    if [ "${name}" != "noinstall" ]; then
       echo "installation"
       installation
     fi
@@ -995,14 +999,16 @@ then
     echo "Finished"
 elif [ "${Partition}" == "bios" ]; then
     echo "Partitions with MBR"
-    if [ "${swap}" != "n" ]; then
-        echo "Create additional swap partition"
-        partionierenmitswap
-    else
-        partionierenohneswap
+    if [ "${name}" != "noinstall" ]; then
+      if [ "${swap}" != "n" ]; then
+          echo "Create additional swap partition"
+          partionierenmitswap
+      else
+          partionierenohneswap
+      fi
     fi
 
-    if [ "${name}" == "noinstall" ]; then
+    if [ "${name}" != "noinstall" ]; then
       echo "installation"
       installation
     fi

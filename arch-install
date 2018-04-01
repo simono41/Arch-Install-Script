@@ -206,27 +206,36 @@ function installation {
     #root
     if [ "${dateisystem}" == "btrfs" ]; then
         #mkfs.btrfs -f -L p_arch ${device}2
-        btrfsformat #btrfs
+        if [ "${name}" != "noinstall" ]; then
+          btrfsformat #btrfs
+        fi
         subvolume #btrfs
 
     elif [ "${dateisystem}" == "ext4" ]; then
         echo "confirm with j"
         if [ "${verschluesselung}" == "y" ]; then
-            mkfs.ext4 -L p_arch ${deviceluks} #ext4
+            if [ "${name}" != "noinstall" ]; then
+              mkfs.ext4 -L p_arch ${deviceluks} #ext4
+            fi
             mount ${deviceluks} ${mountpoint}
         else
-            mkfs.ext4 -L p_arch ${device}${rootpartitionnummer} #ext4
+            if [ "${name}" != "noinstall" ]; then
+              mkfs.ext4 -L p_arch ${device}${rootpartitionnummer} #ext4
+            fi
             mount ${device}${rootpartitionnummer} ${mountpoint}
         fi
 
     fi
 
     #swap
-    if [ "${swap}" != "n" ]; then
+    if [ "${name}" != "noinstall" ]; then
+      if [ "${swap}" != "n" ]; then
         mkswap -L p_swap ${device}${swappartitionnummer}
+      fi
     fi
 
     #installation
+    if [ "${name}" != "noinstall" ]; then
     if [ "${offline}" != "n" ]
     then
         if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]; then
@@ -245,6 +254,7 @@ function installation {
         fi
     else
         minimalinstallation
+    fi
     fi
 
     # module and hooks
@@ -284,7 +294,7 @@ function installation {
     echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo ""
     echo "blacklist floppy" > ${mountpoint}/etc/modprobe.d/blacklist-floppy.conf
-    echo "tmpfs /tmp tmpfs defaults 0 0" >> ${mountpoint}/etc/fstab
+    echo "tmpfs /tmp tmpfs defaults 0 0" > ${mountpoint}/etc/fstab
     echo "tmpfs /dev/shm tmpfs defaults 0 0" >> ${mountpoint}/etc/fstab
 
     #fstab
@@ -324,7 +334,7 @@ function installation {
     if [ "${swap}" != "n" ]; then
         if [ "${verschluesselung}" == "y" ]; then
             swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
-            echo "swap PARTUUID=${swappartition} /dev/urandom swap,cipher=aes-cbc-essiv:sha256,size=256" >> ${mountpoint}/etc/crypttab
+            echo "swap PARTUUID=${swappartition} /dev/urandom swap,cipher=aes-cbc-essiv:sha256,size=256" > ${mountpoint}/etc/crypttab
             echo "/dev/mapper/swap none swap defaults 0 0" >> ${mountpoint}/etc/fstab
         else
             swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
@@ -333,6 +343,7 @@ function installation {
     fi
 
     #makeswapfile+fstab
+    if [ "${name}" != "noinstall" ]; then
     if [ "${swapfile}" == "y" ]; then
         if [ "${dateisystem}" == "btrfs" ]; then
             makebtrfsswapfile
@@ -340,18 +351,22 @@ function installation {
             makeswapfile
         fi
     fi
+    fi
 
     #hostname
     echo "${repo}-${version}" > ${mountpoint}/etc/hostname
 
+    if [ "${name}" != "noinstall" ]; then
     if [ "${usbsecret}" == "y" ]; then
         usbsecret
     fi
+    fi
 
+    if [ "${name}" != "noinstall" ]; then
     if [ "${usbkey}" == "y" ]; then
         usbkeyinstallation
     fi
-
+    fi
 
 
 
@@ -539,6 +554,7 @@ function subvolume() {
     btrfsmount 1
 
     # Create
+    if [ "${name}" != "noinstall" ]; then
     mkdir -p /mnt/btrfs-root/__snapshot
     mkdir -p /mnt/btrfs-root/__current
     btrfs subvolume create /mnt/btrfs-root/__current/ROOT
@@ -553,6 +569,7 @@ function subvolume() {
         mkdir -p /mnt/btrfs-root/__current${wort%/*}
         btrfs subvolume create /mnt/btrfs-root/__current${wort}
     done
+    fi
 
     btrfs subvolume list -p /mnt/btrfs-root
 
@@ -978,10 +995,8 @@ then
       fi
     fi
 
-    if [ "${name}" != "noinstall" ]; then
-      echo "installation"
-      installation
-    fi
+    echo "installation"
+    installation
     grubinstall
 
     if [ "${version}" == "libre" ]; then
@@ -1010,10 +1025,8 @@ elif [ "${Partition}" == "bios" ]; then
       fi
     fi
 
-    if [ "${name}" != "noinstall" ]; then
-      echo "installation"
-      installation
-    fi
+    echo "installation"
+    installation
     grubinstall
 
     if [ "${version}" == "libre" ]; then

@@ -9,10 +9,9 @@ repo="SpectreOS"
 user="user1"
 version="%VERSION%"
 
-if [ "$2" == "libre" ]; then
-    echo "Libre mode Enabled!!!"
-    version="libre"
-fi
+[[ -n "${2}" ]] && version=${2}
+
+[[ "$version" == "%VERSION%" ]] && version=voll
 
 if [[ $EUID -ne 0 ]]; then
     echo "This script must be run as root" 1>&2
@@ -968,9 +967,17 @@ then
     else
         partionierenohneswap
     fi
-    echo "installation"
-    installation
-    arch-chroot ${mountpoint} mkinitcpio -p linux-${version}
+
+    if [ "${name}" == "noinstall" ]; then
+      echo "installation"
+      installation
+    fi
+
+    if [ "${version}" == "libre" ]; then
+      arch-chroot ${mountpoint} mkinitcpio -p linux-libre
+    else
+      arch-chroot ${mountpoint} mkinitcpio -p linux
+    fi
     echo ""
     if [ "${boot}" == "grub" ]
     then
@@ -989,9 +996,17 @@ elif [ "${Partition}" == "bios" ]; then
     else
         partionierenohneswap
     fi
-    echo "installation"
-    installation
-    arch-chroot ${mountpoint} mkinitcpio -p linux
+
+    if [ "${name}" == "noinstall" ]; then
+      echo "installation"
+      installation
+    fi
+
+    if [ "${version}" == "libre" ]; then
+      arch-chroot ${mountpoint} mkinitcpio -p linux-libre
+    else
+      arch-chroot ${mountpoint} mkinitcpio -p linux
+    fi
     arch-chroot ${mountpoint} grub-install --target=i386-pc --recheck ${device}
     arch-chroot ${mountpoint} grub-mkconfig -o /boot/grub/grub.cfg
     #removeinstaller

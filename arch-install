@@ -32,7 +32,7 @@ function gitclone() {
     else
         git clone ${WEBADDRESS} /opt/${repo}
     fi
-cd /
+    cd /
 }
 
 function secureumount() {
@@ -73,9 +73,9 @@ function secureumount() {
     fi
 
     if [ -n "${usbkeydevice}" ]; then
-      if cat /proc/mounts | grep ${usbkeydevice} > /dev/null; then
-          umount ${usbkeydevice}
-      fi
+        if cat /proc/mounts | grep ${usbkeydevice} > /dev/null; then
+            umount ${usbkeydevice}
+        fi
     fi
 
 }
@@ -201,13 +201,15 @@ function installation {
 
     #boot
     echo "format"
-    mkfs.vfat -F 32 ${device}${efipartitionnummer}
+    if [ "${name}" != "noinstall" ]; then
+        mkfs.vfat -F 32 ${device}${efipartitionnummer}
+    fi
 
     #root
     if [ "${dateisystem}" == "btrfs" ]; then
         #mkfs.btrfs -f -L p_arch ${device}2
         if [ "${name}" != "noinstall" ]; then
-          btrfsformat #btrfs
+            btrfsformat #btrfs
         fi
         subvolume #btrfs
 
@@ -215,12 +217,12 @@ function installation {
         echo "confirm with j"
         if [ "${verschluesselung}" == "y" ]; then
             if [ "${name}" != "noinstall" ]; then
-              mkfs.ext4 -L p_arch ${deviceluks} #ext4
+                mkfs.ext4 -L p_arch ${deviceluks} #ext4
             fi
             mount ${deviceluks} ${mountpoint}
         else
             if [ "${name}" != "noinstall" ]; then
-              mkfs.ext4 -L p_arch ${device}${rootpartitionnummer} #ext4
+                mkfs.ext4 -L p_arch ${device}${rootpartitionnummer} #ext4
             fi
             mount ${device}${rootpartitionnummer} ${mountpoint}
         fi
@@ -229,32 +231,32 @@ function installation {
 
     #swap
     if [ "${name}" != "noinstall" ]; then
-      if [ "${swap}" != "n" ]; then
-        mkswap -L p_swap ${device}${swappartitionnummer}
-      fi
+        if [ "${swap}" != "n" ]; then
+            mkswap -L p_swap ${device}${swappartitionnummer}
+        fi
     fi
 
     #installation
     if [ "${name}" != "noinstall" ]; then
-    if [ "${offline}" != "n" ]
-    then
-        if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]; then
-            echo "It is not a copytoram system."
-            unsquashfs -f -d ${mountpoint} /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
-        elif [ -f /run/archiso/copytoram/airootfs.sfs ]; then
-            echo "It is a copytoram system."
-            unsquashfs -f -d ${mountpoint} /run/archiso/copytoram/airootfs.sfs
-        else
-            read -p "Where is the airootfs.sfs? Please specify the complete path or choose the online installation? [/airootfs.sfs/online] : " installationfehler
-            if [ "${installationfehler}" == "online" ]; then
-                minimalinstallation
+        if [ "${offline}" != "n" ]
+        then
+            if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]; then
+                echo "It is not a copytoram system."
+                unsquashfs -f -d ${mountpoint} /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs
+            elif [ -f /run/archiso/copytoram/airootfs.sfs ]; then
+                echo "It is a copytoram system."
+                unsquashfs -f -d ${mountpoint} /run/archiso/copytoram/airootfs.sfs
             else
-                unsquashfs -f -d ${mountpoint} ${installationfehler}
+                read -p "Where is the airootfs.sfs? Please specify the complete path or choose the online installation? [/airootfs.sfs/online] : " installationfehler
+                if [ "${installationfehler}" == "online" ]; then
+                    minimalinstallation
+                else
+                    unsquashfs -f -d ${mountpoint} ${installationfehler}
+                fi
             fi
+        else
+            minimalinstallation
         fi
-    else
-        minimalinstallation
-    fi
     fi
 
     # module and hooks
@@ -344,28 +346,28 @@ function installation {
 
     #makeswapfile+fstab
     if [ "${name}" != "noinstall" ]; then
-    if [ "${swapfile}" == "y" ]; then
-        if [ "${dateisystem}" == "btrfs" ]; then
-            makebtrfsswapfile
-        elif [ "${dateisystem}" == "ext4" ]; then
-            makeswapfile
+        if [ "${swapfile}" == "y" ]; then
+            if [ "${dateisystem}" == "btrfs" ]; then
+                makebtrfsswapfile
+            elif [ "${dateisystem}" == "ext4" ]; then
+                makeswapfile
+            fi
         fi
-    fi
     fi
 
     #hostname
     echo "${repo}-${version}" > ${mountpoint}/etc/hostname
 
     if [ "${name}" != "noinstall" ]; then
-    if [ "${usbsecret}" == "y" ]; then
-        usbsecret
-    fi
+        if [ "${usbsecret}" == "y" ]; then
+            usbsecret
+        fi
     fi
 
     if [ "${name}" != "noinstall" ]; then
-    if [ "${usbkey}" == "y" ]; then
-        usbkeyinstallation
-    fi
+        if [ "${usbkey}" == "y" ]; then
+            usbkeyinstallation
+        fi
     fi
 
 
@@ -389,34 +391,34 @@ function installation {
 }
 
 function grubinstall() {
-  if [ "${verschluesselung}" == "y" ]; then
-      if [ "${boot}" == "grub" ]; then
-          tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
-          if [ "${swap}" != "n" ]; then
-              swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
-              if [ "${usbkey}" == "y" ]; then
-                  sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' cryptkey=UUID='$usbkeyuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
-              else
-                  sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
-              fi
-          else
-              if [ "${usbkey}" == "y" ]; then
-                  sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 cryptkey=UUID='$usbkeyuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
-              else
-                  sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
-              fi
-          fi
-          echo "GRUB_ENABLE_CRYPTODISK=y" >> ${mountpoint}/etc/default/grub
-      fi
-  else
-      if [ "${boot}" == "grub" ]; then
-          tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
-          if [ "${swap}" != "n" ]; then
-              swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
-              sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="resume=PARTUUID='$swappartition' nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
-          fi
-      fi
-  fi
+    if [ "${verschluesselung}" == "y" ]; then
+        if [ "${boot}" == "grub" ]; then
+            tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
+            if [ "${swap}" != "n" ]; then
+                swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
+                if [ "${usbkey}" == "y" ]; then
+                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' cryptkey=UUID='$usbkeyuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
+                else
+                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
+                fi
+            else
+                if [ "${usbkey}" == "y" ]; then
+                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 cryptkey=UUID='$usbkeyuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
+                else
+                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
+                fi
+            fi
+            echo "GRUB_ENABLE_CRYPTODISK=y" >> ${mountpoint}/etc/default/grub
+        fi
+    else
+        if [ "${boot}" == "grub" ]; then
+            tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
+            if [ "${swap}" != "n" ]; then
+                swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
+                sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="resume=PARTUUID='$swappartition' nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
+            fi
+        fi
+    fi
 }
 
 function btrfsformat() {
@@ -555,20 +557,20 @@ function subvolume() {
 
     # Create
     if [ "${name}" != "noinstall" ]; then
-    mkdir -p /mnt/btrfs-root/__snapshot
-    mkdir -p /mnt/btrfs-root/__current
-    btrfs subvolume create /mnt/btrfs-root/__current/ROOT
-    btrfs subvolume create /mnt/btrfs-root/__current/home
-    btrfs subvolume create /mnt/btrfs-root/__current/opt
-    mkdir -p /mnt/btrfs-root/__current/var/cache/pacman
-    btrfs subvolume create /mnt/btrfs-root/__current/var/cache/pacman/pkg/
+        mkdir -p /mnt/btrfs-root/__snapshot
+        mkdir -p /mnt/btrfs-root/__current
+        btrfs subvolume create /mnt/btrfs-root/__current/ROOT
+        btrfs subvolume create /mnt/btrfs-root/__current/home
+        btrfs subvolume create /mnt/btrfs-root/__current/opt
+        mkdir -p /mnt/btrfs-root/__current/var/cache/pacman
+        btrfs subvolume create /mnt/btrfs-root/__current/var/cache/pacman/pkg/
 
-    # custom-mounts
-    for wort in ${mountsnaps}
-    do
-        mkdir -p /mnt/btrfs-root/__current${wort%/*}
-        btrfs subvolume create /mnt/btrfs-root/__current${wort}
-    done
+        # custom-mounts
+        for wort in ${mountsnaps}
+        do
+            mkdir -p /mnt/btrfs-root/__current${wort%/*}
+            btrfs subvolume create /mnt/btrfs-root/__current${wort}
+        done
     fi
 
     btrfs subvolume list -p /mnt/btrfs-root
@@ -979,7 +981,7 @@ fi
 echo "A purge stops the chance of installing on the system."
 echo "It may take a while!"
 if [ "${name}" != "noinstall" ]; then
-  dd if=/dev/zero of=${device} bs=64M count=10 status=progress
+    dd if=/dev/zero of=${device} bs=64M count=10 status=progress
 fi
 #
 if [ "${Partition}" == "uefi" ]
@@ -987,12 +989,12 @@ then
     echo "Partitions with UEFI"
 
     if [ "${name}" != "noinstall" ]; then
-      if [ "${swap}" != "n" ]; then
-          echo "Create additional swap partition"
-          partionierenmitswap
-      else
-          partionierenohneswap
-      fi
+        if [ "${swap}" != "n" ]; then
+            echo "Create additional swap partition"
+            partionierenmitswap
+        else
+            partionierenohneswap
+        fi
     fi
 
     echo "installation"
@@ -1000,9 +1002,9 @@ then
     grubinstall
 
     if [ "${version}" == "libre" ]; then
-      arch-chroot ${mountpoint} mkinitcpio -p linux-libre
+        arch-chroot ${mountpoint} mkinitcpio -p linux-libre
     else
-      arch-chroot ${mountpoint} mkinitcpio -p linux
+        arch-chroot ${mountpoint} mkinitcpio -p linux
     fi
     echo ""
     if [ "${boot}" == "grub" ]
@@ -1017,12 +1019,12 @@ then
 elif [ "${Partition}" == "bios" ]; then
     echo "Partitions with MBR"
     if [ "${name}" != "noinstall" ]; then
-      if [ "${swap}" != "n" ]; then
-          echo "Create additional swap partition"
-          partionierenmitswap
-      else
-          partionierenohneswap
-      fi
+        if [ "${swap}" != "n" ]; then
+            echo "Create additional swap partition"
+            partionierenmitswap
+        else
+            partionierenohneswap
+        fi
     fi
 
     echo "installation"
@@ -1030,9 +1032,9 @@ elif [ "${Partition}" == "bios" ]; then
     grubinstall
 
     if [ "${version}" == "libre" ]; then
-      arch-chroot ${mountpoint} mkinitcpio -p linux-libre
+        arch-chroot ${mountpoint} mkinitcpio -p linux-libre
     else
-      arch-chroot ${mountpoint} mkinitcpio -p linux
+        arch-chroot ${mountpoint} mkinitcpio -p linux
     fi
     arch-chroot ${mountpoint} grub-install --target=i386-pc --recheck ${device}
     arch-chroot ${mountpoint} grub-mkconfig -o /boot/grub/grub.cfg

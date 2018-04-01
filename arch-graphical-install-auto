@@ -107,12 +107,34 @@ function pacaurmanagerinstall() {
 
 }
 
+function aurmanagerinstall() {
+
+    cd /home/"$username"/
+    pwd
+    if [ -d /home/"$username"/aurman ];then
+        echo "Bereits vorhanden!!!"
+        cd /home/"$username"/aurman
+        su "$username" -c "git pull"
+        cd ..
+    else
+        su "$username" -c "git clone https://aur.archlinux.org/aurman.git"
+    fi
+    pwd
+    cd aurman
+    pwd
+    su "$username" -c "makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed"
+    pwd
+    cd /
+
+}
+
+
 function yaourtinstall() {
     su "$username" -c "yaourt -S $1 --needed --noconfirm"
 }
 
-function pacaurinstall() {
-    su "$username" -c "pacaur -S $1 --needed --noconfirm --noedit"
+function aurinstall() {
+    su "$username" -c "aurman -S $1 --needed --noconfirm --noedit"
 }
 
 function standartinstallation() {
@@ -332,8 +354,11 @@ fi
 
 if [ "${version}" != "libre" ]; then
     #yaourtmanagerinstall
-    pacaurmanagerinstall
-    pacaurinstall pamac-aur
+    #pacaurmanagerinstall
+    aurmanagerinstall
+    aurinstall pamac-aur
+    aurinstall google-chrome
+    aurinstall mugshot
 fi
 
 

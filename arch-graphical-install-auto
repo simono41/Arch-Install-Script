@@ -358,7 +358,6 @@ if [ "${version}" != "libre" ]; then
     aurmanagerinstall
     aurinstall pamac-aur
     aurinstall google-chrome
-    aurinstall mugshot
 fi
 
 

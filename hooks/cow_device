@@ -5,8 +5,8 @@ run_hook ()
     if [[ "${format}" == "y" ]]; then
         sfdisk -l
 
-        read -p "Welches Laufwerk soll eine cow_device erhalten? /dev/sda : " formatdevice
         [[ -z "${formatdevice}" ]] && formatdevice=/dev/sda
+        [[ -z "${formatpartition}" ]] && formatpartition=3
 
         fdisk ${formatdevice} <<EOT
 p
@@ -19,9 +19,9 @@ p
 w
 EOT
         
-        mkfs.btrfs -f -L cow_device ${formatdevice}3
+        mkfs.btrfs -f -L cow_device ${formatdevice}${formatpartition}
 
-        launch_interactive_shell
+        reboot -f
     fi
 
 }

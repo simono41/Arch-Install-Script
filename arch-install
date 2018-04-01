@@ -72,7 +72,7 @@ function secureumount() {
         umount ${device}1
     fi
 
-    if [ -n ${usbkeydevice} ]; then
+    if [ -n "${usbkeydevice}" ]; then
       if cat /proc/mounts | grep ${usbkeydevice} > /dev/null; then
           umount ${usbkeydevice}
       fi

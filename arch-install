@@ -350,34 +350,7 @@ function installation {
         usbkeyinstallation
     fi
 
-    if [ "${verschluesselung}" == "y" ]; then
-        if [ "${boot}" == "grub" ]; then
-            tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
-            if [ "${swap}" != "n" ]; then
-                swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
-                if [ "${usbkey}" == "y" ]; then
-                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' cryptkey=UUID='$usbkeyuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
-                else
-                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
-                fi
-            else
-                if [ "${usbkey}" == "y" ]; then
-                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 cryptkey=UUID='$usbkeyuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
-                else
-                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
-                fi
-            fi
-            echo "GRUB_ENABLE_CRYPTODISK=y" >> ${mountpoint}/etc/default/grub
-        fi
-    else
-        if [ "${boot}" == "grub" ]; then
-            tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
-            if [ "${swap}" != "n" ]; then
-                swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
-                sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="resume=PARTUUID='$swappartition' nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
-            fi
-        fi
-    fi
+
 
 
 
@@ -396,6 +369,37 @@ function installation {
 
 
 
+}
+
+function grubinstall() {
+  if [ "${verschluesselung}" == "y" ]; then
+      if [ "${boot}" == "grub" ]; then
+          tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
+          if [ "${swap}" != "n" ]; then
+              swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
+              if [ "${usbkey}" == "y" ]; then
+                  sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' cryptkey=UUID='$usbkeyuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
+              else
+                  sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
+              fi
+          else
+              if [ "${usbkey}" == "y" ]; then
+                  sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 cryptkey=UUID='$usbkeyuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
+              else
+                  sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
+              fi
+          fi
+          echo "GRUB_ENABLE_CRYPTODISK=y" >> ${mountpoint}/etc/default/grub
+      fi
+  else
+      if [ "${boot}" == "grub" ]; then
+          tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
+          if [ "${swap}" != "n" ]; then
+              swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
+              sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="resume=PARTUUID='$swappartition' nvidia-drm.modeset=1 quiet splash"/' ${mountpoint}/etc/default/grub
+          fi
+      fi
+  fi
 }
 
 function btrfsformat() {
@@ -972,6 +976,7 @@ then
       echo "installation"
       installation
     fi
+    grubinstall
 
     if [ "${version}" == "libre" ]; then
       arch-chroot ${mountpoint} mkinitcpio -p linux-libre
@@ -1001,6 +1006,7 @@ elif [ "${Partition}" == "bios" ]; then
       echo "installation"
       installation
     fi
+    grubinstall
 
     if [ "${version}" == "libre" ]; then
       arch-chroot ${mountpoint} mkinitcpio -p linux-libre

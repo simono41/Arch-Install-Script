@@ -359,6 +359,8 @@ if [ "${version}" != "libre" ]; then
     aurinstall pamac-aur
     aurinstall google-chrome
     aurinstall plymouth
+    aurinstall plymouth-theme-dark-arch
+    plymouth-set-default-theme -R dark-arch
 fi
 
 

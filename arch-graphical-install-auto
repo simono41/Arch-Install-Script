@@ -311,6 +311,7 @@ gitclone
 # modprobe.d
 mkdir -p /etc/modprobe.d/
 echo "blacklist floppy" > /etc/modprobe.d/blacklist-floppy.conf
+echo "blacklist nouveau" > /etc/modprobe.d/blacklist_nouveau.conf
 
 # startup
 cp /opt/${repo}/startup /usr/bin/

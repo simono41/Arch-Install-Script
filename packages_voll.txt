@@ -139,6 +139,7 @@ ntfs-3g
 ntp
 nvidia-dkms
 nvidia-libgl
+nvidia-lts
 nvidia-settings
 nvidia-utils
 obs-studio

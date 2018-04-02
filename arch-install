@@ -293,9 +293,10 @@ function installation {
     fi
     echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
-    echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
+    echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo ""
     echo "blacklist floppy" > ${mountpoint}/etc/modprobe.d/blacklist-floppy.conf
+    echo "blacklist nouveau" > ${mountpoint}/etc/modprobe.d/blacklist_nouveau.conf
     echo "tmpfs /tmp tmpfs defaults 0 0" > ${mountpoint}/etc/fstab
     echo "tmpfs /dev/shm tmpfs defaults 0 0" >> ${mountpoint}/etc/fstab
 

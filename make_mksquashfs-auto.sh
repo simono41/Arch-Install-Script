@@ -101,7 +101,7 @@ function filesystem() {
             echo "HOOKS=\"base udev plymouth memdisk archiso_shutdown archiso archiso_loop_mnt archiso_pxe_common archiso_pxe_nbd archiso_pxe_http archiso_pxe_nfs archiso_kms block pcmcia filesystems keyboard cow_device\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
         fi
         echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
         # hooks
         cp -v install/archiso* ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/

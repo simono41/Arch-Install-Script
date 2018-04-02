@@ -76,6 +76,7 @@ mkinitcpio-nfs-utils
 mplayer
 mumble
 nbd
+netbeans
 network-manager-applet
 networkmanager
 nmap

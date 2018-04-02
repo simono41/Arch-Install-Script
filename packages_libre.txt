@@ -72,6 +72,7 @@ mplayer
 mugshot
 mumble
 nbd
+netbeans
 netsurf
 network-manager-applet
 networkmanager

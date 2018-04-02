@@ -11,7 +11,6 @@ base-devel
 bash-completion
 blueman
 btrfs-progs
-bumblebee
 cdrtools
 cmake
 cronie
@@ -55,8 +54,6 @@ jdk8-openjdk
 lib32-libva-vdpau-driver
 lib32-libvdpau
 lib32-mesa-vdpau
-lib32-nvidia-libgl
-lib32-opencl-nvidia
 libreoffice-fresh
 libreoffice-fresh-de
 libva-intel-driver
@@ -72,7 +69,6 @@ mplayer
 mugshot
 mumble
 nbd
-netbeans
 netsurf
 network-manager-applet
 networkmanager
@@ -80,11 +76,6 @@ noto-fonts
 noto-fonts-emoji
 ntfs-3g
 ntp
-nvidia
-nvidia-libgl
-nvidia-settings
-nvidia-utils
-opencl-nvidia
 openssh
 openvpn
 os-prober

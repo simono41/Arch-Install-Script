@@ -85,6 +85,7 @@ ntp
 nvidia-dkms
 nvidia-libgl
 nvidia-settings
+nvidia-utils
 onboard
 opencl-nvidia
 openssh

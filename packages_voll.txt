@@ -140,6 +140,7 @@ ntp
 nvidia-dkms
 nvidia-libgl
 nvidia-settings
+nvidia-utils
 obs-studio
 onboard
 openal

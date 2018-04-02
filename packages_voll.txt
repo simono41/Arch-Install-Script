@@ -137,7 +137,7 @@ noto-fonts
 noto-fonts-emoji
 ntfs-3g
 ntp
-nvidia
+nvidia-dkms
 nvidia-libgl
 nvidia-settings
 obs-studio

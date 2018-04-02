@@ -62,6 +62,7 @@ lib32-libva-vdpau-driver
 lib32-libvdpau
 lib32-mesa-vdpau
 lib32-nvidia-libgl
+lib32-opencl-nvidia
 libdvdcss
 libdvdnav
 libdvdread
@@ -86,7 +87,7 @@ noto-fonts
 noto-fonts-emoji
 ntfs-3g
 ntp
-nvidia
+nvidia-dkms
 nvidia-libgl
 nvidia-settings
 onboard

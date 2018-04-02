@@ -80,9 +80,8 @@ noto-fonts
 noto-fonts-emoji
 ntfs-3g
 ntp
-nvidia-dkms
+nvidia
 nvidia-libgl
-nvidia-lts
 nvidia-settings
 nvidia-utils
 opencl-nvidia

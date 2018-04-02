@@ -293,15 +293,15 @@ function installation {
         echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
 
     else
-        echo "MODULES=\"i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
+        #echo "MODULES=\"i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
+        #echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
+        #echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
+        #echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
+
+        echo "MODULES=\"nvidia nvidia_modeset nvidia_uvm nvidia_drm i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
         echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
         echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
-        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
-
-        echo "MODULES=\"nvidia nvidia_modeset nvidia_uvm nvidia_drm i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio-lts.conf
-        echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio-lts.conf
-        echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio-lts.conf
-        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${mountpoint}/etc/mkinitcpio-lts.conf
+        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
 
     fi
     echo ""
@@ -653,18 +653,18 @@ function systemdboot() {
     echo "initrd   /initramfs-linux-fallback.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
     echo "options  root=${tobootdevice} rw ${parameter}quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
 
-    if [ "${version}" != "libre" ]; then
-      echo "title    "${repo}-lts"" > ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-      echo "linux    /vmlinuz-linux-lts" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-      echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-      echo "initrd   /initramfs-linux-lts.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-      echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
+    #if [ "${version}" != "libre" ]; then
+      #echo "title    "${repo}-lts"" > ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
+      #echo "linux    /vmlinuz-linux-lts" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
+      #echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
+      #echo "initrd   /initramfs-linux-lts.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
+      #echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
 
-      echo "title    "${repo}-lts"" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-      echo "linux    /vmlinuz-linux-lts" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-      echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-      echo "initrd   /initramfs-linux-fallback-lts.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-      echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
+      #echo "title    "${repo}-lts"" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
+      #echo "linux    /vmlinuz-linux-lts" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
+      #echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
+      #echo "initrd   /initramfs-linux-fallback-lts.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
+      #echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
 
     fi
     echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
@@ -678,9 +678,9 @@ function systemdboot() {
 
         arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux efistub" -u "initrd=/initramfs-linux.img root=${tobootdevice} rw ${parameter}quiet splash"
 
-        if [ "${version}" != "libre" ]; then
-          arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux-lts -L "Arch Linux efistub" -u "initrd=/initramfs-linux-lts.img root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash"
-        fi
+        #if [ "${version}" != "libre" ]; then
+          #arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux-lts -L "Arch Linux efistub" -u "initrd=/initramfs-linux-lts.img root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash"
+        #fi
         # überschreibt die efistub deswegen entfernt
         #arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash"
 
@@ -1033,7 +1033,7 @@ then
         arch-chroot ${mountpoint} mkinitcpio -p linux-libre
     else
         arch-chroot ${mountpoint} mkinitcpio -p linux -c /etc/mkinitcpio.conf
-        arch-chroot ${mountpoint} mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
+        #arch-chroot ${mountpoint} mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
     fi
     echo ""
     if [ "${boot}" == "grub" ]
@@ -1064,7 +1064,7 @@ elif [ "${Partition}" == "bios" ]; then
         arch-chroot ${mountpoint} mkinitcpio -p linux-libre
     else
         arch-chroot ${mountpoint} mkinitcpio -p linux -c /etc/mkinitcpio.conf
-        arch-chroot ${mountpoint} mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
+        #arch-chroot ${mountpoint} mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
     fi
     arch-chroot ${mountpoint} grub-install --target=i386-pc --recheck ${device}
     arch-chroot ${mountpoint} grub-mkconfig -o /boot/grub/grub.cfg

@@ -760,7 +760,7 @@ if [ "${version}" == "libre" ]; then
     mkinitcpio -p linux-libre
 else
     mkinitcpio -p linux -c /etc/mkinitcpio.conf
-    mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
+    #mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
 fi
 
 echo "Fertig!!!"

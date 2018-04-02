@@ -72,7 +72,7 @@ function filesystem() {
         if [ "$scripte" != "n" ]
         then
             echo "Scripte werden heruntergeladen!"
-            pacman -Sy arch-install-scripts xorriso squashfs-tools btrfs-progs dosfstools  --needed --noconfirm
+            pacman -Syu arch-install-scripts xorriso squashfs-tools btrfs-progs dosfstools  --needed --noconfirm
 
         fi
 

@@ -23,8 +23,6 @@ cdrtools
 cinnamon
 cmake
 cronie
-cuda
-cudnn
 cups
 dbus
 dialog

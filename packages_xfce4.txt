@@ -22,8 +22,6 @@ bumblebee
 cdrtools
 cmake
 cronie
-cuda
-cudnn
 cups
 dbus
 dialog

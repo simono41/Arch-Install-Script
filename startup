@@ -24,11 +24,7 @@ if cat /proc/cmdline | grep "nvidia=y"; then
 
   mkdir -p -m 755 /etc/X11/xorg.conf.d/
 
-  echo "Section \"Device\"" > /etc/X11/xorg.conf
-  echo "    Identifier     \"Device0\"" >> /etc/X11/xorg.conf
-  echo "    Driver         \"nvidia\"" >> /etc/X11/xorg.conf
-  echo "    VendorName     \"NVIDIA Corporation\"" >> /etc/X11/xorg.conf
-  echo "EndSection" >> /etc/X11/xorg.conf
+  nvidia-xconfig
 
 fi
 

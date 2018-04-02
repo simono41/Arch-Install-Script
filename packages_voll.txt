@@ -28,6 +28,7 @@ boost
 brasero
 breeze-icons
 btrfs-progs
+bumblebee
 bzr
 calibre
 cdrtools
@@ -35,6 +36,8 @@ chromium
 cinnamon
 cmake
 cronie
+cuda
+cudnn
 cups
 dbus
 dialog

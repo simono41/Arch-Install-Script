@@ -288,12 +288,22 @@ function installation {
     echo ""
     if [ "${version}" == "libre" ]; then
         echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
+        echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
+        echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
+        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
+
     else
-        echo "MODULES=\"nvidia nvidia_modeset nvidia_uvm nvidia_drm i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
+        echo "MODULES=\"i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
+        echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
+        echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
+        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
+
+        echo "MODULES=\"nvidia nvidia_modeset nvidia_uvm nvidia_drm i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio-lts.conf
+        echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio-lts.conf
+        echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio-lts.conf
+        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${mountpoint}/etc/mkinitcpio-lts.conf
+
     fi
-    echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
-    echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
-    echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo ""
     echo "blacklist floppy" > ${mountpoint}/etc/modprobe.d/blacklist-floppy.conf
     echo "blacklist nouveau" > ${mountpoint}/etc/modprobe.d/blacklist_nouveau.conf
@@ -1005,7 +1015,8 @@ then
     if [ "${version}" == "libre" ]; then
         arch-chroot ${mountpoint} mkinitcpio -p linux-libre
     else
-        arch-chroot ${mountpoint} mkinitcpio -p linux
+        arch-chroot ${mountpoint} mkinitcpio -p linux -c /etc/mkinitcpio.conf
+        arch-chroot ${mountpoint} mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
     fi
     echo ""
     if [ "${boot}" == "grub" ]
@@ -1035,7 +1046,8 @@ elif [ "${Partition}" == "bios" ]; then
     if [ "${version}" == "libre" ]; then
         arch-chroot ${mountpoint} mkinitcpio -p linux-libre
     else
-        arch-chroot ${mountpoint} mkinitcpio -p linux
+        arch-chroot ${mountpoint} mkinitcpio -p linux -c /etc/mkinitcpio.conf
+        arch-chroot ${mountpoint} mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
     fi
     arch-chroot ${mountpoint} grub-install --target=i386-pc --recheck ${device}
     arch-chroot ${mountpoint} grub-mkconfig -o /boot/grub/grub.cfg

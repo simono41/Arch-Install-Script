@@ -11,9 +11,12 @@ base-devel
 bash-completion
 blueman
 btrfs-progs
+bumblebee
 cdrtools
 cmake
 cronie
+cuda
+cudnn
 cups
 dbus
 dialog

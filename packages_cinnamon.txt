@@ -18,10 +18,13 @@ blueman
 bmon
 brasero
 btrfs-progs
+bumblebee
 cdrtools
 cinnamon
 cmake
 cronie
+cuda
+cudnn
 cups
 dbus
 dialog

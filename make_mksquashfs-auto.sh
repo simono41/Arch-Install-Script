@@ -96,12 +96,21 @@ function filesystem() {
         if [ "${version}" == "libre" ]; then
             echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
             echo "HOOKS=\"base udev memdisk archiso_shutdown archiso archiso_loop_mnt archiso_pxe_common archiso_pxe_nbd archiso_pxe_http archiso_pxe_nfs archiso_kms block pcmcia filesystems keyboard cow_device\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+            echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+            echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+
         else
-            echo "MODULES=\"nvidia nvidia_modeset nvidia_uvm nvidia_drm i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+            echo "MODULES=\"i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
             echo "HOOKS=\"base udev plymouth memdisk archiso_shutdown archiso archiso_loop_mnt archiso_pxe_common archiso_pxe_nbd archiso_pxe_http archiso_pxe_nfs archiso_kms block pcmcia filesystems keyboard cow_device\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+            echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+            echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+
+            echo "MODULES=\"nvidia nvidia_modeset nvidia_uvm nvidia_drm i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio-lts.conf
+            echo "HOOKS=\"base udev plymouth memdisk archiso_shutdown archiso archiso_loop_mnt archiso_pxe_common archiso_pxe_nbd archiso_pxe_http archiso_pxe_nfs archiso_kms block pcmcia filesystems keyboard cow_device\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio-lts.conf
+            echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio-lts.conf
+            echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio-lts.conf
+
         fi
-        echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
         # hooks
         cp -v install/archiso* ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/
@@ -171,8 +180,15 @@ function BIOS() {
         mkdir -p ${work_dir}/iso/${install_dir}/boot/syslinux
 
         cp -R ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/* ${work_dir}/iso/${install_dir}/boot/syslinux/
+
         cp ${work_dir}/${arch}/airootfs/boot/initramfs-linux${linuxparameter}.img ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
         cp ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux${linuxparameter} ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz
+
+        if [ "${version}" != "libre" ]; then
+          cp ${work_dir}/${arch}/airootfs/boot/initramfs-linux-lts.img ${work_dir}/iso/${install_dir}/boot/${arch}/archiso-lts.img
+          cp ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux-lts ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz-lts
+        fi
+
         cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isolinux.bin ${work_dir}/iso/isolinux/
         cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isohdpfx.bin ${work_dir}/iso/isolinux/
         cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/ldlinux.c32 ${work_dir}/iso/isolinux/
@@ -228,7 +244,7 @@ function UEFI() {
             echo "efiboot.img nicht vorhanden!"
         fi
 
-        truncate -s 256M ${work_dir}/iso/EFI/archiso/efiboot.img
+        truncate -s 512M ${work_dir}/iso/EFI/archiso/efiboot.img
         mkfs.vfat -n ${iso_label}_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
 
         mkdir -p ${work_dir}/efiboot
@@ -241,6 +257,11 @@ function UEFI() {
 
         cp ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz ${work_dir}/efiboot/EFI/archiso/vmlinuz.efi
         cp ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img ${work_dir}/efiboot/EFI/archiso/archiso.img
+
+        if [ "${version}" != "libre" ]; then
+          cp ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz-lts ${work_dir}/efiboot/EFI/archiso/vmlinuz-lts.efi
+          cp ${work_dir}/iso/${install_dir}/boot/${arch}/archiso-lts.img ${work_dir}/efiboot/EFI/archiso/archiso-lts.img
+        fi
 
         cp ${work_dir}/${arch}/airootfs/usr/share/efitools/efi/PreLoader.efi ${work_dir}/efiboot/EFI/boot/bootx64.efi
 

@@ -665,8 +665,8 @@ function systemdboot() {
       #echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
       #echo "initrd   /initramfs-linux-fallback-lts.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
       #echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
+    #fi
 
-    fi
     echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
     echo "timeout   1" >> ${mountpoint}/boot/loader/loader.conf
 

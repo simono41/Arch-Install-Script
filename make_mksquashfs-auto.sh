@@ -199,7 +199,7 @@ function BIOS() {
         echo "TIMEOUT 300" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
         echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 
-        if [ "$parameter4" != "all" ]
+        if [ "${version}" != "voll" ]
         then
 
             sed "s|%ISO_LABEL%|${iso_label}|g;
@@ -323,7 +323,7 @@ function UEFI() {
             s|%INSTALL_DIR%|${install_dir}|g" $file > ${work_dir}/efiboot/loader/entries/${file##*/}
         done
 
-        if [ "$parameter4" == "all" ]
+        if [ "${version}" == "voll" ]
         then
 
             for file in releng/all/archiso-x86_64-usb*

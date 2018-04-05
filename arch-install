@@ -9,9 +9,11 @@ repo="SpectreOS"
 user="user1"
 version="%VERSION%"
 
-[[ -n "${2}" ]] && version=${2}
-
-[[ "$version" == "%VERSION%" ]] && version=voll
+if [[ -n "${2}" ]]; then
+    version=${2}
+else
+    [[ "$version" == "%VERSION%" ]] && version=voll
+fi
 
 if [[ $EUID -ne 0 ]]; then
     echo "This script must be run as root" 1>&2
@@ -133,7 +135,15 @@ function usbsecret() {
 function cron() {
     echo "cron-job snapshot"
     mkdir -p ${mountpoint}/var/spool/cron/
-    echo "0 18 * * * /usr/bin/snapshot make ROOT home opt var/cache/pacman/pkg ${mountsnaps}" > ${mountpoint}/var/spool/cron/root
+    echo "0 18 * * * /usr/bin/snapshot make ROOT home opt var/cache/pacman/pkg " > ${mountpoint}/var/spool/cron/root
+
+    # custom-mounts
+    for wort in ${mountsnaps}
+    do
+        echo -n "${wort#/*} " >> ${mountpoint}/var/spool/cron/root
+    done
+    echo "" >> ${mountpoint}/var/spool/cron/root
+
     if [ "${update}" != "n" ]; then
         cp /opt/${repo}/snapshot.sh ${mountpoint}/usr/bin/snapshot
         chmod 755 ${mountpoint}/usr/bin/snapshot
@@ -276,11 +286,11 @@ function installation {
     fi
 
     if [ "${version}" != "libre" ]; then
-      if [ "${verschluesselung}" == "y" ]; then
-        parameter="${parameter}plymouth-encrypt "
-      else
-        parameter="${parameter}plymouth "
-      fi
+        if [ "${verschluesselung}" == "y" ]; then
+            parameter="${parameter}plymouth-encrypt "
+        else
+            parameter="${parameter}plymouth "
+        fi
     fi
 
 
@@ -653,17 +663,17 @@ function systemdboot() {
     echo "options  root=${tobootdevice} rw ${parameter}quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
 
     #if [ "${version}" != "libre" ]; then
-      #echo "title    "${repo}-lts"" > ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-      #echo "linux    /vmlinuz-linux-lts" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-      #echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-      #echo "initrd   /initramfs-linux-lts.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-      #echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
+    #echo "title    "${repo}-lts"" > ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
+    #echo "linux    /vmlinuz-linux-lts" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
+    #echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
+    #echo "initrd   /initramfs-linux-lts.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
+    #echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
 
-      #echo "title    "${repo}-lts"" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-      #echo "linux    /vmlinuz-linux-lts" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-      #echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-      #echo "initrd   /initramfs-linux-fallback-lts.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-      #echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
+    #echo "title    "${repo}-lts"" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
+    #echo "linux    /vmlinuz-linux-lts" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
+    #echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
+    #echo "initrd   /initramfs-linux-fallback-lts.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
+    #echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
     #fi
 
     echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
@@ -678,7 +688,7 @@ function systemdboot() {
         arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux efistub" -u "initrd=/initramfs-linux.img root=${tobootdevice} rw ${parameter}quiet splash"
 
         #if [ "${version}" != "libre" ]; then
-          #arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux-lts -L "Arch Linux efistub" -u "initrd=/initramfs-linux-lts.img root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash"
+        #arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux-lts -L "Arch Linux efistub" -u "initrd=/initramfs-linux-lts.img root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash"
         #fi
         # überschreibt die efistub deswegen entfernt
         #arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash"
@@ -1025,9 +1035,9 @@ then
             partionierenohneswap
         fi
     else
-      if [ "${verschluesselung}" == "y" ]; then
-        cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
-      fi
+        if [ "${verschluesselung}" == "y" ]; then
+            cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
+        fi
     fi
 
     echo "installation"
@@ -1060,9 +1070,9 @@ elif [ "${Partition}" == "bios" ]; then
             partionierenohneswap
         fi
     else
-     if [ "${verschluesselung}" == "y" ]; then
-        cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
-     fi
+        if [ "${verschluesselung}" == "y" ]; then
+            cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
+        fi
     fi
 
     echo "installation"

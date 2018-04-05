@@ -1025,7 +1025,9 @@ then
             partionierenohneswap
         fi
     else
+      if [ "${verschluesselung}" == "y" ]; then
         cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
+      fi
     fi
 
     echo "installation"
@@ -1058,7 +1060,9 @@ elif [ "${Partition}" == "bios" ]; then
             partionierenohneswap
         fi
     else
+     if [ "${verschluesselung}" == "y" ]; then
         cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
+     fi
     fi
 
     echo "installation"

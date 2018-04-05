@@ -80,6 +80,14 @@ function secureumount() {
 
 }
 
+function formatencrypt() {
+    if [ "${verschluesselung}" == "y" ]; then
+        echo "Please write big YES"
+        cryptsetup -c aes-xts-plain64 -y -s 512 luksFormat ${device}${rootpartitionnummer}
+    fi
+
+}
+
 function partionierenmitswap() {
     wipefs -a -f ${device}
     sgdisk -o ${device}
@@ -87,13 +95,7 @@ function partionierenmitswap() {
     sgdisk -a 2048 -n 2::+1G -c 2:"EFI Boot Partition" -t 2:ef00 ${device}
     sgdisk -a 2048 -n 3::+8G -c 3:"Linux swap" -t 3:8200 ${device}
     sgdisk -a 2048 -n 4:: -c 4:"Linux filesystem" -t 4:8300 ${device}
-
-    if [ "${verschluesselung}" == "y" ]; then
-        echo "Please write big YES"
-        cryptsetup -c aes-xts-plain64 -y -s 512 luksFormat ${device}${rootpartitionnummer}
-        cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
-        deviceluks="/dev/mapper/luks0"
-    fi
+    formatencrypt
 
 }
 
@@ -103,14 +105,7 @@ function partionierenohneswap() {
     sgdisk -a 2048 -n 1::+1024K -c 1:"BIOS Boot Partition" -t 1:ef02 ${device}
     sgdisk -a 2048 -n 2::+1G -c 2:"EFI Boot Partition" -t 2:ef00 ${device}
     sgdisk -a 2048 -n 3:: -c 3:"Linux filesystem" -t 3:8300 ${device}
-
-    if [ "${verschluesselung}" == "y" ]; then
-        echo "Please write big YES"
-        cryptsetup -c aes-xts-plain64 -y -s 512 luksFormat ${device}${rootpartitionnummer}
-        cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
-        deviceluks="/dev/mapper/luks0"
-    fi
-
+    formatencrypt
 
 }
 
@@ -920,6 +915,8 @@ function abfrage() {
         fi
     fi
 
+    deviceluks="/dev/mapper/luks0"
+
     echo "Boot-Partition = ${device}${bootpartitionnummer}"
     echo "EFI-Partition = ${device}${efipartitionnummer}"
     if [ "${swap}" != "n" ]; then
@@ -1027,6 +1024,8 @@ then
         else
             partionierenohneswap
         fi
+    else
+        cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
     fi
 
     echo "installation"
@@ -1058,6 +1057,8 @@ elif [ "${Partition}" == "bios" ]; then
         else
             partionierenohneswap
         fi
+    else
+        cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
     fi
 
     echo "installation"

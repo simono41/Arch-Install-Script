@@ -281,7 +281,11 @@ function installation {
     fi
 
     if [ "${version}" != "libre" ]; then
+      if [ "${verschluesselung}" == "y" ]; then
+        parameter="${parameter}plymouth-encrypt "
+      else
         parameter="${parameter}plymouth "
+      fi
     fi
 
 

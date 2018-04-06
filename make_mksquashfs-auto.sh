@@ -69,13 +69,6 @@ function filesystem() {
 
     if [ "$system" != "n" ]
     then
-        if [ "$scripte" != "n" ]
-        then
-            echo "Scripte werden heruntergeladen!"
-            pacman -Syu arch-install-scripts xorriso squashfs-tools btrfs-progs dosfstools  --needed --noconfirm
-
-        fi
-
         if [ "$pacstrap" != "n" ]
         then
             if [ "$pacstrap" != "debug" ]; then

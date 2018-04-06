@@ -81,8 +81,13 @@ function formatencrypt() {
     if [ "${verschluesselung}" == "y" ]; then
         echo "Please write big YES"
         cryptsetup -c aes-xts-plain64 -y -s 512 luksFormat ${device}${rootpartitionnummer}
+        mountencrypt
     fi
 
+}
+
+function mountencrypt() {
+    cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
 }
 
 function partionierenmitswap() {
@@ -1031,7 +1036,7 @@ then
         fi
     else
         if [ "${verschluesselung}" == "y" ]; then
-            cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
+            mountencrypt
         fi
     fi
 
@@ -1066,7 +1071,7 @@ elif [ "${Partition}" == "bios" ]; then
         fi
     else
         if [ "${verschluesselung}" == "y" ]; then
-            cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
+            mountencrypt
         fi
     fi
 

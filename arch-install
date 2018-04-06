@@ -7,7 +7,6 @@ echo "Version : DI 27. Feb 22:52:41 CET 2017"
 WEBADDRESS="https://github.com/simono41/SpectreOS.git"
 repo="SpectreOS"
 user="user1"
-version="%VERSION%"
 
 [[ -n "${2}" ]] && version="${2}" || version=voll
 

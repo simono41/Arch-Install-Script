@@ -580,16 +580,12 @@ if [ "${vollinstallation}" != "n" ]; then
     chmod 755 /usr/bin/write_cowspace
 
     # installer-/usr/bin/
-    sed "s|%VERSION%|${version}|g;" /opt/${repo}/arch-install > /usr/bin/arch-install
+    cp /opt/${repo}/arch-install /usr/bin/arch-install
     chmod 755 /usr/bin/arch-install
 
     # installer
     mkdir -p /usr/share/applications/
-    if [ "${version}" == "libre" ]; then
-      cp /opt/${repo}/arch-install-libre.desktop /usr/share/applications/arch-install.desktop
-    else
-      cp /opt/${repo}/arch-install.desktop /usr/share/applications/arch-install.desktop
-    fi
+    sed "s|%VERSION%|${version}|g;" /opt/${repo}/arch-install.desktop > /usr/share/applications/arch-install.desktop
     chmod 755 /usr/share/applications/arch-install.desktop
 
     # install-picture

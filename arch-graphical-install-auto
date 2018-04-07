@@ -590,6 +590,7 @@ if [ "${vollinstallation}" != "n" ]; then
 
     # installer
     mkdir -p /usr/share/applications/
+    mkdir -p /root/.config/xfce4/panel/launcher-29/
     sed "s|%VERSION%|${version}|g;" /opt/${repo}/arch-install.desktop > /usr/share/applications/arch-install.desktop
     sed "s|%VERSION%|${version}|g;" /opt/${repo}/15196212071.desktop > /root/.config/xfce4/panel/launcher-29/15196212071.desktop
     sed "s|%VERSION%|${version}|g;" /opt/${repo}/15196212512.desktop > /root/.config/xfce4/panel/launcher-29/15196212512.desktop

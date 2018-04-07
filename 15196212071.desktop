@@ -2,7 +2,7 @@
 Type=Application
 Icon=/usr/share/pixmaps/install.png
 Name[de]=Betriebssystem installieren
-Exec=/usr/bin/arch-install  "" %VERSION%
+Exec=/usr/bin/arch-install y %VERSION%
 Terminal=true
 Categories=ConsoleOnly;System;
 StartupNotify=false

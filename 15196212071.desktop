@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Icon=/usr/share/pixmaps/install.png
+Name[de]=Betriebssystem installieren
+Exec=/usr/bin/arch-install  "" %VERSION%
+Terminal=true
+Categories=ConsoleOnly;System;
+StartupNotify=false
+Comment=
+Path=
+X-XFCE-Source=file:///home/user1/Desktop/arch-install.desktop

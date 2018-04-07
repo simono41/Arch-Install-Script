@@ -18,6 +18,8 @@ parameter1="$2"
 parameter2="$3"
 parameter3="$4"
 parameter4="$5"
+parameter5="$6"
+parameter6="$7"
 
 arch=$(uname -m)
 
@@ -404,6 +406,7 @@ if [ "${parameter3}" != "skip" ]; then
 
 fi
 
+if [ "${parameter4}" != "skip" ]; then
 # BIOS
 
 BIOS
@@ -411,10 +414,13 @@ BIOS
 # EFI
 
 UEFI
+fi
 
+if [ "${parameter5}" != "skip" ]; then
 # MAKEISO
 
 makeiso
+fi
 
 # chroot
 

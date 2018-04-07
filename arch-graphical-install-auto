@@ -344,11 +344,6 @@ if [ -f /var/lib/pacman/db.lck ];then
     rm /var/lib/pacman/db.lck
 fi
 
-# .config
-tar -vxJf /opt/${repo}/.config.tar.xz -C /root/
-gnomeconfig
-
-
 if [ "$vollinstallation" != "n" ]
 then
     check
@@ -372,6 +367,11 @@ fi
 
 echo "Packetliste2 Ende"
 echo "Beginne mit dem Konfigurieren des Systems :D"
+
+# .config
+tar -vxJf /opt/${repo}/.config.tar.xz -C /root/
+gnomeconfig
+
 # set desktop
 echo "set desktop"
 #

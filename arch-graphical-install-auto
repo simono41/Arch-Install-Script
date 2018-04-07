@@ -344,6 +344,11 @@ if [ -f /var/lib/pacman/db.lck ];then
     rm /var/lib/pacman/db.lck
 fi
 
+# .config
+tar -vxJf /opt/${repo}/.config.tar.xz -C /root/
+gnomeconfig
+
+
 if [ "$vollinstallation" != "n" ]
 then
     check
@@ -641,10 +646,6 @@ if [ "${vollinstallation}" != "n" ]; then
     tar -vxJf /opt/${repo}/.Conky.tar.xz -C /opt/
     chmod 755 -Rv /opt/.Conky/
     touch /root/notes.txt
-
-    # .config
-    tar -vxJf /opt/${repo}/.config.tar.xz -C /root/
-    gnomeconfig
 
     # .xscreensaver
     cp /opt/${repo}/.xscreensaver /root/

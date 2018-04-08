@@ -367,7 +367,7 @@ if [ "${version}" != "libre" ]; then
     aurinstall plymouth-theme-dark-arch
     plymouth-set-default-theme -R dark-arch
     aurinstall snapd
-    if [ "${archchroot}" == "archchroot" ]; then
+    if [ "${archchroot}" != "archchroot" ]; then
     systemctl enable --now snapd.socket
     if ! [ -d "/snap" ];then
       ln -s /var/lib/snapd/snap /snap
@@ -665,10 +665,6 @@ if [ "${vollinstallation}" != "n" ]; then
     # snapshot.sh
     cp /opt/${repo}/snapshot.sh /usr/bin/snapshot
     chmod 755 /usr/bin/snapshot
-
-    # ip_forward
-    mkdir -p /proc/sys/net/ipv4/
-    echo 1 > /proc/sys/net/ipv4/ip_forward
 
     # .Conky
     tar -vxJf /opt/${repo}/.Conky.tar.xz -C /opt/

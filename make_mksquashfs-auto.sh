@@ -34,10 +34,21 @@ function minimalinstallation() {
     cp pacman* /etc/
     cp mirrorlist* /etc/pacman.d/
 
+    if [ "${parameter6}" != "archchroot" ]; then
+      echo "Tipp: Die Option -i eine automatische Bestätigung der Paketauswahl. Da Sie den Linux-Kernel nicht im Container installieren müssen, können Sie ihn aus der Paketlistenauswahl entfernen, um Platz zu sparen. Siehe Pacman # Verwendung ."
+    fi
     if [ "${version}" == "libre" ]; then
-        ./pacstrap -C /etc/pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs base git --ignore linux
+      if [ "${parameter6}" != "archchroot" ]; then
+        ./pacstrap -C /etc/pacman.conf_libre -c -i -d -G -M ${work_dir}/${arch}/airootfs base git --ignore linux
+      else
+        ./pacstrap -C /etc/pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs base git
+      fi
     else
-        ./pacstrap -C /etc/pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs base git --ignore linux
+      if [ "${parameter6}" != "archchroot" ]; then
+        ./pacstrap -C /etc/pacman.conf -c -i -d -G -M ${work_dir}/${arch}/airootfs base git --ignore linux
+      else
+        ./pacstrap -C /etc/pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs base git
+      fi
     fi
 }
 
@@ -392,11 +403,16 @@ if [ "${parameter2}" != "skip" ]; then
 
     filesystem
 
-    echo "Jetzt können sie ihr Betriebssystem nach ihren Belieben anpassen:D"
+    echo "Jetzt können sie ihr Betriebssystem nach ihren Belieben anpassen :D"
+    echo "Tipp: benutzen sie den User root :D"
     echo "Bitte führen sie arch-graphical-install-auto und die Version aus."
     echo "Benutze Poweroff um das System wieder herunterzufahren und das Komprimieren zu beginnen :)"
     cp arch-graphical-install-auto ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install-auto
-    systemd-nspawn -b -D ${work_dir}/${arch}/airootfs
+    if [ "${parameter6}" != "archchroot" ]; then
+      systemd-nspawn -b -D ${work_dir}/${arch}/airootfs
+    else
+      ./arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install-auto ${version} user1 user1 archchroot
+    fi
 fi
 
 if [ "${parameter3}" != "skip" ]; then

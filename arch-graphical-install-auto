@@ -21,6 +21,7 @@ repo1="shell-scripte"
 version="$1"
 username="$2"
 userpass="$3"
+archchroot="$4"
 
 [[ -z "${version}" ]] && version="voll"
 [[ -z "${username}" ]] && username="user1"
@@ -300,15 +301,6 @@ fi
 
 gitclone
 
-if [ "$vollinstallation" != "n" ]
-then
-    check
-    if [ "$vollinstallation" != "debug" ]; then
-        standartinstallation
-    fi
-    checkend
-fi
-
 # sudoers/wheel
 
 echo "Lege $SUDOERS neu an!!!"
@@ -355,6 +347,16 @@ if [ -f /var/lib/pacman/db.lck ];then
     rm /var/lib/pacman/db.lck
 fi
 
+# vollinstallation
+if [ "$vollinstallation" != "n" ]
+then
+    check
+    if [ "$vollinstallation" != "debug" ]; then
+        standartinstallation
+    fi
+    checkend
+fi
+
 if [ "${version}" != "libre" ]; then
     #yaourtmanagerinstall
     #pacaurmanagerinstall
@@ -365,6 +367,7 @@ if [ "${version}" != "libre" ]; then
     aurinstall plymouth-theme-dark-arch
     plymouth-set-default-theme -R dark-arch
     aurinstall snapd
+    if [ "${archchroot}" == "archchroot" ]; then
     systemctl enable --now snapd.socket
     if ! [ -d "/snap" ];then
       ln -s /var/lib/snapd/snap /snap
@@ -382,6 +385,9 @@ if [ "${version}" != "libre" ]; then
     fi
     if ! [ -f "/usr/share/applications/skype_skypeforlinux.desktop" ];then
       ln -s /var/lib/snapd/desktop/applications/skype_skypeforlinux.desktop /usr/share/applications/skype_skypeforlinux.desktop
+    fi
+    else
+    systemctl enable snapd.socket
     fi
 fi
 

@@ -363,8 +363,10 @@ if [ "${version}" != "libre" ]; then
     aurinstall plymouth-theme-dark-arch
     plymouth-set-default-theme -R dark-arch
     aurinstall snapd
-    systemctl enable --now snapd.socket
+    systemctl enable snapd
     snap install spotify
+    ln -s /var/lib/snapd/snap/bin/spotify /usr/bin/spotify
+    ln -s /var/lib/snapd/desktop/applications/spotify_spotify.desktop /usr/share/applications/spotify_spotify.desktop
 fi
 
 

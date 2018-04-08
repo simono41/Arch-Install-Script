@@ -35,9 +35,9 @@ function minimalinstallation() {
     cp mirrorlist* /etc/pacman.d/
 
     if [ "${version}" == "libre" ]; then
-        ./pacstrap -C /etc/pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
+        ./pacstrap -C /etc/pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt) --ignore linux
     else
-        ./pacstrap -C /etc/pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
+        ./pacstrap -C /etc/pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt) --ignore linux
     fi
 }
 
@@ -394,7 +394,9 @@ if [ "${parameter2}" != "skip" ]; then
 
     echo "Jetzt können sie ihr Betriebssystem nach ihren Belieben anpassen:D"
     cp arch-graphical-install-auto ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install-auto
-    ./arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install-auto ${version}
+    systemd-nspawn -b -u root -D ${work_dir}/${arch}/airootfs <<EOT
+/usr/bin/arch-graphical-install-auto ${version}
+EOT
 
 fi
 

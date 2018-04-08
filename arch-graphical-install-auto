@@ -368,28 +368,28 @@ if [ "${version}" != "libre" ]; then
     aurinstall plymouth-theme-dark-arch
     plymouth-set-default-theme -R dark-arch
     aurinstall snapd
-    if [ "${archchroot}" != "archchroot" ]; then
-    systemctl enable --now snapd.socket
-    if ! [ -d "/snap" ];then
-      ln -s /var/lib/snapd/snap /snap
-    fi
-    snap install spotify
-    if ! [ -f "/usr/bin/spotify" ];then
-      ln -s /var/lib/snapd/snap/bin/spotify /usr/bin/spotify
-    fi
-    if ! [ -f "/usr/share/applications/spotify_spotify.desktop" ];then
-      ln -s /var/lib/snapd/desktop/applications/spotify_spotify.desktop /usr/share/applications/spotify_spotify.desktop
-    fi
-    snap install skype
-    if ! [ -f "/usr/bin/skype" ];then
-      ln -s /var/lib/snapd/snap/bin/skype /usr/bin/skype
-    fi
-    if ! [ -f "/usr/share/applications/skype_skypeforlinux.desktop" ];then
-      ln -s /var/lib/snapd/desktop/applications/skype_skypeforlinux.desktop /usr/share/applications/skype_skypeforlinux.desktop
-    fi
-    else
+    #if [ "${archchroot}" != "archchroot" ]; then
+    #systemctl enable --now snapd.socket
+    #if ! [ -d "/snap" ];then
+    #  ln -s /var/lib/snapd/snap /snap
+    #fi
+    #snap install spotify
+    #if ! [ -f "/usr/bin/spotify" ];then
+    #  ln -s /var/lib/snapd/snap/bin/spotify /usr/bin/spotify
+    #fi
+    #if ! [ -f "/usr/share/applications/spotify_spotify.desktop" ];then
+    #  ln -s /var/lib/snapd/desktop/applications/spotify_spotify.desktop /usr/share/applications/spotify_spotify.desktop
+    #fi
+    #snap install skype
+    #if ! [ -f "/usr/bin/skype" ];then
+    #  ln -s /var/lib/snapd/snap/bin/skype /usr/bin/skype
+    #fi
+    #if ! [ -f "/usr/share/applications/skype_skypeforlinux.desktop" ];then
+    #  ln -s /var/lib/snapd/desktop/applications/skype_skypeforlinux.desktop /usr/share/applications/skype_skypeforlinux.desktop
+    #fi
+    #else
     systemctl enable snapd.socket
-    fi
+    #fi
 fi
 
 

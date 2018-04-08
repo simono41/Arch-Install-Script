@@ -238,7 +238,8 @@ function installation {
             fi
             mount ${device}${rootpartitionnummer} ${mountpoint}
         fi
-
+        mkdir -p ${mountpoint}/boot
+        mount ${device}${efipartitionnummer} ${mountpoint}/boot
     fi
 
     #swap

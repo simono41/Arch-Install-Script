@@ -296,6 +296,19 @@ then
     exit 0
 fi
 
+# grundinstallation
+
+gitclone
+
+if [ "$vollinstallation" != "n" ]
+then
+    check
+    if [ "$vollinstallation" != "debug" ]; then
+        standartinstallation
+    fi
+    checkend
+fi
+
 # sudoers/wheel
 
 echo "Lege $SUDOERS neu an!!!"
@@ -303,8 +316,6 @@ echo "Lege $SUDOERS neu an!!!"
 echo "root ALL=(ALL) NOPASSWD: ALL" > $SUDOERS
 
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> $SUDOERS
-
-gitclone
 
 # Your commands
 
@@ -342,15 +353,6 @@ cp /opt/${repo}/mirrorlist /etc/pacman.d/mirrorlist
 
 if [ -f /var/lib/pacman/db.lck ];then
     rm /var/lib/pacman/db.lck
-fi
-
-if [ "$vollinstallation" != "n" ]
-then
-    check
-    if [ "$vollinstallation" != "debug" ]; then
-        standartinstallation
-    fi
-    checkend
 fi
 
 if [ "${version}" != "libre" ]; then

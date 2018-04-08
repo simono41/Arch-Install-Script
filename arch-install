@@ -159,7 +159,7 @@ function cron() {
 
 function makeswapfile() {
     #swapfile
-    fallocate -l ${swapfilespeicher} ${mountpoint}/swapfile
+    fallocate -l 4G ${mountpoint}/swapfile
     chmod 600 ${mountpoint}/swapfile
     mkswap ${mountpoint}/swapfile
     echo "/swapfile none swap defaults 0 0" >> ${mountpoint}/etc/fstab

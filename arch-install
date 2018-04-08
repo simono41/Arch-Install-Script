@@ -55,8 +55,12 @@ function secureumount() {
             #umount -R /mnt
         fi
     elif [ "${dateisystem}" == "ext4" ]; then
-        if cat /proc/mounts | grep ${mountpoint} > /dev/null; then
+
+        if cat /proc/mounts | grep ${mountpoint}/boot > /dev/null; then
             umount ${mountpoint}/boot
+        fi
+
+        if cat /proc/mounts | grep ${mountpoint} > /dev/null; then
             umount ${mountpoint}
         fi
     fi

@@ -1110,11 +1110,7 @@ if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ "${installationfehler}
     if [ "$graphical" != "n" ]
     then
         cp /opt/${repo}/arch-graphical-install-auto ${mountpoint}/root/arch-graphical-install-auto
-        if [ "${version}" == "libre" ]; then
-            arch-chroot ${mountpoint} /root/arch-graphical-install-auto libre
-        else
-            arch-chroot ${mountpoint} /root/arch-graphical-install-auto voll
-        fi
+        arch-chroot ${mountpoint} /root/arch-graphical-install-auto ${version}
     fi
 fi
 

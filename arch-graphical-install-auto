@@ -23,7 +23,8 @@ username="$2"
 userpass="$3"
 archchroot="$4"
 
-[[ -z "${version}" ]] && version="voll"
+hostname="$(cat /etc/hostname)"
+version="${hostname#*-}"
 [[ -z "${username}" ]] && username="user1"
 [[ -z "${userpass}" ]] && userpass="user1"
 

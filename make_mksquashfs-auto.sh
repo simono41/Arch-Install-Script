@@ -24,6 +24,7 @@ parameter6="$7"
 arch=$(uname -m)
 
 [[ -z "${version}" ]] && version="voll"
+hostname="SpectreOS-${version}"
 work_dir="${version}"
 
 if [ "${version}" == "libre" ]; then
@@ -408,6 +409,7 @@ if [ "${parameter2}" != "skip" ]; then
     echo "Bitte führen sie arch-graphical-install-auto und die Version aus."
     echo "Benutze Poweroff um das System wieder herunterzufahren und das Komprimieren zu beginnen :)"
     cp arch-graphical-install-auto ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install-auto
+    echo "${hostname}" > ${work_dir}/${arch}/airootfs/etc/hostname
     if [ "${parameter6}" != "archchroot" ]; then
       systemd-nspawn -b -D ${work_dir}/${arch}/airootfs
     else

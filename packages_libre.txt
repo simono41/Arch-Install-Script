@@ -65,6 +65,7 @@ lua51
 mesa-vdpau
 minetest
 mkinitcpio-nfs-utils
+modemmanager
 mplayer
 mugshot
 mumble

@@ -127,6 +127,7 @@ mesa-vdpau
 metasploit
 minetest
 mkinitcpio-nfs-utils
+modemmanager
 mplayer
 mtr-gtk
 mumble

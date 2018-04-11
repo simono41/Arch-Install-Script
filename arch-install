@@ -10,8 +10,6 @@ user="user1"
 version="${2}"
 
 [[ -z "${version}" ]] && version="voll"
-[[ -z "${username}" ]] && username="user1"
-[[ -z "${userpass}" ]] && userpass="user1"
 
 if [[ $EUID -ne 0 ]]; then
     echo "This script must be run as root" 1>&2
@@ -384,7 +382,7 @@ function installation {
     fi
 
     #hostname
-    echo "${repo}-${version}" > ${mountpoint}/etc/hostname
+    echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
 
     if [ "${name}" != "noinstall" ]; then
         if [ "${usbsecret}" == "y" ]; then
@@ -1110,12 +1108,21 @@ else
     arch-chroot ${mountpoint} systemctl disable x11vnc.service
 fi
 
+# benutzerwechsel
+
+if [ "${name}" != "noinstall" ]; then
+    #usermod -l "${name}" user1
+    #usermod -d /home/"${name}" -m "${name}"
+    chfn -f "${name}" user1
+    passwd "${name}"
+fi
+
 if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ "${installationfehler}" == "online" ]; then
     read -p "Should the extended installation be carried out? [Y/n] " graphical
     if [ "$graphical" != "n" ]
     then
         cp /opt/${repo}/arch-graphical-install-auto ${mountpoint}/root/arch-graphical-install-auto
-        arch-chroot ${mountpoint} /root/arch-graphical-install-auto ${version}
+        arch-chroot ${mountpoint} /root/arch-graphical-install-auto ${version} "${name}" n archchroot
     fi
 fi
 

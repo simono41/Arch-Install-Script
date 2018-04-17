@@ -47,6 +47,7 @@ gnome
 gnome-calculator
 gnome-extra
 gnome-flashback
+gnome-keyring
 gnome-power-manager
 gnome-screensaver
 gnuchess

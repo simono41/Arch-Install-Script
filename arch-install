@@ -347,9 +347,9 @@ function installation {
 
     elif [ "${dateisystem}" == "ext4" ]; then
         if [ "${verschluesselung}" == "y" ]; then
-            echo "${deviceluks} / ext4 rw,defaults,noatime,nodiratime,discard 0 0" >> ${mountpoint}/etc/fstab
+            echo "${deviceluks} / ext4 rw,defaults,noatime,nodiratime,discard 0 0" >> ${mountpoint}/etc/fstab #ext4
         else
-            echo "PARTUUID=${rootbind} / ext4 rw,defaults,noatime,nodiratime,discard 0 0" >> ${mountpoint}/etc/fstab
+            echo "PARTUUID=${rootbind} / ext4 rw,defaults,noatime,nodiratime,discard 0 0" >> ${mountpoint}/etc/fstab #ext4
         fi
     fi
 

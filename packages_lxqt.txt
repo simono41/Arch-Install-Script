@@ -44,6 +44,7 @@ freeciv
 gdisk
 git
 gnome-calculator
+gnome-keyring
 gnuchess
 gparted
 grub

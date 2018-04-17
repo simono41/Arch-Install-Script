@@ -1111,10 +1111,12 @@ fi
 # benutzerwechsel
 
 if [ "${name}" != "noinstall" ]; then
-    #usermod -l "${name}" user1
-    #usermod -d /home/"${name}" -m "${name}"
-    chfn -f "${name}" user1
-    passwd user1
+    arch-chroot ${mountpoint} <<EOT
+#usermod -l "${name}" user1
+#usermod -d /home/"${name}" -m "${name}"
+chfn -f "${name}" user1
+passwd user1
+EOT
 fi
 
 if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ "${installationfehler}" == "online" ]; then

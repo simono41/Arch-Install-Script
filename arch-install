@@ -753,9 +753,6 @@ function abfrage() {
         m2ssddevice=y
     fi
 
-    read -p "Which password should you receive ?: user1 " pass
-    [[ -z "${pass}" ]] && pass=user1
-
     read -p "Which file system should be used? [BTRFS/ext4] " dateisystem
     [[ -z "${dateisystem}" ]] && dateisystem=btrfs
 
@@ -1111,14 +1108,10 @@ fi
 # benutzerwechsel
 
 if [ "${name}" != "noinstall" ]; then
-    arch-chroot ${mountpoint} <<EOT
-#usermod -l "${name}" user1
-#usermod -d /home/"${name}" -m "${name}"
-chfn -f "${name}" user1
-passwd user1
-${pass}
-${pass}
-EOT
+    #arch-chroot ${mountpoint} usermod -l "${name}" user1
+    #arch-chroot ${mountpoint} usermod -d /home/"${name}" -m "${name}"
+    arch-chroot ${mountpoint} chfn -f "${name}" user1
+    arch-chroot ${mountpoint} passwd user1
 fi
 
 if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ "${installationfehler}" == "online" ]; then

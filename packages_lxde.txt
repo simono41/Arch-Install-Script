@@ -23,6 +23,7 @@ cdrtools
 cmake
 cronie
 cups
+davfs2
 dbus
 dialog
 dosfstools

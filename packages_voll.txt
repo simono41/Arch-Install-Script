@@ -39,6 +39,7 @@ cronie
 cuda
 cudnn
 cups
+davfs2
 dbus
 dialog
 dosbox

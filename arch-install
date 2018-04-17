@@ -753,8 +753,8 @@ function abfrage() {
         m2ssddevice=y
     fi
 
-    #read -p "Which password should the root receive ?: root " pass
-    #[[ -z "${pass}" ]] && pass=root
+    read -p "Which password should you receive ?: user1 " pass
+    [[ -z "${pass}" ]] && pass=user1
 
     read -p "Which file system should be used? [BTRFS/ext4] " dateisystem
     [[ -z "${dateisystem}" ]] && dateisystem=btrfs
@@ -1116,6 +1116,8 @@ if [ "${name}" != "noinstall" ]; then
 #usermod -d /home/"${name}" -m "${name}"
 chfn -f "${name}" user1
 passwd user1
+${pass}
+${pass}
 EOT
 fi
 

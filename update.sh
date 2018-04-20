@@ -10,7 +10,8 @@ WEBADDRESS="https://github.com/simono41/SpectreOS.git"
 repo="SpectreOS"
 user="user1"
 hostname="$(cat /etc/hostname)"
-version="${hostname#*-}"
+version="${1}"
+[[ -z "${version}" ]] && version="${hostname#*-}"
 
 if [[ $EUID -ne 0 ]]; then
     echo "This script must be run as root" 1>&2
@@ -45,7 +46,7 @@ then
                 echo "Git is not installet"
                 pacman -S git --needed --noconfirm
             fi
-            /opt/${repo}/arch-graphical-install-auto "${version}" "$2" "$3"
+            /opt/${repo}/arch-graphical-install-auto "${version}" "$2" "$3" "archchroot"
             read -p "Aktualisierung erfolgreich Abgeschlossen. Wollen sie den PC NEUSTARTEN?: [Y/n] " sicherheitsabfrage
             if [ "$sicherheitsabfrage" != "n" ]
             then

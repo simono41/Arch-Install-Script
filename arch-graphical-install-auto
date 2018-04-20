@@ -126,6 +126,7 @@ function aurmanagerinstall() {
     pwd
     su "$username" -c "makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed"
     pwd
+    rm -Rv /home/"$username"/aurman
     cd /
 
 }

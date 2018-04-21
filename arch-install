@@ -7,9 +7,10 @@ echo "Version : DI 27. Feb 22:52:41 CET 2017"
 WEBADDRESS="https://github.com/simono41/SpectreOS.git"
 repo="SpectreOS"
 user="user1"
-version="${2}"
 
-[[ -z "${version}" ]] && version="voll"
+version="${2}"
+hostname="$(cat /etc/hostname)"
+[[ -z "${version}" ]] && version="${hostname#*-}"
 
 if [[ $EUID -ne 0 ]]; then
     echo "This script must be run as root" 1>&2

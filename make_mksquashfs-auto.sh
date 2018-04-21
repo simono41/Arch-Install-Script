@@ -8,18 +8,29 @@ if [[ $EUID -ne 0 ]]; then
     exit 0
 fi
 
+# full parameters
+# ./make_mksquashfs-auto.sh voll deletework filesystem archchroot makebios makeimage makeiso
+
 iso_name=spectre_os
 iso_label="SPECTRE_OS"
 iso_version=$(date +%Y.%m.%d)
 out_dir=out
 install_dir=arch
 version="$1"
-parameter1="$2"
-parameter2="$3"
-parameter3="$4"
-parameter4="$5"
-parameter5="$6"
-parameter6="$7"
+
+# for-schleife
+for wort in "$2" "$3" "$4" "$5" "$6" "$7"
+  do
+    echo "$wort"
+    if [ "$wort" == "deletework" ]; then archchroot=y; fi
+    if [ "$wort" == "filesystem" ]; then archchroot=y; fi
+    if [ "$wort" == "archchroot" ]; then archchroot=y; fi
+    if [ "$wort" == "makebios" ]; then archchroot=y; fi
+    if [ "$wort" == "makeimage" ]; then archchroot=y; fi
+    if [ "$wort" == "makeiso" ]; then archchroot=y; fi
+done
+
+sleep 5
 
 arch=$(uname -m)
 
@@ -35,17 +46,17 @@ function minimalinstallation() {
     cp pacman* /etc/
     cp mirrorlist* /etc/pacman.d/
 
-    if [ "${parameter6}" != "archchroot" ]; then
+    if [ "${archchroot}" != "y" ]; then
       echo "Tipp: Die Option -i eine automatische Bestätigung der Paketauswahl. Da Sie den Linux-Kernel nicht im Container installieren müssen, können Sie ihn aus der Paketlistenauswahl entfernen, um Platz zu sparen. Siehe Pacman # Verwendung ."
     fi
     if [ "${version}" == "libre" ]; then
-      if [ "${parameter6}" != "archchroot" ]; then
+      if [ "${archchroot}" != "y" ]; then
         ./pacstrap -C /etc/pacman.conf_libre -c -i -d -G -M ${work_dir}/${arch}/airootfs base git --ignore linux
       else
         ./pacstrap -C /etc/pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs base git
       fi
     else
-      if [ "${parameter6}" != "archchroot" ]; then
+      if [ "${archchroot}" != "y" ]; then
         ./pacstrap -C /etc/pacman.conf -c -i -d -G -M ${work_dir}/${arch}/airootfs base git --ignore linux
       else
         ./pacstrap -C /etc/pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs base git
@@ -86,7 +97,7 @@ function filesystem() {
         if [ "$pacstrap" != "n" ]
         then
             if [ "$pacstrap" != "debug" ]; then
-                if [ "${parameter1}" != "skip" ]; then
+                if [ "${deletework}" == "y" ]; then
                     if [ -d ${work_dir} ]; then
                         echo "delete work"
                         sleep 5
@@ -400,7 +411,7 @@ function makeiso() {
 
 }
 
-if [ "${parameter2}" != "skip" ]; then
+if [ "${filesystem}" == "y" ]; then
 
     filesystem
 
@@ -410,14 +421,14 @@ if [ "${parameter2}" != "skip" ]; then
     echo "Benutze Poweroff um das System wieder herunterzufahren und das Komprimieren zu beginnen :)"
     cp arch-graphical-install-auto ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install-auto
     echo "${hostname}" > ${work_dir}/${arch}/airootfs/etc/hostname
-    if [ "${parameter6}" != "archchroot" ]; then
+    if [ "${archchroot}" != "y" ]; then
       systemd-nspawn -b -D ${work_dir}/${arch}/airootfs
     else
       ./arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install-auto ${version} user1 user1 archchroot
     fi
 fi
 
-if [ "${parameter3}" != "skip" ]; then
+if [ "${makeimage}" == "skip" ]; then
 
     # System-image
 
@@ -425,7 +436,7 @@ if [ "${parameter3}" != "skip" ]; then
 
 fi
 
-if [ "${parameter4}" != "skip" ]; then
+if [ "${makebios}" == "skip" ]; then
 # BIOS
 
 BIOS
@@ -435,7 +446,7 @@ BIOS
 UEFI
 fi
 
-if [ "${parameter5}" != "skip" ]; then
+if [ "${makeiso}" != "skip" ]; then
 # MAKEISO
 
 makeiso

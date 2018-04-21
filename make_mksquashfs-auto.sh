@@ -18,6 +18,8 @@ out_dir=out
 install_dir=arch
 version="$1"
 
+echo "Hallo Echo"
+
 # for-schleife
 for wort in "$2" "$3" "$4" "$5" "$6" "$7"
   do

@@ -272,7 +272,7 @@ function installation {
     fi
 
     # module and hooks
-    parameter="base udev "
+    parameter="base udev modconf "
     if [ "${swap}" != "n" ]; then
         parameter="${parameter}resume "
     fi
@@ -281,8 +281,6 @@ function installation {
     fi
     parameter="${parameter}block filesystems keyboard "
     if [ "${verschluesselung}" == "y" ]; then
-        echo "btrfs-hook is skipped!"
-    else
         if [ "${dateisystem}" == "btrfs" ]; then
             parameter="${parameter}btrfs "
         fi

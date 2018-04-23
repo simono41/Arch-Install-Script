@@ -9,6 +9,7 @@ avahi
 base
 base-devel
 bash-completion
+bless
 blueman
 btrfs-progs
 cdrtools
@@ -102,6 +103,7 @@ teeworlds
 telegram-desktop
 tigervnc
 tolua++
+traceroute
 transmission-gtk
 vlc
 wget

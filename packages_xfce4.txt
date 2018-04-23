@@ -122,6 +122,7 @@ thunderbird
 thunderbird-i18n-de
 tigervnc
 tolua++
+traceroute
 transmission-gtk
 ttf-dejavu
 ttf-liberation

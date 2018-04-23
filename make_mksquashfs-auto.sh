@@ -430,7 +430,7 @@ if [ "${filesystem}" == "y" ]; then
     fi
 fi
 
-if [ "${makeimage}" == "skip" ]; then
+if [ "${makeimage}" == "y" ]; then
 
     # System-image
 
@@ -438,7 +438,7 @@ if [ "${makeimage}" == "skip" ]; then
 
 fi
 
-if [ "${makebios}" == "skip" ]; then
+if [ "${makebios}" == "y" ]; then
 # BIOS
 
 BIOS
@@ -448,7 +448,7 @@ BIOS
 UEFI
 fi
 
-if [ "${makeiso}" != "skip" ]; then
+if [ "${makeiso}" == "y" ]; then
 # MAKEISO
 
 makeiso

@@ -131,7 +131,6 @@ minetest
 mkinitcpio-nfs-utils
 modemmanager
 mplayer
-mtr-gtk
 mumble
 nbd
 netbeans

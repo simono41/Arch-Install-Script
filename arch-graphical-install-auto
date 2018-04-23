@@ -354,11 +354,10 @@ if [ "$vollinstallation" != "n" ]
 then
     check
     if [ "$vollinstallation" != "debug" ]; then
-        standartinstallation
       if [ "${version}" == "voll" ]; then
         /opt/${repo}/strap.sh
-        pacman -Syu blackarch --needed --noconfirm --ignore filesystem,bash
       fi
+        standartinstallation
     fi
     checkend
 fi

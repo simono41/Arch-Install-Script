@@ -19,6 +19,7 @@ avidemux-cli
 base
 base-devel
 bash-completion
+blackarch
 blender
 bless
 blueman

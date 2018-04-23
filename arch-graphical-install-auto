@@ -357,7 +357,7 @@ then
         standartinstallation
       if [ "${version}" == "voll" ]; then
         /opt/${repo}/strap.sh
-        pacman -Syu blackarch --needed --noconfirm --ignore wssip
+        pacman -Syu blackarch --needed --noconfirm --ignore filesystem,bash
       fi
     fi
     checkend

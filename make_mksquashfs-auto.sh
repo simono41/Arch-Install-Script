@@ -24,12 +24,12 @@ echo "Hallo Echo"
 for wort in "$2" "$3" "$4" "$5" "$6" "$7"
   do
     echo "$wort"
-    if [ "$wort" == "deletework" ]; then archchroot=y; fi
-    if [ "$wort" == "filesystem" ]; then archchroot=y; fi
+    if [ "$wort" == "deletework" ]; then deletework=y; fi
+    if [ "$wort" == "filesystem" ]; then filesystem=y; fi
     if [ "$wort" == "archchroot" ]; then archchroot=y; fi
-    if [ "$wort" == "makebios" ]; then archchroot=y; fi
-    if [ "$wort" == "makeimage" ]; then archchroot=y; fi
-    if [ "$wort" == "makeiso" ]; then archchroot=y; fi
+    if [ "$wort" == "makebios" ]; then makebios=y; fi
+    if [ "$wort" == "makeimage" ]; then makeimage=y; fi
+    if [ "$wort" == "makeiso" ]; then makeiso=y; fi
 done
 
 sleep 5

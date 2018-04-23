@@ -272,7 +272,7 @@ function installation {
     fi
 
     # module and hooks
-    parameter="base udev modconf "
+    parameter="base udev "
     if [ "${swap}" != "n" ]; then
         parameter="${parameter}resume "
     fi
@@ -280,8 +280,8 @@ function installation {
         parameter="${parameter}encrypt "
     fi
     parameter="${parameter}block filesystems keyboard "
-    if [ "${verschluesselung}" == "y" ]; then
-        if [ "${dateisystem}" == "btrfs" ]; then
+    if [ "${dateisystem}" == "btrfs" ]; then
+        if [ "${raid}" != "n" ]; then
             parameter="${parameter}btrfs "
         fi
     fi

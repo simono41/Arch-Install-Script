@@ -355,7 +355,6 @@ then
     check
     if [ "$vollinstallation" != "debug" ]; then
       if [ "${version}" == "voll" ]; then
-        gpg --keyserver https://pgp.mit.edu --recv-keys 4345771566D76038C7FEB43863EC0ADBEA87E4E3
         /opt/${repo}/strap.sh
       fi
         standartinstallation

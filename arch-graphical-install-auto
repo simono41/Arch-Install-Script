@@ -354,7 +354,7 @@ if [ "$vollinstallation" != "n" ]
 then
     check
     if [ "$vollinstallation" != "debug" ]; then
-      if [ "${version}" != "voll" ]; then
+      if [ "${version}" == "voll" ]; then
         /opt/${repo}/strap.sh
       fi
         standartinstallation

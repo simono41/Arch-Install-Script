@@ -9,7 +9,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # full parameters
-# ./make_mksquashfs-auto.sh xfce4 deletework makesystem mkinitcpio filesystem archchroot makeimage makebios makeimage
+# ./make_mksquashfs-auto.sh xfce4 deletework makesystem mkinitcpio filesystem archchroot makeimage makebios makeiso
 
 iso_name=spectre_os
 iso_label="SPECTRE_OS"

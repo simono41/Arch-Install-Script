@@ -411,17 +411,6 @@ else
     echo "Kein Start gewählt!!!"
 fi
 
-if [ "${version}" != "lite" ]; then
-    if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
-        rm /usr/lib/systemd/system/x11vnc.service
-    fi
-    if [ -f /etc/systemd/system/x11vnc.service ]; then
-        rm /etc/systemd/system/x11vnc.service
-    fi
-    cp /opt/${repo}/x11vnc.service /etc/systemd/system/x11vnc.service
-    chmod 644 /etc/systemd/system/x11vnc.service
-    systemctl enable x11vnc.service
-fi
 systemctl enable acpid
 systemctl enable ntpd
 systemctl enable avahi-daemon
@@ -461,9 +450,128 @@ locale-gen
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
+# iso_name
+echo "${repo}-${version}" > /etc/hostname
 
+# uefi-boot
+cp /opt/${repo1}/uefi-boot.sh /usr/bin/uefi-boot
+chmod 755 /usr/bin/uefi-boot
 
-# custom-bereich vollinstallation
+# write-partitions manager
+cp /opt/${repo}/write_cowspace /usr/bin/write_cowspace
+chmod 755 /usr/bin/write_cowspace
+
+# installer-/usr/bin/
+cp /opt/${repo}/arch-install /usr/bin/arch-install
+chmod 755 /usr/bin/arch-install
+
+# bash.bashrc
+sed "s|%OS_NAME%|${repo}|g;" /opt/${repo}/bash.bashrc > /etc/bash.bashrc
+cp /opt/${repo}/.bashrc /root/
+
+# config.fish
+mkdir -p /root/.config/fish/
+cp /opt/${repo}/config.fish /root/.config/fish/config.fish
+
+# btrfs-swapfile
+cp /opt/${repo}/btrfs-swapon.service /etc/systemd/system/
+cp /opt/${repo}/btrfs-swapon /usr/bin/
+chmod 755 /usr/bin/btrfs-swapon
+cp /opt/${repo}/btrfs-swapoff /usr/bin/
+chmod 755 /usr/bin/btrfs-swapoff
+
+# compress-script
+cp /opt/${repo}/compress.sh /usr/bin/compress
+chmod 755 /usr/bin/compress
+
+# ssh
+cp /opt/${repo}/sshd_config /etc/ssh/sshd_config
+
+# .Xmodmap
+cp /opt/${repo}/.Xmodmap /root/
+
+# packages
+cp /opt/${repo}/packages* /etc/
+
+# snapshot.sh
+cp /opt/${repo}/snapshot.sh /usr/bin/snapshot
+chmod 755 /usr/bin/snapshot
+
+# .xscreensaver
+cp /opt/${repo}/.xscreensaver /root/
+
+# hosts
+cp /opt/${repo}/hosts /etc/
+
+# update-script
+cp /opt/${repo}/update.sh /usr/bin/update-script
+chmod 755 /usr/bin/update-script
+
+# Verzeichnise
+mkdir -p /root/Downloads
+mkdir -p /root/Dokumente
+mkdir -p /root/Bilder
+mkdir -p /root/Musik
+mkdir -p /root/Videos
+
+# addusers.sh
+cp /opt/${repo}/addusers.sh /usr/bin/addusers
+chmod 755 /usr/bin/addusers
+
+# shell-fish
+chsh -s /usr/bin/fish root
+chsh -s /usr/bin/fish ${username}
+
+# XDG standard
+cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
+
+# nano
+echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
+
+# htop
+echo "fields=0 48 17 18 38 39 40 2 46 47 49 1
+sort_key=46
+sort_direction=-1
+hide_threads=0
+hide_kernel_threads=1
+hide_userland_threads=0
+shadow_other_users=0
+highlight_base_name=1
+highlight_megabytes=1
+highlight_threads=1
+tree_view=1
+header_margin=1
+detailed_cpu_time=1
+color_scheme=0
+delay=15
+left_meters=AllCPUs Memory Swap
+left_meter_modes=1 1 1
+right_meters=Tasks LoadAverage Uptime
+right_meter_modes=2 2 2 " > /root/.htoprc
+
+# ssh
+
+mkdir -p /root/.ssh
+echo "ServerAliveInterval 120" > ~/.ssh/config
+echo "ServerAliveCountMax 15" >> ~/.ssh/config
+
+# Install rc.local
+echo "[Unit]
+Description=/etc/rc.local compatibility
+
+[Service]
+Type=oneshot
+ExecStart=/etc/rc.local
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target" > /etc/systemd/system/rc-local.service
+touch /etc/rc.local
+chmod +x /etc/rc.local
+systemctl enable rc-local.service
+if ! grep '#!' $RCLOCAL; then
+    echo "#!/bin/bash" > $RCLOCAL
+fi
 
 if [ "$version" != "lite" ]; then
 
@@ -548,165 +656,48 @@ if [ "$version" != "lite" ]; then
 
     cd /
 
+    # x11vnc
+    if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
+        rm /usr/lib/systemd/system/x11vnc.service
+    fi
+    if [ -f /etc/systemd/system/x11vnc.service ]; then
+        rm /etc/systemd/system/x11vnc.service
+    fi
+    cp /opt/${repo}/x11vnc.service /etc/systemd/system/x11vnc.service
+    chmod 644 /etc/systemd/system/x11vnc.service
+    systemctl enable x11vnc.service
+
+    # .Conky
+    tar -vxJf /opt/${repo}/.Conky.tar.xz -C /opt/
+    chmod 755 -Rv /opt/.Conky/
+    touch /root/notes.txt
+
     # Vibrancy Colors
     tar -vxJf /opt/${repo}/vibrancy-colors.tar.xz -C /usr/share/icons/
     gtk-update-icon-cache /usr/share/icons/Vibrancy-Colors-Dark/
+
+    # santana
+    mkdir -p /usr/share/fonts/TTF/
+    tar -vxJf /opt/${repo}/santana.tar.xz -C /usr/share/fonts/TTF/
+
+    # installer
+    mkdir -p /usr/share/applications/
+    cp /opt/${repo}/arch-install.desktop /usr/share/applications/arch-install.desktop
+
+    # install-picture
+    mkdir -p /usr/share/pixmaps/
+    cp /opt/${repo}/install.png /usr/share/pixmaps/
+
+    # background
+    mkdir -p /usr/share/backgrounds/xfce/
+    cp /opt/${repo}/*.jpg /usr/share/backgrounds/xfce/
+    chmod 755 -Rv /usr/share/backgrounds/xfce/
 
     # .config
     tar -vxJf /opt/${repo}/.config.tar.xz -C /root/
     gnomeconfig
     copyconfig
 
-fi
-# iso_name
-echo "${repo}-${version}" > /etc/hostname
-
-# uefi-boot
-cp /opt/${repo1}/uefi-boot.sh /usr/bin/uefi-boot
-chmod 755 /usr/bin/uefi-boot
-
-# write-partitions manager
-cp /opt/${repo}/write_cowspace /usr/bin/write_cowspace
-chmod 755 /usr/bin/write_cowspace
-
-# installer-/usr/bin/
-cp /opt/${repo}/arch-install /usr/bin/arch-install
-chmod 755 /usr/bin/arch-install
-
-# installer
-mkdir -p /usr/share/applications/
-cp /opt/${repo}/arch-install.desktop /usr/share/applications/arch-install.desktop
-
-# install-picture
-mkdir -p /usr/share/pixmaps/
-cp /opt/${repo}/install.png /usr/share/pixmaps/
-
-# background
-mkdir -p /usr/share/backgrounds/xfce/
-cp /opt/${repo}/*.jpg /usr/share/backgrounds/xfce/
-chmod 755 -Rv /usr/share/backgrounds/xfce/
-
-# bash.bashrc
-sed "s|%OS_NAME%|${repo}|g;" /opt/${repo}/bash.bashrc > /etc/bash.bashrc
-cp /opt/${repo}/.bashrc /root/
-
-# config.fish
-mkdir -p /root/.config/fish/
-cp /opt/${repo}/config.fish /root/.config/fish/config.fish
-
-# btrfs-swapfile
-cp /opt/${repo}/btrfs-swapon.service /etc/systemd/system/
-cp /opt/${repo}/btrfs-swapon /usr/bin/
-chmod 755 /usr/bin/btrfs-swapon
-cp /opt/${repo}/btrfs-swapoff /usr/bin/
-chmod 755 /usr/bin/btrfs-swapoff
-
-# compress-script
-cp /opt/${repo}/compress.sh /usr/bin/compress
-chmod 755 /usr/bin/compress
-
-# ssh
-cp /opt/${repo}/sshd_config /etc/ssh/sshd_config
-
-# .Xmodmap
-cp /opt/${repo}/.Xmodmap /root/
-
-# packages
-cp /opt/${repo}/packages* /etc/
-
-# snapshot.sh
-cp /opt/${repo}/snapshot.sh /usr/bin/snapshot
-chmod 755 /usr/bin/snapshot
-
-# .Conky
-tar -vxJf /opt/${repo}/.Conky.tar.xz -C /opt/
-chmod 755 -Rv /opt/.Conky/
-touch /root/notes.txt
-
-# .xscreensaver
-cp /opt/${repo}/.xscreensaver /root/
-
-# hosts
-cp /opt/${repo}/hosts /etc/
-
-# santana
-mkdir -p /usr/share/fonts/TTF/
-tar -vxJf /opt/${repo}/santana.tar.xz -C /usr/share/fonts/TTF/
-
-# update-script
-cp /opt/${repo}/update.sh /usr/bin/update-script
-chmod 755 /usr/bin/update-script
-
-# Verzeichnise
-mkdir -p /root/Downloads
-mkdir -p /root/Dokumente
-mkdir -p /root/Bilder
-mkdir -p /root/Musik
-mkdir -p /root/Videos
-
-# addusers.sh
-cp /opt/${repo}/addusers.sh /usr/bin/addusers
-chmod 755 /usr/bin/addusers
-
-# shell-fish
-chsh -s /usr/bin/fish root
-chsh -s /usr/bin/fish ${username}
-
-# XDG standard
-cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
-
-
-
-# custom-bereich standart
-
-# nano
-
-echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
-
-# htop
-
-echo "fields=0 48 17 18 38 39 40 2 46 47 49 1
-sort_key=46
-sort_direction=-1
-hide_threads=0
-hide_kernel_threads=1
-hide_userland_threads=0
-shadow_other_users=0
-highlight_base_name=1
-highlight_megabytes=1
-highlight_threads=1
-tree_view=1
-header_margin=1
-detailed_cpu_time=1
-color_scheme=0
-delay=15
-left_meters=AllCPUs Memory Swap
-left_meter_modes=1 1 1
-right_meters=Tasks LoadAverage Uptime
-right_meter_modes=2 2 2 " > /root/.htoprc
-
-# ssh
-
-mkdir -p /root/.ssh
-echo "ServerAliveInterval 120" > ~/.ssh/config
-echo "ServerAliveCountMax 15" >> ~/.ssh/config
-
-# Install rc.local
-echo "[Unit]
-Description=/etc/rc.local compatibility
-
-[Service]
-Type=oneshot
-ExecStart=/etc/rc.local
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target" > /etc/systemd/system/rc-local.service
-touch /etc/rc.local
-chmod +x /etc/rc.local
-systemctl enable rc-local.service
-if ! grep '#!' $RCLOCAL; then
-    echo "#!/bin/bash" > $RCLOCAL
 fi
 
 pacman -Syu --needed --noconfirm

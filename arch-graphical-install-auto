@@ -364,7 +364,7 @@ gnomeconfig
 # set desktop
 echo "set desktop"
 #
-if ! [ "$version" != "lite" ]; then
+if [ "$version" != "lite" ]; then
   cp /opt/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
 fi
 #

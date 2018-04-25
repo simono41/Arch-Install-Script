@@ -135,7 +135,11 @@ function system() {
                 echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
-                ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux-libre
+                if [ "${version}" == "libre" ]; then
+                  ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux-libre
+                else
+                  ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
+                fi
 
             else
                 #echo "MODULES=\"i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf

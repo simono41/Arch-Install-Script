@@ -9,7 +9,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # full parameters
-# ./make_mksquashfs-auto.sh xfce4 deletework makesystem mkinitcpio filesystem makeimage makebios makeiso
+# ./make_mksquashfs-auto.sh xfce4 deletework makesystem mkinitcpio filesystem initcheck makeimage makebios makeiso
 
 iso_name=spectre_os
 iso_label="SPECTRE_OS"
@@ -29,6 +29,7 @@ do
     if [ "$wort" == "makesystem" ]; then makesystem=y; fi
     if [ "$wort" == "mkinitcpio" ]; then mkinitcpio=y; fi
     if [ "$wort" == "filesystem" ]; then filesystem=y; fi
+    if [ "$wort" == "initcheck" ]; then filesystem=y; fi
     if [ "$wort" == "makeimage" ]; then makeimage=y; fi
     if [ "$wort" == "makebios" ]; then makebios=y; fi
     if [ "$wort" == "makeiso" ]; then makeiso=y; fi
@@ -421,6 +422,11 @@ if [ "${filesystem}" == "y" ]; then
     cp arch-graphical-install-auto ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install-auto
     chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install-auto
     ./arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install-auto ${version}
+
+fi
+
+if [ "${initcheck}" == "y" ]; then
+
     echo "ERSTTSTART WIRD JETZT AUSGEFÜHRT"
     echo "Der erste Start kann etwas länger dauern!!!"
     echo "Bitte loggen sie sich mit root ein und fahren sie wieder mit poweroff runter!!!"

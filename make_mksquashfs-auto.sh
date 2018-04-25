@@ -56,15 +56,15 @@ function minimalinstallation() {
     fi
     if [ "${version}" == "libre" ]; then
         if [ "${archchroot}" != "y" ]; then
-            ./pacstrap -C /etc/pacman.conf_libre -c -i -d -G -M ${work_dir}/${arch}/airootfs base git --ignore linux
+            ./pacstrap -C /etc/pacman.conf_libre -c -i -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt) --ignore linux
         else
-            ./pacstrap -C /etc/pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs base git
+            ./pacstrap -C /etc/pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
         fi
     else
         if [ "${archchroot}" != "y" ]; then
-            ./pacstrap -C /etc/pacman.conf -c -i -d -G -M ${work_dir}/${arch}/airootfs base git --ignore linux
+            ./pacstrap -C /etc/pacman.conf -c -i -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt) --ignore linux
         else
-            ./pacstrap -C /etc/pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs base git
+            ./pacstrap -C /etc/pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
         fi
     fi
 }

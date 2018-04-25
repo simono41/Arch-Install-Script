@@ -345,7 +345,7 @@ if [ -f /var/lib/pacman/db.lck ];then
 fi
 
 # vollinstallation
-if [ "$vollinstallation" != "n" ] && [ "$version" != "lite" ]
+if [ "$vollinstallation" != "n" ]
 then
     check
     if [ "$vollinstallation" != "debug" ]; then
@@ -364,7 +364,9 @@ gnomeconfig
 # set desktop
 echo "set desktop"
 #
-cp /opt/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
+if ! [ "$version" != "lite" ]; then
+  cp /opt/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
+fi
 #
 echo "Systemsprache und dienste werden erstellt!"
 

@@ -56,9 +56,9 @@ function minimalinstallation() {
     fi
     if [ "${version}" == "libre" ]; then
         if [ "${archchroot}" != "y" ]; then
-            ./pacstrap -C /etc/pacman.conf_libre -c -i -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt) --ignore linux
+            ./pacstrap -C /etc/pacman.conf_libre -c -i -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt) --ignore linux,intel-ucode
         else
-            ./pacstrap -C /etc/pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
+            ./pacstrap -C /etc/pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt) --ignore intel-ucode
         fi
     else
         if [ "${archchroot}" != "y" ]; then

@@ -24,6 +24,7 @@ htop
 intel-ucode
 iw
 links
+ntp
 openssh
 openvpn
 os-prober

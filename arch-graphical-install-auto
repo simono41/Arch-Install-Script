@@ -252,8 +252,8 @@ function gnomeconfig() {
     echo "# set font name and dimension" >> /root/.config/gtk-3.0/settings.ini
     echo "gtk-font-name = Sans 10" >> /root/.config/gtk-3.0/settings.ini
 
-    #gsettings set org.gnome.desktop.media-handling automount 'false'
-    #gsettings set org.gnome.desktop.media-handling automount-open 'false'
+    gsettings set org.gnome.desktop.media-handling automount 'false'
+    gsettings set org.gnome.desktop.media-handling automount-open 'false'
 }
 
 
@@ -335,10 +335,6 @@ fi
 
 echo "Packetliste2 Ende"
 echo "Beginne mit dem Konfigurieren des Systems :D"
-
-# .config
-tar -vxJf /opt/${repo}/.config.tar.xz -C /root/
-gnomeconfig
 
 # set desktop
 echo "set desktop"
@@ -552,6 +548,15 @@ if [ "$version" != "lite" ]; then
 
     cd /
 
+    # Vibrancy Colors
+    tar -vxJf /opt/${repo}/vibrancy-colors.tar.xz -C /usr/share/icons/
+    gtk-update-icon-cache /usr/share/icons/Vibrancy-Colors-Dark/
+
+    # .config
+    tar -vxJf /opt/${repo}/.config.tar.xz -C /root/
+    gnomeconfig
+    copyconfig
+
 fi
 # iso_name
 echo "${repo}-${version}" > /etc/hostname
@@ -647,10 +652,6 @@ chmod 755 /usr/bin/addusers
 chsh -s /usr/bin/fish root
 chsh -s /usr/bin/fish ${username}
 
-# Vibrancy Colors
-tar -vxJf /opt/${repo}/vibrancy-colors.tar.xz -C /usr/share/icons/
-gtk-update-icon-cache /usr/share/icons/Vibrancy-Colors-Dark/
-
 # XDG standard
 cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
 
@@ -708,29 +709,12 @@ if ! grep '#!' $RCLOCAL; then
     echo "#!/bin/bash" > $RCLOCAL
 fi
 
-
-
-
-echo "Bei bedarf pacman -Sc oder -Scc eingeben um [nicht mehr benötigte]/[alle] unnötige packete zu entfernen!!!"
-
-#
-#systemctl start ntpd
-#ntpd -gq
-#date
-#hwclock -w
-#
-
 pacman -Syu --needed --noconfirm
-
-copyconfig
-
-ldconfigcache
 
 if [ "${version}" == "libre" ]; then
     mkinitcpio -p linux-libre
 else
     mkinitcpio -p linux -c /etc/mkinitcpio.conf
-    #mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
 fi
 
 echo "Fertig!!!"

@@ -268,8 +268,8 @@ function gnomeconfig() {
     echo "# set font name and dimension" >> /root/.config/gtk-3.0/settings.ini
     echo "gtk-font-name = Sans 10" >> /root/.config/gtk-3.0/settings.ini
 
-    gsettings set org.gnome.desktop.media-handling automount 'false'
-    gsettings set org.gnome.desktop.media-handling automount-open 'false'
+    #gsettings set org.gnome.desktop.media-handling automount 'false'
+    #gsettings set org.gnome.desktop.media-handling automount-open 'false'
 }
 
 
@@ -345,7 +345,7 @@ if [ -f /var/lib/pacman/db.lck ];then
 fi
 
 # vollinstallation
-if [ "$vollinstallation" != "n" ]
+if [ "$vollinstallation" != "n" ] && [ "$version" != "lite" ]
 then
     check
     if [ "$vollinstallation" != "debug" ]; then
@@ -353,41 +353,6 @@ then
     fi
     checkend
 fi
-
-if [ "${version}" != "libre" ]; then
-    #yaourtmanagerinstall
-    #pacaurmanagerinstall
-    aurmanagerinstall
-    aurinstall pamac-aur
-    aurinstall google-chrome
-    aurinstall plymouth
-    aurinstall plymouth-theme-dark-arch
-    plymouth-set-default-theme -R dark-arch
-    aurinstall snapd
-    #if [ "${archchroot}" != "archchroot" ]; then
-    #systemctl enable --now snapd.socket
-    #if ! [ -d "/snap" ];then
-    #  ln -s /var/lib/snapd/snap /snap
-    #fi
-    #snap install spotify
-    #if ! [ -f "/usr/bin/spotify" ];then
-    #  ln -s /var/lib/snapd/snap/bin/spotify /usr/bin/spotify
-    #fi
-    #if ! [ -f "/usr/share/applications/spotify_spotify.desktop" ];then
-    #  ln -s /var/lib/snapd/desktop/applications/spotify_spotify.desktop /usr/share/applications/spotify_spotify.desktop
-    #fi
-    #snap install skype
-    #if ! [ -f "/usr/bin/skype" ];then
-    #  ln -s /var/lib/snapd/snap/bin/skype /usr/bin/skype
-    #fi
-    #if ! [ -f "/usr/share/applications/skype_skypeforlinux.desktop" ];then
-    #  ln -s /var/lib/snapd/desktop/applications/skype_skypeforlinux.desktop /usr/share/applications/skype_skypeforlinux.desktop
-    #fi
-    #else
-    systemctl enable snapd.socket
-    #fi
-fi
-
 
 echo "Packetliste2 Ende"
 echo "Beginne mit dem Konfigurieren des Systems :D"

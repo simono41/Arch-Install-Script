@@ -570,7 +570,7 @@ chmod 755 /usr/bin/arch-install
 
 # installer
 mkdir -p /usr/share/applications/
-cp /opt/${repo}/arch-install.desktop > /usr/share/applications/arch-install.desktop
+cp /opt/${repo}/arch-install.desktop /usr/share/applications/arch-install.desktop
 
 # install-picture
 mkdir -p /usr/share/pixmaps/

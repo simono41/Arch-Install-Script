@@ -259,11 +259,11 @@ function installation {
                 echo "It is a copytoram system."
                 unsquashfs -f -d ${mountpoint} /run/archiso/copytoram/airootfs.sfs
             else
-                read -p "Where is the airootfs.sfs? Please specify the complete path or choose the online installation? [/airootfs.sfs/online] : " installationfehler
-                if [ "${installationfehler}" == "online" ]; then
+                read -p "Where is the airootfs.sfs? Please specify the complete path or choose the online installation? [/airootfs.sfs/online] : " installationsfehler
+                if [ "${installationsfehler}" == "online" ]; then
                     minimalinstallation
                 else
-                    unsquashfs -f -d ${mountpoint} ${installationfehler}
+                    unsquashfs -f -d ${mountpoint} ${installationsfehler}
                 fi
             fi
         else
@@ -1106,14 +1106,14 @@ fi
 
 # benutzerwechsel
 
-if [ "${name}" != "noinstall" ]; then
+if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ]; then
     #arch-chroot ${mountpoint} usermod -l "${name}" user1
     #arch-chroot ${mountpoint} usermod -d /home/"${name}" -m "${name}"
     arch-chroot ${mountpoint} chfn -f "${name}" user1
     arch-chroot ${mountpoint} passwd user1
 fi
 
-if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ "${installationfehler}" == "online" ]; then
+if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ -n "${installationsfehler}" ]; then
     read -p "Should the extended installation be carried out? [Y/n] " graphical
     if [ "$graphical" != "n" ]
     then

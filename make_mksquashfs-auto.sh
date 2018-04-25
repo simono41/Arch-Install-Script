@@ -9,7 +9,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # full parameters
-# ./make_mksquashfs-auto.sh xfce4 deletework makesystem mkinitcpio filesystem archchroot makeimage makebios makeiso
+# ./make_mksquashfs-auto.sh xfce4 deletework makesystem mkinitcpio filesystem makeimage makebios makeiso
 
 iso_name=spectre_os
 iso_label="SPECTRE_OS"
@@ -29,7 +29,6 @@ do
     if [ "$wort" == "makesystem" ]; then makesystem=y; fi
     if [ "$wort" == "mkinitcpio" ]; then mkinitcpio=y; fi
     if [ "$wort" == "filesystem" ]; then filesystem=y; fi
-    if [ "$wort" == "archchroot" ]; then archchroot=y; fi
     if [ "$wort" == "makeimage" ]; then makeimage=y; fi
     if [ "$wort" == "makebios" ]; then makebios=y; fi
     if [ "$wort" == "makeiso" ]; then makeiso=y; fi
@@ -51,21 +50,10 @@ function minimalinstallation() {
     cp pacman* /etc/
     cp mirrorlist* /etc/pacman.d/
 
-    if [ "${archchroot}" != "y" ]; then
-        echo "Tipp: Die Option -i eine automatische Bestätigung der Paketauswahl. Da Sie den Linux-Kernel nicht im Container installieren müssen, können Sie ihn aus der Paketlistenauswahl entfernen, um Platz zu sparen. Siehe Pacman # Verwendung ."
-    fi
     if [ "${version}" == "libre" ]; then
-        if [ "${archchroot}" != "y" ]; then
-            ./pacstrap -C pacman.conf_libre -c -i -d -G -M ${work_dir}/${arch}/airootfs $(cat base_libre.txt) --ignore linux
-        else
-            ./pacstrap -C pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base_libre.txt)
-        fi
+        ./pacstrap -C pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base_libre.txt)
     else
-        if [ "${archchroot}" != "y" ]; then
-            ./pacstrap -C pacman.conf -c -i -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt) --ignore linux
-        else
-            ./pacstrap -C pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
-        fi
+        ./pacstrap -C pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
     fi
 }
 
@@ -429,17 +417,15 @@ system
 
 if [ "${filesystem}" == "y" ]; then
 
-    echo "Jetzt können sie ihr Betriebssystem nach ihren Belieben anpassen :D"
-    echo "Tipp: benutzen sie den User root :D"
-    echo "Bitte führen sie arch-graphical-install-auto und die Version aus."
-    echo "Benutze Poweroff um das System wieder herunterzufahren und das Komprimieren zu beginnen :)"
+    echo ${hostname} > ${work_dir}/${arch}/airootfs/etc/hostname
     cp arch-graphical-install-auto ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install-auto
-    echo "${hostname}" > ${work_dir}/${arch}/airootfs/etc/hostname
-    if [ "${archchroot}" != "y" ]; then
-        systemd-nspawn -b -D ${work_dir}/${arch}/airootfs
-    else
-        ./arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install-auto ${version} user1 user1 archchroot
-    fi
+    chmod +x ${work_dir}/${arch}/airootfs/usr/bin/arch-graphical-install-auto
+    ./arch-chroot ${work_dir}/${arch}/airootfs /usr/bin/arch-graphical-install-auto ${version}
+    echo "ERSTTSTART WIRD JETZT AUSGEFÜHRT"
+    echo "Der erste Start kann etwas länger dauern!!!"
+    echo "Bitte loggen sie sich mit root ein und fahren sie wieder mit poweroff runter!!!"
+    systemd-nspawn -b -D ${work_dir}/${arch}/airootfs
+
 fi
 
 if [ "${makeimage}" == "y" ]; then

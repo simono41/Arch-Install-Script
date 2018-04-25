@@ -9,7 +9,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # full parameters
-# ./make_mksquashfs-auto.sh voll deletework filesystem archchroot makebios makeimage makeiso
+# ./make_mksquashfs-auto.sh xfce4 deletework filesystem archchroot makebios makeimage makeiso mkinitcpio
 
 iso_name=spectre_os
 iso_label="SPECTRE_OS"
@@ -93,7 +93,7 @@ function secureumount() {
     #
 }
 
-function filesystem() {
+function system() {
 
     if [ "$system" != "n" ]
     then
@@ -106,9 +106,9 @@ function filesystem() {
                         sleep 5
                         rm -Rv ${work_dir}
                     fi
-                    mkdir -p ${work_dir}/${arch}/airootfs
-                    minimalinstallation
                 fi
+                mkdir -p ${work_dir}/${arch}/airootfs
+                minimalinstallation
             fi
 
         fi
@@ -117,20 +117,24 @@ function filesystem() {
             # module and hooks
             if [ "${version}" == "libre" ]; then
                 echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-                echo "HOOKS=\"base udev memdisk archiso_shutdown archiso archiso_loop_mnt archiso_pxe_common archiso_pxe_nbd archiso_pxe_http archiso_pxe_nfs archiso_kms block pcmcia filesystems keyboard cow_device\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+                echo "HOOKS=\"base udev memdisk archiso_shutdown archiso archiso_loop_mnt archiso_pxe_common archiso_pxe_nbd archiso_pxe_http archiso_pxe_nfs archiso_kms block pcmcia filesystems keyboard\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
+                ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux-libre
+
             else
                 #echo "MODULES=\"i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-                #echo "HOOKS=\"base udev plymouth memdisk archiso_shutdown archiso archiso_loop_mnt archiso_pxe_common archiso_pxe_nbd archiso_pxe_http archiso_pxe_nfs archiso_kms block pcmcia filesystems keyboard cow_device\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+                #echo "HOOKS=\"base udev plymouth memdisk archiso_shutdown archiso archiso_loop_mnt archiso_pxe_common archiso_pxe_nbd archiso_pxe_http archiso_pxe_nfs archiso_kms block pcmcia filesystems keyboard\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 #echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 #echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
                 echo "MODULES=\"nvidia nvidia_modeset nvidia_uvm nvidia_drm i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-                echo "HOOKS=\"base udev plymouth memdisk archiso_shutdown archiso archiso_loop_mnt archiso_pxe_common archiso_pxe_nbd archiso_pxe_http archiso_pxe_nfs archiso_kms block pcmcia filesystems keyboard cow_device\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+                echo "HOOKS=\"base udev plymouth memdisk archiso_shutdown archiso archiso_loop_mnt archiso_pxe_common archiso_pxe_nbd archiso_pxe_http archiso_pxe_nfs archiso_kms block pcmcia filesystems keyboard\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+
+                ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
 
             fi
 
@@ -267,7 +271,7 @@ function UEFI() {
             echo "efiboot.img nicht vorhanden!"
         fi
 
-        truncate -s 256M ${work_dir}/iso/EFI/archiso/efiboot.img
+        truncate -s 128M ${work_dir}/iso/EFI/archiso/efiboot.img
         mkfs.vfat -n ${iso_label}_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
 
         mkdir -p ${work_dir}/efiboot
@@ -416,9 +420,9 @@ function makeiso() {
 
 }
 
-if [ "${filesystem}" == "y" ]; then
+system
 
-    filesystem
+if [ "${filesystem}" == "y" ]; then
 
     echo "Jetzt können sie ihr Betriebssystem nach ihren Belieben anpassen :D"
     echo "Tipp: benutzen sie den User root :D"

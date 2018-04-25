@@ -16,6 +16,7 @@ dosfstools
 efibootmgr
 efitools
 exfat-utils
+fail2ban
 fish
 gdisk
 git

@@ -149,22 +149,6 @@ function ldconfigcache() {
     ldconfig
 }
 
-function check() {
-    if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
-        rm /usr/lib/systemd/system/x11vnc.service
-    fi
-    if [ -f /etc/systemd/system/x11vnc.service ]; then
-        rm /etc/systemd/system/x11vnc.service
-    fi
-}
-
-function checkend() {
-    cp /opt/${repo}/x11vnc.service /etc/systemd/system/x11vnc.service
-    chmod 644 /etc/systemd/system/x11vnc.service
-    systemctl enable x11vnc.service
-
-}
-
 function addusers() {
     useradd -m -g users -G wheel,audio,video,sys,optical -s /bin/bash $username
     passwd ${username} <<EOT
@@ -345,13 +329,8 @@ if [ -f /var/lib/pacman/db.lck ];then
 fi
 
 # vollinstallation
-if [ "$vollinstallation" != "n" ]
-then
-    check
-    if [ "$vollinstallation" != "debug" ]; then
-        standartinstallation
-    fi
-    checkend
+if [ "$vollinstallation" != "debug" ]; then
+  standartinstallation
 fi
 
 echo "Packetliste2 Ende"
@@ -365,7 +344,7 @@ gnomeconfig
 echo "set desktop"
 #
 if [ "$version" != "lite" ]; then
-  cp /opt/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
+    cp /opt/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
 fi
 #
 echo "Systemsprache und dienste werden erstellt!"
@@ -436,26 +415,35 @@ else
     echo "Kein Start gewählt!!!"
 fi
 
-if [ "${vollinstallation}" != "n" ]; then
-    systemctl enable acpid
-    systemctl enable ntpd
-    systemctl enable avahi-daemon
-    systemctl enable org.cups.cupsd.service
-    systemctl enable sshd
-    systemctl enable cronie
-    systemctl enable systemd-timesyncd.service
-    echo "Bitte OpenVPN config in die /etc/openvpn/client/client.conf kopieren!!!"
-    if [ -f /lib/systemd/system/openvpn-client@client.service ]; then
-        echo "link vorhanden!"
-    else
-        ln /lib/systemd/system/openvpn-client@.service /lib/systemd/system/openvpn-client@client.service
+if [ "${version}" != "lite" ]; then
+    if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
+        rm /usr/lib/systemd/system/x11vnc.service
     fi
-    #Bei ausdokumentierung wird eine/die VPN automatisch aus der /etc/openvpn/client/client.conf gestartet!!!
-    #systemctl enable openvpn-client@client.service
-    systemctl enable fail2ban
-    systemctl disable dhcpcd
-    systemctl enable NetworkManager.service
+    if [ -f /etc/systemd/system/x11vnc.service ]; then
+        rm /etc/systemd/system/x11vnc.service
+    fi
+    cp /opt/${repo}/x11vnc.service /etc/systemd/system/x11vnc.service
+    chmod 644 /etc/systemd/system/x11vnc.service
+    systemctl enable x11vnc.service
 fi
+systemctl enable acpid
+systemctl enable ntpd
+systemctl enable avahi-daemon
+systemctl enable org.cups.cupsd.service
+systemctl enable sshd
+systemctl enable cronie
+systemctl enable systemd-timesyncd.service
+echo "Bitte OpenVPN config in die /etc/openvpn/client/client.conf kopieren!!!"
+if [ -f /lib/systemd/system/openvpn-client@client.service ]; then
+     echo "link vorhanden!"
+else
+    ln /lib/systemd/system/openvpn-client@.service /lib/systemd/system/openvpn-client@client.service
+fi
+#Bei ausdokumentierung wird eine/die VPN automatisch aus der /etc/openvpn/client/client.conf gestartet!!!
+#systemctl enable openvpn-client@client.service
+systemctl enable fail2ban
+systemctl disable dhcpcd
+systemctl enable NetworkManager.service
 
 # set systemconfiguration
 echo "systemconfiguration"
@@ -481,7 +469,7 @@ ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # custom-bereich vollinstallation
 
-if [ "${vollinstallation}" != "n" ]; then
+if [ "$version" != "lite" ]; then
 
     # custom-installer
 
@@ -564,114 +552,107 @@ if [ "${vollinstallation}" != "n" ]; then
 
     cd /
 
-    # iso_name
-    echo "${repo}-${version}" > /etc/hostname
-
-    # uefi-boot
-    cp /opt/${repo1}/uefi-boot.sh /usr/bin/uefi-boot
-    chmod 755 /usr/bin/uefi-boot
-
-    # write-partitions manager
-    cp /opt/${repo}/write_cowspace /usr/bin/write_cowspace
-    chmod 755 /usr/bin/write_cowspace
-
-    # installer-/usr/bin/
-    cp /opt/${repo}/arch-install /usr/bin/arch-install
-    chmod 755 /usr/bin/arch-install
-
-    # installer
-    mkdir -p /usr/share/applications/
-    mkdir -p /root/.config/xfce4/panel/launcher-29/
-    sed "s|%VERSION%|${version}|g;" /opt/${repo}/arch-install.desktop > /usr/share/applications/arch-install.desktop
-    sed "s|%VERSION%|${version}|g;" /opt/${repo}/15196212071.desktop > /root/.config/xfce4/panel/launcher-29/15196212071.desktop
-    sed "s|%VERSION%|${version}|g;" /opt/${repo}/15196212512.desktop > /root/.config/xfce4/panel/launcher-29/15196212512.desktop
-    chmod 755 /usr/share/applications/arch-install.desktop
-    chmod 755 /root/.config/xfce4/panel/launcher-29/15196212071.desktop
-    chmod 755 /root/.config/xfce4/panel/launcher-29/15196212512.desktop
-
-    # install-picture
-    mkdir -p /usr/share/pixmaps/
-    cp /opt/${repo}/install.png /usr/share/pixmaps/
-
-    # background
-    mkdir -p /usr/share/backgrounds/xfce/
-    cp /opt/${repo}/*.jpg /usr/share/backgrounds/xfce/
-    chmod 755 -Rv /usr/share/backgrounds/xfce/
-
-    # bash.bashrc
-    sed "s|%OS_NAME%|${repo}|g;" /opt/${repo}/bash.bashrc > /etc/bash.bashrc
-    cp /opt/${repo}/.bashrc /root/
-
-    # config.fish
-    mkdir -p /root/.config/fish/
-    cp /opt/${repo}/config.fish /root/.config/fish/config.fish
-
-    # btrfs-swapfile
-    cp /opt/${repo}/btrfs-swapon.service /etc/systemd/system/
-    cp /opt/${repo}/btrfs-swapon /usr/bin/
-    chmod 755 /usr/bin/btrfs-swapon
-    cp /opt/${repo}/btrfs-swapoff /usr/bin/
-    chmod 755 /usr/bin/btrfs-swapoff
-
-    # compress-script
-    cp /opt/${repo}/compress.sh /usr/bin/compress
-    chmod 755 /usr/bin/compress
-
-    # ssh
-    cp /opt/${repo}/sshd_config /etc/ssh/sshd_config
-
-    # .Xmodmap
-    cp /opt/${repo}/.Xmodmap /root/
-
-    # packages
-    cp /opt/${repo}/packages* /etc/
-
-    # snapshot.sh
-    cp /opt/${repo}/snapshot.sh /usr/bin/snapshot
-    chmod 755 /usr/bin/snapshot
-
-    # .Conky
-    tar -vxJf /opt/${repo}/.Conky.tar.xz -C /opt/
-    chmod 755 -Rv /opt/.Conky/
-    touch /root/notes.txt
-
-    # .xscreensaver
-    cp /opt/${repo}/.xscreensaver /root/
-
-    # hosts
-    cp /opt/${repo}/hosts /etc/
-
-    # santana
-    mkdir -p /usr/share/fonts/TTF/
-    tar -vxJf /opt/${repo}/santana.tar.xz -C /usr/share/fonts/TTF/
-
-    # update-script
-    cp /opt/${repo}/update.sh /usr/bin/update-script
-    chmod 755 /usr/bin/update-script
-
-    # Verzeichnise
-    mkdir -p /root/Downloads
-    mkdir -p /root/Dokumente
-    mkdir -p /root/Bilder
-    mkdir -p /root/Musik
-    mkdir -p /root/Videos
-
-    # addusers.sh
-    cp /opt/${repo}/addusers.sh /usr/bin/addusers
-    chmod 755 /usr/bin/addusers
-
-    # shell-fish
-    chsh -s /usr/bin/fish root
-    chsh -s /usr/bin/fish ${username}
-
-    # Vibrancy Colors
-    tar -vxJf /opt/${repo}/vibrancy-colors.tar.xz -C /usr/share/icons/
-    gtk-update-icon-cache /usr/share/icons/Vibrancy-Colors-Dark/
-
-    # XDG standard
-    cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
-
 fi
+# iso_name
+echo "${repo}-${version}" > /etc/hostname
+
+# uefi-boot
+cp /opt/${repo1}/uefi-boot.sh /usr/bin/uefi-boot
+chmod 755 /usr/bin/uefi-boot
+
+# write-partitions manager
+cp /opt/${repo}/write_cowspace /usr/bin/write_cowspace
+chmod 755 /usr/bin/write_cowspace
+
+# installer-/usr/bin/
+cp /opt/${repo}/arch-install /usr/bin/arch-install
+chmod 755 /usr/bin/arch-install
+
+# installer
+mkdir -p /usr/share/applications/
+cp /opt/${repo}/arch-install.desktop > /usr/share/applications/arch-install.desktop
+
+# install-picture
+mkdir -p /usr/share/pixmaps/
+cp /opt/${repo}/install.png /usr/share/pixmaps/
+
+# background
+mkdir -p /usr/share/backgrounds/xfce/
+cp /opt/${repo}/*.jpg /usr/share/backgrounds/xfce/
+chmod 755 -Rv /usr/share/backgrounds/xfce/
+
+# bash.bashrc
+sed "s|%OS_NAME%|${repo}|g;" /opt/${repo}/bash.bashrc > /etc/bash.bashrc
+cp /opt/${repo}/.bashrc /root/
+
+# config.fish
+mkdir -p /root/.config/fish/
+cp /opt/${repo}/config.fish /root/.config/fish/config.fish
+
+# btrfs-swapfile
+cp /opt/${repo}/btrfs-swapon.service /etc/systemd/system/
+cp /opt/${repo}/btrfs-swapon /usr/bin/
+chmod 755 /usr/bin/btrfs-swapon
+cp /opt/${repo}/btrfs-swapoff /usr/bin/
+chmod 755 /usr/bin/btrfs-swapoff
+
+# compress-script
+cp /opt/${repo}/compress.sh /usr/bin/compress
+chmod 755 /usr/bin/compress
+
+# ssh
+cp /opt/${repo}/sshd_config /etc/ssh/sshd_config
+
+# .Xmodmap
+cp /opt/${repo}/.Xmodmap /root/
+
+# packages
+cp /opt/${repo}/packages* /etc/
+
+# snapshot.sh
+cp /opt/${repo}/snapshot.sh /usr/bin/snapshot
+chmod 755 /usr/bin/snapshot
+
+# .Conky
+tar -vxJf /opt/${repo}/.Conky.tar.xz -C /opt/
+chmod 755 -Rv /opt/.Conky/
+touch /root/notes.txt
+
+# .xscreensaver
+cp /opt/${repo}/.xscreensaver /root/
+
+# hosts
+cp /opt/${repo}/hosts /etc/
+
+# santana
+mkdir -p /usr/share/fonts/TTF/
+tar -vxJf /opt/${repo}/santana.tar.xz -C /usr/share/fonts/TTF/
+
+# update-script
+cp /opt/${repo}/update.sh /usr/bin/update-script
+chmod 755 /usr/bin/update-script
+
+# Verzeichnise
+mkdir -p /root/Downloads
+mkdir -p /root/Dokumente
+mkdir -p /root/Bilder
+mkdir -p /root/Musik
+mkdir -p /root/Videos
+
+# addusers.sh
+cp /opt/${repo}/addusers.sh /usr/bin/addusers
+chmod 755 /usr/bin/addusers
+
+# shell-fish
+chsh -s /usr/bin/fish root
+chsh -s /usr/bin/fish ${username}
+
+# Vibrancy Colors
+tar -vxJf /opt/${repo}/vibrancy-colors.tar.xz -C /usr/share/icons/
+gtk-update-icon-cache /usr/share/icons/Vibrancy-Colors-Dark/
+
+# XDG standard
+cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
 
 
 

@@ -110,8 +110,8 @@ function system() {
                     fi
                 fi
                 if [ "${makesystem}" == "y" ]; then
-                  mkdir -p ${work_dir}/${arch}/airootfs
-                  minimalinstallation
+                    mkdir -p ${work_dir}/${arch}/airootfs
+                    minimalinstallation
                 fi
             fi
 
@@ -129,10 +129,10 @@ function system() {
             cp -v install/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/
             cp -v hooks/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/
 
-	    # modprobe.d
-	    mkdir -p ${work_dir}/${arch}/airootfs/etc/modprobe.d/
-	    echo "blacklist floppy" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist-floppy.conf
-	    echo "blacklist nouveau" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist_nouveau.conf
+            # modprobe.d
+            mkdir -p ${work_dir}/${arch}/airootfs/etc/modprobe.d/
+            echo "blacklist floppy" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist-floppy.conf
+            echo "blacklist nouveau" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist_nouveau.conf
 
             if [ "${version}" == "libre" ] || [ "${version}" == "lite" ]; then
                 echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
@@ -141,9 +141,9 @@ function system() {
                 echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 
                 if [ "${version}" == "libre" ]; then
-                  ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux-libre
+                    ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux-libre
                 else
-                  ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
+                    ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
                 fi
 
             else

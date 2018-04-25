@@ -26,12 +26,13 @@ for wort in "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
 do
     echo "$wort"
     if [ "$wort" == "deletework" ]; then deletework=y; fi
+    if [ "$wort" == "makesystem" ]; then makesystem=y; fi
+    if [ "$wort" == "mkinitcpio" ]; then mkinitcpio=y; fi
     if [ "$wort" == "filesystem" ]; then filesystem=y; fi
     if [ "$wort" == "archchroot" ]; then archchroot=y; fi
-    if [ "$wort" == "makebios" ]; then makebios=y; fi
     if [ "$wort" == "makeimage" ]; then makeimage=y; fi
+    if [ "$wort" == "makebios" ]; then makebios=y; fi
     if [ "$wort" == "makeiso" ]; then makeiso=y; fi
-    if [ "$wort" == "mkinitcpio" ]; then mkinitcpio=y; fi
 done
 
 sleep 5
@@ -108,14 +109,26 @@ function system() {
                         rm -Rv ${work_dir}
                     fi
                 fi
-                mkdir -p ${work_dir}/${arch}/airootfs
-                minimalinstallation
+                if [ "${makesystem}" == "y" ]; then
+                  mkdir -p ${work_dir}/${arch}/airootfs
+                  minimalinstallation
+                fi
             fi
 
         fi
 
         if [ "${mkinitcpio}" == "y" ]; then
             # module and hooks
+
+            # hooks
+            cp -v install/archiso* ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/
+            cp -v hooks/archiso* ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/
+
+            cp -v script/archiso* ${work_dir}/${arch}/airootfs/usr/lib/initcpio/
+
+            cp -v install/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/
+            cp -v hooks/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/
+
             if [ "${version}" == "libre" ]; then
                 echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "HOOKS=\"base udev memdisk archiso_shutdown archiso archiso_loop_mnt archiso_pxe_common archiso_pxe_nbd archiso_pxe_http archiso_pxe_nfs archiso_kms block pcmcia filesystems keyboard\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
@@ -138,16 +151,6 @@ function system() {
                 ./arch-chroot ${work_dir}/${arch}/airootfs mkinitcpio -p linux
 
             fi
-
-            # hooks
-            cp -v install/archiso* ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/
-            cp -v hooks/archiso* ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/
-
-            cp -v script/archiso* ${work_dir}/${arch}/airootfs/usr/lib/initcpio/
-
-            cp -v install/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/
-            cp -v hooks/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/
-
         fi
     fi
 

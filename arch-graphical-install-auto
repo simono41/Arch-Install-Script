@@ -528,8 +528,9 @@ cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
 cp /opt/${repo}/aurinstall.sh /usr/bin/aurinstaller
 chmod +x /usr/bin/aurinstaller
 
-aurinstaller "https://aur.archlinux.org/plymouth.git"
-aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git"
+su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
+su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
+plymouth-set-default-theme -R dark-arch
 
 # nano
 echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc

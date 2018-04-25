@@ -329,7 +329,7 @@ if [ -f /var/lib/pacman/db.lck ];then
 fi
 
 # vollinstallation
-if [ "$vollinstallation" != "debug" ]; then
+if [ "$version" != "lite" ]; then
   standartinstallation
 fi
 

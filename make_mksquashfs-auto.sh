@@ -9,7 +9,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # full parameters
-# ./make_mksquashfs-auto.sh xfce4 deletework filesystem archchroot makebios makeimage makeiso mkinitcpio
+# ./make_mksquashfs-auto.sh xfce4 deletework makesystem mkinitcpio filesystem archchroot makeimage makebios makeimage
 
 iso_name=spectre_os
 iso_label="SPECTRE_OS"
@@ -129,7 +129,7 @@ function system() {
             cp -v install/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/
             cp -v hooks/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/
 
-            if [ "${version}" == "libre" ]; then
+            if [ "${version}" == "libre" ] || [ "${version}" == "lite" ]; then
                 echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "HOOKS=\"base udev memdisk archiso_shutdown archiso block pcmcia filesystems keyboard\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf

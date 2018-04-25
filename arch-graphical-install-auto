@@ -126,7 +126,6 @@ function aurmanagerinstall() {
     pwd
     su "$username" -c "makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed"
     pwd
-    rm -Rv /home/"$username"/aurman
     cd /
 
 }
@@ -525,6 +524,13 @@ chsh -s /usr/bin/fish ${username}
 # XDG standard
 cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
 
+# aurinstaller
+cp /opt/${repo}/aurinstall.sh /usr/bin/aurinstaller
+chmod +x /usr/bin/aurinstaller
+
+aurinstaller "https://aur.archlinux.org/plymouth.git"
+aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git"
+
 # nano
 echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
 
@@ -575,9 +581,9 @@ fi
 
 if [ "$version" != "lite" ]; then
 
-    # custom-installer
+    ### custom-installer
 
-    # pip install beautysh
+    ## pip install beautysh
     if [ -d /opt/beautysh ];then
         echo "Bereits vorhanden!!!"
         cd /opt/beautysh
@@ -597,7 +603,7 @@ if [ "$version" != "lite" ]; then
 
     pip install powerline-shell
 
-    # powerline-shell-fonts
+    ## powerline-shell-fonts
     if [ -d /opt/powerline-shell-fonts ];then
         echo "Bereits vorhanden!!!"
         cd /opt/powerline-shell-fonts
@@ -609,7 +615,7 @@ if [ "$version" != "lite" ]; then
     ./install.sh
     cd /
 
-    # uncrustify
+    ## uncrustify
     if [ -d /opt/uncrustify ];then
         echo "Bereits vorhanden!!!"
         cd /opt/uncrustify
@@ -630,7 +636,7 @@ if [ "$version" != "lite" ]; then
     chmod +x /usr/bin/uncrustify
     cd /
 
-    # conky
+    ## conky
     if [ -d /opt/conky ];then
         echo "Bereits vorhanden!!!"
         cd /opt/conky

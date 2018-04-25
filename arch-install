@@ -290,12 +290,10 @@ function installation {
         parameter="${parameter}usbsecret "
     fi
 
-    if [ "${version}" != "libre" ]; then
-        if [ "${verschluesselung}" == "y" ]; then
-            parameter="${parameter}plymouth-encrypt "
-        else
-            parameter="${parameter}plymouth "
-        fi
+    if [ "${verschluesselung}" == "y" ]; then
+        parameter="${parameter}plymouth-encrypt "
+    else
+        parameter="${parameter}plymouth "
     fi
 
 

@@ -975,11 +975,13 @@ then
         else
             if [ "${update}" != "n" ]
             then
-                if [ -f /usr/bin/git ]; then
-                    echo "Git is installed"
+                if [ -f base.txt ]; then
+                    pacman -Syu $(cat base.txt) --needed --noconfirm
+                elif [ -f /opt/${repo}/base.txt ]; then
+                    pacman -Syu $(cat /opt/${repo}/base.txt) --needed --noconfirm
                 else
-                    echo "Git is not installed"
-                    pacman -Syu git --needed --noconfirm
+                    echo "Kann keine neuen Packete nachinstallieren weil die base.txt nicht gefunden werden kann!!"
+                    echo "Es kann sein das dass Programm nicht korrekt funktioniert!!!"
                 fi
                 gitclone
                 /opt/${repo}/arch-install n ${version}

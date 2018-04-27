@@ -20,7 +20,13 @@ fi
 echo "Logged in as root"
 
 function minimalinstallation() {
+
+if [ -f base.txt ]; then
+    pacstrap -c -d -G -M ${mountpoint} $(cat base.txt)
+elif [ -f /opt/${repo}/base.txt ]; then
     pacstrap -c -d -G -M ${mountpoint} $(cat /opt/${repo}/base.txt)
+fi
+
 }
 
 function gitclone() {

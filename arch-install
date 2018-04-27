@@ -296,19 +296,20 @@ function installation {
         parameter="${parameter}usbsecret "
     fi
 
-    if [ "${verschluesselung}" == "y" ]; then
-        parameter="${parameter}plymouth-encrypt "
-    else
-        parameter="${parameter}plymouth "
+    if [ "${offline}" != "n" ]; then
+      if [ "${verschluesselung}" == "y" ]; then
+          parameter="${parameter}plymouth-encrypt "
+      else
+          parameter="${parameter}plymouth "
+      fi
     fi
 
-
     echo ""
-    if [ "${version}" == "libre" ]; then
+    if [ "${version}" == "libre" ] || [ "${offline}" == "n" ]; then
         echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
         echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
         echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
-        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
+        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
 
     else
         #echo "MODULES=\"i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
@@ -1112,7 +1113,7 @@ fi
 
 # benutzerwechsel
 
-if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ]; then
+if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ] && [ "${offline}" != "n" ]; then
     #arch-chroot ${mountpoint} usermod -l "${name}" user1
     #arch-chroot ${mountpoint} usermod -d /home/"${name}" -m "${name}"
     arch-chroot ${mountpoint} chfn -f "${name}" user1

@@ -225,7 +225,7 @@ function installation {
         subvolume #btrfs
 
     elif [ "${dateisystem}" == "ext4" ]; then
-        echo "confirm with j"
+        echo "confirm with y"
         if [ "${verschluesselung}" == "y" ]; then
             if [ "${name}" != "noinstall" ]; then
                 mkfs.ext4 -L p_arch ${deviceluks} #ext4

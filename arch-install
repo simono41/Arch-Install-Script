@@ -20,7 +20,7 @@ fi
 echo "Logged in as root"
 
 function minimalinstallation() {
-    pacstrap -c -d -G -M ${mountpoint} $(cat /opt/${repo}/packages_voll.txt)
+    pacstrap -c -d -G -M ${mountpoint} $(cat /opt/${repo}/base.txt)
 }
 
 function gitclone() {
@@ -805,7 +805,7 @@ function abfrage() {
 
     # berechnungen
 
-    if [ "${update}" != "n" ]; then
+#    if [ "${update}" != "n" ]; then
         read -p "Should an offline installation be carried out? : [Y/n] " offline
         if [ "${offline}" != "n" ]
         then
@@ -813,11 +813,11 @@ function abfrage() {
         else
             install="online"
         fi
-    else
-        install="offline"
-    fi
+#    else
+#        install="offline"
+#    fi
 
-    if [ "${offline}" != "n" ]; then
+    if [ "${offline}" != "n" ] && [ "${update}" != "n" ]; then
         read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc
         echo "This password is only valid for the current session !!!"
         if [ "${x11vnc}" == "y" ]; then

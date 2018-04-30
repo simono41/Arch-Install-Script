@@ -528,11 +528,7 @@ cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
 cp /opt/${repo}/aurinstall.sh /usr/bin/aurinstaller
 chmod +x /usr/bin/aurinstaller
 
-if [ "${version}" != "libre" ]; then
-  su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
-else
-  cp /opt/${repo}/arch-logo.png /usr/share/plymouth/arch-logo.png
-fi
+su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
 su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
 plymouth-set-default-theme -R dark-arch
 

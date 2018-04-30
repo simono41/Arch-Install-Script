@@ -86,7 +86,6 @@ os-prober
 p7zip
 pavucontrol
 pixz
-plymouth
 ppp
 pulseaudio
 pulseaudio-alsa

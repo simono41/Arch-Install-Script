@@ -280,14 +280,6 @@ function installation {
     # module and hooks
     parameter="base udev "
 
-    if [ "${offline}" != "n" ]; then
-      if [ "${verschluesselung}" == "y" ]; then
-          parameter="${parameter}plymouth-encrypt "
-      else
-          parameter="${parameter}plymouth "
-      fi
-    fi
-
     if [ "${swap}" != "n" ]; then
         parameter="${parameter}resume "
     fi
@@ -306,6 +298,14 @@ function installation {
 
     if [ "${usbsecret}" == "y" ]; then
         parameter="${parameter}usbsecret "
+    fi
+
+    if [ "${offline}" != "n" ]; then
+      if [ "${verschluesselung}" == "y" ]; then
+          parameter="${parameter}plymouth-encrypt "
+      else
+          parameter="${parameter}plymouth "
+      fi
     fi
 
     echo ""

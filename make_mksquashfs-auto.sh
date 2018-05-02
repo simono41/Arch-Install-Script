@@ -50,6 +50,7 @@ fi
 function minimalinstallation() {
     cp pacman* /etc/
     cp mirrorlist* /etc/pacman.d/
+    pacman-key --init
 
     if [ "${version}" == "libre" ]; then
         ./pacstrap -C pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base_libre.txt)

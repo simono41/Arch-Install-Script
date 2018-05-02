@@ -9,6 +9,7 @@ arandr
 arc-gtk-theme
 arc-icon-theme
 arch-install-scripts
+archlinux-keyring
 ardour
 asciidoc
 assaultcube
@@ -73,6 +74,7 @@ gnome-keyring
 gnome-power-manager
 gnome-screensaver
 gnuchess
+gnupg
 gparted
 grub
 gsmartcontrol

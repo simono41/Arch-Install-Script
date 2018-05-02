@@ -8,6 +8,7 @@ arandr
 arc-gtk-theme
 arc-icon-theme
 arch-install-scripts
+archlinux-keyring
 atom
 avahi
 base
@@ -45,6 +46,7 @@ git
 gnome-calculator
 gnome-keyring
 gnuchess
+gnupg
 gparted
 grub
 gsmartcontrol
@@ -72,6 +74,7 @@ libva-vdpau-driver
 libvdpau-va-gl
 links
 lua51
+manjaro-keyring
 mesa-vdpau
 minetest
 mkinitcpio-nfs-utils

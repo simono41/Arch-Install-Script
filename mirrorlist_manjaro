@@ -1,0 +1,23 @@
+##
+## Manjaro Linux default mirrorlist
+## Generated on 2018-05-02 17:59
+##
+## Please use 'pacman-mirrors -f [NUMBER] NUMBER' to modify mirrorlist
+## (Use 0 for all mirrors)
+##
+
+## Country : United_Kingdom
+Server = https://www.mirrorservice.org/sites/repo.manjaro.org/repos/stable/$repo/$arch
+
+## Country : Greece
+Server = https://ftp.cc.uoc.gr/mirrors/linux/manjaro/stable/$repo/$arch
+
+## Country : Bulgaria
+Server = https://manjaro.ipacct.com/manjaro/stable/$repo/$arch
+
+## Country : United_States
+Server = https://mirror.math.princeton.edu/pub/manjaro/stable/$repo/$arch
+
+## Country : Philippines
+Server = http://mirror.rise.ph/manjaro/stable/$repo/$arch
+

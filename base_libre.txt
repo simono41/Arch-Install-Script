@@ -1,5 +1,6 @@
 acpid
 arch-install-scripts
+archlinux-keyring
 avahi
 base
 base-devel
@@ -31,6 +32,7 @@ ntp
 openssh
 openvpn
 os-prober
+parabola-keyring
 pixz
 ppp
 screen

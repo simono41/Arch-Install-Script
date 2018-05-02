@@ -529,6 +529,7 @@ cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
 cp /opt/${repo}/aurinstall.sh /usr/bin/aurinstaller
 chmod +x /usr/bin/aurinstaller
 
+su "$username" -c "aurinstaller "https://aur.archlinux.org/mkinitcpio-overlayfs.git""
 su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
 su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
 plymouth-set-default-theme -R dark-arch

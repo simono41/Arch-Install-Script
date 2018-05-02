@@ -306,9 +306,14 @@ systemctl enable startup.service
 # pacman-config
 if [ "${version}" == "libre" ]; then
     cp /opt/${repo}/pacman.conf_libre /etc/pacman.conf
+elif [ "${version}" == "manjaro" ]; then
+    cp /opt/${repo}/pacman.conf_manjaro /etc/pacman.conf
 else
     cp /opt/${repo}/pacman.conf /etc/pacman.conf
 fi
+
+# mirrorlist
+cp /opt/${repo}/mirrorlist* /etc/pacman.d/
 
 # new-config
 if [ -d /home/"$username"/.config ]; then
@@ -318,10 +323,6 @@ fi
 if [ -d /root/.config ]; then
     rm -Rv /root/.config
 fi
-
-# mirrorlist
-cp /opt/${repo}/mirrorlist_libre /etc/pacman.d/mirrorlist_libre
-cp /opt/${repo}/mirrorlist /etc/pacman.d/mirrorlist
 
 if [ -f /var/lib/pacman/db.lck ];then
     rm /var/lib/pacman/db.lck

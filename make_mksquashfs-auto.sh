@@ -53,6 +53,8 @@ function minimalinstallation() {
 
     if [ "${version}" == "libre" ]; then
         ./pacstrap -C pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base_libre.txt)
+    elif [ "${version}" == "manjaro" ]; then
+        ./pacstrap -C pacman.conf_manjaro -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
     else
         ./pacstrap -C pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
     fi

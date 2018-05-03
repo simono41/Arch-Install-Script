@@ -53,7 +53,7 @@ function minimalinstallation() {
 j
 j
 EOT
-    pacman -Scc
+    pacman -Syy
 
     if [ "${version}" == "libre" ]; then
         pacman -U --noconfirm --force https://www.parabola.nu/packages/libre/any/parabola-keyring/download

@@ -1047,11 +1047,10 @@ then
     installation
     grubinstall
 
-    if [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ]; then
+    if [ "${version}" == "libre" ]; then
         arch-chroot ${mountpoint} mkinitcpio -p linux-libre
     else
         arch-chroot ${mountpoint} mkinitcpio -P -c /etc/mkinitcpio.conf
-        #arch-chroot ${mountpoint} mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
     fi
     echo ""
     if [ "${boot}" == "grub" ]
@@ -1082,11 +1081,10 @@ elif [ "${Partition}" == "bios" ]; then
     installation
     grubinstall
 
-    if [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ]; then
+    if [ "${version}" == "libre" ]; then
         arch-chroot ${mountpoint} mkinitcpio -p linux-libre
     else
-        arch-chroot ${mountpoint} mkinitcpio -p linux -c /etc/mkinitcpio.conf
-        #arch-chroot ${mountpoint} mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
+        arch-chroot ${mountpoint} mkinitcpio -P linux -c /etc/mkinitcpio.conf
     fi
     arch-chroot ${mountpoint} grub-install --target=i386-pc --recheck ${device}
     arch-chroot ${mountpoint} grub-mkconfig -o /boot/grub/grub.cfg

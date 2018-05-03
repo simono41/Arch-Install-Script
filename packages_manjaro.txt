@@ -686,12 +686,9 @@ nfs-utils
 nfsidmap
 nilfs-utils
 nm-connection-editor
-<<<<<<< HEAD
 noto-fonts
 noto-fonts-emoji
-=======
 nmap
->>>>>>> 2b2c2fcfcf1a3693e8a601267b5a948f94001fae
 npth
 nspr
 nss

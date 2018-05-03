@@ -58,6 +58,7 @@ chromaprint
 cifs-utils
 ckbcomp
 clucene
+cmake
 colord
 coreutils
 cpupower

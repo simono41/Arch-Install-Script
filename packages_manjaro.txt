@@ -938,6 +938,7 @@ which
 wildmidi
 wireless-regdb
 wireless_tools
+wireshark-gtk
 woff2
 wpa_supplicant
 x11vnc

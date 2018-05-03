@@ -677,6 +677,7 @@ ntp
 numlockx
 nvidia
 nvidia-libgl
+nvidia-settings
 nvidia-utils
 openal
 opencl-nvidia

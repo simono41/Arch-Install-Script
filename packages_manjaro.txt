@@ -43,13 +43,8 @@ fish
 freeciv
 gdisk
 git
-gnome
 gnome-calculator
-gnome-extra
-gnome-flashback
 gnome-keyring
-gnome-power-manager
-gnome-screensaver
 gnuchess
 gnupg
 gparted
@@ -141,6 +136,12 @@ wpa_supplicant
 x11vnc
 xdg-utils
 xf86-input-synaptics
+xfce4
+xfce4-goodies
+xfce4-power-manager
+xfce4-pulseaudio-plugin
+xfce4-sensors-plugin
+xfce4-xkb-plugin
 xorg
 xorg-drivers
 xorg-server

@@ -1060,7 +1060,7 @@ then
     if [ "${version}" == "libre" ]; then
         arch-chroot ${mountpoint} mkinitcpio -p linux-libre
     else
-        arch-chroot ${mountpoint} mkinitcpio -p linux -c /etc/mkinitcpio.conf
+        arch-chroot ${mountpoint} mkinitcpio -P -c /etc/mkinitcpio.conf
         #arch-chroot ${mountpoint} mkinitcpio -p linux-lts -c /etc/mkinitcpio-lts.conf
     fi
     echo ""

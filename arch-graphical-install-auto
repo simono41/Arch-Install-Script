@@ -713,7 +713,7 @@ pacman -Syu --needed --noconfirm
 if [ "${version}" == "libre" ]; then
     mkinitcpio -p linux-libre
 else
-    mkinitcpio -p linux -c /etc/mkinitcpio.conf
+    mkinitcpio -P -c /etc/mkinitcpio.conf
 fi
 
 echo "Fertig!!!"

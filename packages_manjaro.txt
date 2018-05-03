@@ -45,6 +45,7 @@ blueman
 bluez
 bluez-libs
 boost-libs
+brasero
 breath-wallpaper
 brotli
 btrfs-progs
@@ -121,11 +122,13 @@ file
 filesystem
 findutils
 firefox
+firefox-i18n-de
 fish
 flac
 flex
 fontconfig
 foomatic-db-engine
+freeciv
 freeglut
 freetype2
 fribidi
@@ -160,6 +163,7 @@ glibc
 glibmm
 glu
 gmp
+gnome-calculator
 gnome-icon-theme
 gnome-icon-theme-symbolic
 gnome-keyring
@@ -222,6 +226,7 @@ htop
 hunspell
 hwids
 hwinfo
+hydra
 hyphen
 iana-etc
 icu
@@ -647,6 +652,7 @@ mhwd-db
 mhwd-nvidia
 mhwd-nvidia-304xx
 mhwd-nvidia-340xx
+minetest
 mjpegtools
 mkinitcpio
 mkinitcpio-busybox
@@ -663,6 +669,7 @@ ms-office-online
 mtdev
 mtpfs
 mugshot
+mumble
 nano
 nbd
 ncurses
@@ -679,8 +686,12 @@ nfs-utils
 nfsidmap
 nilfs-utils
 nm-connection-editor
+<<<<<<< HEAD
 noto-fonts
 noto-fonts-emoji
+=======
+nmap
+>>>>>>> 2b2c2fcfcf1a3693e8a601267b5a948f94001fae
 npth
 nspr
 nss
@@ -798,6 +809,7 @@ python2
 python2-cairo
 python2-gobject2
 pythonqt
+qemu
 qpdf
 qpdfview
 qrencode
@@ -865,6 +877,8 @@ talloc
 tar
 tcl
 tdb
+teamspeak3
+teeworlds
 terminus-font
 tevent
 texinfo

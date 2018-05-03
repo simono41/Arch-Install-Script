@@ -16,6 +16,7 @@ apr
 apr-util
 arc-gtk-theme
 arc-icon-theme
+arch-install-scripts
 archlinux-appstream-data
 archlinux-keyring
 argon2
@@ -33,7 +34,10 @@ automake
 avahi
 b43-fwcutter
 babl
+base
+base-devel
 bash
+bash-completion
 bc
 binutils
 bison
@@ -55,6 +59,7 @@ calamares
 cantarell-fonts
 catfish
 cdparanoia
+cdrtools
 celt
 chromaprint
 cifs-utils
@@ -73,6 +78,7 @@ cups-filters
 cups-pdf
 cups-pk-helper
 curl
+davfs2
 db
 dbus
 dbus-glib
@@ -138,6 +144,7 @@ gconf
 gcr
 gd
 gdbm
+gdisk
 gdk-pixbuf2
 gegl02
 geoclue2
@@ -584,6 +591,7 @@ light-locker
 lightdm
 lightdm-gtk-greeter
 lightdm-gtk-greeter-settings
+links
 linux-api-headers
 linux-firmware
 linux414
@@ -732,6 +740,7 @@ phonon-qt5-gstreamer
 pidgin
 pinentry
 pixman
+pixz
 pkcs11-helper
 pkg-config
 polkit
@@ -818,6 +827,7 @@ run-parts
 s-nail
 samba
 sbc
+screen
 sdl
 sdl2
 sed
@@ -865,6 +875,7 @@ thunderbird
 tigervnc
 tlp
 tolua++
+traceroute
 tslib
 ttf-bitstream-vera
 ttf-droid
@@ -910,6 +921,7 @@ wget
 which
 wildmidi
 wireless-regdb
+wireless_tools
 woff2
 wpa_supplicant
 x11vnc
@@ -998,6 +1010,7 @@ xorg-xmodmap
 xorg-xrdb
 xorg-xset
 xorgproto
+xorriso
 xvidcore
 xz
 yaml-cpp

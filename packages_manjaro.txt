@@ -679,6 +679,8 @@ nfs-utils
 nfsidmap
 nilfs-utils
 nm-connection-editor
+noto-fonts
+noto-fonts-emoji
 npth
 nspr
 nss

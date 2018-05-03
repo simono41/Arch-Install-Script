@@ -91,6 +91,7 @@ double-conversion
 e2fsprogs
 ecryptfs-utils
 efibootmgr
+efitools
 efivar
 enchant
 engrampa

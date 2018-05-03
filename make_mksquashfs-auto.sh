@@ -48,9 +48,12 @@ if [ "${version}" == "libre" ]; then
 fi
 
 function minimalinstallation() {
-    cp pacman* /etc/
     cp mirrorlist* /etc/pacman.d/
-    pacman-key --init
+    pacman -Scc
+    pacman -Syy <<EOT
+j
+j
+EOT
 
     if [ "${version}" == "libre" ]; then
         pacman -U --noconfirm --force https://www.parabola.nu/packages/libre/any/parabola-keyring/download

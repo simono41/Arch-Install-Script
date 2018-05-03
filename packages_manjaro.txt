@@ -111,7 +111,6 @@ file
 filesystem
 findutils
 firefox
-fish
 flac
 flex
 fontconfig

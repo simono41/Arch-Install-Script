@@ -842,6 +842,7 @@ steam-manjaro
 subversion
 sudo
 sysfsutils
+syslinux
 systemd
 systemd-sysvcompat
 taglib

@@ -128,7 +128,7 @@ function system() {
             echo "blacklist floppy" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist-floppy.conf
             echo "blacklist nouveau" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist_nouveau.conf
 
-            if [ "${version}" == "libre" ] || [ "${version}" == "lite" ]; then
+            if [ "${version}" == "libre" ] || [ "${version}" == "lite" ] || [ "${version}" == "manjaro" ]; then
                 echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "HOOKS=\"base udev plymouth archiso block filesystems keyboard\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf

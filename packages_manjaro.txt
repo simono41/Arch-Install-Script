@@ -336,8 +336,6 @@ lib32-mesa
 lib32-mesa-demos
 lib32-mesa-vdpau
 lib32-ncurses
-lib32-nvidia-libgl
-lib32-opencl-nvidia
 lib32-pcre
 lib32-readline
 lib32-systemd
@@ -675,12 +673,7 @@ nss-mdns
 ntfs-3g
 ntp
 numlockx
-nvidia
-nvidia-libgl
-nvidia-settings
-nvidia-utils
 openal
-opencl-nvidia
 openconnect
 opencore-amr
 openexr

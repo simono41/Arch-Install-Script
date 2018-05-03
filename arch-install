@@ -943,15 +943,6 @@ function abfrage() {
         echo "ABGEBROCHEN"
         exit 1
     fi
-    #    if [ "${update}" != "n" ]; then
-    #        echo "Only needed for pure arch-linux systems !!!"
-    #        read -p "Are you still installing important packages for the installation? [y/N] " packete
-    #        if [ "${packete}" == "y" ]; then
-    #            pacman -Syu base base-devel syslinux efibootmgr efitools grub os-prober btrfs-progs \
-        #                dosfstools arch-install-scripts xorriso cdrtools squashfs-tools wget dosfstools btrfs-progs \
-        #                gdisk dialog bash-completion git iw wireless_tools wpa_supplicant openvpn
-    #        fi
-    #    fi
     echo "Operating system is installed !!!"
     sleep 5
 
@@ -977,9 +968,9 @@ then
             if [ "${update}" != "n" ]
             then
                 if [ -f base.txt ]; then
-                    pacman -Syu $(cat base.txt) --needed --noconfirm
+                    pacman -Sy $(cat base.txt) --needed --noconfirm
                 elif [ -f /opt/${repo}/base.txt ]; then
-                    pacman -Syu $(cat /opt/${repo}/base.txt) --needed --noconfirm
+                    pacman -Sy $(cat /opt/${repo}/base.txt) --needed --noconfirm
                 else
                     echo "Kann keine neuen Packete nachinstallieren weil die base.txt nicht gefunden werden kann!!"
                     echo "Es kann sein das dass Programm nicht korrekt funktioniert!!!"

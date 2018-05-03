@@ -657,6 +657,18 @@ function systemdboot() {
     fi
 
     #rootsub=$(btrfs subvolume list /mnt | awk 'NR<0 && NR>2 {print $2}')
+    if [ "${version}" == "manjaro" ]; then
+      kernel1="$(find /boot/ -name "initramfs*$(uname -m).img")"
+      linuz1="$(find /boot/ -name "vmlinuz*$(uname -m)")"
+      kernel="${kernel1#/*/}"
+      linuz="${linuz1#/*/}"
+      kernelback1="$(find /boot/ -name "initramfs*$(uname -m)-fallback.img")"
+      kernelback="${kernelback1#/*/}"
+    else
+      kernel="initramfs-linux.img"
+      linuz="vmlinuz-linux"
+      kernelback="initramfs-linux-fallback.img"
+    fi
 
     mkdir -p ${mountpoint}/boot/EFI/systemd/
     mkdir -p ${mountpoint}/boot/EFI/BOOT/
@@ -665,30 +677,16 @@ function systemdboot() {
 
     mkdir -p ${mountpoint}/boot/loader/entries/
     echo "title    "${repo}"" > ${mountpoint}/boot/loader/entries/arch-uefi.conf
-    echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+    echo "linux    /${linuz}" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
     echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-    echo "initrd   /initramfs-linux.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+    echo "initrd   /${kernel}" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
     echo "options  root=${tobootdevice} rw ${parameter}quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
 
     echo "title    "${repo}"" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-    echo "linux    /vmlinuz-linux" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+    echo "linux    /${linuz}" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
     echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-    echo "initrd   /initramfs-linux-fallback.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+    echo "initrd   /${kernelback}" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
     echo "options  root=${tobootdevice} rw ${parameter}quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-
-    #if [ "${version}" != "libre" ]; then
-    #echo "title    "${repo}-lts"" > ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-    #echo "linux    /vmlinuz-linux-lts" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-    #echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-    #echo "initrd   /initramfs-linux-lts.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-    #echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-lts.conf
-
-    #echo "title    "${repo}-lts"" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-    #echo "linux    /vmlinuz-linux-lts" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-    #echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-    #echo "initrd   /initramfs-linux-fallback-lts.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-    #echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback-lts.conf
-    #fi
 
     echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
     echo "timeout   1" >> ${mountpoint}/boot/loader/loader.conf
@@ -699,15 +697,7 @@ function systemdboot() {
 
         arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "Linux Boot Manager"
 
-        arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux efistub" -u "initrd=/initramfs-linux.img root=${tobootdevice} rw ${parameter}quiet splash"
-
-        #if [ "${version}" != "libre" ]; then
-        #arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux-lts -L "Arch Linux efistub" -u "initrd=/initramfs-linux-lts.img root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash"
-        #fi
-        # überschreibt die efistub deswegen entfernt
-        #arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \vmlinuz-linux -L "Arch Linux fallback efistub" -u "initrd=/initramfs-linux-fallback.img root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash"
-
-        #arch-chroot ${mountpoint} bootctl install
+        arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \${linuz} -L "Arch Linux efistub" -u "initrd=/${kernel} root=${tobootdevice} rw ${parameter}quiet splash"
 
     fi
 

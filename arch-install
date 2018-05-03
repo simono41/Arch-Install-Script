@@ -1047,7 +1047,7 @@ then
     installation
     grubinstall
 
-    if [ "${version}" == "libre" ]; then
+    if [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ]; then
         arch-chroot ${mountpoint} mkinitcpio -p linux-libre
     else
         arch-chroot ${mountpoint} mkinitcpio -P -c /etc/mkinitcpio.conf
@@ -1082,7 +1082,7 @@ elif [ "${Partition}" == "bios" ]; then
     installation
     grubinstall
 
-    if [ "${version}" == "libre" ]; then
+    if [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ]; then
         arch-chroot ${mountpoint} mkinitcpio -p linux-libre
     else
         arch-chroot ${mountpoint} mkinitcpio -p linux -c /etc/mkinitcpio.conf

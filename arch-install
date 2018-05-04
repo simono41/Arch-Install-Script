@@ -1101,6 +1101,13 @@ if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ] && [ "${offli
     #arch-chroot ${mountpoint} usermod -d /home/"${name}" -m "${name}"
     arch-chroot ${mountpoint} chfn -f "${name}" user1
     arch-chroot ${mountpoint} passwd user1
+
+    if [ "${verschluesselung}" == "y" ]; then
+      systemctl enable lightdm-plymouth.service
+    else
+      systemctl enable lightdm.service
+    fi
+
 fi
 
 if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ -n "${installationsfehler}" ]; then

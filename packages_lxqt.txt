@@ -73,6 +73,10 @@ libva-intel-driver
 libva-mesa-driver
 libva-vdpau-driver
 libvdpau-va-gl
+light-locker
+lightdm
+lightdm-gtk-greeter
+lightdm-gtk-greeter-settings
 links
 lua51
 lxqt

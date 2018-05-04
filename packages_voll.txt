@@ -116,6 +116,10 @@ libva-mesa-driver
 libva-vdpau-driver
 libvdpau-va-gl
 libvorbis
+light-locker
+lightdm
+lightdm-gtk-greeter
+lightdm-gtk-greeter-settings
 links
 lua51
 lxde

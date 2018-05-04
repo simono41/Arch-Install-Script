@@ -712,6 +712,12 @@ if [ "$version" != "lite" ]; then
 
 fi
 
+if pacman -Qdtq; then
+  echo "Verwaiste Packete werden entfernt :)"
+  pacman -Rsn $(pacman -Qdtq) --noconfirm
+else
+  echo "Es müssen keine verwaisten Packete entfernt werden :)"
+fi
 pacman -Syu --needed --noconfirm
 
 if [ "${version}" == "libre" ]; then

@@ -15,7 +15,7 @@ asciidoc
 assaultcube
 audacity
 avahi
-avidemux-cli
+avidemux-qt
 base
 base-devel
 bash-completion

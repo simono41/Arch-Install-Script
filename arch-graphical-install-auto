@@ -706,6 +706,10 @@ if [ "$version" != "lite" ]; then
     gnomeconfig
     copyconfig
 
+    # zusatzsoftware
+    su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
+    su "$username" -c "aurinstaller "https://aur.archlinux.org/spotify.git""
+
 fi
 
 pacman -Syu --needed --noconfirm

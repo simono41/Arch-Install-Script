@@ -1,3 +1,4 @@
+0ad
 a52dec
 aalib
 accountsservice
@@ -19,8 +20,10 @@ arc-icon-theme
 arch-install-scripts
 archlinux-appstream-data
 archlinux-keyring
+ardour
 argon2
 aspell
+assaultcube
 at-spi2-atk
 at-spi2-core
 atk
@@ -29,9 +32,11 @@ attica
 attr
 audacious
 audacious-plugins
+audacity
 autoconf
 automake
 avahi
+avidemux-qt
 b43-fwcutter
 babl
 base
@@ -41,9 +46,12 @@ bash-completion
 bc
 binutils
 bison
+blender
+bless
 blueman
 bluez
 bluez-libs
+bmon
 boost-libs
 brasero
 breath-wallpaper
@@ -63,6 +71,8 @@ cdparanoia
 cdrtools
 celt
 chromaprint
+chromium
+chromium-bsu
 cifs-utils
 ckbcomp
 clucene
@@ -97,6 +107,7 @@ dnsmasq
 dnssec-anchors
 dosfstools
 double-conversion
+dsniff
 e2fsprogs
 ecryptfs-utils
 efibootmgr
@@ -164,11 +175,13 @@ glibmm
 glu
 gmp
 gnome-calculator
+gnome-chess
 gnome-icon-theme
 gnome-icon-theme-symbolic
 gnome-keyring
 gnome-menus
 gnome-themes-extra
+gnuchess
 gnupg
 gnutls
 gobject-introspection-runtime
@@ -218,6 +231,7 @@ harfbuzz
 harfbuzz-icu
 haveged
 hdparm
+hedgewars
 hexchat
 hicolor-icon-theme
 hplip
@@ -227,6 +241,7 @@ hunspell
 hwids
 hwinfo
 hydra
+hydrogen
 hyphen
 iana-etc
 icu
@@ -270,6 +285,7 @@ kconfigwidgets
 kcoreaddons
 kcrash
 kdbusaddons
+kdenlive
 keyutils
 kglobalaccel
 kguiaddons
@@ -281,6 +297,7 @@ kitemviews
 kjobwidgets
 kmod
 knotifications
+kodi
 kpmcore
 krb5
 kservice
@@ -639,11 +656,13 @@ manjaro-wallpapers-17.0
 manjaro-xfce-settings
 mdadm
 media-player-info
+megaglest
 memtest86+
 menulibre
 mesa
 mesa-demos
 mesa-vdpau
+metasploit
 mhwd
 mhwd-amdgpu
 mhwd-ati
@@ -665,6 +684,7 @@ mousepad
 mozilla-common
 mpfr
 mpg123
+mplayer
 ms-office-online
 mtdev
 mtpfs
@@ -676,6 +696,7 @@ ncurses
 neon
 net-snmp
 netbeans
+netsurf
 nettle
 network-manager-applet
 networkmanager
@@ -697,15 +718,19 @@ nss-mdns
 ntfs-3g
 ntp
 numlockx
+obs-studio
+onboard
 openal
 openconnect
 opencore-amr
 openexr
 openjpeg2
+openra
 openresolv
 openssh
 openssl
 openssl-1.0
+openttd
 openvpn
 opus
 orage
@@ -729,6 +754,7 @@ pcmciautils
 pcre
 pcre2
 pcsclite
+pcsx2
 perl
 perl-clone
 perl-dbi
@@ -846,6 +872,9 @@ sed
 serf
 shadow
 shared-mime-info
+simplescreenrecorder
+simutrans
+singularity
 sip
 slang
 smartmontools
@@ -866,6 +895,8 @@ startup-notification
 steam-manjaro
 subversion
 sudo
+supertux
+supertuxkart
 sysfsutils
 syslinux
 systemd
@@ -874,6 +905,7 @@ taglib
 talloc
 tar
 tcl
+tcpdump
 tdb
 teamspeak3
 teeworlds
@@ -903,6 +935,7 @@ twolame
 tzdata
 udiskie
 udisks2
+ufoai
 ufw
 unace
 unrar
@@ -928,6 +961,7 @@ vte3
 vulkan-icd-loader
 vulkan-intel
 vulkan-radeon
+warzone2100
 wavpack
 wayland
 wayland-protocols
@@ -935,7 +969,12 @@ webkit2gtk
 webrtc-audio-processing
 wget
 which
+widelands
 wildmidi
+wine
+wine-mono
+wine_gecko
+winetricks
 wireless-regdb
 wireless_tools
 wireshark-gtk
@@ -1033,6 +1072,7 @@ xz
 yaml-cpp
 yelp
 yelp-xsl
+youtube-dl
 zd1211-firmware
 zenity
 zensu

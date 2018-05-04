@@ -49,11 +49,14 @@ fi
 
 function minimalinstallation() {
     cp mirrorlist* /etc/pacman.d/
-    pacman -Scc <<EOT
+
+    if [ "${deletework}" == "y" ]; then
+      pacman -Scc <<EOT
 j
 j
 EOT
-    pacman -Syy
+      pacman -Syy
+    fi
 
     if [ "${version}" == "libre" ]; then
         pacman -U --noconfirm --force https://www.parabola.nu/packages/libre/any/parabola-keyring/download

@@ -12,6 +12,7 @@ echo "Als root Angemeldet"
 
 VERSION_ID=$(cat /etc/os-release | grep "ID")
 RCLOCAL='/etc/rc.local'
+RCLOCALSHUTDOWN='/etc/rc-local-shutdown'
 SYSCTL='/etc/sysctl.conf'
 WEBADDRESS="https://github.com/simono41/SpectreOS.git"
 WEBADDRESS1="https://github.com/simono41/shell-scripte.git"
@@ -583,7 +584,23 @@ fi
 
 # Install rc.shutdown
 
-echo "#!/bin/bash" > /etc/rc.local.shutdown
+echo "[Unit]
+Description=/etc/rc.local.shutdown compatibility
+
+[Service]
+Type=oneshot
+ExecStart=/etc/rc.local.shutdown
+RemainAfterExit=yes
+
+[Install]
+WantedBy=shutdown.target" > /etc/systemd/system/rc-local-shutdown.service
+touch /etc/rc.local.shutdown
+chmod +x /etc/rc.local.shutdown
+systemctl enable rc-local-shutdown.service
+if ! grep '#!' $RCLOCALSHUTDOWN; then
+    echo "#!/bin/bash" > $RCLOCALSHUTDOWN
+fi
+
 if [ "${version}" == "manjaro" ]; then
   cp /opt/${repo}/update-bootloader /usr/bin/update-bootloader
   chmod +x /usr/bin/update-bootloader

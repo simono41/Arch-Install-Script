@@ -12,7 +12,7 @@ echo "Als root Angemeldet"
 
 VERSION_ID=$(cat /etc/os-release | grep "ID")
 RCLOCAL='/etc/rc.local'
-RCLOCALSHUTDOWN='/etc/rc-local-shutdown'
+RCLOCALSHUTDOWN='/etc/rc.local.shutdown'
 SYSCTL='/etc/sysctl.conf'
 WEBADDRESS="https://github.com/simono41/SpectreOS.git"
 WEBADDRESS1="https://github.com/simono41/shell-scripte.git"
@@ -575,8 +575,8 @@ RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/rc-local.service
-touch /etc/rc.local
-chmod +x /etc/rc.local
+touch $RCLOCAL
+chmod +x $RCLOCAL
 systemctl enable rc-local.service
 if ! grep '#!' $RCLOCAL; then
     echo "#!/bin/bash" > $RCLOCAL
@@ -594,8 +594,8 @@ RemainAfterExit=yes
 
 [Install]
 WantedBy=shutdown.target" > /etc/systemd/system/rc-local-shutdown.service
-touch /etc/rc.local.shutdown
-chmod +x /etc/rc.local.shutdown
+touch $RCLOCALSHUTDOWN
+chmod +x $RCLOCALSHUTDOWN
 systemctl enable rc-local-shutdown.service
 if ! grep '#!' $RCLOCALSHUTDOWN; then
     echo "#!/bin/bash" > $RCLOCALSHUTDOWN

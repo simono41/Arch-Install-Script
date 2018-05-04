@@ -691,6 +691,13 @@ function systemdboot() {
     echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
     echo "timeout   1" >> ${mountpoint}/boot/loader/loader.conf
 
+    # update-bootloader
+    echo "title    "${repo}"" > ${mountpoint}/boot/arch-uefi.conf.example
+    echo "linux    /%LINUZ%" >> ${mountpoint}/boot/arch-uefi.conf.example
+    echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/arch-uefi.conf.example
+    echo "initrd   /%KERNEL%" >> ${mountpoint}/boot/arch-uefi.conf.example
+    echo "options  root=${tobootdevice} rw ${parameter}quiet splash" >> ${mountpoint}/boot/arch-uefi.conf.example
+
     if [ "${booteintraege}" != "n" ]; then
 
         echo "Additional boot entries are created !!!"

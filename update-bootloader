@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -ex
+
+kernel1="$(find /boot/ -name "initramfs*$(uname -m).img")"
+linuz1="$(find /boot/ -name "vmlinuz*$(uname -m)")"
+kernel="${kernel1#/*/}"
+linuz="${linuz1#/*/}"
+kernelback1="$(find /boot/ -name "initramfs*$(uname -m)-fallback.img")"
+kernelback="${kernelback1#/*/}"
+
+sed "s|%LINUZ%|${linuz}|g;
+s|%KERNEL%|${kernel}|g" /boot/arch-uefi.conf.example > /boot/loader/entries/arch-uefi.conf
+
+sed "s|%LINUZ%|${linuz}|g;
+s|%KERNEL%|${kernelback}|g" /boot/arch-uefi.conf.example > /boot/loader/entries/arch-uefi-fallback.conf
+
+echo "Bootloader update $(date)" >> /shutdown.log

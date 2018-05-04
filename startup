@@ -2,7 +2,7 @@
 
 echo "Start!!!"
 
-date >> /startup.txt
+date >> /startup.log
 
 if [ -f /usr/bin/run ]
 then

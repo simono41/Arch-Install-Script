@@ -581,6 +581,15 @@ if ! grep '#!' $RCLOCAL; then
     echo "#!/bin/bash" > $RCLOCAL
 fi
 
+# Install rc.shutdown
+
+echo "#!/bin/bash" > /etc/rc.local.shutdown
+if [ "${version}" == "manjaro" ]; then
+  cp /opt/${repo}/update-bootloader /usr/bin/update-bootloader
+  chmod +x /usr/bin/update-bootloader
+  echo "/usr/bin/update-bootloader" >> /etc/rc.local.shutdown
+fi
+
 if [ "$version" != "lite" ]; then
 
     ### custom-installer

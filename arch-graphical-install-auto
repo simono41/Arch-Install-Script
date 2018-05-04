@@ -585,15 +585,20 @@ fi
 # Install rc.shutdown
 
 echo "[Unit]
-Description=/etc/rc.local.shutdown compatibility
+Description=/etc/rc.local.shutdown Compatibility
+ConditionFileIsExecutable=/etc/rc.local.shutdown
+DefaultDependencies=no
+After=basic.target
+Before=shutdown.target
 
 [Service]
 Type=oneshot
 ExecStart=/etc/rc.local.shutdown
+StandardInput=tty
 RemainAfterExit=yes
 
 [Install]
-WantedBy=shutdown.target" > /etc/systemd/system/rc-local-shutdown.service
+WantedBy=multi-user.target" > /etc/systemd/system/rc-local-shutdown.service
 touch $RCLOCALSHUTDOWN
 chmod +x $RCLOCALSHUTDOWN
 systemctl enable rc-local-shutdown.service

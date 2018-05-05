@@ -21,11 +21,11 @@ echo "Logged in as root"
 
 function minimalinstallation() {
 
-if [ -f base.txt ]; then
-    pacstrap -c -d -G -M ${mountpoint} $(cat base.txt)
-elif [ -f /opt/${repo}/base.txt ]; then
-    pacstrap -c -d -G -M ${mountpoint} $(cat /opt/${repo}/base.txt)
-fi
+    if [ -f base.txt ]; then
+        pacstrap -c -d -G -M ${mountpoint} $(cat base.txt)
+    elif [ -f /opt/${repo}/base.txt ]; then
+        pacstrap -c -d -G -M ${mountpoint} $(cat /opt/${repo}/base.txt)
+    fi
 
 }
 
@@ -301,11 +301,11 @@ function installation {
     fi
 
     if [ "${offline}" != "n" ]; then
-      if [ "${verschluesselung}" == "y" ]; then
-          parameter="${parameter}plymouth-encrypt "
-      else
-          parameter="${parameter}plymouth "
-      fi
+        if [ "${verschluesselung}" == "y" ]; then
+            parameter="${parameter}plymouth-encrypt "
+        else
+            parameter="${parameter}plymouth "
+        fi
     fi
 
     echo ""
@@ -658,16 +658,16 @@ function systemdboot() {
 
     #rootsub=$(btrfs subvolume list /mnt | awk 'NR<0 && NR>2 {print $2}')
     if [ "${version}" == "manjaro" ]; then
-      kernel1="$(find /boot/ -name "initramfs*$(uname -m).img")"
-      linuz1="$(find /boot/ -name "vmlinuz*$(uname -m)")"
-      kernel="${kernel1#/*/}"
-      linuz="${linuz1#/*/}"
-      kernelback1="$(find /boot/ -name "initramfs*$(uname -m)-fallback.img")"
-      kernelback="${kernelback1#/*/}"
+        kernel1="$(find /boot/ -name "initramfs*$(uname -m).img")"
+        linuz1="$(find /boot/ -name "vmlinuz*$(uname -m)")"
+        kernel="${kernel1#/*/}"
+        linuz="${linuz1#/*/}"
+        kernelback1="$(find /boot/ -name "initramfs*$(uname -m)-fallback.img")"
+        kernelback="${kernelback1#/*/}"
     else
-      kernel="initramfs-linux.img"
-      linuz="vmlinuz-linux"
-      kernelback="initramfs-linux-fallback.img"
+        kernel="initramfs-linux.img"
+        linuz="vmlinuz-linux"
+        kernelback="initramfs-linux-fallback.img"
     fi
 
     mkdir -p ${mountpoint}/boot/EFI/systemd/
@@ -813,17 +813,17 @@ function abfrage() {
 
     # berechnungen
 
-#    if [ "${update}" != "n" ]; then
-        read -p "Should an offline installation be carried out? : [Y/n] " offline
-        if [ "${offline}" != "n" ]
-        then
-            install="offline"
-        else
-            install="online"
-        fi
-#    else
-#        install="offline"
-#    fi
+    #    if [ "${update}" != "n" ]; then
+    read -p "Should an offline installation be carried out? : [Y/n] " offline
+    if [ "${offline}" != "n" ]
+    then
+        install="offline"
+    else
+        install="online"
+    fi
+    #    else
+    #        install="offline"
+    #    fi
 
     if [ "${offline}" != "n" ] && [ "${update}" != "n" ]; then
         read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc
@@ -1110,12 +1110,12 @@ if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ] && [ "${offli
     arch-chroot ${mountpoint} chfn -f "${name}" user1
     arch-chroot ${mountpoint} passwd user1
 
-    mkdir -p ${mountpoint}/etc/lightdm/
-    cp /opt/${repo}/Xsession /opt/${repo}/keys.conf /opt/${repo}/lightdm-gtk-greeter.conf /opt/${repo}/lightdm.conf /opt/${repo}/users.conf ${mountpoint}/etc/lightdm/
-    if [ "${verschluesselung}" == "y" ] && [ -f /usr/bin/lightdm ] ; then
-      arch-chroot ${mountpoint} systemctl enable lightdm-plymouth.service
+    if [ -f /usr/bin/lightdm ]; then
+        mkdir -p ${mountpoint}/etc/lightdm/
+        cp /opt/${repo}/Xsession /opt/${repo}/keys.conf /opt/${repo}/lightdm-gtk-greeter.conf /opt/${repo}/lightdm.conf /opt/${repo}/users.conf ${mountpoint}/etc/lightdm/
+        arch-chroot ${mountpoint} systemctl enable lightdm-plymouth.service
     else
-      arch-chroot ${mountpoint} systemctl enable lightdm.service
+        echo "lightdm nicht vorhanden!!!"
     fi
 
 fi

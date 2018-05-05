@@ -430,6 +430,7 @@ fi
 systemctl enable fail2ban
 systemctl disable dhcpcd
 systemctl enable NetworkManager.service
+systemctl enable bluetooth.service
 
 # set systemconfiguration
 echo "systemconfiguration"

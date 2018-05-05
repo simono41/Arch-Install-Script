@@ -1110,8 +1110,9 @@ if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ] && [ "${offli
     arch-chroot ${mountpoint} chfn -f "${name}" user1
     arch-chroot ${mountpoint} passwd user1
 
+    mkdir -p ${mountpoint}/etc/lightdm/
     cp /opt/${repo}/Xsession /opt/${repo}/keys.conf /opt/${repo}/lightdm-gtk-greeter.conf /opt/${repo}/lightdm.conf /opt/${repo}/users.conf ${mountpoint}/etc/lightdm/
-    if [ "${verschluesselung}" == "y" ]; then
+    if [ "${verschluesselung}" == "y" ] && [ -f /usr/bin/lightdm ] ; then
       arch-chroot ${mountpoint} systemctl enable lightdm-plymouth.service
     else
       arch-chroot ${mountpoint} systemctl enable lightdm.service

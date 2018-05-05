@@ -364,7 +364,6 @@ kmod
 knewstuff
 knotifications
 knotifyconfig
-kodi
 kpmcore
 krb5
 kservice

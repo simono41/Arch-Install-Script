@@ -974,10 +974,11 @@ then
         else
             if [ "${update}" != "n" ]
             then
+                echo "Please dont update the linux kernel!!!"
                 if [ -f base.txt ]; then
-                    pacman -Sy $(cat base.txt) --needed --noconfirm
+                    pacman -Sy $(cat base.txt) --needed --ignore linux
                 elif [ -f /opt/${repo}/base.txt ]; then
-                    pacman -Sy $(cat /opt/${repo}/base.txt) --needed --noconfirm
+                    pacman -Sy $(cat /opt/${repo}/base.txt) --needed --ignore linux
                 else
                     echo "Kann keine neuen Packete nachinstallieren weil die base.txt nicht gefunden werden kann!!"
                     echo "Es kann sein das dass Programm nicht korrekt funktioniert!!!"

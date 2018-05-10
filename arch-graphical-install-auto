@@ -534,6 +534,7 @@ chmod +x /usr/bin/aurinstaller
 su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
 su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
 plymouth-set-default-theme -R dark-arch
+su "$username" -c "aurinstaller "https://aur.archlinux.org/nextcloud-client.git""
 
 # nano
 echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc

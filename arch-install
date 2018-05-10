@@ -713,7 +713,7 @@ function systemdboot() {
         cp /opt/${repo}/update-bootloader ${mountpoint}/usr/bin/update-bootloader
         chmod +x ${mountpoint}/usr/bin/update-bootloader
         if ! grep '/usr/bin/update-bootloader' $RCLOCALSHUTDOWN; then
-            echo "${mountpoint}/usr/bin/update-bootloader" >> $RCLOCALSHUTDOWN
+            echo "/usr/bin/update-bootloader" >> $RCLOCALSHUTDOWN
         fi
     fi
 
@@ -895,7 +895,7 @@ function abfrage() {
         fi
     fi
 
-    RCLOCALSHUTDOWN='${mountpoint}/etc/rc.local.shutdown'
+    RCLOCALSHUTDOWN="${mountpoint}/etc/rc.local.shutdown"
 
     # Partitionierung
 

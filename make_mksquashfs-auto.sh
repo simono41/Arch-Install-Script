@@ -9,7 +9,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # full parameters
-# ./make_mksquashfs-auto.sh xfce4 deletework makesystem mkinitcpio filesystem initcheck makeimage makebios makeiso
+# ./make_mksquashfs-auto.sh xfce4 deletework deletecache makesystem mkinitcpio filesystem initcheck makeimage makebios makeiso
 
 iso_name=spectre_os
 iso_label="SPECTRE_OS"
@@ -26,6 +26,7 @@ for wort in "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
 do
     echo "$wort"
     if [ "$wort" == "deletework" ]; then deletework=y; fi
+    if [ "$wort" == "deletecache" ]; then deletecache=y; fi
     if [ "$wort" == "makesystem" ]; then makesystem=y; fi
     if [ "$wort" == "mkinitcpio" ]; then mkinitcpio=y; fi
     if [ "$wort" == "filesystem" ]; then filesystem=y; fi
@@ -50,7 +51,7 @@ fi
 function minimalinstallation() {
     cp mirrorlist* /etc/pacman.d/
 
-    if [ "${deletework}" == "y" ]; then
+    if [ "${deletecache}" == "y" ]; then
       pacman -Scc <<EOT
 j
 j

@@ -97,6 +97,8 @@ kde-applications
 kde-l10n-de
 kdenlive
 kdialog
+kwallet-pam
+kwalletmanager
 lib32-libva-intel-driver
 lib32-libva-mesa-driver
 lib32-libva-vdpau-driver

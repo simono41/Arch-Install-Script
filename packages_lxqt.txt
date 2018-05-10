@@ -59,6 +59,8 @@ hydra
 intel-ucode
 iw
 jdk8-openjdk
+kwallet-pam
+kwalletmanager
 lib32-libva-vdpau-driver
 lib32-libvdpau
 lib32-mesa-vdpau

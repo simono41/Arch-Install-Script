@@ -369,6 +369,8 @@ krb5
 kservice
 ktextwidgets
 kwallet
+kwallet-pam
+kwalletmanager
 kwidgetsaddons
 kwindowsystem
 kxmlgui

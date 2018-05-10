@@ -61,6 +61,8 @@ jdk8-openjdk
 kde-applications
 kde-l10n-de
 kdialog
+kwallet-pam
+kwalletmanager
 lib32-libva-vdpau-driver
 lib32-libvdpau
 lib32-mesa-vdpau

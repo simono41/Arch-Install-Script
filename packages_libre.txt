@@ -39,6 +39,7 @@ gnome-extra
 gnome-keyring
 gnome-power-manager
 gnome-screensaver
+gnome-system-monitor
 gnuchess
 gnupg
 grub

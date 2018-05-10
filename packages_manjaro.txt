@@ -211,6 +211,7 @@ gnome-icon-theme
 gnome-icon-theme-symbolic
 gnome-keyring
 gnome-menus
+gnome-system-monitor
 gnome-themes-extra
 gnuchess
 gnupg

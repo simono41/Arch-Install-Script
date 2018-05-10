@@ -46,6 +46,7 @@ gdisk
 git
 gnome-calculator
 gnome-keyring
+gnome-system-monitor
 gnuchess
 gnupg
 gparted

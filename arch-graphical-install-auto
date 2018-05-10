@@ -610,7 +610,9 @@ fi
 if [ "${version}" == "manjaro" ]; then
   cp /opt/${repo}/update-bootloader /usr/bin/update-bootloader
   chmod +x /usr/bin/update-bootloader
-  echo "/usr/bin/update-bootloader" >> /etc/rc.local.shutdown
+  if ! grep '/usr/bin/update-bootloader' $RCLOCALSHUTDOWN; then
+    echo "/usr/bin/update-bootloader" >> /etc/rc.local.shutdown
+  fi
 fi
 
 if [ "$version" != "lite" ]; then

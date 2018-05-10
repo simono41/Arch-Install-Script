@@ -54,7 +54,9 @@ function secureumount() {
             # custom-mounts
             for wort in ${mountsnaps}
             do
-                umount ${mountpoint}${wort}
+                if cat /proc/mounts | grep ${mountpoint}${wort} > /dev/null; then
+                  umount ${mountpoint}${wort}
+                fi
             done
             umount ${mountpoint}
             umount /mnt/btrfs-root

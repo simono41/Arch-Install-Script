@@ -46,6 +46,7 @@ avidemux-cli
 avidemux-qt
 b43-fwcutter
 babl
+baobab
 bash
 bash-completion
 bc

@@ -16,6 +16,7 @@ assaultcube
 audacity
 avahi
 avidemux-qt
+baobab
 base
 base-devel
 bash-completion

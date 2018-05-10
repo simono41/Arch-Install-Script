@@ -708,6 +708,15 @@ function systemdboot() {
 
     fi
 
+    if [ "${version}" == "manjaro" ]; then
+        cp /opt/${repo}/update-bootloader ${mountpoint}/usr/bin/update-bootloader
+        chmod +x ${mountpoint}/usr/bin/update-bootloader
+        if ! grep '${mountpoint}/usr/bin/update-bootloader' $RCLOCALSHUTDOWN; then
+            echo "${mountpoint}/usr/bin/update-bootloader" >> ${mountpoint}/etc/rc.local.shutdown
+        fi
+    fi
+
+
 }
 
 function abfrage() {

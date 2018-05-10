@@ -1132,6 +1132,8 @@ if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ] && [ "${offli
         echo "lightdm nicht vorhanden!!!"
     fi
 
+    arch-chroot ${mountpoint} systemctl enable rc-local-shutdown.service
+
 fi
 
 if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ -n "${installationsfehler}" ]; then

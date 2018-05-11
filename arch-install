@@ -411,7 +411,7 @@ function installation {
     if [ "${autodisk}" != "n" ]
     then
         mkdir -p ${mountpoint}/run/media/user1/hdd
-        echo "UUID=${autodiskdeviceuuid}  /run/media/user1/hdd  ${autodiskdevicedateisystem}  defaults  0  2" >> ${mountpoint}/etc/fstab
+        echo "UUID=${autodiskdeviceuuid} /run/media/user1/hdd ${autodiskdevicedateisystem} defaults 0 2" >> ${mountpoint}/etc/fstab
 
     fi
 

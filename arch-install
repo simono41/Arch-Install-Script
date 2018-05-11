@@ -411,7 +411,15 @@ function installation {
     if [ "${autodisk}" != "n" ]
     then
         mkdir -p ${mountpoint}/run/media/user1/hdd
-        echo "UUID=${autodiskdeviceuuid} /run/media/user1/hdd ${autodiskdevicedateisystem} defaults 0 2" >> ${mountpoint}/etc/fstab
+        for wort in ${autodiskdevice}
+        do
+            echo "fstab ${wort} wird erstellt!!!"
+            autodiskdevicedateisystem=$(blkid -s TYPE -o value ${usbkeydevice})
+            autodiskdeviceuuid=$(blkid -s UUID -o value ${usbkeydevice})
+            echo "UUID=${autodiskdeviceuuid} /run/media/user1/hdd ${autodiskdevicedateisystem} defaults 0 2" >> ${mountpoint}/etc/fstab
+
+        done
+
 
     fi
 
@@ -845,13 +853,19 @@ function abfrage() {
     #        install="offline"
     #    fi
 
-    read -p "Should you an disk added to your fstab? : [n/N] " autodisk
+    read -p "Should you an disk added to your fstab? : [y/N] " autodisk
     if [ "${autodisk}" != "n" ]
     then
-        read -p "Which DISK stick should be selected ?: /dev/sdb1 " autodiskdevice
+        read -p "Which DISK stick should be selected ?: /dev/sdb1 /dev/sdc1 " autodiskdevice
         [[ -z "${autodiskdevice}" ]] && autodiskdevice=/dev/sdb1
-        autodiskdevicedateisystem=$(blkid -s TYPE -o value ${usbkeydevice})
-        autodiskdeviceuuid=$(blkid -s UUID -o value ${usbkeydevice})
+
+        for wort in ${autodiskdevice}
+        do
+            echo "fstab ${wort} wird erstellt!!!"
+            autodiskdevicedateisystem=$(blkid -s TYPE -o value ${usbkeydevice})
+            autodiskdeviceuuid=$(blkid -s UUID -o value ${usbkeydevice})
+
+        done
 
 
     fi

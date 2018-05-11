@@ -55,7 +55,7 @@ function secureumount() {
             for wort in ${mountsnaps}
             do
                 if cat /proc/mounts | grep ${mountpoint}${wort} > /dev/null; then
-                  umount ${mountpoint}${wort}
+                    umount ${mountpoint}${wort}
                 fi
             done
             umount ${mountpoint}
@@ -405,6 +405,14 @@ function installation {
         if [ "${usbkey}" == "y" ]; then
             usbkeyinstallation
         fi
+    fi
+
+    #autdiskmount
+    if [ "${autodisk}" != "n" ]
+    then
+        mkdir -p ${mountpoint}/run/media/user1/hdd
+        echo "UUID=${autodiskdeviceuuid}  /run/media/user1/hdd  ${autodiskdevicedateisystem}  defaults  0  2" >> ${mountpoint}/etc/fstab
+
     fi
 
 
@@ -836,6 +844,17 @@ function abfrage() {
     #    else
     #        install="offline"
     #    fi
+
+    read -p "Should you an disk added to your fstab? : [n/N] " autodisk
+    if [ "${autodisk}" != "n" ]
+    then
+        read -p "Which DISK stick should be selected ?: /dev/sdb1 " autodiskdevice
+        [[ -z "${autodiskdevice}" ]] && autodiskdevice=/dev/sdb1
+        autodiskdevicedateisystem=$(blkid -s TYPE -o value ${usbkeydevice})
+        autodiskdeviceuuid=$(blkid -s UUID -o value ${usbkeydevice})
+
+
+    fi
 
     if [ "${offline}" != "n" ] && [ "${update}" != "n" ]; then
         read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc

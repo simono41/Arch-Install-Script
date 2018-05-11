@@ -105,6 +105,7 @@ python2-pip
 qemu
 refind-efi
 rsync
+screenfetch
 squashfs-tools
 syslinux
 system-config-printer

@@ -124,6 +124,7 @@ qemu
 refind-efi
 rsync
 screen
+screenfetch
 squashfs-tools
 steam
 syslinux

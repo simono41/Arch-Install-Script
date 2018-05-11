@@ -188,6 +188,7 @@ qt5-script
 refind-efi
 rsync
 screen
+screenfetch
 sdl2
 sdl2_image
 sdl2_mixer

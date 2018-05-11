@@ -33,6 +33,7 @@ filezilla
 fish
 freeciv
 gdisk
+gimp
 git
 gnome
 gnome-calculator

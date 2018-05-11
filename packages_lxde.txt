@@ -43,6 +43,7 @@ firefox-i18n-de
 fish
 freeciv
 gdisk
+gimp
 git
 gnome-calculator
 gnome-keyring

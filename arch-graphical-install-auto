@@ -607,6 +607,14 @@ if ! grep '#!' $RCLOCALSHUTDOWN; then
     echo "#!/bin/bash" > $RCLOCALSHUTDOWN
 fi
 
+# install-firacode
+# In download.sh
+for type in Bold Light Medium Regular Retina; do
+    wget -O /usr/share/fonts/TTF/FiraCode-${type}.ttf \
+    "https://github.com/tonsky/FiraCode/blob/master/distr/ttf/FiraCode-${type}.ttf?raw=true";
+done
+
+
 if [ "$version" != "lite" ]; then
 
     ### custom-installer

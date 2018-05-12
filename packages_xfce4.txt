@@ -159,7 +159,6 @@ gnuchess
 gnupg
 gnutls
 gobject-introspection-runtime
-google-chrome
 gparted
 gpgme
 gpm
@@ -602,7 +601,6 @@ netctl
 nettle
 network-manager-applet
 networkmanager
-nextcloud-client
 nm-connection-editor
 nmap
 node-gyp
@@ -677,8 +675,6 @@ pixman
 pixz
 pkcs11-helper
 pkg-config
-plymouth
-plymouth-theme-dark-arch
 polkit
 polkit-gnome
 polkit-qt5
@@ -781,7 +777,6 @@ speech-dispatcher
 speex
 speexdsp
 spice
-spotify
 sqlite
 squashfs-tools
 startup-notification

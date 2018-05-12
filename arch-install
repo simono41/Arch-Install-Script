@@ -408,7 +408,7 @@ function installation {
     fi
 
     #autdiskmount
-    if [ "${autodisk}" != "n" ]
+    if [ "${autodisk}" == "y" ]
     then
         for wort in ${autodiskdevice}
         do
@@ -854,7 +854,7 @@ function abfrage() {
     #    fi
 
     read -p "Should you an disk added to your fstab? : [y/N] " autodisk
-    if [ "${autodisk}" != "n" ]
+    if [ "${autodisk}" == "y" ]
     then
         read -p "Which DISK stick should be selected ?: /dev/sdb1 /dev/sdc1 " autodiskdevice
         [[ -z "${autodiskdevice}" ]] && autodiskdevice=/dev/sdb1

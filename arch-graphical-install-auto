@@ -459,6 +459,14 @@ echo "${repo}-${version}" > /etc/hostname
 cp /opt/${repo1}/uefi-boot.sh /usr/bin/uefi-boot
 chmod 755 /usr/bin/uefi-boot
 
+# youtube-dl
+cp /opt/${repo1}/youtube-dl.sh /usr/bin/youtube-downloader
+chmod 755 /usr/bin/youtube-downloader
+
+# youtube
+cp /opt/${repo1}/youtube.sh /usr/bin/youtube
+chmod 755 /usr/bin/youtube
+
 # write-partitions manager
 cp /opt/${repo}/write_cowspace /usr/bin/write_cowspace
 chmod 755 /usr/bin/write_cowspace

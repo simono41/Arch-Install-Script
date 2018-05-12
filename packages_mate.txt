@@ -163,3 +163,4 @@ xorg-xinit
 xorriso
 xscreensaver
 xterm
+youtube-dl

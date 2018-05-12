@@ -985,6 +985,7 @@ xscreensaver
 xterm
 xvidcore
 xz
+youtube-dl
 zenity
 zeromq
 zip

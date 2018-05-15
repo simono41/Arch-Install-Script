@@ -542,7 +542,6 @@ chmod +x /usr/bin/aurinstaller
 su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
 su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
 plymouth-set-default-theme -R dark-arch
-su "$username" -c "aurinstaller "https://aur.archlinux.org/nextcloud-client.git""
 
 # nano
 echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
@@ -614,13 +613,6 @@ chmod +x $RCLOCALSHUTDOWN
 if ! grep '#!' $RCLOCALSHUTDOWN; then
     echo "#!/bin/bash" > $RCLOCALSHUTDOWN
 fi
-
-# install-firacode
-# In download.sh
-for type in Bold Light Medium Regular Retina; do
-    wget -O /usr/share/fonts/TTF/FiraCode-${type}.ttf \
-    "https://github.com/tonsky/FiraCode/blob/master/distr/ttf/FiraCode-${type}.ttf?raw=true";
-done
 
 
 if [ "$version" != "lite" ]; then
@@ -751,6 +743,15 @@ if [ "$version" != "lite" ]; then
     # zusatzsoftware
     su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
     su "$username" -c "aurinstaller "https://aur.archlinux.org/spotify.git""
+    su "$username" -c "aurinstaller "https://aur.archlinux.org/nextcloud-client.git""
+
+    # install-firacode
+    # In download.sh
+    for type in Bold Light Medium Regular Retina; do
+        wget -O /usr/share/fonts/TTF/FiraCode-${type}.ttf \
+        "https://github.com/tonsky/FiraCode/blob/master/distr/ttf/FiraCode-${type}.ttf?raw=true";
+    done
+
 
 fi
 

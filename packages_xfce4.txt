@@ -135,7 +135,6 @@ gconf
 gcr
 gdbm
 gdk-pixbuf2
-gegl02
 geoclue2
 gettext
 giflib

@@ -867,11 +867,11 @@ function abfrage() {
 
     if [ "${offline}" != "n" ] && [ "${update}" != "n" ]; then
         read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc
-        echo "This password is only valid for the current session !!!"
-        if [ "${x11vnc}" == "y" ]; then
-            x11vnc -storepasswd /etc/x11vnc.pass
-            systemctl restart x11vnc.service
-        fi
+#        echo "This password is only valid for the current session !!!"
+#        if [ "${x11vnc}" == "y" ]; then
+#            x11vnc -storepasswd /etc/x11vnc.pass
+#            systemctl restart x11vnc.service
+#        fi
     fi
 
     # Ausgaben

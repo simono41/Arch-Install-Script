@@ -535,6 +535,10 @@ chsh -s /usr/bin/fish ${username}
 # XDG standard
 cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
 
+# x11vnc-pass (password)
+
+cp /opt/${repo}/x11vnc.pass /etc/x11vnc.pass
+
 # aurinstaller
 cp /opt/${repo}/aurinstall.sh /usr/bin/aurinstaller
 chmod +x /usr/bin/aurinstaller

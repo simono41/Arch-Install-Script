@@ -140,6 +140,7 @@ enchant
 enet
 engrampa
 engrampa-thunar-plugin
+evince
 exfat-utils
 exiv2
 exo

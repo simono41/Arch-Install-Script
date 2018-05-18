@@ -32,6 +32,7 @@ dosfstools
 dsniff
 efibootmgr
 efitools
+evince
 exfat-utils
 expac
 fail2ban

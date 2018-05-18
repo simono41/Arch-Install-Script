@@ -49,6 +49,7 @@ dsniff
 efibootmgr
 efitools
 elementary-icon-theme
+evince
 exfat-utils
 expac
 fail2ban

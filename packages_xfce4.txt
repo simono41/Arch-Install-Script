@@ -844,6 +844,10 @@ webrtc-audio-processing
 wget
 which
 whois
+wine
+wine-mono
+wine_gecko
+winetricks
 wireless_tools
 woff2
 wpa_supplicant

@@ -120,6 +120,10 @@ traceroute
 transmission-gtk
 vlc
 wget
+wine
+wine-mono
+wine_gecko
+winetricks
 wireless_tools
 wpa_supplicant
 x11vnc

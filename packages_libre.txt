@@ -92,6 +92,7 @@ noto-fonts
 noto-fonts-emoji
 ntfs-3g
 ntp
+obs-studio
 openssh
 openvpn
 os-prober

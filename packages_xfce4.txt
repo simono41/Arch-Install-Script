@@ -617,6 +617,7 @@ numactl
 nvidia
 nvidia-settings
 nvidia-utils
+obs-studio
 onboard
 openal
 opencl-nvidia

@@ -104,6 +104,7 @@ nvidia
 nvidia-libgl
 nvidia-settings
 nvidia-utils
+obs-studio
 onboard
 opencl-nvidia
 openssh

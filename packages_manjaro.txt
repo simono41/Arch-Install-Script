@@ -65,6 +65,7 @@ brasero
 breath-wallpaper
 brotli
 btrfs-progs
+bubblewrap
 bzip2
 c-ares
 ca-certificates
@@ -116,6 +117,7 @@ dhcpcd
 dialog
 diffutils
 ding-libs
+djvulibre
 dmidecode
 dmraid
 dnsmasq
@@ -188,6 +190,7 @@ gcr
 gd
 gdbm
 gdk-pixbuf2
+gegl
 geoclue2
 geoip
 geoip-database
@@ -208,6 +211,7 @@ gmime3
 gmp
 gnome-calculator
 gnome-chess
+gnome-desktop
 gnome-icon-theme
 gnome-icon-theme-symbolic
 gnome-keyring
@@ -565,15 +569,18 @@ libftdi
 libgadu
 libgcrypt
 libgdiplus
+libgexiv2
 libglade
 libglvnd
 libgme
 libgpg-error
 libgphoto2
 libgsf
+libgtop
 libgudev
 libguess
 libgusb
+libgxps
 libhubbub
 libibus
 libical
@@ -617,6 +624,7 @@ libmpeg2
 libmspub
 libmtp
 libmwaw
+libmypaint
 libndp
 libnet
 libnetfilter_conntrack
@@ -633,6 +641,7 @@ libnm-glib
 libnotify
 libnsbmp
 libnsgif
+libnsl
 libnsutils
 libodfgen
 libofa
@@ -673,6 +682,7 @@ libsndfile
 libsodium
 libsoup
 libsoxr
+libspectre
 libspeechd
 libspiro
 libspnav
@@ -840,6 +850,7 @@ mhwd-db
 mhwd-nvidia
 mhwd-nvidia-304xx
 mhwd-nvidia-340xx
+mhwd-nvidia-390xx
 minetest
 minetest-common
 miniupnpc
@@ -865,6 +876,7 @@ mtdev
 mtpfs
 mugshot
 mumble
+mypaint-brushes
 nano
 nbd
 ncurses
@@ -1054,11 +1066,13 @@ qt5-sensors
 qt5-speech
 qt5-styleplugins
 qt5-svg
+qt5-tools
 qt5-webchannel
 qt5-webkit
 qt5-x11extras
 qt5-xmlpatterns
 qt5ct
+qtkeychain
 raptor
 rasqal
 re2
@@ -1109,6 +1123,7 @@ smartmontools
 smbclient
 smpeg
 snappy
+socat
 solid
 sonnet
 sord
@@ -1136,6 +1151,7 @@ sysfsutils
 syslinux
 systemd
 systemd-sysvcompat
+t1lib
 taglib
 talloc
 tar

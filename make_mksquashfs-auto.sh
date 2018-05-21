@@ -64,7 +64,7 @@ EOT
         ./pacstrap -C pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base_libre.txt)
     elif [ "${version}" == "manjaro" ]; then
         pacman -U --noconfirm --force https://mirror.philpot.de/manjaro/stable/core/x86_64/manjaro-keyring-20171027-2-any.pkg.tar.xz
-        ./pacstrap -C pacman.conf_manjaro -c -d -G -M ${work_dir}/${arch}/airootfs $(cat packages_manjaro.txt)
+        ./pacstrap -C pacman.conf_manjaro -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
     else
         ./pacstrap -C pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
     fi

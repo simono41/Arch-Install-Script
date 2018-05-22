@@ -118,6 +118,7 @@ os-prober
 p7zip
 pavucontrol
 pixz
+playonlinux
 ppp
 pulseaudio
 pulseaudio-alsa

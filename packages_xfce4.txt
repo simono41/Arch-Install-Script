@@ -676,6 +676,7 @@ pixman
 pixz
 pkcs11-helper
 pkg-config
+playonlinux
 polkit
 polkit-gnome
 polkit-qt5

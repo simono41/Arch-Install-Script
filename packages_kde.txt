@@ -116,6 +116,7 @@ p7zip
 pavucontrol
 pixz
 plasma
+playonlinux
 ppp
 pulseaudio
 pulseaudio-alsa

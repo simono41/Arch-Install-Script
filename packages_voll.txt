@@ -172,6 +172,7 @@ pcsx2
 physfs
 pixz
 plasma
+playonlinux
 ppp
 ppsspp
 pulseaudio

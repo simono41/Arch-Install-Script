@@ -109,6 +109,7 @@ qemu
 refind-efi
 rsync
 screenfetch
+seahorse
 squashfs-tools
 syslinux
 system-config-printer

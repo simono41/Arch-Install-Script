@@ -129,6 +129,7 @@ refind-efi
 rsync
 screen
 screenfetch
+seahorse
 squashfs-tools
 steam
 syslinux

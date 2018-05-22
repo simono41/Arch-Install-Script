@@ -760,6 +760,7 @@ sdl
 sdl2
 sdl_mixer
 seabios
+seahorse
 sed
 semver
 serf

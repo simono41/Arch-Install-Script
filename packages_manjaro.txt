@@ -1107,6 +1107,7 @@ sdl_image
 sdl_mixer
 sdl_ttf
 seabios
+seahorse
 sed
 semver
 serd

@@ -104,7 +104,6 @@ kwallet-pam
 kwalletmanager
 lib32-libva-intel-driver
 lib32-libva-mesa-driver
-lib32-libva-vdpau-driver
 lib32-libvdpau
 lib32-mesa-vdpau
 lib32-nvidia-libgl

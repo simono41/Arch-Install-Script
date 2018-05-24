@@ -485,6 +485,7 @@ lib32-mesa-demos
 lib32-mesa-vdpau
 lib32-ncurses
 lib32-nettle
+lib32-nvidia-cg-toolkit
 lib32-openssl
 lib32-p11-kit
 lib32-pango

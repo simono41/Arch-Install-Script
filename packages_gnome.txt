@@ -449,7 +449,6 @@ lib32-libsm
 lib32-libtiff
 lib32-libusb
 lib32-libva
-lib32-libva-vdpau-driver
 lib32-libvdpau
 lib32-libx11
 lib32-libxau

@@ -615,7 +615,6 @@ ntfs-3g
 ntp
 numactl
 nvidia
-nvidia-settings
 nvidia-utils
 obs-studio
 onboard

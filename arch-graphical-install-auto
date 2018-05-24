@@ -740,7 +740,8 @@ if [ "$version" != "lite" ]; then
     chmod 755 -Rv /usr/share/backgrounds/xfce/
 
     # .config
-    tar -vxJf /opt/${repo}/.config.tar.xz -C /root/
+    mkdir -p /root/.config
+    tar -vxJf /opt/${repo}/.config.tar.xz -C /root/.config/
     gnomeconfig
     copyconfig
 

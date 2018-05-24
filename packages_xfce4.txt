@@ -887,7 +887,6 @@ pam
 pambase
 pango
 pangomm
-parabola-keyring
 parole
 parted
 patch

@@ -911,6 +911,7 @@ ntp
 numactl
 numlockx
 nvidia-cg-toolkit
+nvidia-settings
 obs-studio
 onboard
 openal

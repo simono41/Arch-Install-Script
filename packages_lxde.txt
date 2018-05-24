@@ -102,6 +102,7 @@ ntfs-3g
 ntp
 nvidia
 nvidia-libgl
+nvidia-settings
 nvidia-utils
 obs-studio
 onboard

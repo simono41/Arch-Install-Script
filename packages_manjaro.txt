@@ -454,7 +454,6 @@ lib32-libthai
 lib32-libtiff
 lib32-libusb
 lib32-libva
-lib32-libva-vdpau-driver
 lib32-libvdpau
 lib32-libvorbis
 lib32-libx11

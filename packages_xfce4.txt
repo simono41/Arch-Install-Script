@@ -280,7 +280,6 @@ gnupg
 gnutls
 gobject-introspection-runtime
 gom
-google-chrome
 gparted
 gperftools
 gpgme
@@ -335,7 +334,6 @@ gzip
 harfbuzz
 harfbuzz-icu
 hdparm
-heimdall-git
 hicolor-icon-theme
 hitori
 hspell
@@ -803,7 +801,6 @@ mailcap
 make
 man-db
 man-pages
-manjaro-keyring
 mdadm
 media-player-info
 mesa
@@ -847,7 +844,6 @@ netctl
 nettle
 network-manager-applet
 networkmanager
-nextcloud-client
 nm-connection-editor
 nmap
 node-gyp
@@ -930,8 +926,6 @@ pixz
 pkcs11-helper
 pkg-config
 playonlinux
-plymouth
-plymouth-theme-dark-arch
 polari
 polkit
 polkit-gnome
@@ -1097,7 +1091,6 @@ speex
 speexdsp
 spice
 spice-gtk
-spotify
 sqlite
 squashfs-tools
 srt

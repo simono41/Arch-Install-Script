@@ -757,6 +757,7 @@ thunar-media-tags-plugin
 thunar-volman
 thunderbird
 tlp
+tolua++
 tslib
 ttf-bitstream-vera
 ttf-droid

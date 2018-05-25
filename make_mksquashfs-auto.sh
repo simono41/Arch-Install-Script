@@ -60,12 +60,15 @@ EOT
     fi
 
     if [ "${version}" == "libre" ]; then
+        cp pacman.conf_libre /etc/pacman.conf
         pacman -U --noconfirm --force https://www.parabola.nu/packages/libre/any/parabola-keyring/download
         ./pacstrap -C pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base_libre.txt)
     elif [ "${version}" == "manjaro" ]; then
+        cp pacman.conf_manjaro /etc/pacman.conf
         pacman -U --noconfirm --force https://mirror.philpot.de/manjaro/stable/core/x86_64/manjaro-keyring-20171027-2-any.pkg.tar.xz
         ./pacstrap -C pacman.conf_manjaro -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
     else
+        cp pacman.conf /etc/pacman.conf
         ./pacstrap -C pacman.conf -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
     fi
 }

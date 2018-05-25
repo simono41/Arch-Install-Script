@@ -14,7 +14,6 @@ appstream-glib
 apr
 apr-util
 arc-gtk-theme
-parabola-keyring
 archlinux-keyring
 arc-icon-theme
 argon2
@@ -104,8 +103,6 @@ fftw
 file
 filesystem
 findutils
-iceweasel
-iceweasel-l10n-de
 flac
 flex
 fontconfig
@@ -201,6 +198,10 @@ hwids
 hwinfo
 hyphen
 iana-etc
+icedove
+icedove-l10n-de1
+iceweasel
+iceweasel-l10n-de
 icu
 ijs
 ilmbase
@@ -607,6 +608,7 @@ pam
 pambase
 pango
 pangomm
+parabola-keyring
 parted
 patch
 patchutils

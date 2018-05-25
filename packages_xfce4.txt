@@ -697,6 +697,7 @@ python-yaml
 qpdf
 qpdfview
 qrencode
+qt4
 qt5-base
 qt5ct
 qt5-styleplugins

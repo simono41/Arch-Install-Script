@@ -761,7 +761,6 @@ tzdata
 udiskie
 udisks2
 ufw
-unace
 unrar
 unzip
 upower

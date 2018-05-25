@@ -699,13 +699,11 @@ python-yaml
 qpdf
 qpdfview
 qrencode
-qt4
 qt5-base
 qt5ct
 qt5-styleplugins
 qt5-svg
 qt5-x11extras
-qtkeychain
 raptor
 rasqal
 readline

@@ -782,7 +782,6 @@ python-yaml
 qpdf
 qpdfview
 qrencode
-qt4
 qt5-base
 qt5ct
 qt5-declarative
@@ -797,7 +796,6 @@ qt5-webchannel
 qt5-webkit
 qt5-x11extras
 qt5-xmlpatterns
-qtkeychain
 raptor
 rasqal
 readline

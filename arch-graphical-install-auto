@@ -747,8 +747,6 @@ if [ "$version" != "lite" ]; then
 
     # zusatzsoftware
     su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
-    su "$username" -c "aurinstaller "https://aur.archlinux.org/spotify.git""
-    su "$username" -c "aurinstaller "https://aur.archlinux.org/nextcloud-client.git""
 
     # install-firacode
     # In download.sh

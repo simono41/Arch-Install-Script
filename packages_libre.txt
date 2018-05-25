@@ -199,7 +199,7 @@ hwinfo
 hyphen
 iana-etc
 icedove
-icedove-l10n-de1
+icedove-l10n-de
 iceweasel
 iceweasel-l10n-de
 icu

@@ -5,7 +5,6 @@ acl
 acpi
 acpid
 adwaita-icon-theme
-alsa-firmware
 alsa-lib
 alsa-plugins
 alsa-utils
@@ -15,7 +14,7 @@ appstream-glib
 apr
 apr-util
 arc-gtk-theme
-archlinux-appstream-data
+parabola-keyring
 archlinux-keyring
 arc-icon-theme
 argon2
@@ -96,7 +95,6 @@ exiv2
 exo
 expat
 f2fs-tools
-faac
 faad2
 fakeroot
 farstream
@@ -106,7 +104,8 @@ fftw
 file
 filesystem
 findutils
-firefox
+iceweasel
+iceweasel-l10n-de
 flac
 flex
 fontconfig
@@ -209,13 +208,10 @@ imagemagick
 imlib2
 inetutils
 iniparser
-intel-ucode
 intltool
 iproute2
 iptables
 iputils
-ipw2100-fw
-ipw2200-fw
 iso-codes
 iw
 jack
@@ -295,9 +291,7 @@ lib32-libxxf86vm
 lib32-llvm-libs
 lib32-lm_sensors
 lib32-mesa
-lib32-mesa-demos
 lib32-ncurses
-lib32-nvidia-utils
 lib32-pcre
 lib32-readline
 lib32-systemd
@@ -592,7 +586,6 @@ nss-mdns
 ntfs-3g
 ntp
 numlockx
-nvidia
 openal
 openconnect
 opencore-amr
@@ -734,7 +727,6 @@ splix
 sqlite
 srt
 startup-notification
-steam
 subversion
 sudo
 sysfsutils
@@ -780,7 +772,6 @@ v4l-utils
 vi
 vid.stab
 viewnior
-virtualbox-guest-utils
 vlc
 volume_key
 vpnc
@@ -881,7 +872,6 @@ xvidcore
 xz
 yelp
 yelp-xsl
-zd1211-firmware
 zenity
 zeromq
 zip

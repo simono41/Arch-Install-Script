@@ -14,8 +14,10 @@ android-udev
 appstream-glib
 apr
 apr-util
+arc-gtk-theme
 archlinux-appstream-data
 archlinux-keyring
+arc-icon-theme
 argon2
 aspell
 atk
@@ -54,6 +56,7 @@ celt
 chromaprint
 cifs-utils
 clucene
+cmake
 colord
 coreutils
 cpupower
@@ -543,6 +546,7 @@ logrotate
 lpsolve
 lsb-release
 lua
+lua51
 lvm2
 lz4
 lzo
@@ -581,6 +585,8 @@ networkmanager-vpnc
 nfsidmap
 nfs-utils
 nm-connection-editor
+noto-fonts
+noto-fonts-extra
 npth
 nspr
 nss

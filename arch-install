@@ -867,12 +867,15 @@ function abfrage() {
 
     if [ "${offline}" != "n" ] && [ "${update}" != "n" ]; then
         read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc
-#        echo "This password is only valid for the current session !!!"
-#        if [ "${x11vnc}" == "y" ]; then
-#            x11vnc -storepasswd /etc/x11vnc.pass
-#            systemctl restart x11vnc.service
-#        fi
+        #        echo "This password is only valid for the current session !!!"
+        #        if [ "${x11vnc}" == "y" ]; then
+        #            x11vnc -storepasswd /etc/x11vnc.pass
+        #            systemctl restart x11vnc.service
+        #        fi
     fi
+
+    read -p "Sould the system be started without a login? : [y/N] " autostart
+    [[ -z "${autostart}" ]] && autostart=n
 
     # Ausgaben
 
@@ -1152,12 +1155,14 @@ if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ] && [ "${offli
     arch-chroot ${mountpoint} chfn -f "${name}" user1
     arch-chroot ${mountpoint} passwd user1
 
-    if [ -f /usr/bin/lightdm ]; then
-        mkdir -p ${mountpoint}/etc/lightdm/
-        cp /opt/${repo}/Xsession /opt/${repo}/keys.conf /opt/${repo}/lightdm-gtk-greeter.conf /opt/${repo}/lightdm.conf /opt/${repo}/users.conf ${mountpoint}/etc/lightdm/
-        arch-chroot ${mountpoint} systemctl enable lightdm-plymouth.service
-    else
-        echo "lightdm nicht vorhanden!!!"
+    if [ "${autostart}" != "n" ]; then
+        if [ -f /usr/bin/lightdm ]; then
+            mkdir -p ${mountpoint}/etc/lightdm/
+            cp /opt/${repo}/Xsession /opt/${repo}/keys.conf /opt/${repo}/lightdm-gtk-greeter.conf /opt/${repo}/lightdm.conf /opt/${repo}/users.conf ${mountpoint}/etc/lightdm/
+            arch-chroot ${mountpoint} systemctl enable lightdm-plymouth.service
+        else
+            echo "lightdm nicht vorhanden!!!"
+        fi
     fi
 
     arch-chroot ${mountpoint} systemctl enable rc-local-shutdown.service

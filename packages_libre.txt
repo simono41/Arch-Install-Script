@@ -797,6 +797,7 @@ tigervnc
 tlp
 tolua++
 traceroute
+transmission-gtk
 tslib
 ttf-bitstream-vera
 ttf-droid

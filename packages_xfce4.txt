@@ -769,6 +769,7 @@ thunderbird
 tigervnc
 tlp
 tolua++
+transmission-gtk
 tslib
 ttf-bitstream-vera
 ttf-droid

@@ -1076,6 +1076,7 @@ totem-plparser
 traceroute
 tracker
 tracker-miners
+transmission-gtk
 tslib
 ttf-bitstream-vera
 ttf-droid

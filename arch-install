@@ -1155,14 +1155,14 @@ if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ] && [ "${offli
     arch-chroot ${mountpoint} chfn -f "${name}" user1
     arch-chroot ${mountpoint} passwd user1
 
-    if [ "${autostart}" != "n" ]; then
-        if [ -f /usr/bin/lightdm ]; then
-            mkdir -p ${mountpoint}/etc/lightdm/
-            cp /opt/${repo}/Xsession /opt/${repo}/keys.conf /opt/${repo}/lightdm-gtk-greeter.conf /opt/${repo}/lightdm.conf /opt/${repo}/users.conf ${mountpoint}/etc/lightdm/
+    if [ -f /usr/bin/lightdm ]; then
+        mkdir -p ${mountpoint}/etc/lightdm/
+        cp /opt/${repo}/Xsession /opt/${repo}/keys.conf /opt/${repo}/lightdm-gtk-greeter.conf /opt/${repo}/lightdm.conf /opt/${repo}/users.conf ${mountpoint}/etc/lightdm/
+        if [ "${autostart}" == "n" ]; then
             arch-chroot ${mountpoint} systemctl enable lightdm-plymouth.service
-        else
-            echo "lightdm nicht vorhanden!!!"
         fi
+    else
+        echo "lightdm nicht vorhanden!!!"
     fi
 
     arch-chroot ${mountpoint} systemctl enable rc-local-shutdown.service

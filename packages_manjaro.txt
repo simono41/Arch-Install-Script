@@ -22,6 +22,7 @@ argon2
 aspell
 atk
 atkmm
+atom
 at-spi2-atk
 at-spi2-core
 attica
@@ -90,6 +91,7 @@ dnsmasq
 dnssec-anchors
 dosfstools
 double-conversion
+dsniff
 e2fsprogs
 ecryptfs-utils
 efibootmgr
@@ -111,6 +113,7 @@ ffmpegthumbnailer
 fftw
 file
 filesystem
+filezilla
 findutils
 firefox
 flac
@@ -212,6 +215,7 @@ htop
 hunspell
 hwids
 hwinfo
+hydra
 hyphen
 iana-etc
 icu
@@ -645,10 +649,12 @@ ms-office-online
 mtdev
 mtpfs
 mugshot
+mumble
 nano
 nbd
 ncurses
 neon
+netbeans
 net-snmp
 nettle
 networkmanager
@@ -660,6 +666,7 @@ networkmanager-vpnc
 nfsidmap
 nfs-utils
 nilfs-utils
+nmap
 nm-connection-editor
 noto-fonts
 noto-fonts-extra
@@ -843,7 +850,10 @@ taglib
 talloc
 tar
 tcl
+tcpdump
 tdb
+teamspeak3
+telegram-desktop
 terminus-font
 tevent
 texinfo
@@ -853,6 +863,7 @@ thunar-archive-plugin
 thunar-media-tags-plugin
 thunar-volman
 thunderbird
+tigervnc
 tlp
 tolua++
 tslib
@@ -899,8 +910,10 @@ wget
 which
 wildmidi
 wireless-regdb
+wireshark-gtk
 woff2
 wpa_supplicant
+x11vnc
 x265
 xcb-proto
 xcb-util

@@ -25,6 +25,7 @@ argon2
 aspell
 atk
 atkmm
+atom
 atomix
 at-spi2-atk
 at-spi2-core
@@ -124,6 +125,7 @@ docbook-xsl
 dosfstools
 dotconf
 double-conversion
+dsniff
 dvd+rw-tools
 e2fsprogs
 ecryptfs-utils
@@ -155,6 +157,7 @@ fftw
 file
 file-roller
 filesystem
+filezilla
 findutils
 firefox
 fish
@@ -341,6 +344,7 @@ htop
 hunspell
 hwids
 hwinfo
+hydra
 hyphen
 iagno
 iana-etc
@@ -777,6 +781,7 @@ mpg123
 mtdev
 mtools
 mtpfs
+mumble
 mutter
 mypaint-brushes
 nano
@@ -786,6 +791,7 @@ nbd
 ncurses
 ndctl
 neon
+netbeans
 netcf
 netctl
 net-snmp
@@ -798,6 +804,7 @@ networkmanager-pptp
 networkmanager-vpnc
 nfsidmap
 nfs-utils
+nmap
 nm-connection-editor
 noto-fonts
 noto-fonts-extra
@@ -1042,7 +1049,10 @@ tali
 talloc
 tar
 tcl
+tcpdump
 tdb
+teamspeak3
+telegram-desktop
 telepathy-glib
 telepathy-idle
 telepathy-logger
@@ -1057,6 +1067,7 @@ thunar-archive-plugin
 thunar-media-tags-plugin
 thunar-volman
 thunderbird
+tigervnc
 tlp
 tolua++
 totem
@@ -1113,8 +1124,10 @@ whois
 wildmidi
 wireless-regdb
 wireless_tools
+wireshark-gtk
 woff2
 wpa_supplicant
+x11vnc
 x265
 xcb-proto
 xcb-util

@@ -163,6 +163,11 @@ function cron() {
         cp /opt/${repo}/snapshot.sh ${mountpoint}/usr/bin/snapshot
         chmod 755 ${mountpoint}/usr/bin/snapshot
     fi
+
+    if [ "${version}" == "manjaro" ]; then
+        echo "0 * * * * /usr/bin/update-bootloader" >> ${mountpoint}/var/spool/cron/root
+    fi
+
 }
 
 function makeswapfile() {

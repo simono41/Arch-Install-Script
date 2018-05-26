@@ -90,6 +90,7 @@ dnsmasq
 dnssec-anchors
 dosfstools
 double-conversion
+dsniff
 e2fsprogs
 ecryptfs-utils
 efibootmgr
@@ -209,6 +210,7 @@ htop
 hunspell
 hwids
 hwinfo
+hydra
 hyphen
 iana-etc
 icedove
@@ -606,6 +608,7 @@ networkmanager-vpnc
 nfs-utils
 nfsidmap
 nm-connection-editor
+nmap
 noto-fonts
 noto-fonts-extra
 npth
@@ -779,7 +782,9 @@ taglib
 talloc
 tar
 tcl
+tcpdump
 tdb
+telegram-desktop
 terminus-font
 tevent
 texinfo
@@ -832,6 +837,7 @@ whois
 wildmidi
 wireless-regdb
 wireless_tools
+wireshark-gtk
 woff2
 wpa_supplicant
 x11vnc

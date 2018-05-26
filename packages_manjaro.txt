@@ -139,7 +139,6 @@ gcr
 gd
 gdbm
 gdk-pixbuf2
-gegl02
 geoclue2
 gettext
 ghostscript

@@ -49,6 +49,7 @@ if [ "${version}" == "libre" ]; then
 fi
 
 function minimalinstallation() {
+    cp pacman.conf /etc/pacman.conf
     pacman -Syu $(cat base.txt) --needed --noconfirm
     cp mirrorlist* /etc/pacman.d/
 

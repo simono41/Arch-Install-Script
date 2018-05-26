@@ -542,6 +542,7 @@ lightdm-gtk-greeter
 lightdm-gtk-greeter-settings
 linux-api-headers
 linux-firmware
+linux-headers
 llvm-libs
 lm_sensors
 logrotate
@@ -795,7 +796,9 @@ vi
 vid.stab
 viewnior
 virtualbox
+virtualbox-guest-modules-arch
 virtualbox-guest-utils
+virtualbox-host-modules-arch
 vlc
 volume_key
 vpnc

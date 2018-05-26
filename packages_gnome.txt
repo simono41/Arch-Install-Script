@@ -740,6 +740,7 @@ links
 linux
 linux-api-headers
 linux-firmware
+linux-headers
 llvm-libs
 lm_sensors
 logrotate
@@ -1108,8 +1109,9 @@ vinagre
 vino
 virglrenderer
 virtualbox
-virtualbox-guest-dkms
+virtualbox-guest-modules-arch
 virtualbox-guest-utils
+virtualbox-host-modules-arch
 vlc
 volume_key
 vpnc

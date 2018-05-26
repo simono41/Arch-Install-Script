@@ -555,6 +555,7 @@ lightdm
 lightdm-gtk-greeter
 lightdm-gtk-greeter-settings
 links
+linux-headers
 linux-libre
 linux-libre-api-headers
 linux-libre-firmware

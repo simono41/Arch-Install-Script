@@ -49,6 +49,7 @@ if [ "${version}" == "libre" ]; then
 fi
 
 function minimalinstallation() {
+    pacman -Syu $(cat base.txt) --needed --noconfirm
     cp mirrorlist* /etc/pacman.d/
 
     if [ "${deletecache}" == "y" ]; then
@@ -169,7 +170,7 @@ function IMAGE() {
 
         mkdir -p ${work_dir}/iso/${install_dir}/${arch}/airootfs/
 
-        arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
+        ./arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
     pacman -Scc
 j
 j

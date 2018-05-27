@@ -25,11 +25,14 @@ grub
 htop
 intel-ucode
 iw
+lib32-nvidia-utils
 links
 mkinitcpio-nfs-utils
 nbd
 networkmanager
 ntp
+nvidia
+nvidia-utils
 openssh
 openvpn
 os-prober

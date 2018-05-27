@@ -870,6 +870,7 @@ tolua++
 transmission-gtk
 tslib
 ttf-bitstream-vera
+ttf-dejavu
 ttf-droid
 ttf-inconsolata
 ttf-indic-otf

@@ -353,12 +353,10 @@ function installation {
         parameter="${parameter}usbsecret "
     fi
 
-    if [ "${offline}" != "n" ]; then
-        if [ "${verschluesselung}" == "y" ]; then
-            parameter="${parameter}plymouth-encrypt "
-        else
-            parameter="${parameter}plymouth "
-        fi
+    if [ "${verschluesselung}" == "y" ]; then
+        parameter="${parameter}plymouth-encrypt "
+    else
+        parameter="${parameter}plymouth "
     fi
 
     echo ""
@@ -1224,7 +1222,7 @@ if [ "${update}" != "n" ] && [ "${offline}" == "n" ] || [ -n "${installationsfeh
     if [ "$graphical" != "n" ]
     then
         cp /opt/${repo}/arch-graphical-install-auto ${mountpoint}/root/arch-graphical-install-auto
-        arch-chroot ${mountpoint} /root/arch-graphical-install-auto ${version} "${name}" n archchroot
+        arch-chroot ${mountpoint} /root/arch-graphical-install-auto ${version}
     fi
 fi
 

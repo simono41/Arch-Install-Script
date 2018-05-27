@@ -41,6 +41,7 @@ squashfs-tools
 syslinux
 tar
 traceroute
+ttf-dejavu
 ufw
 wget
 wireless_tools

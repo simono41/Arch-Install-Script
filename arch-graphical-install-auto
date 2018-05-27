@@ -614,9 +614,11 @@ RemainAfterExit=yes
 WantedBy=multi-user.target" > /etc/systemd/system/rc-local-shutdown.service
 touch $RCLOCALSHUTDOWN
 chmod +x $RCLOCALSHUTDOWN
+systemctl enable rc-local-shutdown.service
 if ! grep '#!' $RCLOCALSHUTDOWN; then
     echo "#!/bin/bash" > $RCLOCALSHUTDOWN
 fi
+
 
 
 if [ "$version" != "lite" ]; then

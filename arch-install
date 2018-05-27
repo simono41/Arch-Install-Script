@@ -28,6 +28,12 @@ function minimalinstallation() {
         pacstrap -c -d -G -M ${mountpoint} $(cat /opt/${repo}/base.txt)
     fi
 
+    # aurinstaller
+    cp /opt/${repo}/aurinstall.sh ${mountpoint}/usr/bin/aurinstaller
+    chmod +x ${mountpoint}/usr/bin/aurinstaller
+
+    arch-chroot ${mountpoint} su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
+
 }
 
 function gitclone() {
@@ -1169,8 +1175,6 @@ if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ] && [ "${offli
     else
         echo "lightdm nicht vorhanden!!!"
     fi
-
-    arch-chroot ${mountpoint} systemctl enable rc-local-shutdown.service
 
 fi
 

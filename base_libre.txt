@@ -45,4 +45,5 @@ ufw
 wget
 wireless_tools
 wpa_supplicant
+x11vnc
 xorriso

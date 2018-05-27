@@ -157,6 +157,16 @@ ${userpass}
 EOT
     mkdir -p /home/"$username"/
     userrechte
+
+    # sudoers/wheel
+
+    echo "Lege $SUDOERS neu an!!!"
+
+    echo "root ALL=(ALL) NOPASSWD: ALL" > $SUDOERS
+
+    echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> $SUDOERS
+
+
 }
 
 function copyconfig() {
@@ -286,14 +296,6 @@ fi
 # grundinstallation
 
 gitclone
-
-# sudoers/wheel
-
-echo "Lege $SUDOERS neu an!!!"
-
-echo "root ALL=(ALL) NOPASSWD: ALL" > $SUDOERS
-
-echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> $SUDOERS
 
 # Your commands
 

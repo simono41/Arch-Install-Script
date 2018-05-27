@@ -28,11 +28,42 @@ function minimalinstallation() {
         pacstrap -c -d -G -M ${mountpoint} $(cat /opt/${repo}/base.txt)
     fi
 
+
+    # hooks
+    cp -v /opt/${repo}/install/archiso* ${mountpoint}/usr/lib/initcpio/install/
+    cp -v /opt/${repo}/hooks/archiso* ${mountpoint}/usr/lib/initcpio/hooks/
+
+    cp -v /opt/${repo}/script/archiso* ${mountpoint}/usr/lib/initcpio/
+
+    cp -v /opt/${repo}/install/cow_device ${mountpoint}/usr/lib/initcpio/install/
+    cp -v /opt/${repo}/hooks/cow_device ${mountpoint}/usr/lib/initcpio/hooks/
+
+    # scripts
+    cp /opt/${repo}/arch-graphical-install-auto ${mountpoint}/usr/bin/arch-graphical-install-auto
+    chmod +x ${mountpoint}/usr/bin/arch-graphical-install-auto
+
+    # mirrors
+
+    # pacman-config
+    if [ "${version}" == "libre" ]; then
+        cp /opt/${repo}/pacman.conf_libre ${mountpoint}/etc/pacman.conf
+    elif [ "${version}" == "manjaro" ]; then
+        cp /opt/${repo}/pacman.conf_manjaro ${mountpoint}/etc/pacman.conf
+    else
+        cp /opt/${repo}/pacman.conf ${mountpoint}/etc/pacman.conf
+    fi
+
+    # mirrorlist
+    cp /opt/${repo}/mirrorlist* ${mountpoint}/etc/pacman.d/
+
     # aurinstaller
     cp /opt/${repo}/aurinstall.sh ${mountpoint}/usr/bin/aurinstaller
     chmod +x ${mountpoint}/usr/bin/aurinstaller
 
+    echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
+
     arch-chroot ${mountpoint} arch-graphical-install-auto adduser user1 user1
+    arch-chroot ${mountpoint} pacman -Syu --needed --noconfirm
     arch-chroot ${mountpoint} su "$user" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
 
 }

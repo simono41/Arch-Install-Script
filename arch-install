@@ -66,6 +66,13 @@ function minimalinstallation() {
     arch-chroot ${mountpoint} pacman -Syu --needed --noconfirm
     arch-chroot ${mountpoint} su "$user" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
 
+    # x11vnc
+    mkdir -p ${mountpoint}/etc/systemd/system/
+    cp /opt/${repo}/x11vnc.service ${mountpoint}/etc/systemd/system/x11vnc.service
+    chmod 644 ${mountpoint}/etc/systemd/system/x11vnc.service
+    arch-chroot ${mountpoint} systemctl enable x11vnc.service
+
+
 }
 
 function gitclone() {
@@ -908,7 +915,7 @@ function abfrage() {
 
     fi
 
-    if [ "${offline}" != "n" ] && [ "${update}" != "n" ]; then
+    if [ "${update}" != "n" ]; then
         read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc
         #        echo "This password is only valid for the current session !!!"
         #        if [ "${x11vnc}" == "y" ]; then
@@ -917,8 +924,10 @@ function abfrage() {
         #        fi
     fi
 
-    read -p "Sould the system be started without a login? : [y/N] " autostart
-    [[ -z "${autostart}" ]] && autostart=n
+    if [ "${offline}" != "n" ]; then
+        read -p "Sould the system be started without a login? : [y/N] " autostart
+        [[ -z "${autostart}" ]] && autostart=n
+    fi
 
     # Ausgaben
 
@@ -1192,7 +1201,7 @@ fi
 
 # benutzerwechsel
 
-if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ] && [ "${offline}" != "n" ]; then
+if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ]; then
     #arch-chroot ${mountpoint} usermod -l "${name}" user1
     #arch-chroot ${mountpoint} usermod -d /home/"${name}" -m "${name}"
     arch-chroot ${mountpoint} chfn -f "${name}" user1

@@ -32,7 +32,8 @@ function minimalinstallation() {
     cp /opt/${repo}/aurinstall.sh ${mountpoint}/usr/bin/aurinstaller
     chmod +x ${mountpoint}/usr/bin/aurinstaller
 
-    arch-chroot ${mountpoint} su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
+    arch-chroot ${mountpoint} arch-graphical-install-auto adduser user1 user1
+    arch-chroot ${mountpoint} su "$user" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
 
 }
 

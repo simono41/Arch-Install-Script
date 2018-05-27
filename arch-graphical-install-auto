@@ -266,8 +266,8 @@ function gnomeconfig() {
 
 if [ "$1" == "adduser" ]
 then
-    username=$2
-    userpass=$3
+    username="$2"
+    userpass="$3"
     addusers
     exit 0
 fi

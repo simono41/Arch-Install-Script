@@ -12,12 +12,7 @@ pwd
 if [ -d ${packagename} ];then
   echo "Bereits vorhanden!!!"
   cd ${packagename}
-  if [ -f .SRCINFO ];then
-    rm .SRCINFO
-  fi
-  if [ -f PKGBUILD ];then
-    rm PKGBUILD
-  fi
+  git reset --hard
   git pull
 else
   git clone ${url}

@@ -22,7 +22,7 @@ repo1="shell-scripte"
 version="$1"
 username="$2"
 userpass="$3"
-archchroot="$4"
+skip="$4"
 
 hostname="$(cat /etc/hostname)"
 [[ -z "${version}" ]] && version="${hostname#*-}"
@@ -630,7 +630,7 @@ fi
 
 
 
-if [ "$version" != "lite" ]; then
+if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
 
     ### custom-installer
 

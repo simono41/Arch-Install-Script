@@ -170,6 +170,9 @@ EOT
 }
 
 function copyconfig() {
+    if [ -d /home/"$username"/.config ]; then
+      rm -Rv /home/"$username"/.config
+    fi
     cp -aRv /root/. /home/"$username"/
     #links
     links
@@ -748,6 +751,9 @@ if [ "$version" != "lite" ]; then
     chmod 755 -Rv /usr/share/backgrounds/xfce/
 
     # .config
+    if [ -d /root/.config ]; then
+      rm -Rv /root/.config
+    fi
     mkdir -p /root/.config
     tar -vxJf /opt/${repo}/.config.tar.xz -C /root/.config/
     gnomeconfig

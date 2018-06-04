@@ -16,13 +16,11 @@
 #GPGDir      = /etc/pacman.d/gnupg/
 #HookDir     = /etc/pacman.d/hooks/
 HoldPkg     = pacman glibc
-#XferCommand = /usr/bin/curl -4 -v -C - -f %u > %o
-#XferCommand = /usr/bin/wget -4 --passive-ftp -c -t 0 -O %o %u
-#XferCommand = /usr/bin/snarf -N %u
-#XferCommand = /usr/bin/aria2c --allow-overwrite=true --continue=true --file-allocation=none --log-level=error --max-tries=2 --max-connection-per-server=2 --max-file-not-found=5 --min-split-size=5M --no-conf --remote-time=true --summary-interval=60 --timeout=5 --dir=/ --out %o %u
+#XferCommand = /usr/bin/curl -C - -f %u > %o
+#XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u
 #CleanMethod = KeepInstalled
 #UseDelta    = 0.7
-Architecture = auto
+Architecture = armv7h
 
 # Pacman won't upgrade packages listed in IgnorePkg and members of IgnoreGroup
 #IgnorePkg   =
@@ -33,20 +31,25 @@ Architecture = auto
 
 # Misc options
 #UseSyslog
-Color
+#Color
 #TotalDownload
 CheckSpace
 #VerbosePkgLists
 
-# By default, pacman accepts packages signed by keys that its local keyring
-# trusts (see pacman-key and its man page), as well as unsigned packages.
-SigLevel    = Never
-LocalFileSigLevel = Optional
-RemoteFileSigLevel = Never
-
-# NOTE: You must run `pacman-key --init` before first using pacman; the local
-# keyring can then be populated with the keys of all official Arch Linux
-# packagers with `pacman-key --populate archlinux`.
+# PGP signature checking
+# NOTE: None of this will work without running `pacman-key --init` first.
+# The compiled in default is equivalent to the following line. This requires
+# you to locally sign and trust packager keys using `pacman-key` for them to be
+# considered valid.
+#SigLevel    = Required DatabaseOptional
+#LocalFileSigLevel = Optional
+#RemoteFileSigLevel = Required
+# If you wish to check signatures but avoid local sign and trust issues, use
+# the following line. This will treat any key imported into pacman's keyring as
+# trusted.
+#SigLevel = Optional TrustAll
+# For now, off by default unless you read the above.
+SigLevel = Never
 
 #
 # REPOSITORIES
@@ -71,32 +74,24 @@ RemoteFileSigLevel = Never
 # repo name header and Include lines. You can add preferred servers immediately
 # after the header, and they will be used before the default mirrors.
 
-#[testing]
-#Include = /etc/pacman.d/mirrorlist
-
 [core]
-Include = /etc/pacman.d/mirrorlist_pi
+Include = /etc/pacman.d/mirrorlist
 
 [extra]
-Include = /etc/pacman.d/mirrorlist_pi
-
-#[community-testing]
-#Include = /etc/pacman.d/mirrorlist
+Include = /etc/pacman.d/mirrorlist
 
 [community]
-Include = /etc/pacman.d/mirrorlist_pi
+Include = /etc/pacman.d/mirrorlist
 
-# If you want to run 32 bit applications on your x86_64 system,
-# enable the multilib repositories as required here.
+[alarm]
+Include = /etc/pacman.d/mirrorlist
 
-#[multilib-testing]
-#Include = /etc/pacman.d/mirrorlist_pi
-
-#[multilib]
-#Include = /etc/pacman.d/mirrorlist_pi
+[aur]
+Include = /etc/pacman.d/mirrorlist
 
 # An example of a custom package repository.  See the pacman manpage for
 # tips on creating your own repositories.
 #[custom]
 #SigLevel = Optional TrustAll
 #Server = file:///home/custompkgs
+

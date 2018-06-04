@@ -12,7 +12,7 @@ read -p "Geben sie eine Festplatte an: /dev/sda : " device
 
 name=spectre_os
 arch=armV7
-out_dir=pi
+out_dir=out
 
 mkdir -p boot
 mkdir -p root

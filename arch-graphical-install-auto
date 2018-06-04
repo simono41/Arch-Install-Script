@@ -782,6 +782,16 @@ else
     mkinitcpio -P -c /etc/mkinitcpio.conf
 fi
 
+echo "Erstelle Packetverzeichnis!!!"
+pacman -Qq > /pkglist.txt
+
+echo "Aufräumen!!!"
+sleep 5
+pacman -Scc <<EOT
+j
+j
+EOT
+
 echo "Fertig!!!"
 
 exit 0

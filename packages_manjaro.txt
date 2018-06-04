@@ -649,6 +649,7 @@ mousepad
 mozilla-common
 mpfr
 mpg123
+mplayer
 ms-office-online
 mtdev
 mtpfs

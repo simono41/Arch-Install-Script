@@ -783,6 +783,7 @@ mousetweaks
 mozilla-common
 mpfr
 mpg123
+mplayer
 mtdev
 mtools
 mtpfs

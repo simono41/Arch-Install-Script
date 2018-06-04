@@ -592,6 +592,7 @@ mousepad
 mozilla-common
 mpfr
 mpg123
+mplayer
 mtdev
 mtpfs
 mypaint-brushes

@@ -311,6 +311,8 @@ if [ "${version}" == "libre" ]; then
     cp /opt/${repo}/pacman.conf_libre /etc/pacman.conf
 elif [ "${version}" == "manjaro" ]; then
     cp /opt/${repo}/pacman.conf_manjaro /etc/pacman.conf
+elif [ "${version}" == "pi" ]; then
+    cp /opt/${repo}/pacman.conf_pi /etc/pacman.conf
 else
     cp /opt/${repo}/pacman.conf /etc/pacman.conf
 fi

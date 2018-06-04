@@ -545,9 +545,11 @@ cp /opt/${repo}/x11vnc.pass /etc/x11vnc.pass
 cp /opt/${repo}/aurinstall.sh /usr/bin/aurinstaller
 chmod +x /usr/bin/aurinstaller
 
-su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
-su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
-plymouth-set-default-theme -R dark-arch
+if [ "$version" != "pi" ]; then
+  su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
+  su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
+  plymouth-set-default-theme -R dark-arch
+fi
 
 # nano
 echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
@@ -749,8 +751,10 @@ if [ "$version" != "lite" ]; then
     gnomeconfig
     copyconfig
 
-    # zusatzsoftware
-    su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
+    if [ "$version" != "pi" ]; then
+      # zusatzsoftware
+      su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
+    fi
 
     # install-firacode
     # In download.sh

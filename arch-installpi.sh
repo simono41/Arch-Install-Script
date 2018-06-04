@@ -32,7 +32,7 @@ if [ -f /usr/bin/pacman ]
 then
     pacman -S dosfstools wget --needed --noconfirm
 else
-    apt-get install bsdtar dosfstools
+    apt-get install bsdtar dosfstools -y
 fi
 
 if cat /proc/mounts | grep "$device"1 > /dev/null; then

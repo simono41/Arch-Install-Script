@@ -110,6 +110,7 @@ filesystem
 filezilla
 findutils
 firefox
+fish
 flac
 flex
 fontconfig

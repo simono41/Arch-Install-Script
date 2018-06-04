@@ -750,15 +750,6 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
     cp /opt/${repo}/*.jpg /usr/share/backgrounds/xfce/
     chmod 755 -Rv /usr/share/backgrounds/xfce/
 
-    # .config
-    if [ -d /root/.config ]; then
-      rm -Rv /root/.config
-    fi
-    mkdir -p /root/.config
-    tar -vxJf /opt/${repo}/.config.tar.xz -C /root/.config/
-    gnomeconfig
-    copyconfig
-
     if [ "$version" != "pi" ]; then
       # zusatzsoftware
       su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
@@ -773,6 +764,15 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
 
 
 fi
+
+# .config
+if [ -d /root/.config ]; then
+  rm -Rv /root/.config
+fi
+mkdir -p /root/.config
+tar -vxJf /opt/${repo}/.config.tar.xz -C /root/.config/
+gnomeconfig
+copyconfig
 
 if pacman -Qdtq; then
   echo "Verwaiste Packete werden entfernt :)"

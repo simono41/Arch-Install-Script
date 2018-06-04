@@ -343,6 +343,7 @@ hplip
 hspell
 htop
 hunspell
+hunspell-de
 hwids
 hwinfo
 hydra
@@ -629,6 +630,7 @@ libraqm
 libraw
 libraw1394
 libreoffice-still
+libreoffice-still-de
 librevenge
 librsvg
 libsamplerate
@@ -1137,6 +1139,7 @@ woff2
 wpa_supplicant
 x11vnc
 x265
+xarchiver
 xcb-proto
 xcb-util
 xcb-util-image
@@ -1238,6 +1241,7 @@ xz
 yajl
 yelp
 yelp-xsl
+youtube-dl
 zd1211-firmware
 zenity
 zeromq

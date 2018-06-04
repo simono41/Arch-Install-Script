@@ -775,6 +775,7 @@ splix
 sqlite
 squashfs-tools
 srt
+sshfs
 startup-notification
 subversion
 sudo

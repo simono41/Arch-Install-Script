@@ -749,6 +749,7 @@ speexdsp
 splix
 sqlite
 srt
+sshfs
 startup-notification
 steam
 subversion

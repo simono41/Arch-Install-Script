@@ -107,6 +107,7 @@ expat
 f2fs-tools
 faac
 faad2
+fail2ban
 fakeroot
 farstream
 ffmpeg

@@ -111,7 +111,6 @@ filesystem
 filezilla
 findutils
 firefox
-firefox-i18n-de
 fish
 flac
 flex

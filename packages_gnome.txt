@@ -171,6 +171,7 @@ folks
 fontconfig
 foomatic-db-engine
 four-in-a-row
+freeciv
 freeglut
 freerdp
 freetype2
@@ -771,6 +772,8 @@ mdadm
 memtest86+
 mesa
 mesa-demos
+minetest
+minetest-server
 mjpegtools
 mkinitcpio
 mkinitcpio-busybox
@@ -1061,6 +1064,7 @@ tcl
 tcpdump
 tdb
 teamspeak3
+teeworlds
 telegram-desktop
 telepathy-glib
 telepathy-idle

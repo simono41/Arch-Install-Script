@@ -11,6 +11,7 @@ alsa-plugins
 alsa-utils
 android-tools
 android-udev
+apache
 appstream-glib
 apr
 apr-util
@@ -116,6 +117,7 @@ flac
 flex
 fontconfig
 foomatic-db-engine
+freeciv
 freeglut
 freetype2
 fribidi
@@ -500,6 +502,8 @@ mdadm
 memtest86+
 mesa
 mesa-demos
+minetest
+minetest-server
 mjpegtools
 mkinitcpio
 mkinitcpio-busybox
@@ -694,6 +698,7 @@ tar
 tcl
 tcpdump
 tdb
+teeworlds
 terminus-font
 tevent
 texinfo

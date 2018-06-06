@@ -11,6 +11,7 @@ alsa-plugins
 alsa-utils
 android-tools
 android-udev
+apache
 appstream-glib
 apr
 apr-util
@@ -124,6 +125,7 @@ flac
 flex
 fontconfig
 foomatic-db-engine
+freeciv
 freeglut
 freetype2
 fribidi
@@ -638,6 +640,8 @@ mhwd-nvidia
 mhwd-nvidia-304xx
 mhwd-nvidia-340xx
 mhwd-nvidia-390xx
+minetest
+minetest-server
 mjpegtools
 mkinitcpio
 mkinitcpio-busybox
@@ -862,6 +866,7 @@ tcl
 tcpdump
 tdb
 teamspeak3
+teeworlds
 telegram-desktop
 terminus-font
 tevent

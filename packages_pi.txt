@@ -502,8 +502,6 @@ mdadm
 memtest86+
 mesa
 mesa-demos
-minetest
-minetest-server
 mjpegtools
 mkinitcpio
 mkinitcpio-busybox

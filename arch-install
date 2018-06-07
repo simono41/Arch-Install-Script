@@ -60,7 +60,9 @@ function minimalinstallation() {
     cp /opt/${repo}/aurinstall.sh ${mountpoint}/usr/bin/aurinstaller
     chmod +x ${mountpoint}/usr/bin/aurinstaller
 
-    echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
+    if [ "${name}" != "noinstall" ]; then
+      echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
+    fi
 
     arch-chroot ${mountpoint} arch-graphical-install-auto adduser user1 user1
     arch-chroot ${mountpoint} pacman -Syu --needed --noconfirm
@@ -174,7 +176,9 @@ function partionierenohneswap() {
 function usbkeyinstallation() {
     mkdir -p /mnt/usb-stick
     mount ${usbkeydevice} /mnt/usb-stick
-    dd if=/dev/urandom of=/mnt/usb-stick/archkey bs=512 count=4
+    if ! [ -f "/mnt/usb-stick/archkey" ]; then
+      dd if=/dev/urandom of=/mnt/usb-stick/archkey bs=512 count=4
+    fi
     cryptsetup luksAddKey ${device}${rootpartitionnummer} /mnt/usb-stick/archkey
 
 }
@@ -435,8 +439,10 @@ function installation {
         fi
     fi
 
-    #hostname
-    echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
+    if [ "${name}" != "noinstall" ]; then
+      #hostname
+      echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
+    fi
 
     if [ "${name}" != "noinstall" ]; then
         if [ "${usbsecret}" == "y" ]; then

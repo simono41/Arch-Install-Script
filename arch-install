@@ -1098,7 +1098,7 @@ abfrage
 
 secureumount
 
-if [ "${name}" == "debug" ]
+if [ "${name}" == "debug" ] || [ "${name}" == "noinstall" ]
 then
     echo "DEBEUG-MODUS"
     echo "If no more commands are required, simply press enter"

@@ -11,6 +11,7 @@ alsa-plugins
 alsa-utils
 android-tools
 android-udev
+apache
 appstream-glib
 apr
 apr-util
@@ -107,6 +108,7 @@ expat
 f2fs-tools
 faac
 faad2
+fail2ban
 fakeroot
 farstream
 ffmpeg
@@ -117,10 +119,13 @@ filesystem
 filezilla
 findutils
 firefox
+firefox-i18n-de
+fish
 flac
 flex
 fontconfig
 foomatic-db-engine
+freeciv
 freeglut
 freetype2
 fribidi
@@ -635,6 +640,8 @@ mhwd-nvidia
 mhwd-nvidia-304xx
 mhwd-nvidia-340xx
 mhwd-nvidia-390xx
+minetest
+minetest-server
 mjpegtools
 mkinitcpio
 mkinitcpio-busybox
@@ -647,6 +654,7 @@ mousepad
 mozilla-common
 mpfr
 mpg123
+mplayer
 ms-office-online
 mtdev
 mtpfs
@@ -843,6 +851,7 @@ splix
 sqlite
 squashfs-tools
 srt
+sshfs
 startup-notification
 steam-manjaro
 subversion
@@ -857,6 +866,7 @@ tcl
 tcpdump
 tdb
 teamspeak3
+teeworlds
 telegram-desktop
 terminus-font
 tevent
@@ -867,6 +877,7 @@ thunar-archive-plugin
 thunar-media-tags-plugin
 thunar-volman
 thunderbird
+thunderbird-i18n-de
 tigervnc
 tlp
 tolua++

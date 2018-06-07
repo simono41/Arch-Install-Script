@@ -171,13 +171,6 @@ function IMAGE() {
 
         mkdir -p ${work_dir}/iso/${install_dir}/${arch}/airootfs/
 
-        ./arch-chroot ${work_dir}/${arch}/airootfs /bin/bash <<EOT
-    pacman -Scc
-j
-j
-    pacman -Q > /pkglist.txt
-EOT
-
         cp ${work_dir}/${arch}/airootfs/pkglist.txt ${work_dir}/iso/${install_dir}/${arch}/
 
         if [ -f ${work_dir}/iso/${install_dir}/${arch}/airootfs.sfs ]

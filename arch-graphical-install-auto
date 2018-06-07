@@ -22,7 +22,7 @@ repo1="shell-scripte"
 version="$1"
 username="$2"
 userpass="$3"
-archchroot="$4"
+skip="$4"
 
 hostname="$(cat /etc/hostname)"
 [[ -z "${version}" ]] && version="${hostname#*-}"
@@ -170,6 +170,9 @@ EOT
 }
 
 function copyconfig() {
+    if [ -d /home/"$username"/.config ]; then
+      rm -Rv /home/"$username"/.config
+    fi
     cp -aRv /root/. /home/"$username"/
     #links
     links
@@ -311,6 +314,8 @@ if [ "${version}" == "libre" ]; then
     cp /opt/${repo}/pacman.conf_libre /etc/pacman.conf
 elif [ "${version}" == "manjaro" ]; then
     cp /opt/${repo}/pacman.conf_manjaro /etc/pacman.conf
+elif [ "${version}" == "pi" ]; then
+    cp /opt/${repo}/pacman.conf_pi /etc/pacman.conf
 else
     cp /opt/${repo}/pacman.conf /etc/pacman.conf
 fi
@@ -545,9 +550,11 @@ cp /opt/${repo}/x11vnc.pass /etc/x11vnc.pass
 cp /opt/${repo}/aurinstall.sh /usr/bin/aurinstaller
 chmod +x /usr/bin/aurinstaller
 
-su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
-su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
-plymouth-set-default-theme -R dark-arch
+if [ "$version" != "pi" ]; then
+  su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
+  su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
+  plymouth-set-default-theme -R dark-arch
+fi
 
 # nano
 echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc
@@ -623,7 +630,7 @@ fi
 
 
 
-if [ "$version" != "lite" ]; then
+if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
 
     ### custom-installer
 
@@ -743,14 +750,10 @@ if [ "$version" != "lite" ]; then
     cp /opt/${repo}/*.jpg /usr/share/backgrounds/xfce/
     chmod 755 -Rv /usr/share/backgrounds/xfce/
 
-    # .config
-    mkdir -p /root/.config
-    tar -vxJf /opt/${repo}/.config.tar.xz -C /root/.config/
-    gnomeconfig
-    copyconfig
-
-    # zusatzsoftware
-    su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
+    if [ "$version" != "pi" ]; then
+      # zusatzsoftware
+      su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
+    fi
 
     # install-firacode
     # In download.sh
@@ -761,6 +764,15 @@ if [ "$version" != "lite" ]; then
 
 
 fi
+
+# .config
+if [ -d /root/.config ]; then
+  rm -Rv /root/.config
+fi
+mkdir -p /root/.config
+tar -vxJf /opt/${repo}/.config.tar.xz -C /root/.config/
+gnomeconfig
+copyconfig
 
 if pacman -Qdtq; then
   echo "Verwaiste Packete werden entfernt :)"
@@ -775,6 +787,16 @@ if [ "${version}" == "libre" ]; then
 else
     mkinitcpio -P -c /etc/mkinitcpio.conf
 fi
+
+echo "Erstelle Packetverzeichnis!!!"
+pacman -Qq > /pkglist.txt
+
+echo "Aufräumen!!!"
+sleep 5
+pacman -Scc <<EOT
+j
+j
+EOT
 
 echo "Fertig!!!"
 

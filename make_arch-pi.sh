@@ -10,7 +10,7 @@ fdisk -l
 read -p "Geben sie eine Festplatte an: /dev/sda : " device
 [[ -z "${device}" ]] && device=/dev/sda
 
-name=simon_os
+name=spectre_os
 arch=armV7
 out_dir=out
 

@@ -84,7 +84,7 @@ mkfs.ext4 /dev/"$device"2
 mkdir -p root
 mount /dev/"$device"2 root
 
-tar -xpf arch-spectre_os-*-armV7.tar.gz -C root
+tar -Ipixz -xf arch-spectre_os-*-armV7.tar.gz -C root
 sync
 
 mv root/boot/* boot

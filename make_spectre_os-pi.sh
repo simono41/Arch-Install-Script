@@ -38,7 +38,7 @@ cp -R boot/* root/boot/
 
 cd root/
 mkdir -p ../${out_dir}/
-tar -Ipixz -cf ../${out_dir}/arch-${name}-$(date "+%y.%m.%d")-${arch}.tar.gz *
+tar -Ipixz -cpf ../${out_dir}/arch-${name}-$(date "+%y.%m.%d")-${arch}.tar.gz *
 cd ..
 echo "FERTIG!!!"
 exit 0

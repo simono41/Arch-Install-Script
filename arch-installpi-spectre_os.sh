@@ -13,9 +13,9 @@ fdisk -l
 read -p "Wo soll das Image aufgespielt werden?: /dev/sda : " device
 [[ -z "${device}" ]] && device=/dev/sda
 
-if [ -f arch-simon_os-*-armV7.tar.gz ]
+if [ -f arch-spectre_os-*-armV7.tar.gz ]
 then
-    image=$(find arch-simon_os-*-armV7.tar.gz)
+    image=$(find arch-spectre_os-*-armV7.tar.gz)
     echo $datei
 else
     echo "ABGEBROCHEN"
@@ -84,7 +84,7 @@ mkfs.ext4 /dev/"$device"2
 mkdir -p root
 mount /dev/"$device"2 root
 
-tar -xpf arch-simon_os-*-armV7.tar.gz -C root
+tar -xpf arch-spectre_os-*-armV7.tar.gz -C root
 sync
 
 mv root/boot/* boot

@@ -823,6 +823,7 @@ udiskie
 udisks2
 ufw
 unar
+unrar
 unzip
 upower
 usb_modeswitch

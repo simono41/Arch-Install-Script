@@ -91,4 +91,6 @@ mv root/boot/* boot
 
 umount boot root
 
+sync
+
 echo "Fertig!!!"

@@ -8,8 +8,11 @@ if [[ $EUID -ne 0 ]]; then
     exit 0
 fi
 
-# full parameters
+# full install parameters
 # ./make_mksquashfs-auto.sh xfce4 deletework deletecache makesystem mkinitcpio filesystem initcheck makeimage makebios makeiso
+
+# normal install parameters
+# ./make_mksquashfs-auto.sh xfce4 makesystem mkinitcpio filesystem makeimage makebios makeiso
 
 iso_name=spectre_os
 iso_label="SPECTRE_OS"

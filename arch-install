@@ -919,14 +919,7 @@ function abfrage() {
 
     fi
 
-    if [ "${update}" != "n" ]; then
-        read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc
-        #        echo "This password is only valid for the current session !!!"
-        #        if [ "${x11vnc}" == "y" ]; then
-        #            x11vnc -storepasswd /etc/x11vnc.pass
-        #            systemctl restart x11vnc.service
-        #        fi
-    fi
+    read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc
 
     if [ "${offline}" != "n" ]; then
         read -p "Sould the system be started without a login? : [y/N] " autostart

@@ -526,13 +526,13 @@ function grubinstall() {
 function btrfsformat() {
     if [ "$raid" == "raid0" ]; then
         if [ "${verschluesselung}" == "y" ]; then
-            mkfs.btrfs -f -m raid10 -d raid10 ${deviceluks} ${device1}
+            mkfs.btrfs -f -m raid0 -d raid0 ${deviceluks} ${device1}
         else
             mkfs.btrfs -f -m raid0 -d raid0 ${device}${rootpartitionnummer} ${device1}
         fi
     elif [ "$raid" == "raid1" ]; then
         if [ "${verschluesselung}" == "y" ]; then
-            mkfs.btrfs -f -m raid10 -d raid10 ${deviceluks} ${device1}
+            mkfs.btrfs -f -m raid1 -d raid1 ${deviceluks} ${device1}
         else
             mkfs.btrfs -f -m raid1 -d raid1 ${device}${rootpartitionnummer} ${device1}
         fi

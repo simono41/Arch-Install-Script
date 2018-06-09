@@ -462,8 +462,8 @@ function installation {
         for wort in ${autodiskdevice}
         do
             echo "fstab ${wort} wird erstellt!!!"
-            autodiskdevicedateisystem=$(blkid -s TYPE -o value ${usbkeydevice})
-            autodiskdeviceuuid=$(blkid -s UUID -o value ${usbkeydevice})
+            autodiskdevicedateisystem=$(blkid -s TYPE -o value ${autodiskdevice})
+            autodiskdeviceuuid=$(blkid -s UUID -o value ${autodiskdevice})
             mkdir -p ${mountpoint}/run/media/user1/${wort#/*/}
             echo "UUID=${autodiskdeviceuuid} /run/media/user1/${wort#/*/} ${autodiskdevicedateisystem} defaults 0 2" >> ${mountpoint}/etc/fstab
 
@@ -911,8 +911,8 @@ function abfrage() {
         for wort in ${autodiskdevice}
         do
             echo "fstab ${wort} wird erstellt!!!"
-            autodiskdevicedateisystem=$(blkid -s TYPE -o value ${usbkeydevice})
-            autodiskdeviceuuid=$(blkid -s UUID -o value ${usbkeydevice})
+            autodiskdevicedateisystem=$(blkid -s TYPE -o value ${autodiskdevice})
+            autodiskdeviceuuid=$(blkid -s UUID -o value ${autodiskdevice})
 
         done
 

@@ -549,6 +549,8 @@ cp /opt/${repo}/x11vnc.pass /etc/x11vnc.pass
 # aurinstaller
 cp /opt/${repo}/aurinstall.sh /usr/bin/aurinstaller
 chmod +x /usr/bin/aurinstaller
+cp /opt/${repo}/aurupdater.sh /usr/bin/aurupdater
+chmod +x /usr/bin/aurupdater
 
 if [ "$version" != "pi" ]; then
   su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""

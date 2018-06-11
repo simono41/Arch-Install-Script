@@ -552,6 +552,8 @@ chmod +x /usr/bin/aurinstaller
 cp /opt/${repo}/aurupdater.sh /usr/bin/aurupdater
 chmod +x /usr/bin/aurupdater
 
+
+su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
 if [ "$version" != "pi" ]; then
   su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
   su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""

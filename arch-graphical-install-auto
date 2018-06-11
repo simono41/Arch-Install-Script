@@ -323,15 +323,6 @@ fi
 # mirrorlist
 cp /opt/${repo}/mirrorlist* /etc/pacman.d/
 
-# new-config
-if [ -d /home/"$username"/.config ]; then
-    rm -Rv /home/"$username"/.config
-fi
-
-if [ -d /root/.config ]; then
-    rm -Rv /root/.config
-fi
-
 if [ -f /var/lib/pacman/db.lck ];then
     rm /var/lib/pacman/db.lck
 fi
@@ -769,14 +760,16 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
 
 fi
 
-# .config
-if [ -d /root/.config ]; then
-  rm -Rv /root/.config
+if [ "$skip" != "skip" ]; then
+  # .config
+  if [ -d /root/.config ]; then
+    rm -Rv /root/.config
+  fi
+  mkdir -p /root/.config
+  tar -vxJf /opt/${repo}/.config.tar.xz -C /root/.config/
+  gnomeconfig
+  copyconfig
 fi
-mkdir -p /root/.config
-tar -vxJf /opt/${repo}/.config.tar.xz -C /root/.config/
-gnomeconfig
-copyconfig
 
 if pacman -Qdtq; then
   echo "Verwaiste Packete werden entfernt :)"

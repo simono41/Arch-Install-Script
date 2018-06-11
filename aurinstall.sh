@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -x
 
 url="$1"
 url1=${url%.*}
@@ -15,7 +15,12 @@ if [ -d ${packagename} ];then
   git reset --hard
   git pull
 else
-  git clone ${url}
+  if git clone ${url}; then
+    echo "git erfolgreich runtergeladen!!!"
+  else
+    echo "verändere URL zum erfolgreichen herunterladen!!!"
+    git clone "https://aur.archlinux.org/${url}.git"
+  fi
   cd ${packagename}
 fi
 makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed

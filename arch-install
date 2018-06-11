@@ -462,8 +462,8 @@ function installation {
         for wort in ${autodiskdevice}
         do
             echo "fstab ${wort} wird erstellt!!!"
-            autodiskdevicedateisystem=$(blkid -s TYPE -o value ${usbkeydevice})
-            autodiskdeviceuuid=$(blkid -s UUID -o value ${usbkeydevice})
+            autodiskdevicedateisystem=$(blkid -s TYPE -o value ${wort})
+            autodiskdeviceuuid=$(blkid -s UUID -o value ${wort})
             mkdir -p ${mountpoint}/run/media/user1/${wort#/*/}
             echo "UUID=${autodiskdeviceuuid} /run/media/user1/${wort#/*/} ${autodiskdevicedateisystem} defaults 0 2" >> ${mountpoint}/etc/fstab
 
@@ -526,13 +526,13 @@ function grubinstall() {
 function btrfsformat() {
     if [ "$raid" == "raid0" ]; then
         if [ "${verschluesselung}" == "y" ]; then
-            mkfs.btrfs -f -m raid10 -d raid10 ${deviceluks} ${device1}
+            mkfs.btrfs -f -m raid0 -d raid0 ${deviceluks} ${device1}
         else
             mkfs.btrfs -f -m raid0 -d raid0 ${device}${rootpartitionnummer} ${device1}
         fi
     elif [ "$raid" == "raid1" ]; then
         if [ "${verschluesselung}" == "y" ]; then
-            mkfs.btrfs -f -m raid10 -d raid10 ${deviceluks} ${device1}
+            mkfs.btrfs -f -m raid1 -d raid1 ${deviceluks} ${device1}
         else
             mkfs.btrfs -f -m raid1 -d raid1 ${device}${rootpartitionnummer} ${device1}
         fi
@@ -911,22 +911,15 @@ function abfrage() {
         for wort in ${autodiskdevice}
         do
             echo "fstab ${wort} wird erstellt!!!"
-            autodiskdevicedateisystem=$(blkid -s TYPE -o value ${usbkeydevice})
-            autodiskdeviceuuid=$(blkid -s UUID -o value ${usbkeydevice})
+            autodiskdevicedateisystem=$(blkid -s TYPE -o value ${wort})
+            autodiskdeviceuuid=$(blkid -s UUID -o value ${wort})
 
         done
 
 
     fi
 
-    if [ "${update}" != "n" ]; then
-        read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc
-        #        echo "This password is only valid for the current session !!!"
-        #        if [ "${x11vnc}" == "y" ]; then
-        #            x11vnc -storepasswd /etc/x11vnc.pass
-        #            systemctl restart x11vnc.service
-        #        fi
-    fi
+    read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc
 
     if [ "${offline}" != "n" ]; then
         read -p "Sould the system be started without a login? : [y/N] " autostart

@@ -705,6 +705,7 @@ os-prober
 p11-kit
 p7zip
 pacman
+pacman-contrib
 pacman-mirrors
 pam
 pamac

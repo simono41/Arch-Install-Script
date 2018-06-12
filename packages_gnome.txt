@@ -849,6 +849,7 @@ ostree
 p11-kit
 p7zip
 pacman
+pacman-contrib
 pacman-mirrorlist
 pam
 pambase

@@ -61,7 +61,7 @@ function minimalinstallation() {
     chmod +x ${mountpoint}/usr/bin/aurinstaller
 
     if [ "${name}" != "noinstall" ]; then
-      echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
+        echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
     fi
 
     arch-chroot ${mountpoint} arch-graphical-install-auto adduser user1 user1
@@ -177,7 +177,7 @@ function usbkeyinstallation() {
     mkdir -p /mnt/usb-stick
     mount ${usbkeydevice} /mnt/usb-stick
     if ! [ -f "/mnt/usb-stick/archkey" ]; then
-      dd if=/dev/urandom of=/mnt/usb-stick/archkey bs=512 count=4
+        dd if=/dev/urandom of=/mnt/usb-stick/archkey bs=512 count=4
     fi
     cryptsetup luksAddKey ${device}${rootpartitionnummer} /mnt/usb-stick/archkey
 
@@ -440,8 +440,8 @@ function installation {
     fi
 
     if [ "${name}" != "noinstall" ]; then
-      #hostname
-      echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
+        #hostname
+        echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
     fi
 
     if [ "${name}" != "noinstall" ]; then
@@ -855,24 +855,18 @@ function abfrage() {
     read -p "Do you want to create a swap partition? : [Y/n] " swap
     read -p "Do you want to create a swapfile? : [y/N] " swapfile
 
-    #echo "This attitude can be seen with: "
-    #echo "systemctl enable openvpn-client@client.service activate and with"
-    #echo "systemctl disable openvpn-client@client.service deactivate"
-    #echo "The bandwidth is thereby reduced but the security significantly increased"
-    #read -p "Should the connection with a VPN be encrypted? : [Y/n] " openvpn
-
-    if [ "${update}" != "n" ]; then
-
-        echo "WARNING the system is not encrypted !!!"
-        echo "WARNING The system will not start without the USB stick !!!"
-        read -p "Should a USB stick be installed as the key for the system? : [y/N] " usbsecret
-        if [ "${usbsecret}" == "y" ]; then
-            read -p "Which USB stick should be selected for the USB-secret key ?: /dev/sdb1 " usbsecretdevice
-            [[ -z "${usbsecretdevice}" ]] && device=/dev/sdb1
-            usbsecretdeviceuuid=$(blkid -s PARTUUID -o value ${usbsecretdevice})
-            [[ -z "${usbsecretdeviceuuid}" ]] && mkfs.ext4 ${usbsecretdevice}
-        fi
-    fi
+    #    if [ "${update}" != "n" ]; then
+    #
+    #        echo "WARNING the system is not encrypted !!!"
+    #        echo "WARNING The system will not start without the USB stick !!!"
+    #        read -p "Should a USB stick be installed as the key for the system? : [y/N] " usbsecret
+    #        if [ "${usbsecret}" == "y" ]; then
+    #            read -p "Which USB stick should be selected for the USB-secret key ?: /dev/sdb1 " usbsecretdevice
+    #            [[ -z "${usbsecretdevice}" ]] && device=/dev/sdb1
+    #            usbsecretdeviceuuid=$(blkid -s PARTUUID -o value ${usbsecretdevice})
+    #            [[ -z "${usbsecretdeviceuuid}" ]] && mkfs.ext4 ${usbsecretdevice}
+    #        fi
+    #    fi
 
     if [ "${raid}" == "n" ]; then
         read -p "Should the hard disk be encrypted? : [y/N] " verschluesselung

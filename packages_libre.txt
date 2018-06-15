@@ -687,7 +687,7 @@ pinentry
 pixman
 pixz
 pkcs11-helper
-pkg-config
+pkgconf
 polkit
 polkit-gnome
 polkit-qt5

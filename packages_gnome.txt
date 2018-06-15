@@ -888,7 +888,7 @@ pipewire
 pixman
 pixz
 pkcs11-helper
-pkg-config
+pkgconf
 polari
 polkit
 polkit-gnome

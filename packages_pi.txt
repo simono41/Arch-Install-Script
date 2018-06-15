@@ -593,7 +593,7 @@ pidgin
 pinentry
 pixman
 pkcs11-helper
-pkg-config
+pkgconf
 polkit
 polkit-gnome
 polkit-qt5

@@ -950,6 +950,10 @@ wget
 which
 whois
 wildmidi
+wine
+wine-mono
+wine_gecko
+winetricks
 wireless-regdb
 wireless_tools
 wireshark-cli

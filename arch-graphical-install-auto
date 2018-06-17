@@ -30,6 +30,14 @@ hostname="$(cat /etc/hostname)"
 [[ -z "${userpass}" ]] && userpass="user1"
 
 function gitclone() {
+    if ! [ -f "/root/.ssh/id_rsa.pub" ]; then
+        ssh-keygen -b 4096
+        rootrechte
+        cat /root/.ssh/id_rsa.pub
+        echo "Bitte tragen sie den neuen Key in den GIT-Server ein!!!"
+        echo "Sie haben 60 Sekunden Zeit!!!"
+        sleep 60
+    fi
     if [ -d "/opt/${repo}" ]; then
         echo "${repo} existiert bereits!!!"
         cd /opt/${repo}

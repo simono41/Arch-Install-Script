@@ -30,6 +30,10 @@ hostname="$(cat /etc/hostname)"
 [[ -z "${userpass}" ]] && userpass="user1"
 
 function gitclone() {
+    git config --global core.editor "nano"
+    git config --global user.email "user1@spectreos.de"
+    git config --global user.name "user1"
+    git config --global push.default simple
     if ! [ -f "/root/.ssh/id_rsa.pub" ]; then
         ssh-keygen -b 4096
         rootrechte

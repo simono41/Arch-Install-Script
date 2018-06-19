@@ -871,6 +871,7 @@ srt
 sshfs
 startup-notification
 steam
+steam-native-runtime
 subversion
 sudo
 suitesparse

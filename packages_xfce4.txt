@@ -22,6 +22,7 @@ arc-icon-theme
 arch-install-scripts
 archlinux-appstream-data
 archlinux-keyring
+ardour
 argon2
 aspell
 at-spi2-atk
@@ -32,6 +33,7 @@ atom
 attr
 audacious
 audacious-plugins
+audacity
 autoconf
 automake
 avahi
@@ -238,6 +240,7 @@ hunspell-de
 hwids
 hwinfo
 hydra
+hydrogen
 hyphen
 iana-etc
 icu
@@ -247,6 +250,7 @@ imagemagick
 imlib2
 inetutils
 iniparser
+inkscape
 intel-tbb
 intel-ucode
 intltool
@@ -689,6 +693,7 @@ numlockx
 nvidia
 nvidia-settings
 nvidia-utils
+obs-studio
 onboard
 openal
 opencl-nvidia

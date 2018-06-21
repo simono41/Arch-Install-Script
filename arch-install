@@ -382,6 +382,7 @@ function installation {
     echo "blacklist nouveau" > ${mountpoint}/etc/modprobe.d/blacklist_nouveau.conf
     echo "tmpfs /tmp tmpfs defaults 0 0" > ${mountpoint}/etc/fstab
     echo "tmpfs /dev/shm tmpfs defaults 0 0" >> ${mountpoint}/etc/fstab
+    echo "tmpfs /home/${user}/.cache tmpfs noatime,nodev,nosuid,size=2G 0 0" >> ${mountpoint}/etc/fstab
 
     #fstab
     rootbind=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})

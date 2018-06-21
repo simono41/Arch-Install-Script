@@ -66,6 +66,7 @@ cdparanoia
 cdrtools
 celt
 celt0.5.1
+cheese
 chromaprint
 chromium
 cifs-utils
@@ -280,6 +281,7 @@ jsoncpp
 kauth
 kbd
 kcoreaddons
+kdenlive
 keyutils
 kitemmodels
 kmod
@@ -702,6 +704,7 @@ opencore-amr
 openexr
 openjpeg2
 openresolv
+openshot
 openssh
 openssl
 openssl-1.0
@@ -857,6 +860,7 @@ semver
 serf
 shadow
 shared-mime-info
+simplescreenrecorder
 sip
 slang
 smbclient
@@ -942,6 +946,7 @@ virtualbox-guest-utils
 virtualbox-host-modules-arch
 virtualgl
 vlc
+vmpk
 volume_key
 vpnc
 vte-common

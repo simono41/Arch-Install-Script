@@ -472,6 +472,9 @@ function installation {
 
     fi
 
+    #forbtrfssnapshots
+    cp ${mountpoint}/etc/fstab ${mountpoint}/etc/fstab.example
+
 
 
 

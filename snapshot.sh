@@ -19,14 +19,51 @@ if [ "make" == "$1" ]; then
         echo `date "+%Y%m%d-%H%M%S"` > /run/btrfs-root/__current/${pfad}/SNAPSHOT
         echo "BACKUP" >> /run/btrfs-root/__current/${pfad}/SNAPSHOT
 
-        mkdir -p /run/btrfs-root/__snapshot/${pfad%/*}
-        btrfs subvolume snapshot -r /run/btrfs-root/__current/${pfad} /run/btrfs-root/__snapshot/${pfad}@`head -n 1 /run/btrfs-root/__current/${pfad}/SNAPSHOT`
 
-        rm /run/btrfs-root/__current/${pfad}/SNAPSHOT
+        #only root for the fstab
+        if [ "${pfad}" == "ROOT" ]; then
+          sed "s|__current/${pfad}|__snapshot/${pfad}@`head -n 1 /run/btrfs-root/__current/${pfad}/SNAPSHOT`|g;" /etc/fstab.example > /etc/fstab
+          rootsnapshot="y"
+        fi
+
+        mkdir -p /run/btrfs-root/__snapshot/${pfad%/*}
+        btrfs subvolume snapshot /run/btrfs-root/__current/${pfad} /run/btrfs-root/__snapshot/${pfad}@`head -n 1 /run/btrfs-root/__current/${pfad}/SNAPSHOT`
+        #btrfs subvolume snapshot -r /run/btrfs-root/__current/${pfad} /run/btrfs-root/__snapshot/${pfad}@`head -n 1 /run/btrfs-root/__current/${pfad}/SNAPSHOT`
+
+        if ! [ "${pfad}" == "ROOT" ]; then
+          rm /run/btrfs-root/__current/${pfad}/SNAPSHOT
+        fi
 
         shift
 
     done
+
+    #reset-fstab
+    if [ "${rootsnapshot}" == "y" ]; then
+        cp /etc/fstab.example /etc/fstab
+    fi
+
+    #stable-snapshot-boot
+    if [ -f "/boot/arch-uefi.conf.example" ]; then
+
+        cp /boot/initramfs-*.img /boot/initramfs-linux-stable.img
+        cp /boot/vmlinuz /boot/vmlinuz-stable
+
+        kernel1="$(echo $(find /boot/ -name "initramfs*-stable.img") | cut -d" " -f2)"
+        linuz1="$(find /boot/ -name "vmlinuz*-stable")"
+        kernel="${kernel1#/*/}"
+        linuz="${linuz1#/*/}"
+
+sed "s|%LINUZ%|${linuz}|g;
+s|%KERNEL%|${kernel}|g;
+s|rootflags=subvol=__current/ROOT|rootflags=subvol=__snapshot/${pfad}@`head -n 1 /run/btrfs-root/__current/${pfad}/SNAPSHOT`" /boot/arch-uefi.conf.example > /boot/loader/entries/arch-uefi-stable.conf
+
+        if [ -f /run/btrfs-root/__current/ROOT/SNAPSHOT ]; then
+          rm /run/btrfs-root/__current/ROOT/SNAPSHOT
+        fi
+
+
+    fi
 
 elif [ "restore" == "$1" ]; then
 

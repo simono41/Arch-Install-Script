@@ -56,7 +56,7 @@ if [ "make" == "$1" ]; then
 
 sed "s|%LINUZ%|${linuz}|g;
 s|%KERNEL%|${kernel}|g;
-s|rootflags=subvol=__current/ROOT|rootflags=subvol=__snapshot/${pfad}@`head -n 1 /run/btrfs-root/__current/${pfad}/SNAPSHOT`|g" /boot/arch-uefi.conf.example > /boot/loader/entries/arch-uefi-stable.conf
+s|rootflags=subvol=__current/ROOT|rootflags=subvol=__snapshot/ROOT@`head -n 1 /run/btrfs-root/__current/ROOT/SNAPSHOT`|g" /boot/arch-uefi.conf.example > /boot/loader/entries/arch-uefi-stable.conf
 
         if [ -f /run/btrfs-root/__current/ROOT/SNAPSHOT ]; then
           rm /run/btrfs-root/__current/ROOT/SNAPSHOT

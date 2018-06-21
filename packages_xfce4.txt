@@ -1,3 +1,4 @@
+0ad
 a52dec
 aalib
 accountsservice
@@ -25,6 +26,7 @@ archlinux-keyring
 ardour
 argon2
 aspell
+assaultcube
 at-spi2-atk
 at-spi2-core
 atk
@@ -45,6 +47,7 @@ bc
 binutils
 bison
 blas
+blender
 blueman
 bluez
 bluez-libs
@@ -143,6 +146,7 @@ fltk
 fontconfig
 foomatic-db-engine
 freeciv
+freecol
 freeglut
 freetype2
 fribidi
@@ -178,11 +182,13 @@ glibc
 glibmm
 glu
 gmp
+gnome-chess
 gnome-icon-theme
 gnome-icon-theme-symbolic
 gnome-keyring
 gnome-menus
 gnome-themes-extra
+gnuchess
 gnupg
 gnutls
 gobject-introspection-runtime
@@ -229,6 +235,7 @@ harfbuzz
 harfbuzz-icu
 haveged
 hdparm
+hedgewars
 hexchat
 hicolor-icon-theme
 hiredis
@@ -285,6 +292,7 @@ kdenlive
 keyutils
 kitemmodels
 kmod
+konquest
 krb5
 ladspa
 lame
@@ -636,6 +644,7 @@ make
 man-db
 man-pages
 mdadm
+megaglest
 memtest86+
 mesa
 mesa-demos
@@ -703,11 +712,13 @@ openconnect
 opencore-amr
 openexr
 openjpeg2
+openra
 openresolv
 openshot
 openssh
 openssl
 openssl-1.0
+openttd
 openvpn
 opus
 orage
@@ -861,6 +872,7 @@ serf
 shadow
 shared-mime-info
 simplescreenrecorder
+singularity
 sip
 slang
 smbclient
@@ -884,6 +896,8 @@ steam-native-runtime
 subversion
 sudo
 suitesparse
+supertux
+supertuxkart
 sysfsutils
 syslinux
 systemd
@@ -924,6 +938,7 @@ twolame
 tzdata
 udiskie
 udisks2
+ufoai
 ufw
 unace
 unrar
@@ -952,6 +967,7 @@ vpnc
 vte-common
 vte3
 vulkan-icd-loader
+warzone2100
 wavpack
 wayland
 wayland-protocols
@@ -960,6 +976,7 @@ webrtc-audio-processing
 wget
 which
 whois
+widelands
 wildmidi
 wine
 wine-mono

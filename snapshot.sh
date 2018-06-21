@@ -38,10 +38,13 @@ if [ "make" == "$1" ]; then
 
     done
 
-    #stable-snapshot-boot
-    if [ -f "/boot/arch-uefi.conf.example" ] && [ "${rootsnapshot}" == "y" ]; then
+    if [ "${rootsnapshot}" == "y" ]; then
         #reset-fstab
         cp /etc/fstab.example /etc/fstab
+    fi
+
+    #stable-snapshot-boot
+    if [ -f "/boot/arch-uefi.conf.example" ] && [ "${rootsnapshot}" == "y" ]; then
 
         cp "$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f2)" /boot/initramfs-linux-stable.img
         cp "$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f1)" /boot/vmlinuz-stable

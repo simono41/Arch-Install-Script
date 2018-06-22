@@ -52,6 +52,7 @@ blueman
 bluez
 bluez-libs
 boost-libs
+brasero
 brotli
 btrfs-progs
 bumblebee

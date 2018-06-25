@@ -1190,7 +1190,6 @@ thunar-media-tags-plugin
 thunar-volman
 thunderbird
 thunderbird-i18n-de
-tigervnc
 tinyxml
 tlp
 tolua++

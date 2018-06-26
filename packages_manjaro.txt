@@ -1022,7 +1022,6 @@ yaml-cpp
 yelp
 yelp-xsl
 youtube-dl
-zd1211-firmware
 zenity
 zensu
 zeromq

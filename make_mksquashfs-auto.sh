@@ -468,4 +468,6 @@ fi
 
 # chroot
 
+sync
+
 echo "Fertig!!!"

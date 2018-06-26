@@ -20,6 +20,7 @@ apm
 appstream-glib
 apr
 apr-util
+arandr
 arc-gtk-theme
 arc-icon-theme
 arch-install-scripts

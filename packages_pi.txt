@@ -847,7 +847,6 @@ xz
 yelp
 yelp-xsl
 youtube-dl
-zd1211-firmware
 zenity
 zeromq
 zip

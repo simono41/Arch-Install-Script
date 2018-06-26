@@ -774,7 +774,7 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
 
 fi
 
-if [ "$skip" != "skip" ]; then
+#if [ "$skip" != "skip" ]; then
   # .config
   if [ -d /root/.config ]; then
     rm -Rv /root/.config
@@ -783,7 +783,7 @@ if [ "$skip" != "skip" ]; then
   tar -vxJf /opt/${repo}/.config.tar.xz -C /root/.config/
   gnomeconfig
   copyconfig
-fi
+#fi
 
 if pacman -Qdtq; then
   echo "Verwaiste Packete werden entfernt :)"

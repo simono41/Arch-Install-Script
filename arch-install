@@ -812,7 +812,7 @@ function abfrage() {
     echo "Please write down the entries: D !!!"
     echo "For each yes you have to make a y and for every no an n, unless it is interpreted differently!!!"
     echo ""
-    if mount | grep efi > /dev/null; then
+    if mount | grep efi > /dev/null && [ -d /sys/firmware/efi/efivars/ ]; then
         echo "System supports UEFI"
         read -p "How would you like to have your hard drive partitioned?: [UEFI/bios] " Partition
         [[ -z "${Partition}" ]] && Partition=uefi

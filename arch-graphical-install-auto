@@ -555,6 +555,8 @@ chmod +x /usr/bin/aurinstaller
 cp /opt/${repo}/aurupdater.sh /usr/bin/aurupdater
 chmod +x /usr/bin/aurupdater
 
+# setcap-ping
+setcap cap_net_raw+ep /bin/ping
 
 su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
 if [ "$version" != "pi" ]; then

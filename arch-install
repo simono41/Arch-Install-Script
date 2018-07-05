@@ -4,7 +4,7 @@ set -ex
 
 echo "Version : DI 27. Feb 22:52:41 CET 2017"
 
-WEBADDRESS="ssh://git@spectreos.firewall-gateway.com:30022/home/git/SpectreOS"
+WEBADDRESS="ssh://git@5.83.162.84:22/home/git/SpectreOS"
 repo="SpectreOS"
 user="user1"
 

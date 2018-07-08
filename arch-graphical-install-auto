@@ -613,6 +613,11 @@ if ! grep '#!' $RCLOCAL; then
     echo "#!/bin/bash" > $RCLOCAL
 fi
 
+if ! grep 'setcap cap_net_raw+ep /bin/ping' $RCLOCAL; then
+    echo "setcap cap_net_raw+ep /bin/ping" >> $RCLOCAL
+fi
+
+
 # Install rc.shutdown
 
 echo "[Unit]

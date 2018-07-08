@@ -21,9 +21,11 @@ if [ "make" == "$1" ]; then
     rm ${archiv}.tar
 elif [ "restore" == "$1" ]; then
 
+    [[ -z "${3}" ]] && ort="."
+
     pixz -d ${archiv} ${archiv/.pxz*}
 
-    tar -xf ${archiv/.pxz*}
+    tar -xf ${archiv/.pxz*} -C ${ort}
 
     # säuberung
     rm ${archiv/.pxz*}
@@ -31,7 +33,7 @@ else
     echo "tar.pxz compress-script"
     echo "./compress.sh make/restore archivname input/output"
     echo "./compress.sh make archivname daten"
-    echo "./compress.sh restore archivname"
+    echo "./compress.sh restore archivname ort"
     echo "or use"
     echo "tar -Ipixz -cf output.tpxz dir  # Make tar use pixz automatically"
 fi

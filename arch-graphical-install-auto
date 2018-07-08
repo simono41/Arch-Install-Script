@@ -734,7 +734,7 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
     systemctl enable x11vnc.service
 
     # .Conky
-    tar -vxJf /opt/${repo}/.Conky.tar.xz -C /opt/
+    compress restore /opt/${repo}/.Conky.tar.pxz /opt/
     chmod 755 -Rv /opt/.Conky/
     touch /root/notes.txt
 
@@ -782,7 +782,7 @@ fi
     rm -Rv /root/.config
   fi
   mkdir -p /root/.config
-  tar -vxJf /opt/${repo}/.config.tar.xz -C /root/.config/
+  compress restore /opt/${repo}/.config.tar.pxz /root/.config/
   gnomeconfig
   copyconfig
 #fi

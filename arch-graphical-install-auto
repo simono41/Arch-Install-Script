@@ -405,7 +405,7 @@ then
         mkdir -p /etc/systemd/system/getty\@tty1.service.d
         echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
         echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
-        echo "ExecStart=-/sbin/agetty --noclear -a "$username" %I 38400 linux" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
+        echo "ExecStart=-/sbin/agetty -a "$username" %I $TERM" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
         systemctl enable getty@tty1
     fi
 

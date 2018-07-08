@@ -21,11 +21,12 @@ if [ "make" == "$1" ]; then
     rm ${archiv}.tar
 elif [ "restore" == "$1" ]; then
 
-    [[ -z "${3}" ]] && ort="."
+    pfad=$3
+    [[ -z "${pfad}" ]] && pfad="."
 
     pixz -d ${archiv} ${archiv/.pxz*}
 
-    tar -xf ${archiv/.pxz*} -C ${ort}
+    tar -xf ${archiv/.pxz*} -C ${pfad}
 
     # säuberung
     rm ${archiv/.pxz*}

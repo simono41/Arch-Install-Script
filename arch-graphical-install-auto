@@ -23,6 +23,7 @@ version="$1"
 username="$2"
 userpass="$3"
 skip="$4"
+packageupdate="$5"
 
 hostname="$(cat /etc/hostname)"
 [[ -z "${version}" ]] && version="${hostname#*-}"
@@ -340,7 +341,7 @@ if [ -f /var/lib/pacman/db.lck ];then
 fi
 
 # vollinstallation
-if [ "$version" != "lite" ]; then
+if [ "$version" != "lite" ] && [ "$packageupdate" != "skip" ]; then
   standartinstallation
 fi
 
@@ -559,7 +560,7 @@ chmod +x /usr/bin/aurupdater
 setcap cap_net_raw+ep /bin/ping
 
 su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
-if [ "$version" != "pi" ]; then
+if [ "$version" != "pi" ] && [ "$packageupdate" != "skip" ]; then
   su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
   su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
   plymouth-set-default-theme -R dark-arch
@@ -764,7 +765,7 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
     cp /opt/${repo}/*.jpg /usr/share/backgrounds/xfce/
     chmod 755 -Rv /usr/share/backgrounds/xfce/
 
-    if [ "$version" != "pi" ]; then
+    if [ "$version" != "pi" ] && [ "$packageupdate" != "skip" ]; then
       # zusatzsoftware
       su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
       su "$username" -c "aurinstaller spotify"
@@ -798,7 +799,10 @@ if pacman -Qdtq; then
 else
   echo "Es müssen keine verwaisten Packete entfernt werden :)"
 fi
-pacman -Syu --needed --noconfirm
+
+if [ "$packageupdate" != "skip" ]; then
+  pacman -Syu --needed --noconfirm
+fi
 
 if [ "${version}" == "libre" ]; then
     mkinitcpio -p linux-libre

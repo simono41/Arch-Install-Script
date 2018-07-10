@@ -332,6 +332,7 @@ jack
 jansson
 jasper
 java-environment-common
+java-openjfx
 java-runtime-common
 jbig2dec
 jdk8-openjdk

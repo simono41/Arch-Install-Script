@@ -901,6 +901,7 @@ ncurses
 ndctl
 neon
 net-snmp
+net-tools
 netbeans
 netctl
 nettle

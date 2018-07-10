@@ -368,18 +368,19 @@ function installation {
         echo "MODULES=\"nouveau i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
         echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
         echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
-        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
+        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist-dell-smbios.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
 
     else
         echo "MODULES=\"nvidia nvidia_modeset nvidia_uvm nvidia_drm i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
         echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
         echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
-        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
+        echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf /etc/modprobe.d/blacklist-dell-smbios.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
 
     fi
     echo ""
     echo "blacklist floppy" > ${mountpoint}/etc/modprobe.d/blacklist-floppy.conf
     echo "blacklist nouveau" > ${mountpoint}/etc/modprobe.d/blacklist_nouveau.conf
+    echo "install dell-smbios /bin/false" > ${mountpoint}/etc/modprobe.d/blacklist-dell-smbios.conf
     echo "tmpfs /tmp tmpfs defaults 0 0" > ${mountpoint}/etc/fstab
     echo "tmpfs /dev/shm tmpfs defaults 0 0" >> ${mountpoint}/etc/fstab
     echo "tmpfs /home/${user}/.cache tmpfs noatime,nodev,nosuid,size=2G 0 0" >> ${mountpoint}/etc/fstab

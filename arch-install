@@ -381,7 +381,7 @@ function installation {
     echo "blacklist floppy" > ${mountpoint}/etc/modprobe.d/blacklist-floppy.conf
     echo "blacklist nouveau" > ${mountpoint}/etc/modprobe.d/blacklist_nouveau.conf
     echo "install dell-smbios /bin/false" > ${mountpoint}/etc/modprobe.d/blacklist-dell-smbios.conf
-    echo "tmpfs /tmp tmpfs defaults 0 0" > ${mountpoint}/etc/fstab
+    echo "tmpfs /tmp tmpfs defaults,size=6G 0 0" > ${mountpoint}/etc/fstab
     echo "tmpfs /dev/shm tmpfs defaults 0 0" >> ${mountpoint}/etc/fstab
     echo "tmpfs /home/${user}/.cache tmpfs noatime,nodev,nosuid,size=2G 0 0" >> ${mountpoint}/etc/fstab
 

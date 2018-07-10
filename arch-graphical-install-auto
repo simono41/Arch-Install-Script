@@ -548,7 +548,9 @@ cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
 
 # x11vnc-pass (password)
 
-cp /opt/${repo}/x11vnc.pass /etc/x11vnc.pass
+if ! [ -f "/etc/x11vnc.pass" ]; then
+  cp /opt/${repo}/x11vnc.pass /etc/x11vnc.pass
+fi
 
 # aurinstaller
 cp /opt/${repo}/aurinstall.sh /usr/bin/aurinstaller

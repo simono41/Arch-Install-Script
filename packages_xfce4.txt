@@ -209,10 +209,8 @@ gloox
 glu
 gmime3
 gmp
-gnome
 gnome-chess
 gnome-desktop
-gnome-extra
 gnome-icon-theme
 gnome-icon-theme-symbolic
 gnome-keyring

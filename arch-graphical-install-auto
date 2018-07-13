@@ -772,6 +772,9 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
       su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
       su "$username" -c "aurinstaller spotify"
       su "$username" -c "aurinstaller realvnc-vnc-viewer"
+      su "$username" -c "aurinstaller libbaseencode"
+      su "$username" -c "aurinstaller libcotp"
+      su "$username" -c "aurinstaller otpclient"
     fi
 
     # install-firacode

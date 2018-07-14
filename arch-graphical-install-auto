@@ -377,6 +377,19 @@ echo "	Option \"AccelerationDenominator\" \"1\"" >> /etc/X11/xorg.conf.d/50-mous
 echo "	Option \"AccelerationThreshold\" \"4\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
 echo "EndSection" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
 
+# set config direction
+
+if [ -d /root/.config ]; then
+  rm -Rv /root/.config
+fi
+mkdir -p /root/.config
+compress restore /opt/${repo}/.config.tar.pxz /root/.config/
+gnomeconfig
+copyconfig
+
+
+
+
 # set system startup files
 echo "System startup files"
 
@@ -786,17 +799,6 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
 
 
 fi
-
-#if [ "$skip" != "skip" ]; then
-  # .config
-  if [ -d /root/.config ]; then
-    rm -Rv /root/.config
-  fi
-  mkdir -p /root/.config
-  compress restore /opt/${repo}/.config.tar.pxz /root/.config/
-  gnomeconfig
-  copyconfig
-#fi
 
 if pacman -Qdtq; then
   echo "Verwaiste Packete werden entfernt :)"

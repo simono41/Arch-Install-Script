@@ -1121,10 +1121,6 @@ viewnior
 vinagre
 vino
 virglrenderer
-virtualbox
-virtualbox-guest-modules-arch
-virtualbox-guest-utils
-virtualbox-host-modules-arch
 vlc
 volume_key
 vpnc

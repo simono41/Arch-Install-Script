@@ -377,6 +377,12 @@ echo "	Option \"AccelerationDenominator\" \"1\"" >> /etc/X11/xorg.conf.d/50-mous
 echo "	Option \"AccelerationThreshold\" \"4\"" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
 echo "EndSection" >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
 
+# import compress script
+
+# compress-script
+cp /opt/${repo}/compress.sh /usr/bin/compress
+chmod 755 /usr/bin/compress
+
 # set config direction
 
 if [ -d /root/.config ]; then
@@ -509,10 +515,6 @@ cp /opt/${repo}/btrfs-swapon /usr/bin/
 chmod 755 /usr/bin/btrfs-swapon
 cp /opt/${repo}/btrfs-swapoff /usr/bin/
 chmod 755 /usr/bin/btrfs-swapoff
-
-# compress-script
-cp /opt/${repo}/compress.sh /usr/bin/compress
-chmod 755 /usr/bin/compress
 
 # ssh
 cp /opt/${repo}/sshd_config /etc/ssh/sshd_config

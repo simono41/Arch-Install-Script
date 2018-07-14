@@ -385,10 +385,6 @@ fi
 mkdir -p /root/.config
 compress restore /opt/${repo}/.config.tar.pxz /root/.config/
 gnomeconfig
-copyconfig
-
-
-
 
 # set system startup files
 echo "System startup files"
@@ -799,6 +795,9 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
 
 
 fi
+
+echo "Kopiere Config zum User"
+copyconfig
 
 if pacman -Qdtq; then
   echo "Verwaiste Packete werden entfernt :)"

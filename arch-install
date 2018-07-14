@@ -466,8 +466,8 @@ function installation {
             echo "fstab ${wort} wird erstellt!!!"
             autodiskdevicedateisystem=$(blkid -s TYPE -o value ${wort})
             autodiskdeviceuuid=$(blkid -s UUID -o value ${wort})
-            mkdir -p ${mountpoint}/run/media/user1/${wort#/*/}
-            echo "UUID=${autodiskdeviceuuid} /run/media/user1/${wort#/*/} ${autodiskdevicedateisystem} defaults 0 2" >> ${mountpoint}/etc/fstab
+            mkdir -p ${mountpoint}/run/media/user1/${autodiskdeviceuuid}
+            echo "UUID=${autodiskdeviceuuid} /run/media/user1/${autodiskdeviceuuid} ${autodiskdevicedateisystem} defaults 0 2" >> ${mountpoint}/etc/fstab
 
         done
 

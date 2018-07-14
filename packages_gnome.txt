@@ -1082,7 +1082,6 @@ thunar-media-tags-plugin
 thunar-volman
 thunderbird
 thunderbird-i18n-de
-tigervnc
 tlp
 tolua++
 totem

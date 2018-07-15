@@ -935,10 +935,7 @@ function abfrage() {
     for wort in ${extraparameter}
     do
       echo "$wort"
-      if [ "$wort" == "skipbootpartition" ]; then skipbootpartition=y; fi
-      if [ "$wort" == "noinstall" ]; then noinstall=y; fi
-      if [ "$wort" == "debug" ]; then debug=y; fi
-
+      set ${wort}=y
     done
 
     # Ausgaben

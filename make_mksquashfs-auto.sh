@@ -28,15 +28,7 @@ echo "Hallo Echo"
 for wort in "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
 do
     echo "$wort"
-    if [ "$wort" == "deletework" ]; then deletework=y; fi
-    if [ "$wort" == "deletecache" ]; then deletecache=y; fi
-    if [ "$wort" == "makesystem" ]; then makesystem=y; fi
-    if [ "$wort" == "mkinitcpio" ]; then mkinitcpio=y; fi
-    if [ "$wort" == "filesystem" ]; then filesystem=y; fi
-    if [ "$wort" == "initcheck" ]; then initcheck=y; fi
-    if [ "$wort" == "makeimage" ]; then makeimage=y; fi
-    if [ "$wort" == "makebios" ]; then makebios=y; fi
-    if [ "$wort" == "makeiso" ]; then makeiso=y; fi
+    set ${wort}=y
 done
 
 sleep 5

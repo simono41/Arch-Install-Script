@@ -934,8 +934,6 @@ function abfrage() {
     read -p "Do you want a extra parameter for the installation? : [skipbootpartition/noinstall/debug] " extraparameter
     for wort in ${extraparameter}
     do
-      ((x++))
-      echo "$x"
       echo "$wort"
       if [ "$wort" == "skipbootpartition" ]; then skipbootpartition=y; fi
       if [ "$wort" == "noinstall" ]; then noinstall=y; fi

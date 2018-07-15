@@ -72,6 +72,7 @@ ca-certificates-utils
 cabextract
 cairo
 cairomm
+calibre
 cantarell-fonts
 catfish
 cblas

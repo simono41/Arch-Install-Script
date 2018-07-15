@@ -60,7 +60,7 @@ function minimalinstallation() {
     cp /opt/${repo}/aurinstall.sh ${mountpoint}/usr/bin/aurinstaller
     chmod +x ${mountpoint}/usr/bin/aurinstaller
 
-    if [ "${name}" != "noinstall" ]; then
+    if [ "y" != "noinstall" ]; then
         echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
     fi
 
@@ -173,6 +173,12 @@ function partionierenohneswap() {
 
 }
 
+function partitioniereonepartition() {
+    wipefs -a -f ${device}3
+    sgdisk -a 2048 -n 3:: -c 3:"Linux filesystem" -t 3:8300 ${device}
+    formatencrypt
+}
+
 function usbkeyinstallation() {
     mkdir -p /mnt/usb-stick
     mount ${usbkeydevice} /mnt/usb-stick
@@ -275,14 +281,14 @@ function installation {
 
     #boot
     echo "format"
-    if [ "${name}" != "noinstall" ]; then
+    if [ "y" != "noinstall" ] && [ "${skipbootpartition}" != "y" ]; then
         mkfs.vfat -F 32 ${device}${efipartitionnummer}
     fi
 
     #root
     if [ "${dateisystem}" == "btrfs" ]; then
         #mkfs.btrfs -f -L p_arch ${device}2
-        if [ "${name}" != "noinstall" ]; then
+        if [ "y" != "noinstall" ]; then
             btrfsformat #btrfs
         fi
         subvolume #btrfs
@@ -290,12 +296,12 @@ function installation {
     elif [ "${dateisystem}" == "ext4" ]; then
         echo "confirm with y"
         if [ "${verschluesselung}" == "y" ]; then
-            if [ "${name}" != "noinstall" ]; then
+            if [ "y" != "noinstall" ]; then
                 mkfs.ext4 -L p_arch ${deviceluks} #ext4
             fi
             mount ${deviceluks} ${mountpoint}
         else
-            if [ "${name}" != "noinstall" ]; then
+            if [ "y" != "noinstall" ]; then
                 mkfs.ext4 -L p_arch ${device}${rootpartitionnummer} #ext4
             fi
             mount ${device}${rootpartitionnummer} ${mountpoint}
@@ -305,14 +311,14 @@ function installation {
     fi
 
     #swap
-    if [ "${name}" != "noinstall" ]; then
+    if [ "y" != "noinstall" ]; then
         if [ "${swap}" != "n" ]; then
             mkswap -L p_swap ${device}${swappartitionnummer}
         fi
     fi
 
     #installation
-    if [ "${name}" != "noinstall" ]; then
+    if [ "y" != "noinstall" ]; then
         if [ "${offline}" != "n" ]
         then
             if [ -f /run/archiso/bootmnt/arch/$(uname -m)/airootfs.sfs ]; then
@@ -431,7 +437,7 @@ function installation {
     fi
 
     #makeswapfile+fstab
-    if [ "${name}" != "noinstall" ]; then
+    if [ "y" != "noinstall" ]; then
         if [ "${swapfile}" == "y" ]; then
             if [ "${dateisystem}" == "btrfs" ]; then
                 makebtrfsswapfile
@@ -441,18 +447,18 @@ function installation {
         fi
     fi
 
-    if [ "${name}" != "noinstall" ]; then
+    if [ "y" != "noinstall" ]; then
         #hostname
         echo "${name}´s_PC-${version}" > ${mountpoint}/etc/hostname
     fi
 
-    if [ "${name}" != "noinstall" ]; then
+    if [ "y" != "noinstall" ]; then
         if [ "${usbsecret}" == "y" ]; then
             usbsecret
         fi
     fi
 
-    if [ "${name}" != "noinstall" ]; then
+    if [ "y" != "noinstall" ]; then
         if [ "${usbkey}" == "y" ]; then
             usbkeyinstallation
         fi
@@ -663,7 +669,7 @@ function subvolume() {
     btrfsmount 1
 
     # Create
-    if [ "${name}" != "noinstall" ]; then
+    if [ "y" != "noinstall" ]; then
         mkdir -p /mnt/btrfs-root/__snapshot
         mkdir -p /mnt/btrfs-root/__current
         btrfs subvolume create /mnt/btrfs-root/__current/ROOT
@@ -925,6 +931,18 @@ function abfrage() {
         [[ -z "${autostart}" ]] && autostart=n
     fi
 
+    read -p "Do you want a extra parameter for the installation? : [skipbootpartition/noinstall/debug] " extraparameter
+    for wort in ${extraparameter}
+    do
+      ((x++))
+      echo "$x"
+      echo "$wort"
+      if [ "$wort" == "skipbootpartition" ]; then skipbootpartition=y; fi
+      if [ "$wort" == "noinstall" ]; then noinstall=y; fi
+      if [ "$wort" == "debug" ]; then debug=y; fi
+
+    done
+
     # Ausgaben
 
     # Dateisystem
@@ -1096,7 +1114,7 @@ abfrage
 
 secureumount
 
-if [ "${name}" == "debug" ] || [ "${name}" == "noinstall" ]
+if [ "y" == "debug" ] || [ "y" == "noinstall" ]
 then
     echo "DEBEUG-MODUS"
     echo "If no more commands are required, simply press enter"
@@ -1114,7 +1132,7 @@ fi
 #
 echo "A purge stops the chance of installing on the system."
 echo "It may take a while!"
-if [ "${name}" != "noinstall" ]; then
+if [ "y" != "noinstall" ]; then
     dd if=/dev/zero of=${device} bs=64M count=10 status=progress
 fi
 #
@@ -1122,8 +1140,10 @@ if [ "${Partition}" == "uefi" ]
 then
     echo "Partitions with UEFI"
 
-    if [ "${name}" != "noinstall" ]; then
-        if [ "${swap}" != "n" ]; then
+    if [ "y" != "noinstall" ]; then
+        if [ "${skipbootpartition}" == "y" ]; then
+            partitioniereonepartition
+        elif [ "${swap}" != "n" ]; then
             echo "Create additional swap partition"
             partionierenmitswap
         else
@@ -1156,8 +1176,10 @@ then
     echo "Finished"
 elif [ "${Partition}" == "bios" ]; then
     echo "Partitions with MBR"
-    if [ "${name}" != "noinstall" ]; then
-        if [ "${swap}" != "n" ]; then
+    if [ "y" != "noinstall" ]; then
+        if [ "${skipbootpartition}" == "y" ]; then
+            partitioniereonepartition
+        elif [ "${swap}" != "n" ]; then
             echo "Create additional swap partition"
             partionierenmitswap
         else
@@ -1197,7 +1219,7 @@ fi
 
 # benutzerwechsel
 
-if [ "${name}" != "noinstall" ] && [ -z "${installationsfehler}" ]; then
+if [ "y" != "noinstall" ] && [ -z "${installationsfehler}" ]; then
     #arch-chroot ${mountpoint} usermod -l "${name}" user1
     #arch-chroot ${mountpoint} usermod -d /home/"${name}" -m "${name}"
     arch-chroot ${mountpoint} chfn -f "${name}" user1

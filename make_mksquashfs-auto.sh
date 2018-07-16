@@ -28,7 +28,7 @@ echo "Hallo Echo"
 for wort in "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
 do
     echo "$wort"
-    set ${wort}=y
+    set ${wort} y
 done
 
 sleep 5

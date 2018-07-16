@@ -179,6 +179,12 @@ function partitioniereonepartition() {
     formatencrypt
 }
 
+function partitioniereonepartitionmitswap() {
+    sgdisk -d 4 ${device}
+    sgdisk -a 2048 -n 4:: -c 4:"Linux filesystem" -t 4:8300 ${device}
+    formatencrypt
+}
+
 function usbkeyinstallation() {
     mkdir -p /mnt/usb-stick
     mount ${usbkeydevice} /mnt/usb-stick
@@ -1136,7 +1142,9 @@ then
     echo "Partitions with UEFI"
 
     if [ "y" != "noinstall" ]; then
-        if [ "${skipbootpartition}" == "y" ]; then
+        if [ "${skipbootpartition}" == "y" ] && [ "${swap}" != "n" ]; then
+            partitioniereonepartitionmitswap
+        elif [ "${skipbootpartition}" == "y" ]; then
             partitioniereonepartition
         elif [ "${swap}" != "n" ]; then
             echo "Create additional swap partition"
@@ -1172,7 +1180,9 @@ then
 elif [ "${Partition}" == "bios" ]; then
     echo "Partitions with MBR"
     if [ "y" != "noinstall" ]; then
-        if [ "${skipbootpartition}" == "y" ]; then
+        if [ "${skipbootpartition}" == "y" ] && [ "${swap}" != "n" ]; then
+            partitioniereonepartitionmitswap
+        elif [ "${skipbootpartition}" == "y" ]; then
             partitioniereonepartition
         elif [ "${swap}" != "n" ]; then
             echo "Create additional swap partition"

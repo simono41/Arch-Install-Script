@@ -24,11 +24,12 @@ shift
 
 echo "Hallo Echo"
 
-# for-schleife
-for wort in "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
+# while-schleife
+while (( "$#" ))
 do
-    echo "$wort"
-    set ${wort} y
+  echo ${1}
+  export ${1}="y"
+  shift
 done
 
 sleep 5

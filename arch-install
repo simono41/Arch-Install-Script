@@ -942,7 +942,7 @@ function abfrage() {
     for wort in ${extraparameter}
     do
       echo "$wort"
-      set ${wort} y
+      export ${wort}="y"
     done
 
     # Ausgaben

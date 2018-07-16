@@ -516,13 +516,13 @@ function grubinstall() {
             if [ "${swap}" != "n" ]; then
                 swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
                 if [ "${usbkey}" == "y" ]; then
-                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' cryptkey=UUID='$usbkeyuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 splash"/' ${mountpoint}/etc/default/grub
+                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' cryptkey=PARTUUID='$usbkeypartuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 splash"/' ${mountpoint}/etc/default/grub
                 else
                     sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' nvidia-drm.modeset=1 splash"/' ${mountpoint}/etc/default/grub
                 fi
             else
                 if [ "${usbkey}" == "y" ]; then
-                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 cryptkey=UUID='$usbkeyuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 splash"/' ${mountpoint}/etc/default/grub
+                    sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 cryptkey=PARTUUID='$usbkeypartuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 splash"/' ${mountpoint}/etc/default/grub
                 else
                     sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 nvidia-drm.modeset=1 splash"/' ${mountpoint}/etc/default/grub
                 fi
@@ -732,7 +732,7 @@ function systemdboot() {
         tobootdevice=${deviceluks}
         parameter="${parameter}cryptdevice=PARTUUID=${tobootdeviceuuid}:luks0 "
         if [ "${usbkey}" == "y" ]; then
-            parameter="${parameter}cryptkey=UUID=${usbkeyuuid}:${usbkeydateisystem}:/archkey "
+            parameter="${parameter}cryptkey=PARTUUID=${usbkeypartuuid}:${usbkeydateisystem}:/archkey "
         fi
     else
         tobootdevice="PARTUUID=${tobootdeviceuuid}"
@@ -895,6 +895,7 @@ function abfrage() {
                 [[ -z "${usbkeydevice}" ]] && usbkeydevice=/dev/sdb1
                 usbkeydateisystem=$(blkid -s TYPE -o value ${usbkeydevice})
                 usbkeyuuid=$(blkid -s UUID -o value ${usbkeydevice})
+                usbkeypartuuid=$(blkid -s PARTUUID -o value ${usbkeydevice})
             fi
         fi
     fi

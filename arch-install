@@ -997,12 +997,12 @@ function abfrage() {
 
   if [ "y" == "windualboot" ]; then
     bootpartitionnummer=${m2ssd}1
-    efipartitionnummer=${m2ssd}1
+    efipartitionnummer=${m2ssd}2
     if [ "${swap}" != "n" ]; then
-      swappartitionnummer=${m2ssd}3
-      rootpartitionnummer=${m2ssd}4
+      swappartitionnummer=${m2ssd}5
+      rootpartitionnummer=${m2ssd}6
     else
-      rootpartitionnummer=${m2ssd}3
+      rootpartitionnummer=${m2ssd}5
     fi
   elif [ "y" == "dualboot" ]; then
     bootpartitionnummer=${m2ssd}1

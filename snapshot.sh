@@ -9,7 +9,11 @@ if [[ $EUID -ne 0 ]]; then
 fi
 echo "Als root Angemeldet"
 
-if [ "make" == "$1" ]; then
+if [ "makeboot" == "$1" ]; then
+    makeboot=y
+fi
+
+if [ "make" == "$1" ] || [ "makeboot" == "y" ]; then
 
     while (( "$(expr $# - 1)" ))
     do
@@ -22,8 +26,8 @@ if [ "make" == "$1" ]; then
 
         #only root for the fstab
         if [ "${pfad}" == "ROOT" ]; then
-          sed "s|__current/${pfad}|__snapshot/${pfad}@`head -n 1 /run/btrfs-root/__current/${pfad}/SNAPSHOT`|g;" /etc/fstab.example > /etc/fstab
-          rootsnapshot="y"
+            sed "s|__current/${pfad}|__snapshot/${pfad}@`head -n 1 /run/btrfs-root/__current/${pfad}/SNAPSHOT`|g;" /etc/fstab.example > /etc/fstab
+            rootsnapshot="y"
         fi
 
         mkdir -p /run/btrfs-root/__snapshot/${pfad%/*}
@@ -31,7 +35,7 @@ if [ "make" == "$1" ]; then
         #btrfs subvolume snapshot -r /run/btrfs-root/__current/${pfad} /run/btrfs-root/__snapshot/${pfad}@`head -n 1 /run/btrfs-root/__current/${pfad}/SNAPSHOT`
 
         if ! [ "${pfad}" == "ROOT" ]; then
-          rm /run/btrfs-root/__current/${pfad}/SNAPSHOT
+            rm /run/btrfs-root/__current/${pfad}/SNAPSHOT
         fi
 
         shift
@@ -43,26 +47,28 @@ if [ "make" == "$1" ]; then
         cp /etc/fstab.example /etc/fstab
     fi
 
-    #stable-snapshot-boot
-    if [ -f "/boot/arch-uefi.conf.example" ] && [ "${rootsnapshot}" == "y" ]; then
+    if [ "makeboot" == "y" ]; then
+        #stable-snapshot-boot
+        if [ -f "/boot/arch-uefi.conf.example" ] && [ "${rootsnapshot}" == "y" ]; then
 
-        cp "$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f2)" /boot/initramfs-linux-stable.img
-        cp "$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f1)" /boot/vmlinuz-stable
+            cp "$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f2)" /boot/initramfs-linux-stable.img
+            cp "$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f1)" /boot/vmlinuz-stable
 
-        kernel1="$(echo $(find /boot/ -name "initramfs*-stable.img") | cut -d" " -f2)"
-        linuz1="$(find /boot/ -name "vmlinuz*-stable")"
-        kernel="${kernel1#/*/}"
-        linuz="${linuz1#/*/}"
+            kernel1="$(echo $(find /boot/ -name "initramfs*-stable.img") | cut -d" " -f2)"
+            linuz1="$(find /boot/ -name "vmlinuz*-stable")"
+            kernel="${kernel1#/*/}"
+            linuz="${linuz1#/*/}"
 
 sed "s|%LINUZ%|${linuz}|g;
 s|%KERNEL%|${kernel}|g;
 s|rootflags=subvol=__current/ROOT|rootflags=subvol=__snapshot/ROOT@`head -n 1 /run/btrfs-root/__current/ROOT/SNAPSHOT`|g" /boot/arch-uefi.conf.example > /boot/loader/entries/arch-uefi-stable.conf
 
-        if [ -f /run/btrfs-root/__current/ROOT/SNAPSHOT ]; then
-          rm /run/btrfs-root/__current/ROOT/SNAPSHOT
+            if [ -f /run/btrfs-root/__current/ROOT/SNAPSHOT ]; then
+                rm /run/btrfs-root/__current/ROOT/SNAPSHOT
+            fi
+
+
         fi
-
-
     fi
 
 elif [ "restore" == "$1" ]; then

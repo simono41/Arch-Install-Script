@@ -994,6 +994,25 @@ function abfrage() {
     m2ssd=p
   fi
 
+  echo "Zusatzparameter"
+  if [ "${windualboot}" == "y" ]; then
+    echo "Windows Dualboot: ${windualboot}"
+    export skipbootpartition="y"
+  fi
+  if [ "${dualboot}" == "y" ]; then
+    echo "SpectreOS Dualboot: ${dualboot}"
+    export skipbootpartition="y"
+  fi
+  if [ "${skipbootpartition}" == "y" ]; then
+    echo "Überspringe Formatieren der Boot Partition: ${skipbootpartition}"
+  fi
+  if [ "${debug}" == "y" ]; then
+    echo "Debug Menü: ${debug}"
+  fi
+  if [ "${noinstall}" == "y" ]; then
+    echo "Keine Installation: ${noinstall}"
+  fi
+
   if [ "y" == "windualboot" ]; then
     bootpartitionnummer=${m2ssd}1
     efipartitionnummer=${m2ssd}2

@@ -751,6 +751,7 @@ raptor
 rasqal
 readline
 redland
+reflector
 reiserfsprogs
 rest
 rhash

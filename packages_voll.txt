@@ -1107,6 +1107,7 @@ re2
 readline
 recode
 redland
+reflector
 reiserfsprogs
 rest
 rhash

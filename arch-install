@@ -166,7 +166,10 @@ function partioniere() {
 }
 
 function partitionieredual() {
-  sgdisk -d ${rootpartitionnummer} ${device}
+  if blkid -s PARTUUID -o value ${device}${rootpartitionnummer}; then
+    echo "entferne partition"
+    sgdisk -d ${rootpartitionnummer} ${device}
+  fi
   sgdisk -a 2048 -n ${rootpartitionnummer}:: -c ${rootpartitionnummer}:"Linux filesystem" -t ${rootpartitionnummer}:8300 ${device}
   formatencrypt
 }

@@ -174,13 +174,15 @@ function partionierenohneswap() {
 }
 
 function partitioniereonepartition() {
-    sgdisk -d 3 ${device}
+    #sgdisk -d 3 ${device}
+    parted -s /dev/${device} rm 3
     sgdisk -a 2048 -n 3:: -c 3:"Linux filesystem" -t 3:8300 ${device}
     formatencrypt
 }
 
 function partitioniereonepartitionmitswap() {
-    sgdisk -d 4 ${device}
+    #sgdisk -d 4 ${device}
+    parted -s /dev/${device} rm 4
     sgdisk -a 2048 -n 4:: -c 4:"Linux filesystem" -t 4:8300 ${device}
     formatencrypt
 }

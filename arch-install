@@ -927,12 +927,12 @@ function abfrage() {
     [[ -z "${autostart}" ]] && autostart=n
   fi
 
-  echo "Warnung windualboot nur im UEFI getestet!!!"
   read -p "Do you want a extra parameter for the installation? : [skipbootpartition/noinstall/debug/windualboot/dualboot] " extraparameter
   for wort in ${extraparameter}
   do
     echo "$wort"
     export ${wort}="y"
+    echo "Extra-Parameter ${wort}=y"
   done
 
   # Ausgaben
@@ -994,10 +994,6 @@ function abfrage() {
     m2ssd=p
   fi
 
-  if [ "y" == "windualboot" ] || [ "y" == "dualboot" ]; then
-    export skipbootpartition="y"
-  fi
-
   if [ "y" == "windualboot" ]; then
     bootpartitionnummer=${m2ssd}1
     efipartitionnummer=${m2ssd}2
@@ -1035,7 +1031,6 @@ function abfrage() {
     echo "Swap-Partition = ${device}${swappartitionnummer}"
   fi
   echo "ROOT-Partition = ${device}${rootpartitionnummer}"
-
 
   #
   read -p "Are all the details correct ?: [y/N] " sicherheitsabfrage
@@ -1124,7 +1119,7 @@ then
   echo "Partitions with UEFI"
 
   if [ "y" != "noinstall" ]; then
-    if [ "y" == "windualboot" ] || [ "y" == "dualboot" ]; then
+    if [ "y" == "skipbootpartition" ]; then
       partitionieredual
     else
       partitioniere
@@ -1157,15 +1152,10 @@ then
 elif [ "${Partition}" == "bios" ]; then
   echo "Partitions with MBR"
   if [ "y" != "noinstall" ]; then
-    if [ "${skipbootpartition}" == "y" ] && [ "${swap}" != "n" ]; then
-      partitioniereonepartitionmitswap
-    elif [ "${skipbootpartition}" == "y" ]; then
-      partitioniereonepartition
-    elif [ "${swap}" != "n" ]; then
-      echo "Create additional swap partition"
-      partionierenmitswap
+    if [ "y" == "skipbootpartition" ]; then
+      partitionieredual
     else
-      partionierenohneswap
+      partitioniere
     fi
   else
     if [ "${verschluesselung}" == "y" ]; then

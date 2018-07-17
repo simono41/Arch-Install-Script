@@ -198,15 +198,19 @@ function userrechte() {
     chown -cR -v "$username":users /home/"$username"
     chmod 750 -Rv /home/"$username"
     #ssh
-    if [ -d /home/"$username"/.ssh ]; then
-        chmod 700 /home/"$username"/.ssh
+    if ! [ -d /home/"$username"/.ssh ]; then
+        mkdir -p /home/"$username"/.ssh
     fi
+    chmod 700 /home/"$username"/.ssh
+
     if [ -f /home/"$username"/.ssh/id_rsa ]; then
         chmod 600 /home/"$username"/.ssh/id_rsa
     fi
-    if [ -f /home/"$username"/.ssh/authorized_keys ]; then
-        chmod 600 /home/"$username"/.ssh/authorized_keys
+
+    if ! [ -f /home/"$username"/.ssh/authorized_keys ]; then
+        touch /home/"$username"/.ssh/authorized_keys
     fi
+    chmod 600 /home/"$username"/.ssh/authorized_keys
 
 }
 
@@ -214,15 +218,19 @@ function rootrechte() {
     #root
     chmod 750 -Rv /root
     #ssh-root
-    if [ -d /root/.ssh ]; then
-        chmod 700 /root/.ssh
+    if ! [ -d /root/.ssh ]; then
+        mkdir -p /root/.ssh
     fi
+    chmod 700 /root/.ssh
+
     if [ -f /root/.ssh/id_rsa ]; then
         chmod 600 /root/.ssh/id_rsa
     fi
-    if [ -f /root/.ssh/authorized_key ]; then
-        chmod 600 /root/.ssh/authorized_keys
+
+    if ! [ -f /root/.ssh/authorized_key ]; then
+        touch /root/.ssh/authorized_keys
     fi
+    chmod 600 /root/.ssh/authorized_keys
 
 }
 

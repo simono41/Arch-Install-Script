@@ -166,7 +166,7 @@ function partioniere() {
 }
 
 function partitionieredual() {
-  sgdisk -d 3 ${device}
+  sgdisk -d ${rootpartitionnummer} ${device}
   sgdisk -a 2048 -n ${rootpartitionnummer}:: -c ${rootpartitionnummer}:"Linux filesystem" -t ${rootpartitionnummer}:8300 ${device}
   formatencrypt
 }

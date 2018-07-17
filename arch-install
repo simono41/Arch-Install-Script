@@ -152,36 +152,22 @@ function mountencrypt() {
   cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
 }
 
-function partionierenmitswap() {
+function partioniere() {
   wipefs -a -f ${device}
   sgdisk -o ${device}
-  sgdisk -a 2048 -n 1::+1024K -c 1:"BIOS Boot Partition" -t 1:ef02 ${device}
-  sgdisk -a 2048 -n 2::+1G -c 2:"EFI Boot Partition" -t 2:ef00 ${device}
-  sgdisk -a 2048 -n 3::+8G -c 3:"Linux swap" -t 3:8200 ${device}
-  sgdisk -a 2048 -n 4:: -c 4:"Linux filesystem" -t 4:8300 ${device}
+  sgdisk -a 2048 -n ${bootpartitionnummer}::+1024K -c ${bootpartitionnummer}:"BIOS Boot Partition" -t ${bootpartitionnummer}:ef02 ${device}
+  sgdisk -a 2048 -n ${efipartitionnummer}::+1G -c ${efipartitionnummer}:"EFI Boot Partition" -t ${efipartitionnummer}:ef00 ${device}
+  if [ "${swap}" != "n" ]; then
+    sgdisk -a 2048 -n ${swappartitionnummer}::+8G -c ${swappartitionnummer}:"Linux swap" -t ${swappartitionnummer}:8200 ${device}
+  fi
+  sgdisk -a 2048 -n ${rootpartitionnummer}:: -c ${rootpartitionnummer}:"Linux filesystem" -t ${rootpartitionnummer}:8300 ${device}
   formatencrypt
 
 }
 
-function partionierenohneswap() {
-  wipefs -a -f ${device}
-  sgdisk -o ${device}
-  sgdisk -a 2048 -n 1::+1024K -c 1:"BIOS Boot Partition" -t 1:ef02 ${device}
-  sgdisk -a 2048 -n 2::+1G -c 2:"EFI Boot Partition" -t 2:ef00 ${device}
-  sgdisk -a 2048 -n 3:: -c 3:"Linux filesystem" -t 3:8300 ${device}
-  formatencrypt
-
-}
-
-function partitioniereonepartition() {
+function partitionieredual() {
   sgdisk -d 3 ${device}
-  sgdisk -a 2048 -n 3:: -c 3:"Linux filesystem" -t 3:8300 ${device}
-  formatencrypt
-}
-
-function partitioniereonepartitionmitswap() {
-  sgdisk -d 4 ${device}
-  sgdisk -a 2048 -n 4:: -c 4:"Linux filesystem" -t 4:8300 ${device}
+  sgdisk -a 2048 -n ${rootpartitionnummer}:: -c ${rootpartitionnummer}:"Linux filesystem" -t ${rootpartitionnummer}:8300 ${device}
   formatencrypt
 }
 
@@ -1135,15 +1121,10 @@ then
   echo "Partitions with UEFI"
 
   if [ "y" != "noinstall" ]; then
-    if [ "${skipbootpartition}" == "y" ] && [ "${swap}" != "n" ]; then
-      partitioniereonepartitionmitswap
-    elif [ "${skipbootpartition}" == "y" ]; then
-      partitioniereonepartition
-    elif [ "${swap}" != "n" ]; then
-      echo "Create additional swap partition"
-      partionierenmitswap
+    if [ "y" == "windualboot" ] || [ "y" == "dualboot" ]; then
+      partitionieredual
     else
-      partionierenohneswap
+      partitioniere
     fi
   else
     if [ "${verschluesselung}" == "y" ]; then

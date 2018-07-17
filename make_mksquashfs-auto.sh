@@ -131,6 +131,7 @@ function system() {
             cp -v install/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/
             cp -v hooks/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/
 
+            mkdir -p ${work_dir}/${arch}/airootfs/etc/pacman.d/hooks
             cp -v pacman-hooks/* ${work_dir}/${arch}/airootfs/etc/pacman.d/hooks/
 
             # modprobe.d

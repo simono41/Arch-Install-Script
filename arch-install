@@ -38,6 +38,7 @@ function minimalinstallation() {
   cp -v /opt/${repo}/install/cow_device ${mountpoint}/usr/lib/initcpio/install/
   cp -v /opt/${repo}/hooks/cow_device ${mountpoint}/usr/lib/initcpio/hooks/
 
+  mkdir -p ${mountpoint}/etc/pacman.d/hooks
   cp -v /opt/${repo}/pacman-hooks/* ${mountpoint}/etc/pacman.d/hooks/
 
   # scripts

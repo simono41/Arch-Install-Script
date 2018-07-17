@@ -167,7 +167,8 @@ function partioniere() {
 
 function partitionieredual() {
   if blkid -s PARTUUID -o value ${device}${rootpartitionnummer}; then
-    echo "entferne partition"
+    echo "entferne partition ${device}${rootpartitionnummer}"
+    sleep 10
     sgdisk -d ${rootpartitionnummer} ${device}
   fi
   sgdisk -a 2048 -n ${rootpartitionnummer}:: -c ${rootpartitionnummer}:"Linux filesystem" -t ${rootpartitionnummer}:8300 ${device}
@@ -1013,7 +1014,7 @@ function abfrage() {
     echo "Keine Installation: ${noinstall}"
   fi
 
-  if [ "y" == "windualboot" ]; then
+  if [ "y" == "${windualboot}" ]; then
     bootpartitionnummer=${m2ssd}1
     efipartitionnummer=${m2ssd}2
     if [ "${swap}" != "n" ]; then
@@ -1022,7 +1023,7 @@ function abfrage() {
     else
       rootpartitionnummer=${m2ssd}5
     fi
-  elif [ "y" == "dualboot" ]; then
+  elif [ "y" == "${dualboot}" ]; then
     bootpartitionnummer=${m2ssd}1
     efipartitionnummer=${m2ssd}2
     if [ "${swap}" != "n" ]; then
@@ -1129,7 +1130,7 @@ fi
 #
 echo "A purge stops the chance of installing on the system."
 echo "It may take a while!"
-if [ "y" != "noinstall" ]; then
+if [ "y" != "noinstall" ] || [ "y" != "${skipbootpartition}" ]; then
   dd if=/dev/zero of=${device} bs=64M count=10 status=progress
 fi
 #
@@ -1137,8 +1138,8 @@ if [ "${Partition}" == "uefi" ]
 then
   echo "Partitions with UEFI"
 
-  if [ "y" != "noinstall" ]; then
-    if [ "y" == "skipbootpartition" ]; then
+  if [ "y" != "${noinstall}" ]; then
+    if [ "y" == "${skipbootpartition}" ]; then
       partitionieredual
     else
       partitioniere
@@ -1170,8 +1171,8 @@ then
   echo "Finished"
 elif [ "${Partition}" == "bios" ]; then
   echo "Partitions with MBR"
-  if [ "y" != "noinstall" ]; then
-    if [ "y" == "skipbootpartition" ]; then
+  if [ "y" != "${noinstall}" ]; then
+    if [ "y" == "${skipbootpartition}" ]; then
       partitionieredual
     else
       partitioniere

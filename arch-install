@@ -1130,7 +1130,8 @@ fi
 #
 echo "A purge stops the chance of installing on the system."
 echo "It may take a while!"
-if [ "y" != "noinstall" ] || [ "y" != "${skipbootpartition}" ]; then
+if [ "y" != "noinstall" ] && [ "y" != "${skipbootpartition}" ]; then
+  sleep 5
   dd if=/dev/zero of=${device} bs=64M count=10 status=progress
 fi
 #

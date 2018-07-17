@@ -203,11 +203,11 @@ function usbsecret() {
 function cron() {
     echo "cron-job snapshot"
     mkdir -p ${mountpoint}/var/spool/cron/
-    #if [ "y" == "${windualboot}" ]; then
-    #  echo -n "0 18 * * * /usr/bin/snapshot makeboot ROOT home opt var/cache/pacman/pkg " > ${mountpoint}/var/spool/cron/root
-    #else
+    if [ "y" == "${windualboot}" ]; then
       echo -n "0 18 * * * /usr/bin/snapshot make ROOT home opt var/cache/pacman/pkg " > ${mountpoint}/var/spool/cron/root
-    #fi
+    else
+      echo -n "0 18 * * * /usr/bin/snapshot makeboot ROOT home opt var/cache/pacman/pkg " > ${mountpoint}/var/spool/cron/root
+    fi
 
     # custom-mounts
     for wort in ${mountsnaps}
@@ -935,7 +935,7 @@ function abfrage() {
     fi
 
     echo "Windows dualboot funktioniert nur im UEFI Modus und auch nur derzeit mit GRUB!!!"
-    echo "Ausserdem muss die UEFI_Bootpartition über 200MB mindesten sein!!!"
+    echo "Ausserdem muss die UEFI_Bootpartition über 256MB mindesten sein!!!"
     read -p "Do you want a extra parameter for the installation? : [skipbootpartition/noinstall/debug/windualboot/dualboot] " extraparameter
     for wort in ${extraparameter}
     do

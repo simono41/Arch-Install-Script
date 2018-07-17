@@ -169,6 +169,7 @@ function partitionieredual() {
     if blkid -s PARTUUID -o value ${device}${rootpartitionnummer}; then
         echo "entferne partition ${device}${rootpartitionnummer}"
         sleep 10
+        #parted -s ${device} rm ${rootpartitionnummer}
         sgdisk -d ${rootpartitionnummer} ${device}
         sleep 2
         sync

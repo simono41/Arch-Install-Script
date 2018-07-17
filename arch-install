@@ -174,15 +174,15 @@ function partionierenohneswap() {
 }
 
 function partitioniereonepartition() {
-    #sgdisk -d 3 ${device}
-    parted -s /dev/${device} rm 3
+    sgdisk -d 3 ${device}
+    #parted -s ${device} rm 3
     sgdisk -a 2048 -n 3:: -c 3:"Linux filesystem" -t 3:8300 ${device}
     formatencrypt
 }
 
 function partitioniereonepartitionmitswap() {
-    #sgdisk -d 4 ${device}
-    parted -s /dev/${device} rm 4
+    sgdisk -d 4 ${device}
+    #parted -s ${device} rm 4
     sgdisk -a 2048 -n 4:: -c 4:"Linux filesystem" -t 4:8300 ${device}
     formatencrypt
 }
@@ -1136,7 +1136,7 @@ fi
 #
 echo "A purge stops the chance of installing on the system."
 echo "It may take a while!"
-if [ "y" != "${noinstall}" ]; then
+if [ "y" != "${noinstall}" ] && [ "${skipbootpartition}" != "y" ]; then
     dd if=/dev/zero of=${device} bs=64M count=10 status=progress
 fi
 #

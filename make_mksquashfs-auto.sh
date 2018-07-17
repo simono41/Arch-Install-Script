@@ -131,6 +131,8 @@ function system() {
             cp -v install/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/install/
             cp -v hooks/cow_device ${work_dir}/${arch}/airootfs/usr/lib/initcpio/hooks/
 
+            cp -v pacman-hooks/* ${work_dir}/${arch}/airootfs/etc/pacman.d/hooks/
+
             # modprobe.d
             mkdir -p ${work_dir}/${arch}/airootfs/etc/modprobe.d/
             echo "blacklist floppy" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist-floppy.conf

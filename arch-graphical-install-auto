@@ -465,6 +465,7 @@ systemctl enable fail2ban
 systemctl disable dhcpcd
 systemctl enable NetworkManager.service
 systemctl enable bluetooth.service
+systemctl enable httpd
 
 # set systemconfiguration
 echo "systemconfiguration"

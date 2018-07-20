@@ -360,7 +360,11 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 echo "set desktop"
 #
 if [ "$version" != "lite" ]; then
+  if [ -f "/opt/${repo}/xinitrc_${version}.txt" ]; then
     cp /opt/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
+  else
+    cp /opt/${repo}/xinitrc_special.txt /etc/X11/xinit/xinitrc
+  fi
 fi
 #
 echo "Systemsprache und dienste werden erstellt!"

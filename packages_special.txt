@@ -7,6 +7,7 @@ acpi
 acpid
 adwaita-icon-theme
 afpfs-ng
+aircrack-ng
 alsa-firmware
 alsa-lib
 alsa-plugins
@@ -990,6 +991,7 @@ ncurses
 ndctl
 neon
 net-snmp
+net-tools
 netbeans
 netcf
 netctl

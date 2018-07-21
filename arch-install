@@ -155,7 +155,7 @@ function mountencrypt() {
   cryptsetup luksOpen ${device}${rootpartitionnummer} luks0
 }
 
-function partioniere() {
+function partitioniere() {
   wipefs -a -f ${device}
   sgdisk -o ${device}
   if [ "${m2ssddevice}" == "y" ]; then

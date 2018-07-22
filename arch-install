@@ -531,21 +531,22 @@ function installation {
 }
 
 function grubinstall() {
+sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*$/GRUB_CMDLINE_LINUX_DEFAULT="splash"/' ${mountpoint}/etc/default/grub
   if [ "${verschluesselung}" == "y" ]; then
     if [ "${boot}" == "grub" ]; then
       tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
       if [ "${swap}" != "n" ]; then
         swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
         if [ "${usbkey}" == "y" ]; then
-          sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' cryptkey=PARTUUID='$usbkeypartuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 splash"/' ${mountpoint}/etc/default/grub
+          sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' cryptkey=PARTUUID='$usbkeypartuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1"/' ${mountpoint}/etc/default/grub
         else
-          sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' nvidia-drm.modeset=1 splash"/' ${mountpoint}/etc/default/grub
+          sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 resume=PARTUUID='$swappartition' nvidia-drm.modeset=1"/' ${mountpoint}/etc/default/grub
         fi
       else
         if [ "${usbkey}" == "y" ]; then
-          sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 cryptkey=PARTUUID='$usbkeypartuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1 splash"/' ${mountpoint}/etc/default/grub
+          sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 cryptkey=PARTUUID='$usbkeypartuuid':'$usbkeydateisystem':\/archkey nvidia-drm.modeset=1"/' ${mountpoint}/etc/default/grub
         else
-          sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 nvidia-drm.modeset=1 splash"/' ${mountpoint}/etc/default/grub
+          sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="cryptdevice=PARTUUID='$tobootdevice':luks0 nvidia-drm.modeset=1"/' ${mountpoint}/etc/default/grub
         fi
       fi
       echo "GRUB_ENABLE_CRYPTODISK=y" >> ${mountpoint}/etc/default/grub
@@ -555,7 +556,9 @@ function grubinstall() {
       tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
       if [ "${swap}" != "n" ]; then
         swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
-        sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="resume=PARTUUID='$swappartition' nvidia-drm.modeset=1 splash"/' ${mountpoint}/etc/default/grub
+        sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="resume=PARTUUID='$swappartition' nvidia-drm.modeset=1"/' ${mountpoint}/etc/default/grub
+      else
+        sed -i 's/GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="nvidia-drm.modeset=1"/' ${mountpoint}/etc/default/grub
       fi
     fi
   fi
@@ -786,13 +789,13 @@ function systemdboot() {
   echo "linux    /${linuz}" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
   echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
   echo "initrd   /${kernel}" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
-  echo "options  root=${tobootdevice} rw ${parameter}quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
+  echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 splash" >> ${mountpoint}/boot/loader/entries/arch-uefi.conf
 
   echo "title    "${repo}"" > ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
   echo "linux    /${linuz}" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
   echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
   echo "initrd   /${kernelback}" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
-  echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
+  echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 splash" >> ${mountpoint}/boot/loader/entries/arch-uefi-fallback.conf
 
   echo "default   arch-uefi" > ${mountpoint}/boot/loader/loader.conf
   echo "timeout   1" >> ${mountpoint}/boot/loader/loader.conf
@@ -802,7 +805,7 @@ function systemdboot() {
   echo "linux    /%LINUZ%" >> ${mountpoint}/boot/arch-uefi.conf.example
   echo "initrd   /intel-ucode.img" >> ${mountpoint}/boot/arch-uefi.conf.example
   echo "initrd   /%KERNEL%" >> ${mountpoint}/boot/arch-uefi.conf.example
-  echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash" >> ${mountpoint}/boot/arch-uefi.conf.example
+  echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 splash" >> ${mountpoint}/boot/arch-uefi.conf.example
 
   if [ "${booteintraege}" != "n" ]; then
 
@@ -810,7 +813,7 @@ function systemdboot() {
 
     arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "Linux Boot Manager"
 
-    arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \\${linuz} -L "Arch Linux efistub" -u "initrd=/${kernel} root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 quiet splash"
+    arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \\${linuz} -L "Arch Linux efistub" -u "initrd=/${kernel} root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 splash"
 
   fi
 

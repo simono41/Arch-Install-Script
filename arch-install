@@ -254,7 +254,7 @@ function cron() {
 
 function makeswapfile() {
   #swapfile
-  fallocate -l 4G ${mountpoint}/swapfile
+  fallocate -l ${swapfilespeicher} ${mountpoint}/swapfile
   chmod 600 ${mountpoint}/swapfile
   mkswap ${mountpoint}/swapfile
   echo "/swapfile none swap defaults 0 0" >> ${mountpoint}/etc/fstab
@@ -895,6 +895,9 @@ function abfrage() {
 
   read -p "Do you want to create a swap partition? : [Y/n] " swap
   read -p "Do you want to create a swapfile? : [y/N] " swapfile
+  if [ "${swapfile}" == "y" ]; then
+    read -p "Do you want create your swapfile with : [2G/4G/8G/16G] " swapfilespeicher
+  fi
 
   #    if [ "${update}" != "n" ]; then
   #
@@ -995,9 +998,9 @@ function abfrage() {
   #if [ "${swap}" != "n" ]; then
   #    echo "Swap-partition ${swapspeicher}"
   #fi
-  #if [ "${swapfile}" == "y" ]; then
-  #    echo "Swapfile ${swapfilespeicher}"
-  #fi
+  if [ "${swapfile}" == "y" ]; then
+      echo "Swapfile ${swapfilespeicher}"
+  fi
   #echo "Rootpasswort: ${pass}"
   echo "Architektur: $(uname -m)"
   echo "Installation: ${install}"

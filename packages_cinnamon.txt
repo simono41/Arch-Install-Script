@@ -1278,7 +1278,6 @@ raptor
 rasqal
 re2
 readline
-realvnc-vnc-viewer
 recode
 redland
 reflector

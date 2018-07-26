@@ -14,6 +14,9 @@ fi
 # normal install parameters
 # ./make_mksquashfs-auto.sh xfce4 makesystem mkinitcpio filesystem makeimage makebios makeiso
 
+# update parameters
+# ./make_mksquashfs-auto.sh cinnamon mkinitcpio filesystem makeimage makebios makeiso
+
 iso_name=spectre_os
 iso_label="SPECTRE_OS"
 iso_version=$(date +%Y.%m.%d)

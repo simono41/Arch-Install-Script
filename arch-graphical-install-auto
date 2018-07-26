@@ -676,6 +676,9 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
 
     ### custom-installer
 
+    ## pip update
+    pip install --upgrade pip
+
     ## pip install beautysh
     if [ -d /opt/beautysh ];then
         echo "Bereits vorhanden!!!"

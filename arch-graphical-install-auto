@@ -402,6 +402,7 @@ if [ -d /root/.config ]; then
 fi
 mkdir -p /root/.config
 compress restore /opt/${repo}/.config.tar.pxz /root/.config/
+compress restore /opt/${repo}/.config-extra.tar.pxz /root/
 gnomeconfig
 
 # set system startup files

@@ -453,7 +453,7 @@ function installation {
 
 
   if [ "${swap}" != "n" ]; then
-    if [ "${verschluesselung}" == "y" ]; then
+    if [ "${swapverschluesselung}" == "y" ]; then
       swappartition=$(blkid -s PARTUUID -o value ${device}${swappartitionnummer})
       echo "swap PARTUUID=${swappartition} /dev/urandom swap,cipher=aes-cbc-essiv:sha256,size=256" > ${mountpoint}/etc/crypttab
       echo "/dev/mapper/swap none swap defaults 0 0" >> ${mountpoint}/etc/fstab
@@ -894,6 +894,12 @@ function abfrage() {
   fi
 
   read -p "Do you want to create a swap partition? : [Y/n] " swap
+  if [ "${swap}" != "n" ]; then
+    echo "WARNING with a encrypted Swap disk you cant go in the hibernate-modus!!!"
+    read -p "Should the Swap disk be encrypted? : [y/N] " swapverschluesselung
+    [[ -z "${swapverschluesselung}" ]] && swapverschluesselung=n
+  fi
+
   read -p "Do you want to create a swapfile? : [y/N] " swapfile
   if [ "${swapfile}" == "y" ]; then
     read -p "Do you want create your swapfile with : [2G/4G/8G/16G] " swapfilespeicher

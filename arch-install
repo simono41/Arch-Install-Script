@@ -968,7 +968,7 @@ function abfrage() {
 
   if [ "${offline}" != "n" ]; then
     echo "All my Distros have as default a XFCE4 Desktop!!!"
-    read -p "Sould the system be started without a login screen? : [y/N] " autostart
+    read -p "Sould the system be started with a login screen? : [y/N] " autostart
     [[ -z "${autostart}" ]] && autostart=n
   fi
 

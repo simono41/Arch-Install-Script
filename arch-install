@@ -961,7 +961,8 @@ function abfrage() {
   read -p "Do you want to activate the VNC protocol? : [y/N] " x11vnc
 
   if [ "${offline}" != "n" ]; then
-    read -p "Sould the system be started without a login? : [y/N] " autostart
+    echo "All my Distros have as default a XFCE4 Desktop!!!"
+    read -p "Sould the system be started without a login screen? : [y/N] " autostart
     [[ -z "${autostart}" ]] && autostart=n
   fi
 
@@ -1271,7 +1272,7 @@ if [ "y" != "${noinstall}" ] && [ -z "${installationsfehler}" ]; then
   if [ -f  ${mountpoint}/usr/bin/lightdm ]; then
     mkdir -p ${mountpoint}/etc/lightdm/
     cp /opt/${repo}/Xsession /opt/${repo}/keys.conf /opt/${repo}/lightdm-gtk-greeter.conf /opt/${repo}/lightdm.conf /opt/${repo}/users.conf ${mountpoint}/etc/lightdm/
-    if [ "${autostart}" == "n" ]; then
+    if [ "${autostart}" == "y" ]; then
       arch-chroot ${mountpoint} systemctl enable lightdm-plymouth.service
     fi
   else

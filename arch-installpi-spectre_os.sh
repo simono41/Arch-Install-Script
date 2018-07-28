@@ -40,21 +40,21 @@ else
     apt-get install bsdtar dosfstools -y
 fi
 
-if cat /proc/mounts | grep /dev/"$device"1 > /dev/null; then
+if cat /proc/mounts | grep ${device}1 > /dev/null; then
     echo "gemountet"
-    umount /dev/"$device"1
+    umount ${device}1
 else
     echo "nicht gemountet"
 fi
 
-if cat /proc/mounts | grep /dev/"$device"2 > /dev/null; then
+if cat /proc/mounts | grep ${device}2 > /dev/null; then
     echo "gemountet"
-    umount /dev/"$device"2
+    umount ${device}2
 else
     echo "nicht gemountet"
 fi
 
-fdisk -W always /dev/"$device" <<EOT
+fdisk -W always ${device} <<EOT
 o
 p
 n
@@ -75,14 +75,14 @@ EOT
 
 sleep 1
 
-mkfs.vfat /dev/"$device"1
+mkfs.vfat ${device}1
 mkdir -p boot
-mount /dev/"$device"1 boot
+mount ${device}1 boot
 
 
-mkfs.ext4 /dev/"$device"2
+mkfs.ext4 ${device}2
 mkdir -p root
-mount /dev/"$device"2 root
+mount ${device}2 root
 
 tar -Ipixz -xpf out/arch-spectre_os-*-armV7.tar.pxz -C root
 sync

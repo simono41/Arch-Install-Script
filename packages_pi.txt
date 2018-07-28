@@ -592,6 +592,7 @@ perl-xml-sax-base
 pidgin
 pinentry
 pixman
+pixz
 pkcs11-helper
 pkgconf
 polkit

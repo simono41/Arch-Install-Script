@@ -743,6 +743,7 @@ phonon-qt5-gstreamer
 pidgin
 pinentry
 pixman
+pixz
 pkcs11-helper
 pkgconf
 polkit

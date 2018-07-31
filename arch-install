@@ -863,6 +863,8 @@ function abfrage() {
 
     [[ -z "${device}" ]] && device=/dev/sda
 
+    [[ -z "${raid}" ]] && raid=n
+
     [[ -z "${dateisystem}" ]] && dateisystem=btrfs
 
     [[ -z "${swapspeicher}" ]] && swapspeicher=8G

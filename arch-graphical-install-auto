@@ -588,16 +588,17 @@ setcap cap_net_raw+ep /bin/ping
 
 # openvpn-reconnect
 
-cp /opt/${repo}/openvpn-reconnect /usr/bin/openvpn-reconnect
-chmod +x /usr/bin/openvpn-reconnect
-cp /opt/${repo}/openvpn-reconnect-systemd.sh /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
-chmod +x /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
+#cp /opt/${repo}/openvpn-reconnect /usr/bin/openvpn-reconnect
+#chmod +x /usr/bin/openvpn-reconnect
+#cp /opt/${repo}/openvpn-reconnect-systemd.sh /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
+#chmod +x /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
 
 su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
 if [ "$version" != "pi" ] && [ "$packageupdate" != "skip" ]; then
   su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
   su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
   plymouth-set-default-theme -R dark-arch
+  su "$username" -c "aurinstaller "openvpn-reconnect""
 fi
 
 # nano

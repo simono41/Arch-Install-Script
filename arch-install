@@ -1175,7 +1175,7 @@ done
 
 if [ "${fastinstall}" == "y" ]; then
   gitclone
-  /opt/${repo}/arch-install "${startparameter}fastinstallnext=y "
+  /opt/${repo}/arch-install "${1}fastinstallnext=y "
   exit 0
 elif [ "${phaseone}" != "n" ] && [ "${fastinstallnext}" != "y" ]
 then
@@ -1197,7 +1197,7 @@ then
           echo "Es kann sein das dass Programm nicht korrekt funktioniert!!!"
         fi
         gitclone
-        /opt/${repo}/arch-install phaseone=n ${version}
+        /opt/${repo}/arch-install "${1}phaseone=n "
         exit 0
       fi
     fi

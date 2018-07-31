@@ -11,7 +11,7 @@ user="user1"
 hostname="$(cat /etc/hostname)"
 [[ -z "${version}" ]] && version="${hostname#*-}"
 
-#fastinstall arch-install fastinstall ${name} ${Partition} ${boot} ${device} ${dateisystem} ${raid} ${swap} ${swapspeicher} ${swapverschluesselung} ${offline} ${autodisk} ${autodiskdevice} ${autostart} ${verschluesselung} ${usbkey} ${usbkeydevice} ${x11vnc} ${extraparameter}
+#fastinstall arch-install fastinstall ${name} ${Partition} ${boot} ${device} ${dateisystem} ${raid} ${swap} ${swapspeicher} ${swapverschluesselung} ${offline} ${autodisk} ${autodiskdevice} ${autostart} ${verschluesselung} ${usbkey} ${usbkeydevice} ${x11vnc} ${extraparameter} ${skipcheck}
 
 
 
@@ -1153,7 +1153,7 @@ function abfrage() {
   echo "ROOT-Partition = ${device}${rootpartitionnummer}"
 
   #
-  if [ "skipcheck" != "y" ]; then
+  if [ "${skipcheck}" != "y" ]; then
     read -p "Are all the details correct ?: [y/N] " sicherheitsabfrage
     if [ "$sicherheitsabfrage" != "y" ]
     then

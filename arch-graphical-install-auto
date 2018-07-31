@@ -810,6 +810,7 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
       su "$username" -c "aurinstaller libbaseencode"
       su "$username" -c "aurinstaller libcotp"
       su "$username" -c "aurinstaller otpclient"
+      su "$username" -c "aurinstaller minecraft-launcher"
     fi
 
     # install-firacode

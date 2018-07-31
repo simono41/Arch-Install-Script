@@ -38,6 +38,7 @@ if ! [ -z "${2}" ]; then
     startparameter="${startparameter}${1} "
     shift
   done
+  start=root
 fi
 
 function minimalinstallation() {
@@ -1170,14 +1171,23 @@ function abfrage() {
 # Begin the Script!!!
 
 
-
-# for-schleife
-for wort in ${1}
-do
-  echo "$wort"
-  export ${wort%=*}=${wort#*=}
-  echo "Parameter ${wort%=*} = ${wort#*=}"
-done
+if [ "${start}" == "root" ]; then
+  # for-schleife
+  for wort in ${startparameter}
+  do
+    echo "$wort"
+    export ${wort%=*}=${wort#*=}
+    echo "Parameter ${wort%=*} = ${wort#*=}"
+  done
+else
+  # for-schleife
+  for wort in ${1}
+  do
+    echo "$wort"
+    export ${wort%=*}=${wort#*=}
+    echo "Parameter ${wort%=*} = ${wort#*=}"
+  done
+fi
 
 if [ "${fastinstall}" == "y" ] && [ "${fastinstallnext}" != "y" ]; then
   gitclone

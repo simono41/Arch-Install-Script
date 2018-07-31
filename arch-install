@@ -1173,7 +1173,7 @@ do
   echo "Parameter ${wort%=*} = ${wort#*=}"
 done
 
-if [ "${fastinstall}" == "y" ]; then
+if [ "${fastinstall}" == "y" ] && [ "${fastinstallnext}" != "y" ]; then
   gitclone
   /opt/${repo}/arch-install "${1}fastinstallnext=y "
   exit 0

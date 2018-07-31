@@ -8,32 +8,12 @@ WEBADDRESS="ssh://git@5.83.162.84:22/home/git/SpectreOS"
 repo="SpectreOS"
 user="user1"
 
-version="${2}"
 hostname="$(cat /etc/hostname)"
 [[ -z "${version}" ]] && version="${hostname#*-}"
 
 #fastinstall arch-install fastinstall ${version} ${name} ${Partition} ${device} ${dateisystem} ${swap} ${swapspeicher} ${swapverschluesselung} ${offline} ${autodiskdevice} ${autostart} ${extraparameter}
 
-if [ "${1}" == "fastinstall" ]; then
-  # while-schleife
-  while (( "$#" ))
-  do
-    echo ${1}
-    export ${1}="y"
-    startparameter="${startparameter}${1} "
-    shift
-  done
-fi
 
-if [ "${1}" == "fastinstallnext" ]; then
-  # for-schleife
-  for wort in ${3}
-  do
-    echo "$wort"
-    export ${wort%=*}=${wort#*=}
-    echo "Parameter ${wort%=*} = ${wort#*=}"
-  done
-fi
 
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root" 1>&2
@@ -49,6 +29,16 @@ if [[ $EUID -ne 0 ]]; then
   exit 0
 fi
 echo "Logged in as root"
+
+if ! [ -z "${2}" ]; then
+  while (( "$#" ))
+  do
+    echo ${1}
+    export ${1}="y"
+    startparameter="${startparameter}${1} "
+    shift
+  done
+fi
 
 function minimalinstallation() {
 
@@ -863,7 +853,7 @@ function abfrage() {
   # Lade Deutsches Tastaturlayout
   loadkeys de
 
-  if [ "${1}" == "fastinstallnext" ]; then
+  if [ "${fastinstallnext}" == "y" ]; then
 
     [[ -z "${name}" ]] && name=arch-linux
 
@@ -1175,7 +1165,6 @@ function abfrage() {
 
 
 
-
 # for-schleife
 for wort in ${1}
 do
@@ -1184,11 +1173,11 @@ do
   echo "Parameter ${wort%=*} = ${wort#*=}"
 done
 
-if [ "${1}" == "fastinstall" ]; then
+if [ "${fastinstall}" == "y" ]; then
   gitclone
-  /opt/${repo}/arch-install fastinstallnext ${version} "${startparameter}"
+  /opt/${repo}/arch-install "${startparameter}fastinstallnext=y "
   exit 0
-elif [ "${phaseone}" != "n" ]
+elif [ "${phaseone}" != "n" ] && [ "${fastinstallnext}" != "y" ]
 then
   if wget -qO- ipv4.icanhazip.com 1>/dev/null 2>&1; then
     read -p "Should I look at the internet for a new install script and then run it ?: [Y/n] " update

@@ -11,7 +11,7 @@ user="user1"
 hostname="$(cat /etc/hostname)"
 [[ -z "${version}" ]] && version="${hostname#*-}"
 
-#fastinstall arch-install fastinstall ${version} ${name} ${Partition} ${device} ${dateisystem} ${swap} ${swapspeicher} ${swapverschluesselung} ${offline} ${autodiskdevice} ${autostart} ${extraparameter}
+#fastinstall arch-install fastinstall ${name} ${Partition} ${boot} ${device} ${dateisystem} ${raid} ${swap} ${swapspeicher} ${swapverschluesselung} ${offline} ${autodisk} ${autodiskdevice} ${autostart} ${verschluesselung} ${usbkey} ${usbkeydevice} ${x11vnc} ${extraparameter}
 
 
 
@@ -872,6 +872,10 @@ function abfrage() {
     [[ -z "${swapverschluesselung}" ]] && swapverschluesselung=n
 
     [[ -z "${autostart}" ]] && autostart=n
+
+    [[ -z "${usbkeydevice}" ]] && usbkeydevice=/dev/sdb1
+
+    [[ -z "${autodiskdevice}" ]] && autodiskdevice=/dev/sdb1
 
     if [ "${offline}" != "n" ]
     then

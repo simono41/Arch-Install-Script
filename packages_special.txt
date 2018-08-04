@@ -1,5 +1,6 @@
 a52dec
 aalib
+abiword
 accerciser
 accountsservice
 acl
@@ -7,6 +8,7 @@ acpi
 acpid
 adwaita-icon-theme
 afpfs-ng
+aiksaurus
 aircrack-ng
 alsa-firmware
 alsa-lib
@@ -30,6 +32,7 @@ argon2
 arp-scan
 arptables
 aspell
+aspell-de
 at-spi2-atk
 at-spi2-core
 atk
@@ -85,6 +88,7 @@ cheese
 chromaprint
 chromium
 cifs-utils
+cinnamon-translations
 clang
 clucene
 clutter
@@ -95,6 +99,7 @@ cogl
 colord
 colord-gtk
 colord-sane
+compface
 compiler-rt
 confuse
 coreutils
@@ -138,6 +143,7 @@ dosfstools
 dotconf
 double-conversion
 dsniff
+duktape
 dvd+rw-tools
 dvgrab
 e2fsprogs
@@ -214,6 +220,7 @@ gd
 gdbm
 gdk-pixbuf2
 gdm
+gdome2
 gedit
 gedit-code-assistance
 gegl
@@ -237,6 +244,7 @@ glibc
 glibmm
 glu
 glusterfs
+gmetadom
 gmime3
 gmp
 gnome-autoar
@@ -301,6 +309,7 @@ gnome-weather
 gnupg
 gnutls
 gobject-introspection-runtime
+goffice
 gom
 gparted
 gperftools
@@ -308,6 +317,7 @@ gpgme
 gpm
 gptfdisk
 graphene
+graphicsmagick
 graphite
 graphviz
 grep
@@ -338,6 +348,7 @@ gtk-vnc
 gtk-xfce-engine
 gtk2
 gtk3
+gtkmathview
 gtkmm
 gtkmm3
 gtksourceview3
@@ -449,6 +460,7 @@ kxmlgui
 ladspa
 lame
 lapack
+lasem
 lcms
 lcms2
 ldb
@@ -638,6 +650,7 @@ libchamplain
 libcmis
 libcroco
 libcryptui
+libcss
 libcue
 libcups
 libcurl-compat
@@ -653,6 +666,7 @@ libdca
 libde265
 libdmapsharing
 libdmx
+libdom
 libdrm
 libdv
 libdvbpsi
@@ -704,6 +718,7 @@ libgusb
 libgweather
 libgxps
 libheif
+libhubbub
 libibus
 libical
 libice
@@ -765,7 +780,10 @@ libnl
 libnm
 libnm-glib
 libnotify
+libnsbmp
+libnsgif
 libnsl
+libnsutils
 liboauth
 libodfgen
 libofa
@@ -775,9 +793,11 @@ libopenraw
 libopenshot
 libopenshot-audio
 libosinfo
+libots
 libpackagekit-glib
 libpagemaker
 libpaper
+libparserutils
 libpcap
 libpciaccess
 libpeas
@@ -863,6 +883,7 @@ libvorbis
 libvpx
 libvpx1.3
 libwacom
+libwapcaplet
 libwbclient
 libwebp
 libwmf
@@ -923,6 +944,7 @@ lightdm
 lightdm-gtk-greeter
 lightdm-gtk-greeter-settings
 lightsoff
+link-grammar
 links
 linux
 linux-api-headers
@@ -932,6 +954,7 @@ llvm-libs
 lm_sensors
 lmdb
 logrotate
+loudmouth
 lpsolve
 lsb-release
 lua
@@ -995,6 +1018,7 @@ net-tools
 netbeans
 netcf
 netctl
+netsurf
 nettle
 network-manager-applet
 networkmanager
@@ -1054,6 +1078,7 @@ pam
 pambase
 pango
 pangomm
+pangox-compat
 parted
 patch
 patchutils
@@ -1122,6 +1147,7 @@ pptpclient
 procps-ng
 protobuf
 protobuf-c
+psiconv
 psmisc
 pulseaudio
 pulseaudio-alsa
@@ -1340,6 +1366,7 @@ sudo
 suitesparse
 sushi
 swell-foop
+sylpheed
 sysfsutils
 syslinux
 sysprof
@@ -1383,6 +1410,7 @@ tslib
 ttf-bitstream-vera
 ttf-dejavu
 ttf-droid
+ttf-freefont
 ttf-inconsolata
 ttf-indic-otf
 ttf-liberation
@@ -1433,7 +1461,9 @@ wireshark-common
 wireshark-gtk
 wmctrl
 woff2
+wol
 wpa_supplicant
+wv
 wxgtk-common
 wxgtk3
 x11vnc

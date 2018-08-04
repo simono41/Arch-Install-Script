@@ -1,5 +1,6 @@
 a52dec
 aalib
+abiword
 accountsservice
 acl
 acpi
@@ -21,6 +22,7 @@ archlinux-appstream-data
 archlinux-keyring
 argon2
 aspell
+aspell-de
 at-spi2-atk
 at-spi2-core
 atk
@@ -520,6 +522,7 @@ ncurses
 neon
 net-snmp
 netbeans
+netsurf
 nettle
 network-manager-applet
 networkmanager
@@ -688,6 +691,7 @@ sshfs
 startup-notification
 subversion
 sudo
+sylpheed
 sysfsutils
 systemd
 systemd-sysvcompat

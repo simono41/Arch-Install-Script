@@ -507,6 +507,10 @@ chmod 755 /usr/bin/youtube-downloader
 cp /opt/${repo1}/youtube.sh /usr/bin/youtube
 chmod 755 /usr/bin/youtube
 
+# youtube-pi
+cp /opt/${repo1}/youtube-pi.sh /usr/bin/youtube-pi
+chmod 755 /usr/bin/youtube-pi
+
 # write-partitions manager
 cp /opt/${repo}/write_cowspace /usr/bin/write_cowspace
 chmod 755 /usr/bin/write_cowspace

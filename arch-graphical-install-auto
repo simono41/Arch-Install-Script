@@ -816,6 +816,8 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
       su "$username" -c "aurinstaller libcotp"
       su "$username" -c "aurinstaller otpclient"
       su "$username" -c "aurinstaller minecraft-launcher"
+      su "$username" -c "aurinstaller libc++"
+      su "$username" -c "aurinstaller discord"
     fi
 
     # install-firacode

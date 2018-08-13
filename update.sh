@@ -24,6 +24,7 @@ function gitclone() {
     if [ -d "/opt/${repo}" ]; then
         echo "${repo} existiert bereits!!!"
         cd /opt/${repo}
+        git reset --hard
         git pull
     else
         git clone ${WEBADDRESS} /opt/${repo}

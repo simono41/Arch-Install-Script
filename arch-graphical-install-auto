@@ -46,6 +46,7 @@ function gitclone() {
     if [ -d "/opt/${repo}" ]; then
         echo "${repo} existiert bereits!!!"
         cd /opt/${repo}
+        git reset --hard
         git pull
     else
         git clone ${WEBADDRESS} /opt/${repo}
@@ -53,6 +54,7 @@ function gitclone() {
     if [ -d "/opt/${repo1}" ]; then
         echo "${repo1} existiert bereits!!!"
         cd /opt/${repo1}
+        git reset --hard
         git pull
     else
         git clone ${WEBADDRESS1} /opt/${repo1}
@@ -695,6 +697,7 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
     if [ -d /opt/beautysh ];then
         echo "Bereits vorhanden!!!"
         cd /opt/beautysh
+        git reset --hard
         git pull
     else
         git clone https://github.com/bemeurer/beautysh /opt/beautysh
@@ -715,6 +718,7 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
     if [ -d /opt/powerline-shell-fonts ];then
         echo "Bereits vorhanden!!!"
         cd /opt/powerline-shell-fonts
+        git reset --hard
         git pull
     else
         git clone https://github.com/powerline/fonts.git /opt/powerline-shell-fonts
@@ -727,6 +731,7 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
     if [ -d /opt/uncrustify ];then
         echo "Bereits vorhanden!!!"
         cd /opt/uncrustify
+        git reset --hard
         git pull
     else
         git clone https://github.com/uncrustify/uncrustify.git /opt/uncrustify
@@ -748,6 +753,7 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
     if [ -d /opt/conky ];then
         echo "Bereits vorhanden!!!"
         cd /opt/conky
+        git reset --hard
         git pull
     else
         git clone https://github.com/brndnmtthws/conky.git /opt/conky

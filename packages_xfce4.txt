@@ -129,6 +129,7 @@ dialog
 diffutils
 ding-libs
 djvulibre
+dkms
 dleyna-connector-dbus
 dleyna-core
 dleyna-renderer
@@ -1029,11 +1030,13 @@ networkmanager-vpnc
 nfs-utils
 nfsidmap
 nilfs-utils
+ninja
 nm-connection-editor
 nmap
 node-gyp
 nodejs
 noto-fonts
+noto-fonts-emoji
 noto-fonts-extra
 npm
 npth
@@ -1153,6 +1156,7 @@ pulseaudio
 pulseaudio-alsa
 pulseaudio-bluetooth
 pulseaudio-zeroconf
+putty
 pygobject-devel
 pygobject2-devel
 pygtk
@@ -1201,6 +1205,8 @@ python-prompt_toolkit
 python-psutil
 python-ptyprocess
 python-pycodestyle
+python-pycups
+python-pycurl
 python-pyflakes
 python-pygments
 python-pyinotify
@@ -1256,6 +1262,7 @@ python2-ply
 python2-pyasn1
 python2-pyasn1-modules
 python2-pycparser
+python2-pyhamcrest
 python2-pyopenssl
 python2-pyparsing
 python2-service-identity
@@ -1370,6 +1377,7 @@ sylpheed
 sysfsutils
 syslinux
 sysprof
+system-config-printer
 systemd
 systemd-sysvcompat
 t1lib
@@ -1454,6 +1462,8 @@ wget
 which
 whois
 wildmidi
+wireguard-dkms
+wireguard-tools
 wireless-regdb
 wireless_tools
 wireshark-cli

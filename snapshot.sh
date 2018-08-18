@@ -97,6 +97,21 @@ elif [ "restore" == "$1" ]; then
 
     #reboot
 
+elif [ "delete" == "$1" ]; then
+
+    while (( "$(expr $# - 1)" ))
+    do
+        pfad="${2}"
+
+        if btrfs subvolume delete /run/btrfs-root/__snapshot/${pfad}\@* ;then
+          echo "${pfad} erfolgreich gelöscht!!!"
+        else
+          echo "${pfad} konnte nicht gefunden werden!!!"
+        fi
+
+        shift
+    done
+
 else
 
     echo "bash ./snapshot.sh PARAMETER PFAD"
@@ -107,3 +122,5 @@ else
     btrfs subvolume list -p /
 
 fi
+
+echo "Fertig !!!"

@@ -9,7 +9,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 echo "Als root Angemeldet"
 
-if [ "make" == "$1" ] || [ "makeboot" == "$1" ]; then
+if [ "make" == "$1" ]; then
 
     while (( "$(expr $# - 1)" ))
     do
@@ -41,9 +41,6 @@ if [ "make" == "$1" ] || [ "makeboot" == "$1" ]; then
     if [ "${rootsnapshot}" == "y" ]; then
         #reset-fstab
         cp /etc/fstab.example /etc/fstab
-    fi
-
-    if [ "makeboot" == "y" ]; then
         #stable-snapshot-boot
         if [ -f "/boot/arch-uefi.conf.example" ] && [ "${rootsnapshot}" == "y" ]; then
 

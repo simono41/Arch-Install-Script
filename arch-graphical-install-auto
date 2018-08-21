@@ -592,6 +592,13 @@ chmod +x /usr/bin/aurupdater
 # setcap-ping
 setcap cap_net_raw+ep /bin/ping
 
+# systemd-manjaro_update-bootloader
+cp /opt/${repo}/update-bootloader ${mountpoint}/usr/bin/update-bootloader
+chmod +x /usr/bin/update-bootloader
+
+
+
+
 # openvpn-reconnect
 
 #cp /opt/${repo}/openvpn-reconnect /usr/bin/openvpn-reconnect

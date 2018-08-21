@@ -3,8 +3,8 @@
 set -ex
 
 
-kernel1="$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f2)"
-linuz1="$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f2)"
+kernel1="$(echo $(find /boot/ -name "initramfs*$(uname -m).img") | cut -d" " -f2)"
+linuz1="$(echo $(find /boot/ -name "vmlinuz*$(uname -m)") | cut -d" " -f2)"
 kernel="${kernel1#/*/}"
 linuz="${linuz1#/*/}"
 

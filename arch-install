@@ -378,6 +378,11 @@ function installation {
           minimalinstallation
         else
           unsquashfs -f -d ${mountpoint} ${installationsfehler}
+          arch-chroot ${mountpoint} <<EOT
+cd /opt/${repo}/
+git pull
+EOT
+          arch-chroot ${mountpoint} pacman -Syu $(cat /opt/${repo}/packages_${version}.txt) --needed --noconfirm
         fi
       fi
     else
@@ -408,8 +413,9 @@ function installation {
     parameter="${parameter}usbsecret "
   fi
 
-  if ! [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ] || [ "${version}" == "lite" ]; then
-
+  if [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ] || [ "${version}" == "lite" ]; then
+    echo "überspringe plymouth hook!!!"
+  else
     if [ "${verschluesselung}" == "y" ]; then
       parameter="${parameter}plymouth-encrypt "
     else

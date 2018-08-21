@@ -408,14 +408,18 @@ function installation {
     parameter="${parameter}usbsecret "
   fi
 
-  if [ "${verschluesselung}" == "y" ]; then
-    parameter="${parameter}plymouth-encrypt "
-  else
-    parameter="${parameter}plymouth "
+  if ! [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ] || [ "${version}" == "lite" ]; then
+
+    if [ "${verschluesselung}" == "y" ]; then
+      parameter="${parameter}plymouth-encrypt "
+    else
+      parameter="${parameter}plymouth "
+    fi
+
   fi
 
   echo ""
-  if [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ]; then
+  if [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ] || [ "${version}" == "lite" ]; then
     echo "MODULES=\"nouveau i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
     echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
     echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf

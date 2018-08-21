@@ -145,7 +145,7 @@ function system() {
 
             if [ "${version}" == "libre" ] || [ "${version}" == "lite" ] || [ "${version}" == "manjaro" ]; then
                 echo "MODULES=\"nouveau i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-                echo "HOOKS=\"base udev archiso block filesystems keyboard plymouth\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+                echo "HOOKS=\"base udev archiso block filesystems keyboard\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 

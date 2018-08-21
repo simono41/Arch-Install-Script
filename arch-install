@@ -267,6 +267,7 @@ function cron() {
   if [ "${version}" == "manjaro" ]; then
     echo "0 * * * * /usr/bin/update-bootloader" >> ${mountpoint}/var/spool/cron/root
   fi
+  echo "0 20 * * * /usr/bin/update-packages" >> ${mountpoint}/var/spool/cron/root
 
 }
 

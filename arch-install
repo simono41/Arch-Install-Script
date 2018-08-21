@@ -326,8 +326,8 @@ function freshinstall {
 arch-chroot ${mountpoint} <<EOT
 cd /opt/${repo}/
 git pull
+pacman -Syu $(cat /opt/${repo}/packages_${version}.txt) --needed --noconfirm
 EOT
-arch-chroot ${mountpoint} pacman -Syu $(cat /opt/${repo}/packages_${version}.txt) --needed --noconfirm
 }
 
 function installation {

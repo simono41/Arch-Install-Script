@@ -2,12 +2,15 @@
 
 set -ex
 
+
 kernel1="$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f2)"
-linuz1="$(find /boot/ -name "vmlinuz*")"
+linuz1="$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f1)"
 kernel="${kernel1#/*/}"
 linuz="${linuz1#/*/}"
+
 kernelback1="$(find /boot/ -name "initramfs*-fallback.img")"
 kernelback="${kernelback1#/*/}"
+
 
 echo "Kernel: ${kernel}"
 echo "Linuz: ${linuz}"

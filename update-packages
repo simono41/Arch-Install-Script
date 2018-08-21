@@ -9,6 +9,9 @@ if [[ $EUID -ne 0 ]]; then
 fi
 echo "Als root Angemeldet"
 
+hostname="$(cat /etc/hostname)"
+[[ -z "${version}" ]] && version="${hostname#*-}"
+
 repo=SpectreOS
 repo1=shell-scripte
 

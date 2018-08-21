@@ -947,7 +947,6 @@ vibrancy-icons-teal
 vid.stab
 viewnior
 virtualbox
-virtualbox-guest-utils
 vlc
 volume_key
 vpnc

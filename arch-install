@@ -324,6 +324,7 @@ function removeinstaller {
 
 function freshinstall {
 if [ "${update}" != "n" ] && [ "${offline}" != "n" ]; then
+  cp -v /opt/${repo}/update-packages ${mountpoint}/usr/bin/update-packages
   arch-chroot ${mountpoint} update-packages
 fi
 }

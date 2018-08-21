@@ -800,8 +800,8 @@ function systemdboot() {
 
   #rootsub=$(btrfs subvolume list /mnt | awk 'NR<0 && NR>2 {print $2}')
   if [ "${version}" == "manjaro" ]; then
-    kernel1="$(find /boot/ -name "initramfs*$(uname -m).img")"
-    linuz1="$(find /boot/ -name "vmlinuz*$(uname -m)")"
+    kernel1="$(echo $(find /boot/ -name "initramfs*$(uname -m).img") | cut -d" " -f2)"
+    linuz1="$(echo $(find /boot/ -name "vmlinuz*$(uname -m)") | cut -d" " -f2)"
     kernel="${kernel1#/*/}"
     linuz="${linuz1#/*/}"
     kernelback1="$(find /boot/ -name "initramfs*$(uname -m)-fallback.img")"
@@ -1345,7 +1345,11 @@ if [ "y" != "${noinstall}" ] && [ -z "${installationsfehler}" ]; then
     mkdir -p ${mountpoint}/etc/lightdm/
     cp /opt/${repo}/Xsession /opt/${repo}/keys.conf /opt/${repo}/lightdm-gtk-greeter.conf /opt/${repo}/lightdm.conf /opt/${repo}/users.conf ${mountpoint}/etc/lightdm/
     if [ "${autostart}" == "y" ]; then
-      arch-chroot ${mountpoint} systemctl enable lightdm-plymouth.service
+      if [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ] || [ "${version}" == "lite" ]; then
+        arch-chroot ${mountpoint} systemctl enable lightdm.service
+      else
+        arch-chroot ${mountpoint} systemctl enable lightdm-plymouth.service
+      fi
     fi
   else
     echo "lightdm nicht vorhanden!!!"

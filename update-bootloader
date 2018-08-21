@@ -8,7 +8,7 @@ linuz1="$(echo $(find /boot/ -name "vmlinuz*$(uname -m)") | cut -d" " -f2)"
 kernel="${kernel1#/*/}"
 linuz="${linuz1#/*/}"
 
-kernelback1="$(find /boot/ -name "initramfs*-fallback.img")"
+kernelback1="$(find /boot/ -name "initramfs*$(uname -m)-fallback.img")"
 kernelback="${kernelback1#/*/}"
 
 

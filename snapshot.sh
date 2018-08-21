@@ -9,11 +9,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 echo "Als root Angemeldet"
 
-if [ "makeboot" == "$1" ]; then
-    makeboot=y
-fi
-
-if [ "make" == "$1" ] || [ "makeboot" == "y" ]; then
+if [ "make" == "$1" ] || [ "makeboot" == "$1" ]; then
 
     while (( "$(expr $# - 1)" ))
     do

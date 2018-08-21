@@ -606,7 +606,9 @@ chmod +x /usr/bin/update-bootloader
 #cp /opt/${repo}/openvpn-reconnect-systemd.sh /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
 #chmod +x /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
 
-su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
+if [ "$version" != "manjaro" ]; then
+  su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
+fi
 if [ "$version" != "pi" ] && [ "$packageupdate" != "skip" ]; then
   su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
   su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""

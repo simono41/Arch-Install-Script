@@ -143,6 +143,10 @@ function system() {
             echo "blacklist nouveau" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist_nouveau.conf
             echo "install dell-smbios /bin/false" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist-dell-smbios.conf
 
+            if [ "${version}" != "manjaro" ]; then
+              plymouth=plymouth
+            fi
+
             if [ "${version}" == "libre" ] || [ "${version}" == "lite" ]; then
                 echo "MODULES=\"nouveau i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "HOOKS=\"base udev archiso block filesystems keyboard\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
@@ -151,7 +155,7 @@ function system() {
 
             else
                 echo "MODULES=\"nvidia nvidia_modeset nvidia_uvm nvidia_drm i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
-                echo "HOOKS=\"base udev archiso block filesystems keyboard plymouth\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
+                echo "HOOKS=\"base udev archiso block filesystems keyboard ${plymouth}\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf /etc/modprobe.d/blacklist_nouveau.conf\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
 

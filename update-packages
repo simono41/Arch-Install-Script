@@ -12,21 +12,34 @@ echo "Als root Angemeldet"
 hostname="$(cat /etc/hostname)"
 [[ -z "${version}" ]] && version="${hostname#*-}"
 
+WEBADDRESS="ssh://git@5.83.162.84:22/home/git/SpectreOS"
+WEBADDRESS1="ssh://git@5.83.162.84:22/home/git/shell-scripte"
+
 repo=SpectreOS
 repo1=shell-scripte
 
-cd /opt/${repo}
-git reset --hard
-git pull
+if [ -d "/opt/${repo}" ]; then
+    echo "${repo} existiert bereits!!!"
+    cd /opt/${repo}
+    git reset --hard
+    git pull
+else
+    git clone ${WEBADDRESS} /opt/${repo}
+fi
+if [ -d "/opt/${repo1}" ]; then
+    echo "${repo1} existiert bereits!!!"
+    cd /opt/${repo1}
+    git reset --hard
+    git pull
+else
+    git clone ${WEBADDRESS1} /opt/${repo1}
+fi
+cd /
 
 function standartinstallation() {
     pacman -Syu $(cat /opt/${repo}/packages_${version}.txt) --needed --noconfirm --ignore linux
 }
 
 standartinstallation
-
-cd /opt/${repo1}
-git reset --hard
-git pull
 
 echo "Fertig!!!"

@@ -609,12 +609,12 @@ chmod +x /usr/bin/update-bootloader
 if [ "$version" != "manjaro" ]; then
   su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
 fi
-if [ "$version" != "pi" ] && [ "$packageupdate" != "skip" ]; then
+if [ "$version" != "pi" ] && [ "$version" != "manjaro" ] && [ "$packageupdate" != "skip" ]; then
   su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
   su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
   plymouth-set-default-theme -R dark-arch
-  su "$username" -c "aurinstaller "openvpn-reconnect""
 fi
+su "$username" -c "aurinstaller "openvpn-reconnect""
 
 # nano
 echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc

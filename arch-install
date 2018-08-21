@@ -830,15 +830,11 @@ function systemdboot() {
   echo "initrd   /%KERNEL%" >> ${mountpoint}/boot/arch-uefi.conf.example
   echo "options  root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 splash" >> ${mountpoint}/boot/arch-uefi.conf.example
 
-  if [ "${booteintraege}" != "n" ]; then
+  echo "Additional boot entries are created !!!"
 
-    echo "Additional boot entries are created !!!"
+  arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "Linux Boot Manager"
 
-    arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "Linux Boot Manager"
-
-    arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \\${linuz} -L "Arch Linux efistub" -u "initrd=/${kernel} root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 splash"
-
-  fi
+  arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \\${linuz} -L "Arch Linux efistub" -u "initrd=/${kernel} root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 splash"
 
   if [ "${version}" == "manjaro" ]; then
     cp /opt/${repo}/update-bootloader ${mountpoint}/usr/bin/update-bootloader
@@ -861,8 +857,6 @@ function abfrage() {
     [[ -z "${name}" ]] && name=arch-linux
 
     [[ -z "${Partition}" ]] && Partition=bios
-
-    [[ -z "${boot}" ]] && boot=grub
 
     [[ -z "${device}" ]] && device=/dev/sda
 
@@ -919,16 +913,6 @@ function abfrage() {
       read -p "How would you like to have your hard drive partitioned?: [uefi/BIOS] " Partition
       [[ -z "${Partition}" ]] && Partition=bios
     fi
-
-    if [ "${Partition}" == "uefi" ]
-    then
-      read -p "Should be booted with systemd or with grub? [systemd/GRUB] : " boot
-      if [ "${boot}" == "systemd" ]; then
-        read -p "Should additional boot entries be created? [Y/n] : " booteintraege
-      fi
-
-    fi
-    [[ -z "${boot}" ]] && boot=grub
 
     fdisk -l
     read -p "Specify a hard disk: /dev/sda " device
@@ -1288,13 +1272,9 @@ then
     fi
   fi
   echo ""
-  if [ "${boot}" == "grub" ]
-  then
-    arch-chroot ${mountpoint} grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="${repo}" --recheck
-    arch-chroot ${mountpoint} grub-mkconfig -o /boot/grub/grub.cfg
-  else
-    systemdboot
-  fi
+  arch-chroot ${mountpoint} grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="${repo}" --recheck
+  arch-chroot ${mountpoint} grub-mkconfig -o /boot/grub/grub.cfg
+  systemdboot
   removeinstaller
   echo "Finished"
 elif [ "${Partition}" == "bios" ]; then

@@ -152,8 +152,8 @@ function secureumount() {
     fi
   fi
 
-  if cat /proc/mounts | grep ${device}1 > /dev/null; then
-    umount ${device}1
+  if cat /proc/mounts | grep ${device}${m2ssd}1 > /dev/null; then
+    umount ${device}${m2ssd}1
   fi
 
   if [ -n "${usbkeydevice}" ]; then

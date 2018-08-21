@@ -458,6 +458,7 @@ kwallet
 kwidgetsaddons
 kwindowsystem
 kxmlgui
+l-smash
 ladspa
 lame
 lapack
@@ -680,6 +681,7 @@ libebur128
 libedit
 libelf
 libepoxy
+libepubgen
 libetonyek
 libevdev
 libevent
@@ -734,6 +736,7 @@ libinput
 libiptcdata
 libisoburn
 libisofs
+libixion
 libjpeg-turbo
 libjpeg6-turbo
 libkate
@@ -793,6 +796,7 @@ libomxil-bellagio
 libopenraw
 libopenshot
 libopenshot-audio
+liborcus
 libosinfo
 libots
 libpackagekit-glib
@@ -819,6 +823,7 @@ libqmi
 libquicktime
 libquvi
 libquvi-scripts
+libqxp
 libraqm
 libraw
 libraw1394
@@ -895,8 +900,6 @@ libwpg
 libwps
 libwrap
 libx11
-libx264
-libx264-all
 libx86emu
 libxau
 libxaw
@@ -951,6 +954,7 @@ linux
 linux-api-headers
 linux-firmware
 lirc
+llvm
 llvm-libs
 lm_sensors
 lmdb
@@ -1477,6 +1481,7 @@ wv
 wxgtk-common
 wxgtk3
 x11vnc
+x264
 x265
 xarchiver
 xcb-proto

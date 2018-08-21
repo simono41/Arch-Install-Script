@@ -593,9 +593,13 @@ chmod +x /usr/bin/aurupdater
 setcap cap_net_raw+ep /bin/ping
 
 # systemd-manjaro_update-bootloader
-cp /opt/${repo}/update-bootloader ${mountpoint}/usr/bin/update-bootloader
+cp /opt/${repo}/update-bootloader /usr/bin/update-bootloader
 chmod +x /usr/bin/update-bootloader
 
+# update-packages
+
+cp /opt/${repo}/update-packages /usr/bin/update-packages
+chmod +x /usr/bin/update-packages
 
 
 

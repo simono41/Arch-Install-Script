@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -ex
+
+repo=SpectreOS
+repo1=shell-scripte
+
+cd /opt/${repo}
+git reset --hard
+git pull
+
+function standartinstallation() {
+    pacman -Syu $(cat /opt/${repo}/packages_${version}.txt) --needed --noconfirm --ignore linux
+}
+
+standartinstallation
+
+cd /opt/${repo1}
+git reset --hard
+git pull
+
+echo "Fertig!!!"

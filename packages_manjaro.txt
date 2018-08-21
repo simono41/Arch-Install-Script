@@ -1057,7 +1057,6 @@ yelp
 yelp-xsl
 youtube-dl
 zenity
-zensu
 zeromq
 zip
 zita-alsa-pcmi

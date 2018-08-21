@@ -323,7 +323,7 @@ function removeinstaller {
 }
 
 function freshinstall {
-if [ "${update}" != "n" ] && [ "${offline}" == "n" ]; then
+if [ "${update}" != "n" ] && [ "${offline}" != "n" ]; then
   arch-chroot ${mountpoint} "cd /opt/${repo}/; git pull;  pacman -Syu $(cat /opt/${repo}/packages_${version}.txt) --needed --noconfirm"
 fi
 }

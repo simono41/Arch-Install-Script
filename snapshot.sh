@@ -52,7 +52,7 @@ if [ "make" == "$1" ] || [ "makeboot" == "y" ]; then
         if [ -f "/boot/arch-uefi.conf.example" ] && [ "${rootsnapshot}" == "y" ]; then
 
             cp "$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f2)" /boot/initramfs-linux-stable.img
-            cp "$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f1)" /boot/vmlinuz-stable
+            cp "$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f2)" /boot/vmlinuz-stable
 
             kernel1="$(echo $(find /boot/ -name "initramfs*-stable.img") | cut -d" " -f2)"
             linuz1="$(find /boot/ -name "vmlinuz*-stable")"

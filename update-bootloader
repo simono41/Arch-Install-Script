@@ -2,13 +2,20 @@
 
 set -ex
 
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root" 1>&2
+    sudo $0 $1 $2 $3 $4 $5 $6 $7 $8 $9
+    exit 0
+fi
+echo "Als root Angemeldet"
+
 
 kernel1="$(echo $(find /boot/ -name "initramfs*$(uname -m).img") | cut -d" " -f2)"
 linuz1="$(echo $(find /boot/ -name "vmlinuz*$(uname -m)") | cut -d" " -f2)"
 kernel="${kernel1#/*/}"
 linuz="${linuz1#/*/}"
 
-kernelback1="$(find /boot/ -name "initramfs*$(uname -m)-fallback.img")"
+kernelback1="$(echo $(find /boot/ -name "initramfs*$(uname -m)-fallback.img") | cut -d" " -f2)"
 kernelback="${kernelback1#/*/}"
 
 
@@ -22,4 +29,4 @@ s|%KERNEL%|${kernel}|g" /boot/arch-uefi.conf.example > /boot/loader/entries/arch
 sed "s|%LINUZ%|${linuz}|g;
 s|%KERNEL%|${kernelback}|g" /boot/arch-uefi.conf.example > /boot/loader/entries/arch-uefi-fallback.conf
 
-echo "Bootloader update $(date)" >> /shutdown.log
+echo "Bootloader update $(date)" >> /update.log

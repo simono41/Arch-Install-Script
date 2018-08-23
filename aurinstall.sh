@@ -34,5 +34,20 @@ if [ -d ${packagename} ];then
 else
     aurinstaller
 fi
-makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed
+if makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed; then
+  echo "Installation von ${packagename} erfolgreich beendet!!!"
+else
+  echo "Installation von ${packagename} fehlgeschlagen!!!"
+  echo "DEBEUG-MODUS"
+  echo "Bitte laden sie eine aktuelle PKBUILD herunter und tippen sie die URL hier ein!!!"
+  echo "Wenn sie die PKBUILD manuell bearbeitet haben einfach mit enter bestätigen? "
 
+  read -p "URL: " befehl
+  if [ -n "${befehl}" ]; then
+    curl -o PKGBUILD ${befehl}
+  fi
+  makepkg -si --skipchecksums --skippgpcheck --nocheck --noconfirm --install --needed
+
+fi
+
+echo "Fertig!!!"

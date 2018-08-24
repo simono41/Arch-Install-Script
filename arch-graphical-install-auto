@@ -597,9 +597,11 @@ cp /opt/${repo}/update-bootloader /usr/bin/update-bootloader
 chmod +x /usr/bin/update-bootloader
 
 # update-packages
-
 cp /opt/${repo}/update-packages /usr/bin/update-packages
 chmod +x /usr/bin/update-packages
+
+# pulseaudio
+cp default.pa /etc/pulse/default.pa
 
 
 

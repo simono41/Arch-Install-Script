@@ -3,6 +3,7 @@ Operation = Remove
 Operation = Upgrade
 Type = Package
 Target = linux
+Target = linux414
 Target = grub
 
 [Action]

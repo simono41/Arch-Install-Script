@@ -22,6 +22,7 @@ iso_label="SPECTRE_OS"
 iso_version=$(date +%Y.%m.%d)
 out_dir=out
 install_dir=arch
+kernel=4.14
 version="$1"
 shift
 
@@ -215,8 +216,8 @@ function BIOS() {
         cp -R ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/* ${work_dir}/iso/${install_dir}/boot/syslinux/
 
         if [ "${version}" == "manjaro" ]; then
-          cp $(echo $(find ${work_dir}/${arch}/airootfs/boot/ -name "initramfs*$(uname -m).img")  | cut -d" " -f1 ) ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
-          cp $(echo $(find ${work_dir}/${arch}/airootfs/boot/ -name "vmlinuz*$(uname -m)")  | cut -d" " -f2 ) ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz
+          cp $(echo $(find ${work_dir}/${arch}/airootfs/boot/ -name "initramfs-${kernel}-$(uname -m).img")  | cut -d" " -f1 ) ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
+          cp $(echo $(find ${work_dir}/${arch}/airootfs/boot/ -name "vmlinuz-${kernel}-$(uname -m)")  | cut -d" " -f1 ) ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz
         else
           cp ${work_dir}/${arch}/airootfs/boot/initramfs-linux${linuxparameter}.img ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
           cp ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux${linuxparameter} ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz

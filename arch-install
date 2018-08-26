@@ -566,6 +566,7 @@ function installation {
 function grubinstall() {
     sed -i 's/GRUB_DISTRIBUTOR=.*$/GRUB_DISTRIBUTOR=\"'$repo'\"/' ${mountpoint}/etc/default/grub
     sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*$/GRUB_CMDLINE_LINUX_DEFAULT="splash"/' ${mountpoint}/etc/default/grub
+    sed -i 's/GRUB_BACKGROUND=.*$/GRUB_BACKGROUND="/usr/share/grub/background.png"/' ${mountpoint}/etc/default/grub
     if [ "${verschluesselung}" == "y" ]; then
         tobootdevice=$(blkid -s PARTUUID -o value ${device}${rootpartitionnummer})
         if [ "${swap}" != "n" ]; then

@@ -828,6 +828,10 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
     cp /opt/${repo}/*.jpg /usr/share/backgrounds/xfce/
     chmod 755 -Rv /usr/share/backgrounds/xfce/
 
+    # grub_background
+    mkdir -p /usr/share/grub/
+    cp grub_background.png /usr/share/grub/background.png
+
     if [ "$version" != "pi" ] && [ "$packageupdate" != "skip" ]; then
       # zusatzsoftware
       su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""

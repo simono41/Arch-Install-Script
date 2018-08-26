@@ -830,7 +830,7 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
 
     # grub_background
     mkdir -p /usr/share/grub/
-    cp grub_background.png /usr/share/grub/background.png
+    cp /opt/${repo}/grub_background.png /usr/share/grub/background.png
 
     if [ "$version" != "pi" ] && [ "$packageupdate" != "skip" ]; then
       # zusatzsoftware

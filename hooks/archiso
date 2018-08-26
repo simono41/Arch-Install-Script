@@ -213,16 +213,6 @@ archiso_mount_handler() {
     umount -d /run/archiso/bootmnt
   fi
 
-  mkdir -p -m 755 "/run/archiso/cowspace/${cow_directory}/upperdir/usr/bin"
-  if [[ -n "${run}" ]]; then
-    echo ":: running ${run}"
-    echo ${run} > /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run
-  else
-    if [ -f "/run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run" ]
-    then
-      rm /run/archiso/cowspace/${cow_directory}/upperdir/usr/bin/run
-    fi
-  fi
 }
 
 if [[ "${shell}" == "y" ]]; then

@@ -47,7 +47,7 @@ then
                 echo "Git is not installet"
                 pacman -S git --needed --noconfirm
             fi
-            /opt/${repo}/arch-graphical-install-auto "${version}" "$2" "$3" "skip" "$4"
+            /opt/${repo}/arch-graphical-install-auto "${version}" "${2}" "${3}"
             read -p "Aktualisierung erfolgreich Abgeschlossen. Wollen sie den PC NEUSTARTEN?: [Y/n] " sicherheitsabfrage
             if [ "$sicherheitsabfrage" != "n" ]
             then

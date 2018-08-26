@@ -40,6 +40,8 @@ function standartinstallation() {
     pacman -Syu $(cat /opt/${repo}/packages_${version}.txt) --needed --noconfirm --ignore linux
 }
 
-standartinstallation
+#standartinstallation
+
+/opt/${repo}/arch-graphical-install-auto "${version}" "${2}" "${3}" "skip" ""
 
 echo "Fertig!!!"

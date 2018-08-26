@@ -186,7 +186,7 @@ EOT
 
 function copyconfig() {
     if [ -d /home/"$username"/.config ]; then
-      rm -Rv /home/"$username"/.config
+        rm -Rv /home/"$username"/.config
     fi
     cp -aRv /root/. /home/"$username"/
     #links
@@ -352,7 +352,7 @@ fi
 
 # vollinstallation
 if [ "$version" != "lite" ] && [ "$packageupdate" != "skip" ]; then
-  standartinstallation
+    standartinstallation
 fi
 
 echo "Packetliste2 Ende"
@@ -362,11 +362,11 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 echo "set desktop"
 #
 if [ "$version" != "lite" ]; then
-  if [ -f "/opt/${repo}/xinitrc_${version}.txt" ]; then
-    cp /opt/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
-  else
-    cp /opt/${repo}/xinitrc_special.txt /etc/X11/xinit/xinitrc
-  fi
+    if [ -f "/opt/${repo}/xinitrc_${version}.txt" ]; then
+        cp /opt/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
+    else
+        cp /opt/${repo}/xinitrc_special.txt /etc/X11/xinit/xinitrc
+    fi
 fi
 #
 echo "Systemsprache und dienste werden erstellt!"
@@ -400,7 +400,7 @@ chmod 755 /usr/bin/compress
 # set config direction
 
 if [ -d /root/.config ]; then
-  rm -Rv /root/.config
+    rm -Rv /root/.config
 fi
 mkdir -p /root/.config
 compress restore /opt/${repo}/.config.tar.pxz /root/.config/
@@ -462,7 +462,7 @@ systemctl enable cronie
 systemctl enable systemd-timesyncd.service
 echo "Bitte OpenVPN config in die /etc/openvpn/client/client.conf kopieren!!!"
 if [ -f /lib/systemd/system/openvpn-client@client.service ]; then
-     echo "link vorhanden!"
+    echo "link vorhanden!"
 else
     ln /lib/systemd/system/openvpn-client@.service /lib/systemd/system/openvpn-client@client.service
 fi
@@ -580,7 +580,7 @@ cp /opt/${repo}/mimeapps.list /etc/xdg/mimeapps.list
 # x11vnc-pass (password)
 
 if ! [ -f "/etc/x11vnc.pass" ]; then
-  cp /opt/${repo}/x11vnc.pass /etc/x11vnc.pass
+    cp /opt/${repo}/x11vnc.pass /etc/x11vnc.pass
 fi
 
 # aurinstaller
@@ -604,6 +604,55 @@ chmod +x /usr/bin/update-packages
 cp /opt/${repo}/default.pa /etc/pulse/default.pa
 
 
+# x11vnc
+if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
+    rm /usr/lib/systemd/system/x11vnc.service
+fi
+if [ -f /etc/systemd/system/x11vnc.service ]; then
+    rm /etc/systemd/system/x11vnc.service
+fi
+cp /opt/${repo}/x11vnc.service /etc/systemd/system/x11vnc.service
+chmod 644 /etc/systemd/system/x11vnc.service
+systemctl enable x11vnc.service
+
+# .Conky
+compress restore /opt/${repo}/.Conky.tar.pxz /opt/
+chmod 755 -Rv /opt/.Conky/
+touch /root/notes.txt
+
+# Vibrancy Colors
+tar -vxJf /opt/${repo}/vibrancy-colors.tar.xz -C /usr/share/icons/
+gtk-update-icon-cache /usr/share/icons/Vibrancy-Colors-Dark/
+
+# santana
+mkdir -p /usr/share/fonts/TTF/
+tar -vxJf /opt/${repo}/santana.tar.xz -C /usr/share/fonts/TTF/
+
+# installer
+mkdir -p /usr/share/applications/
+cp /opt/${repo}/arch-install.desktop /usr/share/applications/arch-install.desktop
+
+# install-picture
+mkdir -p /usr/share/pixmaps/
+cp /opt/${repo}/install.png /usr/share/pixmaps/
+
+# background
+mkdir -p /usr/share/backgrounds/xfce/
+cp /opt/${repo}/*.jpg /usr/share/backgrounds/xfce/
+chmod 755 -Rv /usr/share/backgrounds/xfce/
+
+# grub_background
+mkdir -p /usr/share/grub/
+cp /opt/${repo}/grub_background.png /usr/share/grub/background.png
+
+
+
+
+
+
+
+
+
 
 # openvpn-reconnect
 
@@ -613,12 +662,12 @@ cp /opt/${repo}/default.pa /etc/pulse/default.pa
 #chmod +x /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
 
 if [ "$version" != "manjaro" ]; then
-  su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
+    su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
 fi
 if [ "$version" != "pi" ] && [ "$version" != "manjaro" ] && [ "$packageupdate" != "skip" ]; then
-  su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
-  su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
-  plymouth-set-default-theme -R dark-arch
+    su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
+    su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
+    plymouth-set-default-theme -R dark-arch
 fi
 su "$username" -c "aurinstaller "openvpn-reconnect""
 
@@ -776,9 +825,7 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
     cd /opt/conky
     cp cmake/ConkyBuildOptions.cmake .
 
-    sed "s|option(BUILD_LUA_CAIRO \"Build cairo bindings for Lua\" false)|option(BUILD_LUA_CAIRO \"Build cairo bindings for Lua\" true)|g;
-    s|option(BUILD_LUA_IMLIB2 \"Build Imlib2 bindings for Lua\" false)|option(BUILD_LUA_IMLIB2 \"Build Imlib2 bindings for Lua\" true)|g;
-    s|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" false)|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" true)|g" ConkyBuildOptions.cmake > cmake/ConkyBuildOptions.cmake
+    sed "s|option(BUILD_LUA_CAIRO \"Build cairo bindings for Lua\" false)|option(BUILD_LUA_CAIRO \"Build cairo bindings for Lua\" true)|g;s|option(BUILD_LUA_IMLIB2 \"Build Imlib2 bindings for Lua\" false)|option(BUILD_LUA_IMLIB2 \"Build Imlib2 bindings for Lua\" true)|g;s|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" false)|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" true)|g" ConkyBuildOptions.cmake > cmake/ConkyBuildOptions.cmake
 
     if [ -d build ];then
         rm -Rv build
@@ -791,82 +838,41 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
 
     cd /
 
-    # x11vnc
-    if [ -f /usr/lib/systemd/system/x11vnc.service ]; then
-        rm /usr/lib/systemd/system/x11vnc.service
-    fi
-    if [ -f /etc/systemd/system/x11vnc.service ]; then
-        rm /etc/systemd/system/x11vnc.service
-    fi
-    cp /opt/${repo}/x11vnc.service /etc/systemd/system/x11vnc.service
-    chmod 644 /etc/systemd/system/x11vnc.service
-    systemctl enable x11vnc.service
-
-    # .Conky
-    compress restore /opt/${repo}/.Conky.tar.pxz /opt/
-    chmod 755 -Rv /opt/.Conky/
-    touch /root/notes.txt
-
-    # Vibrancy Colors
-    tar -vxJf /opt/${repo}/vibrancy-colors.tar.xz -C /usr/share/icons/
-    gtk-update-icon-cache /usr/share/icons/Vibrancy-Colors-Dark/
-
-    # santana
-    mkdir -p /usr/share/fonts/TTF/
-    tar -vxJf /opt/${repo}/santana.tar.xz -C /usr/share/fonts/TTF/
-
-    # installer
-    mkdir -p /usr/share/applications/
-    cp /opt/${repo}/arch-install.desktop /usr/share/applications/arch-install.desktop
-
-    # install-picture
-    mkdir -p /usr/share/pixmaps/
-    cp /opt/${repo}/install.png /usr/share/pixmaps/
-
-    # background
-    mkdir -p /usr/share/backgrounds/xfce/
-    cp /opt/${repo}/*.jpg /usr/share/backgrounds/xfce/
-    chmod 755 -Rv /usr/share/backgrounds/xfce/
-
-    # grub_background
-    mkdir -p /usr/share/grub/
-    cp /opt/${repo}/grub_background.png /usr/share/grub/background.png
-
     if [ "$version" != "pi" ] && [ "$packageupdate" != "skip" ]; then
-      # zusatzsoftware
-      su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
-      su "$username" -c "aurinstaller spotify"
-      su "$username" -c "aurinstaller realvnc-vnc-viewer"
-      su "$username" -c "aurinstaller libbaseencode"
-      su "$username" -c "aurinstaller libcotp"
-      su "$username" -c "aurinstaller otpclient"
-      su "$username" -c "aurinstaller minecraft-launcher"
-      su "$username" -c "aurinstaller libc++"
-      su "$username" -c "aurinstaller discord"
+        # zusatzsoftware
+        su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
+        su "$username" -c "aurinstaller spotify"
+        su "$username" -c "aurinstaller realvnc-vnc-viewer"
+        su "$username" -c "aurinstaller libbaseencode"
+        su "$username" -c "aurinstaller libcotp"
+        su "$username" -c "aurinstaller otpclient"
+        su "$username" -c "aurinstaller minecraft-launcher"
+        su "$username" -c "aurinstaller libc++"
+        su "$username" -c "aurinstaller discord"
     fi
 
     # install-firacode
     # In download.sh
     for type in Bold Light Medium Regular Retina; do
         wget -O /usr/share/fonts/TTF/FiraCode-${type}.ttf \
-        "https://github.com/tonsky/FiraCode/blob/master/distr/ttf/FiraCode-${type}.ttf?raw=true";
+            "https://github.com/tonsky/FiraCode/blob/master/distr/ttf/FiraCode-${type}.ttf?raw=true";
     done
+
+    echo "Kopiere Config zum User"
+    copyconfig
 
 
 fi
 
-echo "Kopiere Config zum User"
-copyconfig
-
 if pacman -Qdtq; then
-  echo "Verwaiste Packete werden entfernt :)"
-  pacman -Rsn $(pacman -Qdtq) --noconfirm
+    echo "Verwaiste Packete werden entfernt :)"
+    pacman -Rsn $(pacman -Qdtq) --noconfirm
 else
-  echo "Es müssen keine verwaisten Packete entfernt werden :)"
+    echo "Es müssen keine verwaisten Packete entfernt werden :)"
 fi
 
 if [ "$packageupdate" != "skip" ]; then
-  pacman -Syu --needed --noconfirm
+    pacman -Syu --needed --noconfirm
 fi
 
 if [ "${version}" == "libre" ]; then

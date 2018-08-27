@@ -11,7 +11,7 @@ user="user1"
 hostname="$(cat /etc/hostname)"
 [[ -z "${version}" ]] && version="${hostname#*-}"
 
-#fastinstall arch-install fastinstall ${name} ${Partition} ${boot} ${device} ${dateisystem} ${raid} ${swap} ${swapspeicher} ${swapverschluesselung} ${offline} ${autodisk} ${autodiskdevice} ${autostart} ${verschluesselung} ${usbkey} ${usbkeydevice} ${x11vnc} ${extraparameter} ${skipcheck}
+#fastinstall arch-install fastinstall ${name} ${Partition} ${boot} ${device} ${dateisystem} ${raid} ${swap} ${swapspeicher} ${swapverschluesselung} ${offline} ${autodisk} ${autodiskdevice} ${autostart} ${verschluesselung} ${usbkey} ${usbkeydevice} ${x11vnc} ${extraparameter} ${skipcheck} ${nvidia}
 
 
 
@@ -396,11 +396,12 @@ function installation {
     fi
 
     # module and hooks
-    parameter="base udev "
+    parameter="systemd "
+    #parameter="base udev "
 
-    if [ "${swap}" != "n" ]; then
-        parameter="${parameter}resume "
-    fi
+    #if [ "${swap}" != "n" ]; then
+    #    parameter="${parameter}resume "
+    #fi
 
     if [ "${verschluesselung}" == "y" ]; then
         parameter="${parameter}encrypt "
@@ -430,8 +431,8 @@ function installation {
     fi
 
     echo ""
-    if [ "${version}" == "libre" ] || [ "${version}" == "lite" ]; then
-        echo "MODULES=\"nouveau i915 radeon ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
+    if [ "${version}" == "libre" ] || [ "${version}" == "lite" ] || [ "${nvidia}" == "n" ]; then
+        echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
         echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
         echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
         echo "FILES=\"/etc/modprobe.d/blacklist-floppy.conf\"" >> ${mountpoint}/etc/mkinitcpio.conf
@@ -879,6 +880,8 @@ function abfrage() {
 
         [[ -z "${autodiskdevice}" ]] && autodiskdevice=/dev/sdb1
 
+        [[ -z "${nvidia}" ]] && nvidia=n
+
         if [ "${offline}" != "n" ]
         then
             install="offline"
@@ -1019,6 +1022,12 @@ function abfrage() {
             read -p "Sould the system be started with a login screen? : [y/N] " autostart
             [[ -z "${autostart}" ]] && autostart=n
         fi
+
+        if lspci | grep -e VGA -e 3D -m 1 | grep NVIDIA; then
+            read -p "Will you have activate youre Nvidia driver? : [y/N] " nvidia
+        fi
+        [[ -z "${nvidia}" ]] && nvidia=n
+
 
         echo "Windows dualboot funktioniert nur im UEFI Modus und auch nur derzeit mit GRUB!!!"
         echo "Ausserdem muss die UEFI_Bootpartition über 256MB mindesten sein!!!"

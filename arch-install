@@ -799,8 +799,8 @@ function systemdboot() {
 
     #rootsub=$(btrfs subvolume list /mnt | awk 'NR<0 && NR>2 {print $2}')
     if [ "${version}" == "manjaro" ]; then
-        kernel1="$(echo $(find /boot/ -name "initramfs*$(uname -m).img") | cut -d" " -f2)"
-        linuz1="$(echo $(find /boot/ -name "vmlinuz*$(uname -m)") | cut -d" " -f2)"
+        kernel1="$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f4)"
+        linuz1="$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f2)"
         kernel="${kernel1#/*/}"
         linuz="${linuz1#/*/}"
         kernelback1="$(echo $(find /boot/ -name "initramfs*$(uname -m)-fallback.img") | cut -d" " -f2)"

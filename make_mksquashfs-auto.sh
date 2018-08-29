@@ -44,10 +44,6 @@ arch=$(uname -m)
 hostname="SpectreOS-${version}"
 work_dir="${version}"
 
-if [ "${version}" == "libre" ]; then
-    linuxparameter="-libre"
-fi
-
 function minimalinstallation() {
     cp mirrorlist* /etc/pacman.d/
 
@@ -215,13 +211,8 @@ function BIOS() {
 
         cp -R ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/* ${work_dir}/iso/${install_dir}/boot/syslinux/
 
-        if [ "${version}" == "manjaro" ]; then
-          cp $(echo $(find ${work_dir}/${arch}/airootfs/boot/ -name "initramfs-${kernel}-$(uname -m).img")  | cut -d" " -f1 ) ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
-          cp $(echo $(find ${work_dir}/${arch}/airootfs/boot/ -name "vmlinuz-${kernel}-$(uname -m)")  | cut -d" " -f1 ) ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz
-        else
-          cp ${work_dir}/${arch}/airootfs/boot/initramfs-linux${linuxparameter}.img ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
-          cp ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux${linuxparameter} ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz
-        fi
+        cp "$(echo $(find /boot/ -name "${work_dir}/${arch}/airootfs/boot/initramfs*.img") | cut -d" " -f4)" ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
+        cp "$(echo $(find /boot/ -name "${work_dir}/${arch}/airootfs/boot/vmlinuz-linux*") | cut -d" " -f2)"  ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz
 
         cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isolinux.bin ${work_dir}/iso/isolinux/
         cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isohdpfx.bin ${work_dir}/iso/isolinux/

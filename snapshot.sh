@@ -44,13 +44,11 @@ if [ "make" == "$1" ]; then
         #stable-snapshot-boot
         if [ -f "/boot/arch-uefi.conf.example" ] && [ "${rootsnapshot}" == "y" ]; then
 
-            cp "$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f2)" /boot/initramfs-linux-1.00-$(uname -m).img
-            cp "$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f2)" /boot/vmlinuz-1.00-$(uname -m)
+            cp "$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f1)" /boot/initramfs-stable.img
+            cp "$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f1)" /boot/vmlinuz-stable
 
-            kernel1="$(echo $(find /boot/ -name "initramfs*-1.00.img") | cut -d" " -f2)"
-            linuz1="$(find /boot/ -name "vmlinuz*-1.00-$(uname -m)")"
-            kernel="${kernel1#/*/}"
-            linuz="${linuz1#/*/}"
+            kernel="/initramfs-stable.img"
+            linuz="/vmlinuz-stable"
 
             sed "s|%LINUZ%|${linuz}|g;s|%KERNEL%|${kernel}|g;s|rootflags=subvol=__current/ROOT|rootflags=subvol=__snapshot/ROOT@`head -n 1 /run/btrfs-root/__current/ROOT/SNAPSHOT`|g" /boot/arch-uefi.conf.example > /boot/loader/entries/arch-uefi-stable.conf
 

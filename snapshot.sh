@@ -44,7 +44,7 @@ if [ "make" == "$1" ]; then
         #stable-snapshot-boot
         if [ -f "/boot/arch-uefi.conf.example" ] && [ "${rootsnapshot}" == "y" ]; then
 
-            cp "$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f4)" /boot/initramfs-linux-1.00-$(uname -m).img
+            cp "$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f2)" /boot/initramfs-linux-1.00-$(uname -m).img
             cp "$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f2)" /boot/vmlinuz-1.00-$(uname -m)
 
             kernel1="$(echo $(find /boot/ -name "initramfs*-1.00.img") | cut -d" " -f2)"

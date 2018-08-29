@@ -664,8 +664,6 @@ lightdm-gtk-greeter-settings
 links
 linux-api-headers
 linux-firmware
-linux316
-linux316-nvidia
 linux414
 linux414-nvidia
 lirc

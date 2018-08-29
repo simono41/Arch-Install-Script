@@ -211,8 +211,8 @@ function BIOS() {
 
         cp -R ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/* ${work_dir}/iso/${install_dir}/boot/syslinux/
 
-        cp "$(echo $(find /boot/ -name "${work_dir}/${arch}/airootfs/boot/initramfs*.img") | cut -d" " -f2)" ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
-        cp "$(echo $(find /boot/ -name "${work_dir}/${arch}/airootfs/boot/vmlinuz-linux*") | cut -d" " -f2)"  ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz
+        cp "$(echo $(find ${work_dir}/${arch}/airootfs/boot/ -name "initramfs*.img") | cut -d" " -f2)" ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img
+        cp "$(echo $(find ${work_dir}/${arch}/airootfs/boot/ -name "vmlinuz-linux*") | cut -d" " -f2)"  ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz
 
         cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isolinux.bin ${work_dir}/iso/isolinux/
         cp ${work_dir}/${arch}/airootfs/usr/lib/syslinux/bios/isohdpfx.bin ${work_dir}/iso/isolinux/

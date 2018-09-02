@@ -824,7 +824,7 @@ tzdata
 udiskie
 udisks2
 ufw
-unar
+unarchiver
 unrar
 unzip
 upower

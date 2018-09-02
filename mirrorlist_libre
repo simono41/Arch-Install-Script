@@ -6,14 +6,14 @@
 #       mirror when possible. Works best specifying it a few times in a
 #       row (404s workaround).
 # Server = http://redirector.parabola.nu/$repo/os/$arch
-#Server = https://redirector.parabola.nu/$repo/os/$arch
+Server = https://redirector.parabola.nu/$repo/os/$arch
 
 # Location: Reykjavík, Iceland
 # Responsible: Parabola Project
 # Note: Not really a mirror, automatically redirects you to a Parabola
 #       mirror that has the file you are looking for.
 # Server = http://repomirror.parabola.nu/$repo/os/$arch
-#Server = https://repomirror.parabola.nu/$repo/os/$arch
+Server = https://repomirror.parabola.nu/$repo/os/$arch
 
 # Location: Falkenstein, Germany
 # Server = http://mirror.grapentin.org/parabola/$repo/os/$arch

@@ -57,11 +57,11 @@ EOT
       pacman -Syy
     fi
 
-    if [ "${version}" == "libre" ]; then
+    if [ "${version%-*-*}" == "libre" ]; then
         cp pacman.conf_libre /etc/pacman.conf
         pacman -U --noconfirm --force "https://www.parabola.nu/packages/libre/any/parabola-keyring/download"
         ./pacstrap -C pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base_libre.txt)
-    elif [ "${version}" == "manjaro" ]; then
+    elif [ "${version%-*-*}" == "manjaro" ]; then
         cp pacman.conf_manjaro /etc/pacman.conf
         pacman -U --noconfirm --force "https://mirror.philpot.de/manjaro/stable/core/x86_64/manjaro-keyring-20180607-1-any.pkg.tar.xz"
         ./pacstrap -C pacman.conf_manjaro -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base.txt)
@@ -140,11 +140,11 @@ function system() {
             echo "blacklist nouveau" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist_nouveau.conf
             echo "install dell-smbios /bin/false" > ${work_dir}/${arch}/airootfs/etc/modprobe.d/blacklist-dell-smbios.conf
 
-            if [ "${version}" != "manjaro" ]; then
+            if [ "${version%-*-*}" != "manjaro" ]; then
               plymouth=plymouth
             fi
 
-            if [ "${version}" == "libre" ] || [ "${version}" == "lite" ]; then
+            if [ "${version%-*-*}" == "libre" ] || [ "${version%-*-*}" == "lite" ]; then
                 echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "HOOKS=\"base udev archiso block filesystems keyboard\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
                 echo "COMPRESSION=\"lz4\"" >> ${work_dir}/${arch}/airootfs/etc/mkinitcpio.conf
@@ -224,7 +224,7 @@ function BIOS() {
         echo "TIMEOUT 300" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
         echo "" >> ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
 
-        if [ "${version}" != "voll" ]
+        if [ "${version%-*-*}" != "voll" ]
         then
 
             sed "s|%ISO_LABEL%|${iso_label}|g;
@@ -283,7 +283,7 @@ function UEFI() {
         cp ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz ${work_dir}/efiboot/EFI/archiso/vmlinuz.efi
         cp ${work_dir}/iso/${install_dir}/boot/${arch}/archiso.img ${work_dir}/efiboot/EFI/archiso/archiso.img
 
-        #if [ "${version}" != "libre" ]; then
+        #if [ "${version%-*-*}" != "libre" ]; then
         #cp ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz-lts ${work_dir}/efiboot/EFI/archiso/vmlinuz-lts.efi
         #cp ${work_dir}/iso/${install_dir}/boot/${arch}/archiso-lts.img ${work_dir}/efiboot/EFI/archiso/archiso-lts.img
         #fi
@@ -348,7 +348,7 @@ function UEFI() {
             s|%INSTALL_DIR%|${install_dir}|g" $file > ${work_dir}/efiboot/loader/entries/${file##*/}
         done
 
-        if [ "${version}" == "voll" ]
+        if [ "${version%-*-*}" == "voll" ]
         then
 
             for file in releng/all/archiso-x86_64-usb*

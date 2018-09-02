@@ -69,9 +69,9 @@ function minimalinstallation() {
     # mirrors
 
     # pacman-config
-    if [ "${version}" == "libre" ]; then
+    if [ "${version%-*-*}" == "libre" ]; then
         cp /opt/${repo}/pacman.conf_libre ${mountpoint}/etc/pacman.conf
-    elif [ "${version}" == "manjaro" ]; then
+    elif [ "${version%-*-*}" == "manjaro" ]; then
         cp /opt/${repo}/pacman.conf_manjaro ${mountpoint}/etc/pacman.conf
     else
         cp /opt/${repo}/pacman.conf ${mountpoint}/etc/pacman.conf
@@ -264,7 +264,7 @@ function cron() {
         chmod 755 ${mountpoint}/usr/bin/snapshot
     fi
 
-    if [ "${version}" == "manjaro" ]; then
+    if [ "${version%-*-*}" == "manjaro" ]; then
         echo "0 * * * * /usr/bin/update-bootloader" >> ${mountpoint}/var/spool/cron/root
     fi
     echo "0 20 * * * /usr/bin/update-packages" >> ${mountpoint}/var/spool/cron/root
@@ -419,7 +419,7 @@ function installation {
         parameter="${parameter}usbsecret "
     fi
 
-    if [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ] || [ "${version}" == "lite" ]; then
+    if [ "${version%-*-*}" == "libre" ] || [ "${version%-*-*}" == "manjaro" ] || [ "${version%-*-*}" == "lite" ]; then
         echo "überspringe plymouth hook!!!"
     else
         if [ "${verschluesselung}" == "y" ]; then
@@ -431,7 +431,7 @@ function installation {
     fi
 
     echo ""
-    if [ "${version}" == "libre" ] || [ "${version}" == "lite" ] || [ "${nvidia}" == "n" ]; then
+    if [ "${version%-*-*}" == "libre" ] || [ "${version%-*-*}" == "lite" ] || [ "${nvidia}" == "n" ]; then
         echo "MODULES=\"i915 radeon nouveau ata_generic ata_piix nls_cp437 vfat ext4 btrfs\"" > ${mountpoint}/etc/mkinitcpio.conf
         echo "HOOKS=\"${parameter}\"" >> ${mountpoint}/etc/mkinitcpio.conf
         echo "COMPRESSION=\"lz4\"" >> ${mountpoint}/etc/mkinitcpio.conf
@@ -798,7 +798,7 @@ function systemdboot() {
     fi
 
     #rootsub=$(btrfs subvolume list /mnt | awk 'NR<0 && NR>2 {print $2}')
-    if [ "${version}" == "manjaro" ]; then
+    if [ "${version%-*-*}" == "manjaro" ]; then
         kernel1="$(echo $(find /boot/ -name "initramfs*.img") | cut -d" " -f1)"
         linuz1="$(echo $(find /boot/ -name "vmlinuz*") | cut -d" " -f1)"
         kernel="${kernel1#/*/}"
@@ -845,7 +845,7 @@ function systemdboot() {
 
     arch-chroot ${mountpoint} efibootmgr -c -d ${device} -p 1 -l \\${linuz} -L "Arch Linux efistub" -u "initrd=/${kernel} root=${tobootdevice} rw ${parameter}nvidia-drm.modeset=1 splash"
 
-    if [ "${version}" == "manjaro" ]; then
+    if [ "${version%-*-*}" == "manjaro" ]; then
         cp /opt/${repo}/update-bootloader ${mountpoint}/usr/bin/update-bootloader
         chmod +x ${mountpoint}/usr/bin/update-bootloader
     fi
@@ -1279,7 +1279,7 @@ then
     if [ "y" == "${windualboot}" ]; then
         mkinitcpio -c /etc/mkinitcpio.conf -g /boot/initramfs-linux.img
     else
-        if [ "${version}" == "libre" ]; then
+        if [ "${version%-*-*}" == "libre" ]; then
             arch-chroot ${mountpoint} mkinitcpio -p linux-libre
         else
             arch-chroot ${mountpoint} mkinitcpio -P -c /etc/mkinitcpio.conf
@@ -1313,7 +1313,7 @@ elif [ "${Partition}" == "bios" ]; then
     if [ "y" == "${windualboot}" ]; then
         mkinitcpio -c /etc/mkinitcpio.conf -g /boot/initramfs-linux.img
     else
-        if [ "${version}" == "libre" ]; then
+        if [ "${version%-*-*}" == "libre" ]; then
             arch-chroot ${mountpoint} mkinitcpio -p linux-libre
         else
             arch-chroot ${mountpoint} mkinitcpio -P linux -c /etc/mkinitcpio.conf
@@ -1349,7 +1349,7 @@ if [ "y" != "${noinstall}" ] && [ -z "${installationsfehler}" ]; then
         mkdir -p ${mountpoint}/etc/lightdm/
         cp /opt/${repo}/Xsession /opt/${repo}/keys.conf /opt/${repo}/lightdm-gtk-greeter.conf /opt/${repo}/lightdm.conf /opt/${repo}/users.conf ${mountpoint}/etc/lightdm/
         if [ "${autostart}" == "y" ]; then
-            if [ "${version}" == "libre" ] || [ "${version}" == "manjaro" ] || [ "${version}" == "lite" ]; then
+            if [ "${version%-*-*}" == "libre" ] || [ "${version%-*-*}" == "manjaro" ] || [ "${version%-*-*}" == "lite" ]; then
                 arch-chroot ${mountpoint} systemctl enable lightdm.service
             else
                 arch-chroot ${mountpoint} systemctl enable lightdm-plymouth.service

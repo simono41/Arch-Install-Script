@@ -333,11 +333,11 @@ chmod 644 /etc/systemd/system/startup.service
 systemctl enable startup.service
 
 # pacman-config
-if [ "${version}" == "libre" ]; then
+if [ "${version%-*-*}" == "libre" ]; then
     cp /opt/${repo}/pacman.conf_libre /etc/pacman.conf
-elif [ "${version}" == "manjaro" ]; then
+elif [ "${version%-*-*}" == "manjaro" ]; then
     cp /opt/${repo}/pacman.conf_manjaro /etc/pacman.conf
-elif [ "${version}" == "pi" ]; then
+elif [ "${version%-*-*}" == "pi" ]; then
     cp /opt/${repo}/pacman.conf_pi /etc/pacman.conf
 else
     cp /opt/${repo}/pacman.conf /etc/pacman.conf
@@ -351,7 +351,7 @@ if [ -f /var/lib/pacman/db.lck ];then
 fi
 
 # vollinstallation
-if [ "$version" != "lite" ] && [ "$packageupdate" != "skip" ]; then
+if [ "${version%-*-*}" != "lite" ] && [ "${packageupdate}" != "skip" ]; then
     standartinstallation
 fi
 
@@ -361,7 +361,7 @@ echo "Beginne mit dem Konfigurieren des Systems :D"
 # set desktop
 echo "set desktop"
 #
-if [ "$version" != "lite" ]; then
+if [ "${version%-*-*}" != "lite" ]; then
     if [ -f "/opt/${repo}/xinitrc_${version}.txt" ]; then
         cp /opt/${repo}/xinitrc_${version}.txt /etc/X11/xinit/xinitrc
     else
@@ -661,10 +661,10 @@ cp /opt/${repo}/grub_background.png /usr/share/grub/background.png
 #cp /opt/${repo}/openvpn-reconnect-systemd.sh /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
 #chmod +x /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
 
-if [ "$version" != "manjaro" ]; then
+if [ "${version%-*-*}" != "manjaro" ]; then
     su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
 fi
-if [ "$version" != "pi" ] && [ "$version" != "manjaro" ] && [ "$packageupdate" != "skip" ]; then
+if [ "${version%-*-*}" != "pi" ] && [ "${version%-*-*}" != "manjaro" ] && [ "$packageupdate" != "skip" ]; then
     su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
     su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
     plymouth-set-default-theme -R dark-arch
@@ -750,7 +750,7 @@ fi
 
 
 
-if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
+if [ "${version%-*-*}" != "lite" ] && [ "$skip" != "skip" ]; then
 
     ### custom-installer
 
@@ -838,7 +838,7 @@ if [ "$version" != "lite" ] && [ "$skip" != "skip" ]; then
 
     cd /
 
-    if [ "$version" != "pi" ] && [ "$packageupdate" != "skip" ]; then
+    if [ "${version%-*-*}" != "pi" ] && [ "$packageupdate" != "skip" ]; then
         # zusatzsoftware
         su "$username" -c "aurinstaller "https://aur.archlinux.org/google-chrome.git""
         su "$username" -c "aurinstaller spotify"
@@ -875,7 +875,7 @@ if [ "$packageupdate" != "skip" ]; then
     pacman -Syu --needed --noconfirm
 fi
 
-if [ "${version}" == "libre" ]; then
+if [ "${version%-*-*}" == "libre" ]; then
     mkinitcpio -p linux-libre
 else
     mkinitcpio -P -c /etc/mkinitcpio.conf

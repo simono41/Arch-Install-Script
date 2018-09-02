@@ -165,6 +165,7 @@ function ldconfigcache() {
 }
 
 function addusers() {
+    groupadd users
     useradd -m -g users -G wheel,audio,video,sys,optical -s /bin/bash $username
     passwd ${username} <<EOT
 ${userpass}

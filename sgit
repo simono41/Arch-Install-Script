@@ -14,6 +14,9 @@ fi
 push="${3}"
 [[ -z "${push}" ]] && push="origin"
 
+branch="${4}"
+[[ -z "${branch}" ]] && branch="master"
+
 git config --global core.editor "nano"
 git config --global user.email "${1}"
 git config --global user.name "${1}"
@@ -23,5 +26,5 @@ git add --all
 git commit --all -m "${2}"
 git pull
 git show
-git push "${push}"
+git push "${push}" "${branch}"
 git status

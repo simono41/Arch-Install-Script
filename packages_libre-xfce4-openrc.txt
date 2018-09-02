@@ -500,7 +500,7 @@ ttf-dejavu
 tumbler
 twolame
 tzdata
-unar
+unarchiver
 unzip
 upower
 usb_modeswitch

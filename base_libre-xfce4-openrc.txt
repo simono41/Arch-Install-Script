@@ -111,6 +111,7 @@ keyutils
 kmod
 kmod-openrc
 krb5
+ldns
 less
 lftp
 libaio
@@ -227,6 +228,8 @@ openconnect
 openrc
 openrc-init
 openresolv
+openssh
+openssh-openrc
 openssl
 openssl-1.0
 opensysusers

@@ -165,7 +165,21 @@ function ldconfigcache() {
 }
 
 function addusers() {
-    groupadd users
+    if ! cat /etc/group | grep users; then
+      groupadd users
+    fi
+    if ! cat /etc/group | grep wheel; then
+      groupadd wheel
+    fi
+    if ! cat /etc/group | grep audio; then
+      groupadd audio
+    fi
+    if ! cat /etc/group | grep video; then
+      groupadd video
+    fi
+    if ! cat /etc/group | grep optical; then
+      groupadd optical
+    fi
     useradd -m -g users -G wheel,audio,video,sys,optical -s /bin/bash $username
     passwd ${username} <<EOT
 ${userpass}

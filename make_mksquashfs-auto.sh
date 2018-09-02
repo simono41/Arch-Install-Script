@@ -59,7 +59,9 @@ EOT
 
     if [ "${version%-*-*}" == "libre" ]; then
         cp pacman.conf_libre /etc/pacman.conf
-        pacman -U --noconfirm --force "https://www.parabola.nu/packages/libre/any/parabola-keyring/download"
+        #pacman -U --noconfirm --force "https://www.parabola.nu/packages/libre/any/parabola-keyring/download"
+        pacman -U --noconfirm --force "https://repomirror.parabola.nu/pool/parabola/parabola-keyring-20180802-1-any.pkg.tar.xz"
+        #pacman -U --noconfirm --force "https://repomirror.parabola.nu/libre/os/x86_64/parabola-keyring-20180802-1-any.pkg.tar.xz"
         ./pacstrap -C pacman.conf_libre -c -d -G -M ${work_dir}/${arch}/airootfs $(cat base_libre.txt)
     elif [ "${version%-*-*}" == "manjaro" ]; then
         cp pacman.conf_manjaro /etc/pacman.conf

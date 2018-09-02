@@ -243,7 +243,6 @@ partclone
 parted
 partimage
 pciutils
-pcmciautils
 pcre
 pcre2
 pcsclite
@@ -280,7 +279,6 @@ sysfsutils
 syslinux
 syslog-ng
 syslog-ng-openrc
-systemd-dummy
 tar
 tcl
 tcpdump

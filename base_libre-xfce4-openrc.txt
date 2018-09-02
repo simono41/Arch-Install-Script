@@ -159,7 +159,6 @@ libsecret
 libsm
 libsodium
 libssh2
-libsystemd-dummy
 libtasn1
 libteam
 libtirpc
@@ -279,6 +278,7 @@ sysfsutils
 syslinux
 syslog-ng
 syslog-ng-openrc
+systemd-dummy
 tar
 tcl
 tcpdump

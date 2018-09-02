@@ -10,7 +10,7 @@ fi
 echo "Als root Angemeldet"
 #
 
-VERSION_ID=$(cat /etc/os-release | grep "ID")
+#VERSION_ID=$(cat /etc/os-release | grep "ID")
 RCLOCAL='/etc/rc.local'
 RCLOCALSHUTDOWN='/etc/rc.local.shutdown'
 SYSCTL='/etc/sysctl.conf'

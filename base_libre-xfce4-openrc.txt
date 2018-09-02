@@ -14,7 +14,6 @@ bluez-libs
 btrfs-progs
 bzip2
 ca-certificates
-ca-certificates-cacert
 ca-certificates-mozilla
 ca-certificates-utils
 coreutils
@@ -49,7 +48,7 @@ efivar
 elinks
 ethtool
 eudev
-eudev-openrc
+eudev-libudev
 expat
 f2fs-tools
 file
@@ -112,7 +111,6 @@ keyutils
 kmod
 kmod-openrc
 krb5
-ldns
 less
 lftp
 libaio
@@ -126,7 +124,6 @@ libdbi
 libedit
 libelf
 libelogind
-libeudev
 libevent
 libffi
 libfontenc
@@ -230,14 +227,11 @@ ntp-openrc
 openconnect
 openrc
 openrc-init
-openssh
-openssh-openrc
+openresolv
 openssl
 openssl-1.0
 opensysusers
 opentmpfiles
-openvpn
-openvpn-openrc
 p11-kit
 p7zip
 pacman
@@ -258,7 +252,6 @@ perl-error
 perl-mailtools
 perl-timedate
 pinentry
-pkcs11-helper
 polkit
 popt
 ppp
@@ -275,8 +268,6 @@ reiserfsprogs
 rp-pppoe
 rpcbind
 rpcbind-openrc
-rsync
-rsync-openrc
 run-parts
 s-nail
 sed
@@ -298,7 +289,8 @@ texinfo
 thin-provisioning-tools
 tre
 tzdata
-unar
+udev-init-scripts
+unarchiver
 unzip
 usb_modeswitch
 usbutils

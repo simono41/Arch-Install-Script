@@ -708,6 +708,7 @@ cp /opt/${repo}/grub_background.png /usr/share/grub/background.png
 #cp /opt/${repo}/openvpn-reconnect-systemd.sh /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
 #chmod +x /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
 
+if ! [ "${version}" == "libre-xfce4-openrc" ]; then
 if [ "${version%-*-*}" != "manjaro" ]; then
     su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
 fi
@@ -717,6 +718,7 @@ if [ "${version%-*-*}" != "pi" ] && [ "${version%-*-*}" != "manjaro" ] && [ "$pa
     plymouth-set-default-theme -R dark-arch
 fi
 su "$username" -c "aurinstaller "openvpn-reconnect""
+fi
 
 # nano
 echo "include "/usr/share/nano/*.nanorc"" > /etc/nanorc

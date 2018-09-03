@@ -425,6 +425,7 @@ parole
 partclone
 parted
 partimage
+patch
 pciutils
 pcre
 pcre2

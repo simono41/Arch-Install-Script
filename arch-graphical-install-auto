@@ -502,10 +502,16 @@ else
 rc-update add lvm boot
 rc-update add dmcrypt boot
 rc-update add dbus default
-#rc-update add alsasound default
+rc-update add alsasound default
 rc-update add cronie default
 rc-update add NetworkManager default
 rc-update add xdm default
+
+sed -i 's/DISPLAYMANAGER=.*$/DISPLAYMANAGER=\"lightdm\"/' /etc/conf.d/xdm
+sed -i 's/keymap=.*$/keymap=\"de\"/' /etc/conf.d/keymaps
+
+echo "--autologin user1 --noclear" > /etc/conf.d/agetty.tty1
+
 fi
 
 # set systemconfiguration

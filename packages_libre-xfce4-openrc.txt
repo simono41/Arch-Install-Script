@@ -3,6 +3,7 @@ acl
 adwaita-icon-theme
 alsa-lib
 alsa-utils
+alsa-utils-openrc
 aom
 arch-install-scripts
 archlinux-keyring
@@ -56,6 +57,7 @@ dhcpcd-openrc
 dialog
 diffutils
 ding-libs
+displaymanager-openrc
 dmraid
 dnsmasq
 dnssec-anchors
@@ -534,7 +536,6 @@ xbitmaps
 xcb-proto
 xcb-util
 xdg-utils
-xdm
 xf86-input-evdev
 xf86-input-keyboard
 xf86-input-libinput

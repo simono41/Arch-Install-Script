@@ -886,7 +886,7 @@ make install
 cd /
 
 
-if [ "${version%-*-*}" != "lite" ] && [ "$skip" != "skip" ]; then
+if [ "${version%-*-*}" != "lite" ] && [ "$skip" != "skip" ] && ! [ "${version}" == "libre-xfce4-openrc" ]; then
 
 
     if [ "${version%-*-*}" != "pi" ] && [ "$packageupdate" != "skip" ]; then

@@ -772,10 +772,11 @@ if ! grep 'setcap cap_net_raw+ep /bin/ping' $RCLOCAL; then
     echo "setcap cap_net_raw+ep /bin/ping" >> $RCLOCAL
 fi
 
+if ! [ "${version}" == "libre-xfce4-openrc" ]; then
 
-# Install rc.shutdown
+    # Install rc.shutdown
 
-echo "[Unit]
+    echo "[Unit]
 Description=/etc/rc.local.shutdown Compatibility
 ConditionFileIsExecutable=/etc/rc.local.shutdown
 DefaultDependencies=no
@@ -789,103 +790,104 @@ StandardInput=tty
 RemainAfterExit=yes
 
 [Install]
-WantedBy=multi-user.target" > /etc/systemd/system/rc-local-shutdown.service
-touch $RCLOCALSHUTDOWN
-chmod +x $RCLOCALSHUTDOWN
-systemctl enable rc-local-shutdown.service
-if ! grep '#!' $RCLOCALSHUTDOWN; then
-    echo "#!/bin/bash" > $RCLOCALSHUTDOWN
+    WantedBy=multi-user.target" > /etc/systemd/system/rc-local-shutdown.service
+    touch $RCLOCALSHUTDOWN
+    chmod +x $RCLOCALSHUTDOWN
+    systemctl enable rc-local-shutdown.service
+    if ! grep '#!' $RCLOCALSHUTDOWN; then
+        echo "#!/bin/bash" > $RCLOCALSHUTDOWN
+    fi
 fi
 
+### custom-installer
+
+## pip update
+pip install --upgrade pip
+
+## pip install beautysh
+if [ -d /opt/beautysh ];then
+    echo "Bereits vorhanden!!!"
+    cd /opt/beautysh
+    git reset --hard
+    git pull
+else
+    git clone https://github.com/bemeurer/beautysh /opt/beautysh
+fi
+cd /opt/beautysh
+python ./setup.py install
+if [ -f /usr/bin/beautysh ]; then
+    echo "Bereits vorhanden!!!"
+else
+    ln -s /opt/beautysh/beautysh/beautysh.py /usr/bin/beautysh
+fi
+chmod +x /usr/bin/beautysh
+cd /
+
+pip install powerline-shell
+
+## powerline-shell-fonts
+if [ -d /opt/powerline-shell-fonts ];then
+    echo "Bereits vorhanden!!!"
+    cd /opt/powerline-shell-fonts
+    git reset --hard
+    git pull
+else
+    git clone https://github.com/powerline/fonts.git /opt/powerline-shell-fonts
+fi
+cd /opt/powerline-shell-fonts
+./install.sh
+cd /
+
+## uncrustify
+if [ -d /opt/uncrustify ];then
+    echo "Bereits vorhanden!!!"
+    cd /opt/uncrustify
+    git reset --hard
+    git pull
+else
+    git clone https://github.com/uncrustify/uncrustify.git /opt/uncrustify
+fi
+cd /opt/uncrustify
+mkdir -p build
+cd build
+cmake ..
+cmake --build .
+if [ -f /usr/bin/uncrustify ]; then
+    echo "Bereits vorhanden!!!"
+else
+    ln -s /opt/uncrustify/build/uncrustify /usr/bin/uncrustify
+fi
+chmod +x /usr/bin/uncrustify
+cd /
+
+## conky
+if [ -d /opt/conky ];then
+    echo "Bereits vorhanden!!!"
+    cd /opt/conky
+    git reset --hard
+    git pull
+else
+    git clone https://github.com/brndnmtthws/conky.git /opt/conky
+fi
+cd /opt/conky
+cp cmake/ConkyBuildOptions.cmake .
+
+sed "s|option(BUILD_LUA_CAIRO \"Build cairo bindings for Lua\" false)|option(BUILD_LUA_CAIRO \"Build cairo bindings for Lua\" true)|g;s|option(BUILD_LUA_IMLIB2 \"Build Imlib2 bindings for Lua\" false)|option(BUILD_LUA_IMLIB2 \"Build Imlib2 bindings for Lua\" true)|g;s|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" false)|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" true)|g" ConkyBuildOptions.cmake > cmake/ConkyBuildOptions.cmake
+
+if [ -d build ];then
+    rm -Rv build
+fi
+mkdir -p build
+cd build
+cmake ..
+make
+make install
+
+cd /
 
 
 if [ "${version%-*-*}" != "lite" ] && [ "$skip" != "skip" ]; then
 
-    ### custom-installer
-
-    ## pip update
-    pip install --upgrade pip
-
-    ## pip install beautysh
-    if [ -d /opt/beautysh ];then
-        echo "Bereits vorhanden!!!"
-        cd /opt/beautysh
-        git reset --hard
-        git pull
-    else
-        git clone https://github.com/bemeurer/beautysh /opt/beautysh
-    fi
-    cd /opt/beautysh
-    python ./setup.py install
-    if [ -f /usr/bin/beautysh ]; then
-        echo "Bereits vorhanden!!!"
-    else
-        ln -s /opt/beautysh/beautysh/beautysh.py /usr/bin/beautysh
-    fi
-    chmod +x /usr/bin/beautysh
-    cd /
-
-    pip install powerline-shell
-
-    ## powerline-shell-fonts
-    if [ -d /opt/powerline-shell-fonts ];then
-        echo "Bereits vorhanden!!!"
-        cd /opt/powerline-shell-fonts
-        git reset --hard
-        git pull
-    else
-        git clone https://github.com/powerline/fonts.git /opt/powerline-shell-fonts
-    fi
-    cd /opt/powerline-shell-fonts
-    ./install.sh
-    cd /
-
-    ## uncrustify
-    if [ -d /opt/uncrustify ];then
-        echo "Bereits vorhanden!!!"
-        cd /opt/uncrustify
-        git reset --hard
-        git pull
-    else
-        git clone https://github.com/uncrustify/uncrustify.git /opt/uncrustify
-    fi
-    cd /opt/uncrustify
-    mkdir -p build
-    cd build
-    cmake ..
-    cmake --build .
-    if [ -f /usr/bin/uncrustify ]; then
-        echo "Bereits vorhanden!!!"
-    else
-        ln -s /opt/uncrustify/build/uncrustify /usr/bin/uncrustify
-    fi
-    chmod +x /usr/bin/uncrustify
-    cd /
-
-    ## conky
-    if [ -d /opt/conky ];then
-        echo "Bereits vorhanden!!!"
-        cd /opt/conky
-        git reset --hard
-        git pull
-    else
-        git clone https://github.com/brndnmtthws/conky.git /opt/conky
-    fi
-    cd /opt/conky
-    cp cmake/ConkyBuildOptions.cmake .
-
-    sed "s|option(BUILD_LUA_CAIRO \"Build cairo bindings for Lua\" false)|option(BUILD_LUA_CAIRO \"Build cairo bindings for Lua\" true)|g;s|option(BUILD_LUA_IMLIB2 \"Build Imlib2 bindings for Lua\" false)|option(BUILD_LUA_IMLIB2 \"Build Imlib2 bindings for Lua\" true)|g;s|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" false)|option(BUILD_LUA_RSVG \"Build rsvg bindings for Lua\" true)|g" ConkyBuildOptions.cmake > cmake/ConkyBuildOptions.cmake
-
-    if [ -d build ];then
-        rm -Rv build
-    fi
-    mkdir -p build
-    cd build
-    cmake ..
-    make
-    make install
-
-    cd /
 
     if [ "${version%-*-*}" != "pi" ] && [ "$packageupdate" != "skip" ]; then
         # zusatzsoftware

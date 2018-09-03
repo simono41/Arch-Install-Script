@@ -169,7 +169,6 @@ imagemagick
 imlib2
 inetutils
 inetutils-openrc
-intel-ucode
 iproute2
 iptables
 iputils

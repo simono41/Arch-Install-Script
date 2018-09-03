@@ -23,7 +23,6 @@ bluez-libs
 btrfs-progs
 bzip2
 ca-certificates
-ca-certificates-cacert
 ca-certificates-mozilla
 ca-certificates-utils
 cairo
@@ -271,7 +270,6 @@ libsoup
 libsoxr
 libssh
 libssh2
-libsystemd-dummy
 libtasn1
 libteam
 libthai
@@ -418,7 +416,6 @@ partclone
 parted
 partimage
 pciutils
-pcmciautils
 pcre
 pcre2
 pcsclite

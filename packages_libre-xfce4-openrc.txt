@@ -196,7 +196,6 @@ lcms2
 ldns
 less
 lftp
-lib32-nvidia-utils
 libaio
 libarchive
 libass

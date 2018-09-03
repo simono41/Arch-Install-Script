@@ -166,19 +166,19 @@ function ldconfigcache() {
 
 function addusers() {
     if ! cat /etc/group | grep users; then
-      groupadd users
+        groupadd users
     fi
     if ! cat /etc/group | grep wheel; then
-      groupadd wheel
+        groupadd wheel
     fi
     if ! cat /etc/group | grep audio; then
-      groupadd audio
+        groupadd audio
     fi
     if ! cat /etc/group | grep video; then
-      groupadd video
+        groupadd video
     fi
     if ! cat /etc/group | grep optical; then
-      groupadd optical
+        groupadd optical
     fi
     useradd -m -g users -G wheel,audio,video,sys,optical -s /bin/bash $username
     passwd ${username} <<EOT
@@ -343,9 +343,11 @@ gitclone
 # startup
 cp /opt/${repo}/startup /usr/bin/
 chmod 755 /usr/bin/startup
-cp /opt/${repo}/startup.service /etc/systemd/system/
-chmod 644 /etc/systemd/system/startup.service
-systemctl enable startup.service
+if ! [ "${version}" == "libre-xfce4-openrc" ]; then
+    cp /opt/${repo}/startup.service /etc/systemd/system/
+    chmod 644 /etc/systemd/system/startup.service
+    systemctl enable startup.service
+fi
 
 # pacman-config
 if [ "${version%-*-*}" == "libre" ]; then
@@ -446,13 +448,17 @@ then
         echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
         echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
         echo "ExecStart=-/usr/bin/agetty --autologin root -s %I 115200,38400,9600 vt102" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
-        systemctl enable getty@tty1
+        if ! [ "${version}" == "libre-xfce4-openrc" ]; then
+            systemctl enable getty@tty1
+        fi
     else
         mkdir -p /etc/systemd/system/getty\@tty1.service.d
         echo "[Service]" > /etc/systemd/system/getty\@tty1.service.d/autologin.conf
         echo "ExecStart=" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
         echo "ExecStart=-/usr/bin/agetty --autologin $username -s %I 115200,38400,9600 vt102" >> /etc/systemd/system/getty\@tty1.service.d/autologin.conf
-        systemctl enable getty@tty1
+        if ! [ "${version}" == "libre-xfce4-openrc" ]; then
+            systemctl enable getty@tty1
+        fi
     fi
 
 elif [ "$start" == "xdm" ]
@@ -468,26 +474,28 @@ else
     echo "Kein Start gewählt!!!"
 fi
 
-systemctl enable acpid
-systemctl enable ntpd
-systemctl enable avahi-daemon
-systemctl enable org.cups.cupsd.service
-systemctl enable sshd
-systemctl enable cronie
-systemctl enable systemd-timesyncd.service
-echo "Bitte OpenVPN config in die /etc/openvpn/client/client.conf kopieren!!!"
-if [ -f /lib/systemd/system/openvpn-client@client.service ]; then
-    echo "link vorhanden!"
-else
-    ln /lib/systemd/system/openvpn-client@.service /lib/systemd/system/openvpn-client@client.service
+if ! [ "${version}" == "libre-xfce4-openrc" ]; then
+    systemctl enable acpid
+    systemctl enable ntpd
+    systemctl enable avahi-daemon
+    systemctl enable org.cups.cupsd.service
+    systemctl enable sshd
+    systemctl enable cronie
+    systemctl enable systemd-timesyncd.service
+    echo "Bitte OpenVPN config in die /etc/openvpn/client/client.conf kopieren!!!"
+    if [ -f /lib/systemd/system/openvpn-client@client.service ]; then
+        echo "link vorhanden!"
+    else
+        ln /lib/systemd/system/openvpn-client@.service /lib/systemd/system/openvpn-client@client.service
+    fi
+    #Bei ausdokumentierung wird eine/die VPN automatisch aus der /etc/openvpn/client/client.conf gestartet!!!
+    #systemctl enable openvpn-client@client.service
+    systemctl enable fail2ban
+    systemctl disable dhcpcd
+    systemctl enable NetworkManager.service
+    systemctl enable bluetooth.service
+    systemctl enable httpd
 fi
-#Bei ausdokumentierung wird eine/die VPN automatisch aus der /etc/openvpn/client/client.conf gestartet!!!
-#systemctl enable openvpn-client@client.service
-systemctl enable fail2ban
-systemctl disable dhcpcd
-systemctl enable NetworkManager.service
-systemctl enable bluetooth.service
-systemctl enable httpd
 
 # set systemconfiguration
 echo "systemconfiguration"
@@ -628,8 +636,9 @@ if [ -f /etc/systemd/system/x11vnc.service ]; then
 fi
 cp /opt/${repo}/x11vnc.service /etc/systemd/system/x11vnc.service
 chmod 644 /etc/systemd/system/x11vnc.service
-systemctl enable x11vnc.service
-
+if ! [ "${version}" == "libre-xfce4-openrc" ]; then
+    systemctl enable x11vnc.service
+fi
 # .Conky
 compress restore /opt/${repo}/.Conky.tar.pxz /opt/
 chmod 755 -Rv /opt/.Conky/

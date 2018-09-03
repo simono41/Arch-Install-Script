@@ -438,6 +438,7 @@ pinentry
 pixman
 pixz
 pkcs11-helper
+pkg-config
 polkit
 polkit-gnome
 popt

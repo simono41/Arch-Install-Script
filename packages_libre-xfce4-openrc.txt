@@ -1,5 +1,6 @@
 aalib
 acl
+acpid
 adwaita-icon-theme
 alsa-lib
 alsa-utils
@@ -16,6 +17,8 @@ atk
 atkmm
 attr
 avahi
+base
+base-devel
 base-meta
 bash
 bash-completion
@@ -31,6 +34,7 @@ cairo
 cairomm
 cantarell-fonts
 cdparanoia
+cdrtools
 celt0.5.1
 cmake
 colord
@@ -41,9 +45,12 @@ cronie
 cronie-openrc
 cryptsetup
 cryptsetup-openrc
+cups
 curl
 darkhttpd
+davfs2
 db
+dbus
 dbus-elogind
 dbus-glib
 dbus-openrc
@@ -65,11 +72,13 @@ dnssec-anchors
 dosfstools
 e2fsprogs
 efibootmgr
+efitools
 efivar
 elinks
 ethtool
 eudev
 eudev-openrc
+exfat-utils
 exo
 expat
 f2fs-tools
@@ -95,6 +104,7 @@ gcc
 gcc-libs
 gcr
 gdbm
+gdisk
 gdk-pixbuf2
 geoip
 geoip-database
@@ -159,6 +169,7 @@ imagemagick
 imlib2
 inetutils
 inetutils-openrc
+intel-ucode
 iproute2
 iptables
 iputils
@@ -185,6 +196,7 @@ lcms2
 ldns
 less
 lftp
+lib32-nvidia-utils
 libaio
 libarchive
 libass
@@ -412,6 +424,7 @@ openvpn-openrc
 opus
 orage
 orc
+os-prober
 p11-kit
 p7zip
 pacman
@@ -467,6 +480,7 @@ rsync
 rsync-openrc
 run-parts
 s-nail
+screen
 sdl
 sdl2
 sdl_mixer
@@ -481,6 +495,7 @@ speex
 speexdsp
 spice
 sqlite
+squashfs-tools
 sshfs
 startup-notification
 sudo
@@ -504,12 +519,14 @@ thunar-media-tags-plugin
 thunar-volman
 tigervnc
 tolua++
+traceroute
 transmission-gtk
 tre
 ttf-dejavu
 tumbler
 twolame
 tzdata
+ufw
 unarchiver
 unzip
 upower
@@ -652,6 +669,7 @@ xorg-xwd
 xorg-xwininfo
 xorg-xwud
 xorgproto
+xorriso
 xplc
 xterm
 xvidcore

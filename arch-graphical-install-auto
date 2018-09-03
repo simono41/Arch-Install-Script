@@ -750,8 +750,10 @@ mkdir -p /root/.ssh
 echo "ServerAliveInterval 120" > ~/.ssh/config
 echo "ServerAliveCountMax 15" >> ~/.ssh/config
 
-# Install rc.local
-echo "[Unit]
+if ! [ "${version}" == "libre-xfce4-openrc" ]; then
+
+    # Install rc.local
+    echo "[Unit]
 Description=/etc/rc.local compatibility
 
 [Service]
@@ -760,19 +762,18 @@ ExecStart=/etc/rc.local
 RemainAfterExit=yes
 
 [Install]
-WantedBy=multi-user.target" > /etc/systemd/system/rc-local.service
-touch $RCLOCAL
-chmod +x $RCLOCAL
-systemctl enable rc-local.service
-if ! grep '#!' $RCLOCAL; then
-    echo "#!/bin/bash" > $RCLOCAL
-fi
+    WantedBy=multi-user.target" > /etc/systemd/system/rc-local.service
+    touch $RCLOCAL
+    chmod +x $RCLOCAL
+    systemctl enable rc-local.service
+    if ! grep '#!' $RCLOCAL; then
+        echo "#!/bin/bash" > $RCLOCAL
+    fi
 
-if ! grep 'setcap cap_net_raw+ep /bin/ping' $RCLOCAL; then
-    echo "setcap cap_net_raw+ep /bin/ping" >> $RCLOCAL
-fi
+    if ! grep 'setcap cap_net_raw+ep /bin/ping' $RCLOCAL; then
+        echo "setcap cap_net_raw+ep /bin/ping" >> $RCLOCAL
+    fi
 
-if ! [ "${version}" == "libre-xfce4-openrc" ]; then
 
     # Install rc.shutdown
 

@@ -510,7 +510,7 @@ else
     sed -i 's/DISPLAYMANAGER=.*$/DISPLAYMANAGER=\"lightdm\"/' /etc/conf.d/xdm
     sed -i 's/keymap=.*$/keymap=\"de\"/' /etc/conf.d/keymaps
 
-    echo "--autologin user1 --noclear" > /etc/conf.d/agetty.tty1
+    echo "agetty_options=\"--autologin user1 --noclear\"" > /etc/conf.d/agetty.tty1
 
 fi
 
@@ -540,7 +540,7 @@ ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 if ! [ "${version}" == "libre-xfce4-openrc" ]; then
     echo "${repo}-${version}" > /etc/hostname
 else
-    echo "hostname=${repo}-${version}" > /etc/conf.d/hostname
+    echo "hostname=\"${repo}-${version}\"" > /etc/conf.d/hostname
 fi
 
 # uefi-boot

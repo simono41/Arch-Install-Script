@@ -499,18 +499,18 @@ if ! [ "${version}" == "libre-xfce4-openrc" ]; then
     systemctl enable bluetooth.service
     systemctl enable httpd
 else
-rc-update add lvm boot
-rc-update add dmcrypt boot
-rc-update add dbus default
-rc-update add alsasound default
-rc-update add cronie default
-rc-update add NetworkManager default
-rc-update add xdm default
+    rc-update add lvm boot
+    rc-update add dmcrypt boot
+    rc-update add dbus default
+    rc-update add alsasound default
+    rc-update add cronie default
+    rc-update add NetworkManager default
+    rc-update add xdm default
 
-sed -i 's/DISPLAYMANAGER=.*$/DISPLAYMANAGER=\"lightdm\"/' /etc/conf.d/xdm
-sed -i 's/keymap=.*$/keymap=\"de\"/' /etc/conf.d/keymaps
+    sed -i 's/DISPLAYMANAGER=.*$/DISPLAYMANAGER=\"lightdm\"/' /etc/conf.d/xdm
+    sed -i 's/keymap=.*$/keymap=\"de\"/' /etc/conf.d/keymaps
 
-echo "--autologin user1 --noclear" > /etc/conf.d/agetty.tty1
+    echo "--autologin user1 --noclear" > /etc/conf.d/agetty.tty1
 
 fi
 
@@ -532,15 +532,15 @@ echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 #
 if [ -f /etc/localtime ]; then
-  rm /etc/localtime
+    rm /etc/localtime
 fi
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # iso_name
 if ! [ "${version}" == "libre-xfce4-openrc" ]; then
-  echo "${repo}-${version}" > /etc/hostname
+    echo "${repo}-${version}" > /etc/hostname
 else
-  echo "hostname=${repo}-${version}" > /etc/conf.d/hostname
+    echo "hostname=${repo}-${version}" > /etc/conf.d/hostname
 fi
 
 # uefi-boot
@@ -709,15 +709,15 @@ cp /opt/${repo}/grub_background.png /usr/share/grub/background.png
 #chmod +x /usr/lib/systemd/system-sleep/openvpn-reconnect-systemd.sh
 
 if ! [ "${version}" == "libre-xfce4-openrc" ]; then
-if [ "${version%-*-*}" != "manjaro" ]; then
-    su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
-fi
-if [ "${version%-*-*}" != "pi" ] && [ "${version%-*-*}" != "manjaro" ] && [ "$packageupdate" != "skip" ]; then
-    su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
-    su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
-    plymouth-set-default-theme -R dark-arch
-fi
-su "$username" -c "aurinstaller "openvpn-reconnect""
+    if [ "${version%-*-*}" != "manjaro" ]; then
+        su "$username" -c "aurinstaller "https://aur.archlinux.org/pamac-aur.git""
+    fi
+    if [ "${version%-*-*}" != "pi" ] && [ "${version%-*-*}" != "manjaro" ] && [ "$packageupdate" != "skip" ]; then
+        su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth.git""
+        su "$username" -c "aurinstaller "https://aur.archlinux.org/plymouth-theme-dark-arch.git""
+        plymouth-set-default-theme -R dark-arch
+    fi
+    su "$username" -c "aurinstaller "openvpn-reconnect""
 fi
 
 # nano

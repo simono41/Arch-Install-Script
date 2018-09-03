@@ -2,6 +2,7 @@ aalib
 acl
 adwaita-icon-theme
 alsa-lib
+alsa-utils
 aom
 arch-install-scripts
 archlinux-keyring

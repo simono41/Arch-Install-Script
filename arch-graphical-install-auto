@@ -180,7 +180,10 @@ function addusers() {
     if ! cat /etc/group | grep optical; then
         groupadd optical
     fi
-    useradd -m -g users -G wheel,audio,video,sys,optical -s /bin/bash $username
+    if ! cat /etc/group | grep adm; then
+        groupadd adm
+    fi
+    useradd -m -g users -G wheel,audio,video,sys,optical,adm -s /bin/bash $username
     passwd ${username} <<EOT
 ${userpass}
 ${userpass}
@@ -495,6 +498,15 @@ if ! [ "${version}" == "libre-xfce4-openrc" ]; then
     systemctl enable NetworkManager.service
     systemctl enable bluetooth.service
     systemctl enable httpd
+else
+rc-update add lvm boot
+rc-update add dmcrypt boot
+rc-update add dbus default
+rc-update add alsasound default
+rc-update add cronie default
+rc-update add NetworkManager default
+rc-update add lightdm default
+#rc-update add xdm default
 fi
 
 # set systemconfiguration
@@ -514,11 +526,17 @@ echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 #
 locale-gen
 #
-rm /etc/localtime
+if [ -f /etc/localtime ]; then
+  rm /etc/localtime
+fi
 ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # iso_name
-echo "${repo}-${version}" > /etc/hostname
+if ! [ "${version}" == "libre-xfce4-openrc" ]; then
+  echo "${repo}-${version}" > /etc/hostname
+else
+  echo "hostname=${repo}-${version}" > /etc/conf.d/hostname
+fi
 
 # uefi-boot
 cp /opt/${repo1}/uefi-boot.sh /usr/bin/uefi-boot

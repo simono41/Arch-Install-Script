@@ -91,6 +91,7 @@ fuse2
 garcon
 gawk
 gc
+gcc
 gcc-libs
 gcr
 gdbm
@@ -148,6 +149,10 @@ hicolor-icon-theme
 htop
 hwids
 iana-etc
+icedove
+icedove-l10n-de
+iceweasel
+iceweasel-l10n-de
 icu
 idnkit
 imagemagick
@@ -350,6 +355,7 @@ lvm2-openrc
 lynx
 lz4
 lzo
+make
 man-db
 man-pages
 mc

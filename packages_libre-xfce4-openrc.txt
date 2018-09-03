@@ -440,6 +440,7 @@ procps-ng
 progsreiserfs
 psmisc
 python
+python-pip
 python-pyinotify
 python-systemd
 qrencode

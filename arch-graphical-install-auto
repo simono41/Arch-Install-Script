@@ -502,7 +502,7 @@ else
 rc-update add lvm boot
 rc-update add dmcrypt boot
 rc-update add dbus default
-rc-update add alsasound default
+#rc-update add alsasound default
 rc-update add cronie default
 rc-update add NetworkManager default
 rc-update add lightdm default
